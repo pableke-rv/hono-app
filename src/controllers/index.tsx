@@ -1,24 +1,16 @@
-// @ts-nocheck 
 
 import { Context } from "hono";
-
-import Layout from "../layouts/Test.tsx";
-import Messages from "../components/Messages.tsx";
-import { Alerts, Loading, BackToTop } from "../components/Alerts.tsx";
+import Index from "../pages/index";
+import Maps from "../pages/maps";
 
 export const index = (ctx: Context) => {
-    const messages = ["Good Morning", "Good Evening", "Good Night"];
-    return ctx.html(
-        <Layout>
-            <header></header>
-            <Alerts/>
-            <Loading/>
-            <BackToTop/>
-            <main>
-                <h1>Hello Hono!</h1>
-                <Messages messages={messages} />
-            </main>
-            <footer>Page Footer</footer>
-        </Layout>
-    );
+    return ctx.html(<Index/>);
+}
+
+export const maps = (ctx: Context) => {
+    return ctx.html(<Maps/>);
+}
+
+export const test = (ctx: Context) => {
+    return ctx.text("Hello Word!");
 }

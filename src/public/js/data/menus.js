@@ -17,7 +17,7 @@ export default [
         "icono":"<i class=\"icon-left fas fa-home nav-icon\"></i>",
         "nombre":"Inicio",
         "titulo":"Nav Link Inicio",
-        "enlace":"./",
+        "enlace":"/",
         "orden":1,
         "mask":1,
         "creado":"2023-06-02T10:46:12.000Z"

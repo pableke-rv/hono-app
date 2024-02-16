@@ -2,6 +2,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch dist/index.ts",
+    "test": "node --no-warnings ./tests/index.ts",
     "gulp": "gulp"
   },
   "dependencies": {

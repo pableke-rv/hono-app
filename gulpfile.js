@@ -36,13 +36,16 @@ gulp.task("watch", () => {
 	// Other watchers ...
 });
 
-// Tasks to create symlink
-gulp.task("symlink", done => {
+// Tasks to create static output
+gulp.task("static", done => {
 	const SYM_DEST = "node_modules/app";
 	gulp.src("dist").pipe(gulp.symlink(SYM_DEST));
 	gulp.src("dist/public/js").pipe(gulp.symlink(SYM_DEST));
 	gulp.src("dist/public/js/i18n").pipe(gulp.symlink(SYM_DEST));
-	gulp.src("dist/public/js/model").pipe(gulp.symlink(SYM_DEST)).on("end", done);
+	gulp.src("dist/public/js/model").pipe(gulp.symlink(SYM_DEST));
+
+	gulp.src("src/data/**/*").pipe(gulp.dest("dist/data"));
+	gulp.src("src/public/img/**/*").pipe(gulp.dest("dist/public/img")).on("end", done);
 });
 
-gulp.task("default", gulp.series("prepare-app", "minify-css", "minify-js", "symlink", "watch"));
+gulp.task("default", gulp.series("prepare-app", "minify-css", "minify-js", "static", "watch"));
