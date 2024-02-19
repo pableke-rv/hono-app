@@ -1,11 +1,16 @@
 
-import { testClient } from "hono/testing";
+import { describe, it, test } from "node:test";
+import assert from "node:assert";
 import app from "../src/app";
 
-const test = testClient(app);
+describe("Example", () => {
+    it("GET /test", async () => {
+        const res = await app.request("/test");
+        assert.equal(res.status, 200);
+        assert.equal(await res.text(), "Hello Word!");
+    });
+});
 
-test("GET /test", async () => {
-    const res = await app.request("/test");
-    expect(res.status).toBe(200);
-    expect(await res.text()).toEqual("Hello Word!");
+test.skip("Skipping tests", () => {
+    assert.notEqual(1, 2)
 });

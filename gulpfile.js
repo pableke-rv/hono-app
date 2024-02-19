@@ -2,8 +2,10 @@ import fs from "fs";
 import gulp from "gulp";
 import concat from "gulp-concat";
 import uglify from "gulp-uglify";
+import htmlmin from "gulp-htmlmin";
 import cssnano from "gulp-cssnano";
 
+const HTML_PATH = "src/**/*.html";
 const CSS_FILES = "src/public/css/**/*.css";
 const JS_FILES = "src/public/js/**/*.js";
 const FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
@@ -11,6 +13,18 @@ const FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
 // Tasks to copy all ts / tsx
 gulp.task("prepare-app", done => {
 	gulp.src(FILES).pipe(gulp.dest("dist")).on("end", done);
+});
+
+// Task to minify all views (HTML"s and EJS"s)
+gulp.task("minify-html", done => {
+	const options = {
+		caseSensitive: true,
+		sortClassName: true,
+		collapseWhitespace: true,
+		removeComments: true, //removeComments => remove CDATA
+		removeRedundantAttributes: false //remove attr with default value
+	};
+	gulp.src(HTML_PATH).pipe(htmlmin(options)).pipe(gulp.dest("dist")).on("end", done);
 });
 
 // Tasks to minify CSS"s
@@ -31,7 +45,7 @@ gulp.task("minify-js", done => {
 
 gulp.task("watch", () => {
 	gulp.watch(FILES, gulp.series("prepare-app"));
-	gulp.watch(CSS_FILES, gulp.series("minify-css"));
+	gulp.watch(HTML_PATH, gulp.series("minify-html", "minify-css"));
 	gulp.watch(JS_FILES, gulp.series("minify-js"));
 	// Other watchers ...
 });
@@ -48,4 +62,4 @@ gulp.task("static", done => {
 	gulp.src("src/public/img/**/*").pipe(gulp.dest("dist/public/img")).on("end", done);
 });
 
-gulp.task("default", gulp.series("prepare-app", "minify-css", "minify-js", "static", "watch"));
+gulp.task("default", gulp.series("prepare-app", "minify-html", "minify-css", "minify-js", "static", "watch"));

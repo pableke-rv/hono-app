@@ -39,7 +39,7 @@ tfoot { font-weight: bold; border-top: 1px dashed black; }
 /* TABLES */
 
 /* Actions */
-.action { display: inline-block; margin-right: 6px; }
+.action { display: inline-block; margin-right: 6px; text-decoration: none; }
 .text-xl { font-size: x-large; font-weight: bold; text-transform: uppercase; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }

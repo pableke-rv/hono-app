@@ -2,18 +2,21 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch dist/index.ts",
-    "test": "node --no-warnings ./tests/index.ts",
-    "gulp": "gulp"
+    "test": "node --import tsx --test tests/*",
+    "build": "gulp"
   },
   "dependencies": {
     "@hono/node-server": "^1.7.0",
-    "hono": "^4.0.2"
+    "dotenv": "^16.4.4",
+    "hono": "^4.0.2",
+    "hono-sessions": "^0.3.4"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-cssnano": "^2.1.3",
+    "gulp-htmlmin": "^5.0.1",
     "gulp-uglify": "^3.0.2",
     "tsx": "^3.12.2",
     "typescript": "^5.3.3"

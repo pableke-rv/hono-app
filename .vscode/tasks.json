@@ -3,7 +3,7 @@
     "tasks": [
         {
             "type": "npm",
-            "script": "gulp",
+            "script": "build",
             "runOptions": {
                 "runOn": "folderOpen"
             }

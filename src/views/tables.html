@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Maps API Tests</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="../css/styles-min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../public/css/styles-min.css">
 	<script src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
-    <script type="module" src="../js/xeco/tests.js"></script>
+    <script type="module" src="../public/js/static.js"></script>
 </head>
 <body>
 	<header></header>
@@ -36,12 +36,12 @@
             </div>
             <div id="languages" class="dropdown">
                 <button>
-                    <img src="../img/flags/spain.png">
+                    <img src="../public/img/flags/spain.png">
                     <i class="fas fa-chevron-down"></i>
                 </button>
                 <div>
-                    <a href="?lang=es"><img src="../img/flags/spain.png"> ES</a>
-                    <a href="?lang=en"><img src="../img/flags/great_britain.png"> EN</a>
+                    <a href="?lang=es"><img src="../public/img/flags/spain.png"> ES</a>
+                    <a href="?lang=en"><img src="../public/img/flags/great_britain.png"> EN</a>
                 </div>
             </div>
             <button id="theme-toggle">
@@ -84,43 +84,13 @@
     <!-- Alerts component -->
 
     <main>
-        <div id="tab-0" class="tab-content active">
-            <h2>GOOGLE MAPS API</h2>
-
-            <div class="ui-blocks">
-                <label class="ui-block-xl ui-icon-block">
-                    <div class="label required">Origen de la ruta:</div>
-                    <i class="fas fa-map-marker-alt ui-icon-left"></i>
-                    <input type="search" id="origen" name="origen" class="ui-input ui-text ui-ruta" 
-                        tabindex="1" autocomplete="off" placeholder="Search a place" />
-                    <div class="ui-errtip"></div>
-                </label>
-            </div>
-
-            <div class="address-components hide">
-                <h2>Address Components:</h2>
-                <ul>
-                    <li><b>Dirección (route):</b> @dir;</li>
-                    <li><b>Localidad (locality):</b> @localidad;</li>
-                    <li><b>Código Postal (postal_code):</b> @cp;</li>
-                    <li><b>Provincia (administrative_area_level_2):</b> @provincia;</li>
-                    <li><b>Comunidad Autonoma (administrative_area_level_1):</b> @ccaa;</li>
-                    <li><b>País (country):</b> @pais;</li>
-                </ul>
-            </div>
-
-            <hr/>
-            <div class="dieta hide">
-                <h2>Dietas:</h2>
-                <ul>
-                    <li><b>País / Ciudad:</b> @name;</li>
-                    <li><b>Alojamiento 1:</b> @a1; €</li>
-                    <li><b>Alojamiento 2:</b> @a2; €</li>
-                    <li><b>Manutención 1:</b> @m1; €</li>
-                    <li><b>Manutención 2:</b> @m2; €</li>
-                </ul>
-            </div>
-        </div>
+        <table>
+            <thead>
+                <tr><th>Nº</th><th>Nombre</th><th>Titulo</th><th>Icono</th><th>Acciones</th></tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+        </table>
     </main>
 
     <footer>Page Footer</footer>

@@ -14,7 +14,7 @@ const Head = (props: any) => {
             <title>{props.title}</title>
             <link rel="stylesheet" type="text/css" media="screen" href="public/css/styles-min.css"/>
             <script src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
-            <script type="module" src="public/js/xeco/tests.js"></script>
+            <script type="module" src="public/js/tests.js"></script>
         </head>
     );
 }

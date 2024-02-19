@@ -42,7 +42,7 @@ function Collection() {
 		return self;
 	}
 
-    this.render = (tpl, data, fnRender, resume) => {
+    this.render = (data, fnRender, resume) => {
         const status = {};
         resume = resume || status;
         fnRender = fnRender || fnVoid;
@@ -50,11 +50,20 @@ function Collection() {
         return data.map((item, i) => { // render each item
             status.index = i;
             status.count = i + 1;
-            fnRender(item, status, resume, data);
-            return format(tpl, status);
+            return fnRender(item, status, resume, data);
         }).join("");
     }
-
+    this.stringify = (data, fnRender, resume) => {
+        const status = {};
+        resume = resume || status;
+        status.size = resume.size = data.length;
+        return data.map((item, i) => { // render each item
+            status.index = i;
+            status.count = i + 1;
+            return fnRender(item, status, resume, data);
+        }).join("");
+    }
+    
     this.copy = function(output, data, keys) {
         if (keys)
             keys.forEach(key => { output[key] = data[key]; });

@@ -1,56 +1,39 @@
+import { Notice } from "../components/Alerts";
+
+const Tab = (props: any) => {
+    const active = "tab-content " + (props.active || "");
+    return (
+        <div id={props.id} class={active}>
+            <h2>{props.title}</h2>
+            {props.children}
+        </div>
+    );
+}
 
 export const Tab0 = (props: any) => {
     return (
-        <div id="tab-0" class="tab-content active">
-            <h2>Hello Hono!</h2>
-            <div class="alert alert-info">
-                <div class="alert-icon"><i class="fas fa-bullhorn"></i></div>
-                <div class="alert-text"><b>Info:</b> <span>Area de pruebas</span></div>
-            </div>
-            <div class="alert alert-note">
-                <div class="alert-icon"><i class="fas fa-bell"></i></div>
-                <div class="alert-text"><b>Note:</b> <span>Area de pruebas</span></div>
-            </div>
-            <div class="alert alert-ok">
-                <div class="alert-icon"><i class="fas fa-check-circle"></i></div>
-                <div class="alert-text"><b>OK:</b> <span>Area de pruebas</span></div>
-            </div>
-            <div class="alert alert-green">
-                <div class="alert-icon"><i class="far fa-thumbs-up"></i></div>
-                <div class="alert-text"><b>Green:</b> <span>Area de pruebas</span></div>
-            </div>
-            <div class="alert alert-success">
-                <div class="alert-icon"><i class="far fa-calendar-check"></i></div>
-                <div class="alert-text"><b>Saccessfully:</b> <span>Area de pruebas</span></div>
-            </div>
-            <div class="alert alert-warn">
-                <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
+        <Tab id="tab-0" active="active" title="Hello Hono!">
+            <Notice type="info" icon="fas fa-bullhorn"><b>Info:</b> <span>Area de pruebas</span></Notice>
+            <Notice type="note" icon="fas fa-bell"><b>Note:</b> <span>Area de pruebas</span></Notice>
+            <Notice type="ok" icon="fas fa-check-circle"><b>OK:</b> <span>Area de pruebas</span></Notice>
+            <Notice type="green" icon="fas fa-thumbs-up"><b>Green:</b> <span>Area de pruebas</span></Notice>
+            <Notice type="success" icon="fas fa-calendar-check"><b>Saccessfully:</b> <span>Area de pruebas</span></Notice>
+            <Notice type="warn" icon="fas fa-exclamation-triangle">
+                <b>Warn:</b> <span>Area de pruebas</span>
+                <p><b>Extra info:</b> añkjfdsaldñlka fjasñlkadjf asñlk adñlkajf asñlkdsfdjk aslsñlkadfkjk asñsdñlkafjlk asñldkfdjk aksldjf alskfdj asñlkdsfdjk aslsñlkadfkjk asñsdñlkafjlk asñldkfdjk aksldjf alskfdj</p>
+            </Notice>
+            <Notice type="error" icon="fas fa-exclamation-circle"><b>Error:</b> <span>Area de pruebas</span></Notice>
+            <Notice type="danger" icon="fas fa-radiation-alt"><b>Danger:</b> <span>Area de pruebas</span></Notice>
+            <Notice type="dark" icon="fas fa-skull-crossbones"><b>Dark:</b> <span>Area de pruebas</span></Notice>
+            <Notice type="info">
                 <div class="alert-text">
-                    <b>Warn:</b> <span>Area de pruebas</span>
-                    <p><b>Extra info:</b> añkjfdsaldñlka fjasñlkadjf asñlk adñlkajf asñlkdsfdjk aslsñlkadfkjk asñsdñlkafjlk asñldkfdjk aksldjf alskfdj asñlkdsfdjk aslsñlkadfkjk asñsdñlkafjlk asñldkfdjk aksldjf alskfdj</p>
-                </div>
-            </div>
-            <div class="alert alert-error">
-                <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
-                <div class="alert-text"><b>Error:</b> <span>Area de pruebas</span></div>
-            </div>
-            <div class="alert alert-danger">
-                <div class="alert-icon"><i class="fas fa-radiation-alt"></i></div>
-                <div class="alert-text"><b>Danger:</b> <span>Area de pruebas</span></div>
-            </div>
-            <div class="alert alert-dark">
-                <div class="alert-icon"><i class="fas fa-skull-crossbones"></i></div>
-                <div class="alert-text"><b>Dark:</b> <span>Area de pruebas</span></div>
-            </div>
-            <div class="alert alert-info">
-                <div class="alert-text">
-                    <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. A, dolorum, veritatis tenetur ea dolor quo consequuntur ullam molestias fugit quam.</span>
+                    <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. A, dolorum, veritatis tenetur ea dolor quo consequuntur ullam molestias fugit quam. </span>
                     <a href="#toggle" class="link tab-action" data-toggle="fa-angle-double-down fa-angle-double-up" data-target=".info-test">
                         Más Info <i class="fas fa-angle-double-down"></i>
                     </a>
                     <div class="info-test hide"><hr/>Lorem ipsum dolor, sit amet consectetur adipisicing, elit. Corrupti rem aut, minus asperiores, sunt eligendi hic ipsum maiores itaque numquam sequi eius voluptates consequuntur debitis impedit quae dolore ad, enim?</div>
                 </div>
-            </div>
+            </Notice>
 
             <div class="navbar">
                 <a href="#next-tab" class="btn btn-primary tab-action">Sig. <i class="fas fa-angle-double-right"></i></a>
@@ -58,15 +41,13 @@ export const Tab0 = (props: any) => {
                 <a href="/maps" class="btn btn-green">Go maps <i class="fas fa-share"></i></a>
                 <a href="/api/maps" class="btn btn-green">Go API maps <i class="fas fa-undo-alt"></i></a>
             </div>
-        </div>
+        </Tab>
     );
 }
 
 export const Tab1 = (props: any) => {
     return (
-        <div id="tab-1" class="tab-content">
-            <h2>Actions</h2>
-
+        <Tab id="tab-1" title="Actions">
             <form id="form-pokemon" action="#">
             <div class="ui-blocks">
                 <label class="ui-block-xl autocomplete">
@@ -81,20 +62,7 @@ export const Tab1 = (props: any) => {
             </div>
             </form>
 
-            <div id="info-pokemon" class="hide" style="display: flex; align-items: start; gap: 2rem;">
-                <div>
-                <h3>Pokemon @name;</h3>
-                <ul>
-                    <li><b>Nombre:</b> @name;</li>
-                    <li><b>Tipo:</b> @type;</li>
-                    <li><b>Especie:</b> @species;</li>
-                    <li><b>HP:</b> @hp;</li>
-                    <li><b>Ataque:</b> @attack;</li>
-                    <li><b>Defensa:</b> @defense;</li>
-                </ul>
-                </div>
-                <img src="@img;" alt="@name;"/>
-            </div>
+            <div id="info-pokemon" class="hide ui-blocks" style="align-items: end;"></div>
 
             <div class="navbar">
                 <a href="#" class="action text-green resize">Green</a>
@@ -106,6 +74,6 @@ export const Tab1 = (props: any) => {
             <div class="navbar">
                 <a href="#tab-0" class="btn btn-primary tab-action"><i class="fas fa-angle-double-left"></i></a>
             </div>
-        </div>
+        </Tab>
     );
 }
