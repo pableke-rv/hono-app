@@ -16,6 +16,7 @@ export default [
         "tipo":1,
         "icono":"<i class=\"icon-left fas fa-home nav-icon\"></i>",
         "nombre":"Inicio",
+        "nombre_en":"Home",
         "titulo":"Nav Link Inicio",
         "enlace":"/",
         "orden":1,

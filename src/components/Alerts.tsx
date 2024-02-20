@@ -1,5 +1,7 @@
 
-export const Notice = (props: any) => {
+import { AlertType } from "../types/Alert";
+
+export const Notice = (props: AlertType) => {
     const type = `alert alert-${props.type}`;
     const icon = props.icon ? "alert-icon" : "hide";
     return (
@@ -10,7 +12,7 @@ export const Notice = (props: any) => {
     );
 }
 
-export const Alert = (props: any) => {
+export const Alert = (props: AlertType) => {
     const type = `hide alert alert-${props.type}`;
     return (
         <div class={type}>

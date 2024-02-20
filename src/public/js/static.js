@@ -8,9 +8,12 @@ import menus from "./data/menus.js";
 import maps from "./xeco/iris/tests.js";
 import i18n from "./i18n/langs.js";
 
+const menuTree = menus.filter(node => (node.tipo == 1)).sort((a, b) => (a.orden - b.orden));
+
 document.addEventListener("DOMContentLoaded", () => {
+    i18n.setLang(i18n.getIsoLang()); // Client language
     const menuHTML = document.querySelector("ul.menu");
-    menuHTML.innerHTML = menu.html(menus.filter(node => (node.tipo == 1)).sort((a, b) => (a.orden - b.orden)));
+    menuHTML.innerHTML = menu.html(menuTree);
     menuHTML.slideIn();
     // toggle phone menu
     const menuToggleBtn = document.querySelector("#menu-toggle");
@@ -22,8 +25,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // Language selector
     const html = document.documentElement;
     const langs = document.getElementById("languages");
-    const linkLang = langs.querySelector('[href="?lang=' + i18n.get("lang") + '"]');
-    langs.firstElementChild.firstElementChild.src = linkLang.firstElementChild.src;
+    const fnLang = link => {
+        const lang = link.classList.item(0);
+        html.setAttribute("lang", lang);
+        i18n.setLang(lang); // Update language
+        menuHTML.innerHTML = menu.html(menuTree);
+        langs.firstElementChild.firstElementChild.src = link.firstElementChild.src;
+    };
+    langs.querySelectorAll("a").forEach(link => link.addEventListener("click", ev => fnLang(link)));
+    fnLang(langs.querySelector("." + i18n.get("lang")));
 
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
     const themeToggleBtn = document.querySelector("#theme-toggle");

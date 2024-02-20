@@ -138,10 +138,10 @@ function Presto() {
     this.isAutoLoadImp = () => (self.isL83() || self.isAnt() || self.isAfc());
     this.isAutoLoadInc = () => (self.isL83() || self.isAnt());
 
-    this.render = (data, output) => {
+    /*this.render = (data, output) => {
         output.ej = data.ej;
         return output;
-    }
+    }*/
     this.validate = data => {
         let ok = i18n.reset().isKey("acOrgDec", data.idOrgDec, "Debe seleccionar la orgánica que disminuye"); // autocomplete required key
         ok = i18n.isKey("idEcoDec", data.idEcoDec, "Debe seleccionar la económica que disminuye") && ok; // select required number

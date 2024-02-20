@@ -6,6 +6,7 @@ import maps from "./xeco/iris/tests.js";
 import i18n from "./i18n/langs.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+    i18n.setLang(i18n.getIsoLang()); // Client language
     const menuHTML = document.querySelector("ul.menu");
     menuHTML.slideIn();
     // toggle phone menu
@@ -18,8 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Language selector
     const html = document.documentElement;
     const langs = document.getElementById("languages");
-    const linkLang = langs.querySelector('[href="?lang=' + i18n.get("lang") + '"]');
-    langs.firstElementChild.firstElementChild.src = linkLang.firstElementChild.src;
+    const fnLang = link => { langs.firstElementChild.firstElementChild.src = link.firstElementChild.src; };
+    //langs.querySelectorAll("a").forEach(link => link.addEventListener("click", ev => { fnLang(link); })); // force reload
+    fnLang(langs.querySelector("." + i18n.get("lang")));
 
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
     const themeToggleBtn = document.querySelector("#theme-toggle");

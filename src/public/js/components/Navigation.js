@@ -22,7 +22,7 @@ function Navigation() {
 
     // cargamos la pagina de destino con fetch
     const fetchMain = url => {
-        api.text(url.pathname).then(text => {
+        api.text(url.href).then(text => {
             // utilizamos la api de View Transitions
             document.startViewTransition(() => {
                 // extraigo el contenido de la etiqueta main
@@ -38,6 +38,8 @@ function Navigation() {
         // capture navigation event links
         window.navigation.addEventListener("navigate", ev => {
             const url = new URL(ev.destination.url);
+            if (url.searchParams.get("force"))
+                return; // Force refresh view
             //if (location.pathname == url.pathname) // AJAX no cambia la url
                 //return ev.preventDefault(); // Current destination
             // Si es una pagina externa => ignoramos el evento

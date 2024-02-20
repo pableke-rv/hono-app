@@ -1,12 +1,14 @@
 
+import i18n from "../i18n/langs.js";
+
 function Menu() {
 	const self = this; //self instance
 
     const opts = {};
     opts.isRoot = node => !node.padre; // is root in tree
     opts.isChild = (node, child) => (node.id == child.padre); // is child from parent
-    opts.onLabel = node => ((node.icono || "") + node.nombre); // render item label menu
-    opts.onLink = node => `href="${node.enlace}" title="${node.titulo}"`; // render link attributes href, title, etc...
+    opts.onLabel = node => ((node.icono || "") + i18n.strval(node, "nombre")); // render item label menu
+    opts.onLink = node => `href="${node.enlace}" title="${i18n.strval(node, "titulo")}"`; // render link attributes href, title, etc...
 
     this.set = (name, fn) => {
         opts[name] = fn;

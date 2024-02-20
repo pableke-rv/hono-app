@@ -37,7 +37,7 @@ export default (props: any) => {
                 <header></header>
                 <NavPhone/>
                 <nav class="menu-main">
-                    <div><Menu/></div>
+                    <div><Menu menu={props.menu}/></div>
                     <div class="separator"></div>
                     <div class="menu-group">
                         <User/>

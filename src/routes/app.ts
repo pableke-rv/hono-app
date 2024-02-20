@@ -1,7 +1,7 @@
 
 import api from "./api";
-import app from "./index";
+import index from "./index";
 
-app.route("/api", api);
+index.route("/api", api);
 
-export default app;
+export default index;

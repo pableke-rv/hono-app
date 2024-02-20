@@ -1,8 +1,7 @@
 
-import i18n from "./i18n.js";
-import langs from "../langs.js";
+import en from "./en.js";
+import es from "./es.js";
+import i18n from "../langs.js";
 
-// Client language configuration
-// Spcifics functions for current language proyect
-
-export default langs;
+// Specific language for current proyect
+export default i18n.addLang("en", en).addLang("es", es);

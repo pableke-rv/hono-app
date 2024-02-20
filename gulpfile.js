@@ -8,11 +8,12 @@ import cssnano from "gulp-cssnano";
 const HTML_PATH = "src/**/*.html";
 const CSS_FILES = "src/public/css/**/*.css";
 const JS_FILES = "src/public/js/**/*.js";
-const FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
+const TS_FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
+const SYM_LINKS = [ "dist", "dist/public/js", "dist/public/js/i18n", "dist/public/js/model" ];
 
 // Tasks to copy all ts / tsx
-gulp.task("prepare-app", done => {
-	gulp.src(FILES).pipe(gulp.dest("dist")).on("end", done);
+gulp.task("copy-ts", done => {
+	gulp.src(TS_FILES).pipe(gulp.dest("dist")).on("end", done);
 });
 
 // Task to minify all views (HTML"s and EJS"s)
@@ -43,23 +44,19 @@ gulp.task("minify-js", done => {
 	gulp.src(JS_FILES).pipe(uglify()).pipe(gulp.dest(JS_DEST)).on("end", done);
 });
 
+// Tasks to create static output
+gulp.task("static", done => {
+	gulp.src(SYM_LINKS).pipe(gulp.symlink("node_modules/app"));
+	gulp.src("src/data/**/*").pipe(gulp.dest("dist/data"));
+	gulp.src("src/i18n/**/*").pipe(gulp.dest("dist/i18n"));
+	gulp.src("src/public/img/**/*").pipe(gulp.dest("dist/public/img")).on("end", done);
+});
+
 gulp.task("watch", () => {
-	gulp.watch(FILES, gulp.series("prepare-app"));
+	gulp.watch(TS_FILES, gulp.series("copy-ts"));
 	gulp.watch(HTML_PATH, gulp.series("minify-html", "minify-css"));
 	gulp.watch(JS_FILES, gulp.series("minify-js"));
 	// Other watchers ...
 });
 
-// Tasks to create static output
-gulp.task("static", done => {
-	const SYM_DEST = "node_modules/app";
-	gulp.src("dist").pipe(gulp.symlink(SYM_DEST));
-	gulp.src("dist/public/js").pipe(gulp.symlink(SYM_DEST));
-	gulp.src("dist/public/js/i18n").pipe(gulp.symlink(SYM_DEST));
-	gulp.src("dist/public/js/model").pipe(gulp.symlink(SYM_DEST));
-
-	gulp.src("src/data/**/*").pipe(gulp.dest("dist/data"));
-	gulp.src("src/public/img/**/*").pipe(gulp.dest("dist/public/img")).on("end", done);
-});
-
-gulp.task("default", gulp.series("prepare-app", "minify-html", "minify-css", "minify-js", "static", "watch"));
+gulp.task("default", gulp.series("copy-ts", "minify-html", "minify-css", "minify-js", "static", "watch"));

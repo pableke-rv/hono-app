@@ -4,18 +4,21 @@ import Index from "../pages/index";
 import Maps from "../pages/maps";
 
 export const index = (ctx: Context) => {
-    console.log("index", ctx.env.SESSION_KEY);
-    return ctx.html(<Index/>);
+    return ctx.html(<Index {...ctx.get("lang")}/>);
 }
 
 export const auth = (ctx: Context) => {
     return ctx.html(<Index/>);
 }
 export const login = (ctx: Context) => {
-    return ctx.html(<Index/>);
+    ctx.get("session").set("userId", 123456);
+    console.log("login");
+    return ctx.redirect("/");
 }
 export const logout = (ctx: Context) => {
-    return ctx.html(<Index/>);
+    console.log("logout");
+    ctx.get("session").deleteSession();
+    return ctx.redirect("/");
 }
 
 export const maps = (ctx: Context) => {

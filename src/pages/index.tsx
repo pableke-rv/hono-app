@@ -4,7 +4,7 @@ import { Tab0, Tab1 } from "../layouts/Index";
 
 export default (props: any) => {
     return (
-        <Layout lang="es" title="Hono Tests Page">
+        <Layout {...props}>
             <Tab0/>
             <Tab1/>
         </Layout>
