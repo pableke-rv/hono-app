@@ -1,8 +1,8 @@
 
+import { raw } from "hono/html";
 import Menu from "../components/Menu";
 import { Alerts, Loading, BackToTop } from "../components/Alerts";
 import { User, Langs } from "../components/Dropdowns";
-import { ButtonToggle } from "../components/Butons";
 
 const Head = (props: any) => {
     return (
@@ -22,7 +22,10 @@ const Head = (props: any) => {
 const NavPhone = (props: any) => {
     return (
         <nav class="show-xs">
-            <ButtonToggle id="menu-toggle" icon1="fas fa-arrow-left hide" icon2="fas fa-bars" />
+            <button id="menu-toggle">
+                <i class="fas fa-arrow-left hide"></i>
+                <i class="fas fa-bars"></i>
+            </button>
             <button>Phone-Menu 2</button>
             <button>Phone-Menu 3</button>
         </nav>
@@ -31,18 +34,21 @@ const NavPhone = (props: any) => {
 
 export default (props: any) => {
     return (
-        <html lang={props.lang}>
-            <Head title={props.title}/>
+        <html lang={props.i18n.lang}>
+            <Head title={props.i18n.title}/>
             <body>
                 <header></header>
                 <NavPhone/>
                 <nav class="menu-main">
-                    <div><Menu menu={props.menu}/></div>
+                    <div><Menu>{raw(props.i18n.menu)}</Menu></div>
                     <div class="separator"></div>
                     <div class="menu-group">
                         <User/>
                         <Langs/>
-                        <ButtonToggle id="theme-toggle" icon1="fas fa-moon hide" icon2="fas fa-sun hide" />
+                        <button id="theme-toggle">
+                            <i class="fas fa-moon hide"></i>
+                            <i class="fas fa-sun hide"></i>
+                        </button>
                     </div>
                 </nav>
 

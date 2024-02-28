@@ -8,7 +8,7 @@ export const Tab0 = () => {
                 <label class="ui-block-xl ui-icon-block">
                     <div class="label required">Origen de la ruta:</div>
                     <i class="fas fa-map-marker-alt ui-icon-left"></i>
-                    <input type="search" id="origen" name="origen" class="ui-input ui-text ui-ruta" 
+                    <input type="search" id="origen" name="origen" class="ui-input ui-ruta" 
                         tabindex="1" autocomplete="off" placeholder="Search a place" />
                     <div class="ui-errtip"></div>
                 </label>

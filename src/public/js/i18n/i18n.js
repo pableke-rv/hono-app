@@ -24,16 +24,15 @@ function I18n() {
         return self;
     }
 
+    this.getDefault = () => DEFAULT;
     this.getIsoLangs = () => Object.keys(_langs);
 	this.getNavLang = () => navigator.language || navigator.userLanguage; // default browser language
-    this.getIsoLang = () => document.documentElement.getAttribute("lang") || self.getNavLang() || DEFAULT;
-    this.getAcceptLang = list => {
-        list = list || ""; // languages list (ej: es-ES,es)
-        return list.split(",").find(lang => _langs[lang]) || DEFAULT;
-    }
+    this.getLanguage = () => document.documentElement.getAttribute("lang") || self.getNavLang() || DEFAULT;
+    this.setLanguage = () => self.setLang(self.getLanguage());
 
     this.get = msg => _lang[msg] || msg || "";
     this.getItem = (msg, index) => _lang[msg][index];
+    this.confirm = msg => msg ? confirm(self.get(msg)) : true;
     this.set = (name, msg) => { _lang[name] = msg; return self; }
 
     // Add i18n Date formats
@@ -43,8 +42,8 @@ function I18n() {
     this.enDate = _langs.en.isoDate; //Iso string = yyyy-mm-dd
     this.isoTime = str => str && str.isoTime(); //Iso hh:MM:ss
     this.isoTimeShort = str => str && str.isoTimeShort(); //Iso hh:MM
-    this.isoDate = str => self.getLang().isoDate(str); // String locale date
-    this.isoDateTime = str => self.isoDate(str) + " " + i18n.isoTime(str); //ISO date + hh:MM:ss
+    this.isoDate = str => _lang.isoDate(str); // String locale date
+    this.isoDateTime = str => self.isoDate(str) + " " + self.isoTime(str); //ISO date + hh:MM:ss
 
     const BOOLEAN_TRUE = ["1", "true", "yes", "on"];
     this.boolval = str => globalThis.isset(str) ? _lang.msgBool[+BOOLEAN_TRUE.includes("" + str)] : null;
@@ -63,7 +62,7 @@ function I18n() {
         return isNaN(num) ? null : num;
     }
     function isoFloat(num, n) { // Float to String formated
-        return isnum(num) ? round(num, n ?? 2).toLocaleString(i18n.getLang().lang, options) : null;
+        return isnum(num) ? round(num, n ?? 2).toLocaleString(_lang.lang, options) : null;
     }
     function fmtFloat(str, dIn, n) { // String to String formated
         return isoFloat(toFloat(str, dIn), n);
@@ -77,13 +76,13 @@ function I18n() {
     _langs.es.toFloat = str => toFloat(str, ",");  // String to Float
     _langs.es.fmtFloat = (str, n) => fmtFloat(str, ",", n); // String to ES String formated
 
-    this.toFloat = str => self.getLang().toFloat(str);
-    this.isoFloat = num => self.getLang().isoFloat(num);
-    this.isoFloat2 = num => self.getLang().isoFloat(num);
-    this.isoFloat3 = num => self.getLang().isoFloat(num, 3);
-    this.fmtFloat = str => self.getLang().fmtFloat(str);
-    this.fmtFloat2 = str => self.getLang().fmtFloat(str);
-    this.fmtFloat3 = str => self.getLang().fmtFloat(str, 3);
+    this.toFloat = str => _lang.toFloat(str);
+    this.isoFloat = num => _lang.isoFloat(num);
+    this.isoFloat2 = num => _lang.isoFloat(num);
+    this.isoFloat3 = num => _lang.isoFloat(num, 3);
+    this.fmtFloat = str => _lang.fmtFloat(str);
+    this.fmtFloat2 = str => _lang.fmtFloat(str);
+    this.fmtFloat3 = str => _lang.fmtFloat(str, 3);
 
     // Int formats
     function toInt(str) { //String to Int
@@ -94,7 +93,7 @@ function I18n() {
         return isNaN(num) ? null : num;
     }
     function isoInt(num) { // Int to String formated
-        return isnum(num) ? num.toLocaleString(i18n.getLang().lang) : null;
+        return isnum(num) ? num.toLocaleString(_lang.lang) : null;
     }
     function fmtInt(str) { // String to String formated
         return isoInt(toInt(str));

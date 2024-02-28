@@ -2,19 +2,25 @@
 import Form from "../components/Form.js";
 import tabs from "../components/Tabs.js";
 import pf from "../components/Primefaces.js";
+import i18n from "../i18n/langs.js";
 
 import factura from "../model/Factura.js";
-import uxxiec from "../model/Uxxiec.js";
-import i18n from "../i18n/langs.js";
-import fiscal from "../data/fiscal.js"
+import fiscal from "../data/fiscal.js";
+import uxxiec from "../model/Solicitud.js";
+import solicitudes from "./xeco.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+    i18n.setLanguage(); // Client language
+    solicitudes(factura); // init. actions
+
 	const linea = factura.getLinea();
 
 	const fnCalcIva = iva => {
+		factura.setIva(iva);
 		const resume = lineas.getResume();
 		const impIva = resume.imp * (iva / 100);
-		lineas.text("#imp-iva", i18n.isoFloat(impIva) + " €").text("#imp-total", i18n.isoFloat(resume.imp + impIva) + " €");
+		formFact.text("#imp-iva", i18n.isoFloat(impIva) + " €")
+				.text("#imp-total", i18n.isoFloat(resume.imp + impIva) + " €");
 	}
 	const updateSujeto = sujeto => {
 		factura.setSujeto(sujeto);
@@ -54,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		source: () => formFact.click("#find-tercero"),
 		render: item => item.label,
 		select: item => item.value,
-		afterSelect: item => { formFact.loading().click("#find-delegaciones"); updateView(); },
+		afterSelect: () => { formFact.loading().click("#find-delegaciones"); updateView(); },
 		onReset: delegaciones.reset
 	});
 	const acOrganica = formFact.setAcItems("#acOrganica", () => formFact.click("#find-organica"));
@@ -65,15 +71,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	const lineas = formFact.setTable("#lineas-fact", {
         msgEmptyTable: "No existen conceptos asociados a la solicitud",
-        beforeRender: resume => { resume.imp = 0; factura.setIva(formFact.valueOf("#iva")); },
-        onRender: linea.render,
-        onFooter: linea.resume,
-        afterRender: resume => {
-			fnCalcIva(factura.getIva())
-			formFact.setval("#iva", factura.getIva());
-			lineas.toggle(".factura-only", factura.isFactura());
-		},
-		"change-iva": el => fnCalcIva(+el.value)
+        beforeRender: resume => { resume.imp = 0; },
+        onRender: linea.row,
+        onFooter: linea.tfoot,
+		afterRender: () => pf.datalist(formFact, "#iva", "#ivaPF").setLabels([0, 4, 10, 21]).setValue(factura.getIva()),
+		ivaChange: el => fnCalcIva(+el.value)
     });
 	formFact.setClick("a#add-linea", ev => {
 		const data = formFact.isValid(linea.validate, ".ui-linea");
@@ -97,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		formFact.setData(data).readonly(factura.isDisabled())
 				.toggle(".insert-only", factura.isEditable()).toggle(".update-only", factura.isDisabled())
 				.toggle(".firmable-only", factura.isFirmable()).toggle(".rechazable-only", factura.isRechazable())
-				.toggle(".show-recibo", factura.isRecibo()).toggle(".show-factura", factura.isFactura())
+				.toggle(".show-recibo", factura.isRecibo()).toggle(".show-factura", factura.isFactura()).toggle(".show-cp", factura.isCartaPago())
 				.toggle(".show-factura-uae", uxxiec.isUae() && factura.isFactura()).toggle(".show-uae", uxxiec.isUae())
 				.toggle(".show-gestor", factura.isFace() || factura.isPlataforma()).toggle(".show-face", factura.isFace())
 				.toggle(".firma-gaca", factura.isFirmaGaca());
@@ -115,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		factura.setLineas(lineas);
 		if (formFact.isValid(factura.validate)) {
 			formFact.saveTable("#lineas-json", lineas);
-			return confirm("¿Confirma que desea firmar y enviar esta solicitud?");
+			return i18n.confirm("msgSend");
 		}
 		return false;
 	}

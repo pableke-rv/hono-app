@@ -24,16 +24,15 @@ document.addEventListener("DOMContentLoaded", () => { // on load view
 	const formOrganicas = new Form("#xeco-organicas");
 	const table = formOrganicas.setTable("#organcias");
 
-	const fnSend = action => {
-		const data = table.getCurrentItem(); // load data and send form to server
-		pf.send(action, { org: data.org, cod: data.oCod, ut: data.grp });
+	const fnSend = (action, data) => {
+		pf.fetch(action, { org: data.org, cod: data.oCod, ut: data.grp });
 		return formOrganicas.reset(); // autofocus
 	}
 
 	table.set("onRender", buzon.render)
 		.set("msgEmptyTable", "No dispone de orgánicas recientes")
-		.set("#report", () => fnSend("report"))
-		.set("onRemove", () => fnSend("remove"))
+		.set("#report", data => fnSend("report", data))
+		.set("onRemove", data => fnSend("remove", data))
 		.render(JSON.read(formOrganicas.html("#organcias-json")));
 	table.set("#buzon", () => {
 		const data = table.getCurrentItem();
@@ -54,10 +53,10 @@ document.addEventListener("DOMContentLoaded", () => { // on load view
 
 	formOrganicas.setAutocomplete("#organica", {
 		minLength: 4,
-		source: term => window.findOrganica([{name: "cod", value: term}]),
+		source: term => window.findOrganica(pf.param("cod", term)),
 		render: item => item.label,
 		select: item => item.value,
-		afterSelect: item => window.setUnidadesTramit([{name: "org", value: item.value}])
+		afterSelect: item => window.setUnidadesTramit(pf.param("org", item.value))
 	});
 	window.isOrganica = () => formOrganicas.isValid(buzon.isValidOrganica);
 

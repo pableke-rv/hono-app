@@ -5,7 +5,7 @@ import uglify from "gulp-uglify";
 import htmlmin from "gulp-htmlmin";
 import cssnano from "gulp-cssnano";
 
-const HTML_PATH = "src/**/*.html";
+const HTML_PATH = [ "src/**/*.html", "src/views/xeco/**/*" ];
 const CSS_FILES = "src/public/css/**/*.css";
 const JS_FILES = "src/public/js/**/*.js";
 const TS_FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
@@ -25,7 +25,10 @@ gulp.task("minify-html", done => {
 		removeComments: true, //removeComments => remove CDATA
 		removeRedundantAttributes: false //remove attr with default value
 	};
-	gulp.src(HTML_PATH).pipe(htmlmin(options)).pipe(gulp.dest("dist")).on("end", done);
+	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/modules/xeco";
+	gulp.src(HTML_PATH).pipe(htmlmin(options)).pipe(gulp.dest("dist")).on("end", () => {
+		gulp.src("src/views/xeco/**/*").pipe(gulp.dest(CV)).on("end", done);
+	});
 });
 
 // Tasks to minify CSS"s
@@ -40,8 +43,11 @@ gulp.task("minify-css", done => {
 // Tasks to minify JS"s
 gulp.task("minify-js", done => {
 	const JS_DEST = "dist/public/js";
+	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/resources/js";
 	fs.rmSync(JS_DEST, { recursive: true, force: true }); // Remove previous unused files
-	gulp.src(JS_FILES).pipe(uglify()).pipe(gulp.dest(JS_DEST)).on("end", done);
+	gulp.src(JS_FILES).pipe(uglify()).pipe(gulp.dest(JS_DEST)).on("end", () => {
+		gulp.src("dist/public/js/**/*.js").pipe(gulp.dest(CV)).on("end", done); // deply JS in Campus Virtual
+	});
 });
 
 // Tasks to create static output

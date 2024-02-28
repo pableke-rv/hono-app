@@ -40,7 +40,7 @@ function Tabs() {
     this.setActive = id => fnSetTab(self.getTab(id)); // Force active class whithot events and alerts
     this.isActive = id => fnActive(self.getTab(id)); // is current tab active
 	this.render = (selector, data) => { // HTMLElement.prototype.render is implemented in Collection
-        tabs.forEach(tab => tab.querySelectorAll(selector).forEach(el => el.render(data)));
+        tabs.forEach(tab => tab.querySelectorAll(selector).render(data));
 		return self;
 	}
 
@@ -96,24 +96,22 @@ function Tabs() {
     }
 
     this.setActions = el => {
-        el.getElementsByClassName(ACTION_CLASS).forEach(link => {
-            link.addEventListener("click", ev => { // Handle click event
-                ev.preventDefault(); // avoid navigation
-                const href = link.getAttribute("href");
-                if ((href == "#back-tab") || (href == "#prev-tab"))
-                    return self.backTab();
-                if (href == "#next-tab")
-                    return self.nextTab();
-                if (href.startsWith("#tab-"))
-                    return self.showTab(+href.match(/\d+$/).pop());
-                if (href == "#last-tab")
-                    return self.lastTab();
-                if (href == "#toggle") {
-                    const icon = link.querySelector(link.dataset.icon || "i"); // icon indicator
-                    self.getCurrent().querySelectorAll(link.dataset.target).toggle(); // toggle info
-                    coll.split(link.dataset.toggle, " ").forEach(name => icon.toggle(name));
-                }
-            });
+        el.getElementsByClassName(ACTION_CLASS).setClick((ev, link) => {
+            ev.preventDefault(); // avoid navigation
+            const href = link.getAttribute("href");
+            if ((href == "#back-tab") || (href == "#prev-tab"))
+                return self.backTab();
+            if (href == "#next-tab")
+                return self.nextTab();
+            if (href.startsWith("#tab-"))
+                return self.showTab(+href.match(/\d+$/).pop());
+            if (href == "#last-tab")
+                return self.lastTab();
+            if (href == "#toggle") {
+                const icon = link.querySelector(link.dataset.icon || "i"); // icon indicator
+                self.getCurrent().querySelectorAll(link.dataset.target).toggle(); // toggle info
+                coll.split(link.dataset.toggle, " ").forEach(name => icon.toggle(name));
+            }
         });
         return self;
     }
@@ -129,7 +127,7 @@ function Tabs() {
     self.load(document);
     window.showTab = (xhr, status, args, tab) => {
         if (!xhr || (status != "success"))
-            return !alerts.showError("Error 500: Internal server error.");
+            return !alerts.showError("Error 500: Internal server error.").working();
         if (!args) // Has server response?
             return self.showTab(tab); // Show tab and return true
         const msgs = coll.parse(args.msgs); // Parse server messages

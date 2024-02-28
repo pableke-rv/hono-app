@@ -1,14 +1,27 @@
 
+import alerts from "./Alerts.js";
+
+const PARAMS = []; // params container
+function param(name, value) {
+    PARAMS.splice(0, PARAMS.length, { name, value }); // reset array
+    return PARAMS;
+}
 function params(data) {
-    const results = [];
-    for (const name in data)
-        results.push({ name, value: data[name] });
-    return results;
+    PARAMS.splice(0, PARAMS.length); // reset array
+    for (const name in data) // Object to params
+        PARAMS.push({ name, value: data[name] });
+    return PARAMS;
 }
-function send(name, data) { // p:remoteCommand tag
-    const fnCall = window[name]; // p:remoteCommand name
-    fnCall(params(data)); // p:remoteCommand server call
+// p:remoteCommand server call
+function send(action, params) {
+    alerts.loading(); // Show loading frame
+    const fnCall = window[action];
+    fnCall(params); // call server
 }
+function sendId(action, id) { send(action, param("id", id)); }
+function sendTerm(action, term) { send(action, param("term", term)); }
+function sendIndex(action, index) { send(action, param("i", index)); }
+function fetch(action, data) { send(action, params(data)); }
 
 function datalist(form, select, input, opts) {
     opts = opts || {}; // Init. options
@@ -16,8 +29,14 @@ function datalist(form, select, input, opts) {
     const fnReset = opts.onReset || globalThis.void; // fired on reset event
 
     input = form.getInput(input); // get input element
-    opts.onChange = item => { input.value = item.value; fnChange(item); } // fired on load event
-    opts.onReset = () => { input.value = ""; fnReset(); }; // fired on reset event
+    opts.onChange = item => { // fired on load event
+        input.value = item.value ?? item; // item object or simple string
+        fnChange(item);
+    }
+    opts.onReset = () => { // fired on reset event
+        input.value = "";
+        fnReset();
+    };
     return form.setDatalist(select, opts);
 }
 
@@ -35,7 +54,7 @@ function multiNameInput(form, main, inputs) {
 }
 
 export default {
-    params, send,
-    datalist,
-    multiNameInput
+    param, params, 
+    send, sendId, sendTerm, sendIndex, fetch,
+    datalist, multiNameInput
 }

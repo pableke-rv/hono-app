@@ -37,6 +37,7 @@ export default function(form, opts) {
 	this.getInput = selector => form.elements.findOne(selector); // find an element
 	this.getInputs = selector => form.elements.query(selector); // filter elements
 	this.querySelector = selector => form.querySelector(selector); // Child element
+	this.querySelectorAll = selector => form.querySelectorAll(selector); // Children elements
 
 	// Alerts helpers
 	this.loading = () => { alerts.loading(); return self; } // Encapsule loading frame
@@ -57,10 +58,7 @@ export default function(form, opts) {
 
 	this.html = selector => form.querySelector(selector).innerHTML;
 	this.text = (selector, text) => { form.querySelectorAll(selector).text(text); return self; } // Update all texts info in form
-	this.render = (selector, data) => { // HTMLElement.prototype.render is implemented in Collection component
-		data = data || i18n.getLang(); // Default data = current language
-		return fnEach(selector, el => el.render(data)); // Render each element
-	}
+	this.render = (selector, data) => { form.querySelectorAll(selector).render(data); return self; } // HTMLElement.prototype.render
 
 	this.hide = selector => { form.querySelectorAll(selector).hide(); return self; }
 	this.show = selector => { form.querySelectorAll(selector).show(); return self; }
@@ -157,14 +155,6 @@ export default function(form, opts) {
 		return fnEvent(f2, "blur", ev => f1.setAttribute("max", f2.value));
 	}
 
-	this.toggleOptions = function(selector, flags) {
-		const select = self.getInput(selector); // Get select element
-		const option = select.options[select.selectedIndex]; //get current option
-		select.options.forEach((option, i) => option.toggle(flags.mask(i)));
-		if (option && option.isHidden()) // is current option hidden?
-			select.selectedIndex = select.options.findIndex(el => !el.isHidden());
-		return self;
-	}
 	this.getOptionText = function(selector) {
 		const select = self.getInput(selector); // Get select element
 		const option = select.options[select.selectedIndex]; //get current option
@@ -247,16 +237,8 @@ export default function(form, opts) {
 
 	this.send = (url, opts) => {
 		opts = opts || {}; // Settings
-		/*const msg = i18n.get(opts.confirm);
-		if (msg && !confirm(msg)) // confirm?
-			return  Promise.reject(msg); // Confirm NO
-		const data = self.isValid(opts.validate, opts.inputs);
-		if (!data) // Is valid data?
-			return  Promise.reject(i18n.getMsgs()); // Validation error*/
 		const fd = new FormData(form); // Data container
 		opts.headers = opts.headers || {}; // Headers container
-		opts.headers["x-requested-with"] = "XMLHttpRequest"; // AJAX
-		//opts.headers["user-agent"] = "Form component API AJAX"; // user description
 		opts.headers["content-type"] = form.enctype || "application/x-www-form-urlencoded";
 		opts.method = opts.method || form.method; //method-override
 		//if (opts.method == "get") // Form get => prams in url

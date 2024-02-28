@@ -24,7 +24,7 @@ app.get("*", (ctx: Context, next: Next) => {
     const lang = ctx.req.query("lang");
     const session = ctx.get("session");
     if (lang || !session.get("lang")) // has language changed?
-        session.set("lang", lang || i18n.getAcceptLang(ctx.req.header("Accept-Language")));
+        session.set("lang", lang || i18n.getLanguage(ctx.req.header("Accept-Language")));
     ctx.set("lang", i18n.setLang(session.get("lang")).getLang());
     next();
 });
@@ -32,6 +32,7 @@ app.get("*", (ctx: Context, next: Next) => {
 app.route("/", routes);
 app.onError((err, ctx: Context) => {
     console.error(err);
+    //if (ctx.req.header("x-requested-with") == "XMLHttpRequest") // is AJAX
     return ctx.text("Custom Error Message", 500);
 });
 app.notFound((ctx: Context) => {

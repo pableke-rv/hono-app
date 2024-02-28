@@ -1,73 +1,91 @@
 
-import alerts from "../components/Alerts.js";
 import Form from "../components/Form.js";
 import tabs from "../components/Tabs.js";
+import pf from "../components/Primefaces.js";
+import solicitud from "../model/Solicitud.js";
 import uxxiec from "../model/Uxxiec.js";
+import i18n from "../i18n/presto/langs.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-    /*** Filtro + listado de solicitudes ***/
-    const formFilter = new Form("#xeco-filter");
-    const OPTS_FILTER = { msgEmptyTable: "No se han encontrado solicitudes para a la búsqueda seleccionada" };
-    let solicitudes = formFilter.setTable("#solicitudes", OPTS_FILTER);
-    window.onVinc = () => { alerts.loading(); formFilter.setData({ fEstado: "1" }); }
-    window.onRelist = () => { alerts.loading(); formFilter.setData({ fMiFirma: "5" }); }
-    window.loadFiltro = (xhr, status, args) => {
-        solicitudes = formFilter.setTable("#solicitudes", OPTS_FILTER);
-        window.showTab(xhr, status, args, 2);
-    }
-    window.updateList = (xhr, status, args) => {
-        window.showTab(xhr, status, args, 2) && solicitudes.hide(".firma-" + args.id).text(".estado-" + args.id, "Procesando...");
-    }
-
-    window.fnIntegrar = link => {
-        if (!confirm("¿Confirma que desea integrar esta solicitud en UXXI-EC?"))
-            return false; // Integration not confirmed
-        link.hide().closest("tr").querySelectorAll(".estado").text("Procesando...");
-        return window.loading(); // Allow integration....
-    }
-
-    window.fnFirmar = () => confirm("¿Confirma que desea firmar esta solicitud?") && window.loading();
-    window.fnRemove = () => confirm("¿Confirmas que desea eliminar esta solicitud?") && window.loading();
-    window.handleReport = (xhr, status, args) => window.showAlerts(xhr, status, args).redir(args?.url);
-    /*** Filtro + listado de solicitudes ***/
-
-    /*** FORMULARIO PARA EL RECHAZO/CANCELACIÓN DE SOLICITUDES ***/
-    const formReject = new Form("#xeco-reject");
-    window.showRechazo = (xhr, status, args) => window.showTab(xhr, status, args, 11) && tabs.render(".load-data", JSON.read(args?.data));
-    window.fnRechazar = () => formReject.isValid(uxxiec.validateReject) && confirm("¿Confirma que desea rechazar esta solicitud?");
-    /*** FORMULARIO PARA EL RECHAZO/CANCELACIÓN DE SOLICITUDES ***/
-
+export default model => {
     /*** FORMULARIO PARA LA CREACIÓN DEL EXPEDIENTE CON UXXI-EC ***/
     const tabUxxi = tabs.getTab(15);
-    uxxiec.setData(tabUxxi.dataset);
+    solicitud.setUser(tabUxxi.dataset);
     const formUxxi = new Form("#xeco-uxxi");
 	const tableUxxi = formUxxi.setTable("#docs-uxxi", {
         msgEmptyTable: "No se han encontrado documentos de UXXI-EC asociadas a la solicitud",
-        onRender: uxxiec.render
+        onRender: uxxiec.row,
+        onFooter: uxxiec.tfoot
     });
 
     const acUxxi = formUxxi.setAutocomplete("#uxxi", {
 		minLength: 4,
-		source: () => formUxxi.click("#find-uxxi"),
-		render: item => (item.num + " - " + item.uxxi + "<br>" + item.desc),
+		source: term => window.rcFindUxxi(pf.param("term", term)),
+		render: uxxiec.autocomplete,
 		select: item => item.id
 	});
-	formUxxi.setClick("a#add-uxxi", el => {
+	formUxxi.setClick("a#add-uxxi", () => {
         const doc = acUxxi.getCurrentItem();
 		doc && tableUxxi.add(doc); // Add and remove PK autocalculated in v_*_uxxiec
         acUxxi.reload(); // Reload autocomplete
 	});
     window.loadUxxiec = (xhr, status, args) => {
-        if (!window.showTab(xhr, status, args, 15))
-            return false; // Server error
-        const data = JSON.read(args.data); // datos de la solicitud
-        formUxxi.restart("#uxxi").toggle(".show-ejecutable", uxxiec.isEjecutable(data)); // Update view
-        tableUxxi.render(JSON.read(args.operaciones)); // Load uxxi-docs
-        tabs.render(".load-data", data);
+        if (window.showTab(xhr, status, args, 15))
+            tableUxxi.render(JSON.read(args.operaciones)); // Load uxxi-docs
     }
     window.saveUxxiec = (xhr, status, args) => {
-        alerts.loading(); // Show loading indicator
-        formUxxi.saveTable("#docs-json", tableUxxi);
+        formUxxi.saveTable("#docs-json", tableUxxi).loading();
     }
     /*** FORMULARIO PARA LA CREACIÓN DEL EXPEDIENTE CON UXXI-EC ***/
-});
+
+    /*** FORMULARIO DE RECHAZO Y FILTRO ***/
+    const formReject = new Form("#xeco-reject");
+    const formFilter = new Form("#xeco-filter");
+    const solicitudes = formFilter.setTable("#solicitudes", {
+        msgEmptyTable: "No se han encontrado solicitudes para a la búsqueda seleccionada",
+        onRender: model.row,
+        onFooter: model.tfoot
+    });
+
+    solicitudes.setActions(document); // table-action
+    const fnSend = (action, data) => pf.sendId(action, data.id);
+    solicitudes.set("#rcView", data => fnSend("rcView", data));
+    solicitudes.set("#rcViewCached", () => tabs.showTab(1));
+    solicitudes.set("#rcFirmar", data => fnSend("rcFirmar", data));
+    solicitudes.set("#tab-11", data => {
+        fnSend("rcFirmas", data);
+        formReject.restart("#rechazo");
+        tabs.render(".load-data", data);
+    });
+    solicitudes.set("#tab-11Cached", () => tabs.showTab(11));
+    solicitudes.set("#rcReport", data => fnSend("rcReport", data));
+    solicitudes.set("#rcUxxiec", data => {
+        formUxxi.restart("#uxxi").toggle(".show-ejecutable", solicitud.isEjecutable(data)); // Update view
+        tabs.render(".load-data", data);
+        fnSend("rcUxxiec", data);
+    });
+    solicitudes.set("#rcUxxiecCached", () => tabs.showTab(15));
+    solicitudes.set("#rcEmails", data => fnSend("rcEmails", data));
+    solicitudes.set("#rcRemove", data => fnSend("rcRemove", data));
+    solicitudes.set("#rcIntegrar", (data, link) => {
+        fnSend("rcIntegrar", data); // llamada al servidor
+        link.hide().closest("tr").querySelectorAll(".estado").text("Procesando...");
+    });
+    const divSolicitudes = formFilter.querySelector("#solicitudes-json");
+    solicitudes.render(JSON.read(divSolicitudes?.innerHTML)); // preload data
+
+    window.onList = () => formFilter.setData({ fMiFirma: "5" }).loading();
+    window.fnFirmar = () => i18n.confirm("msgFirmar") && window.loading();
+    window.fnRechazar = () => formReject.isValid(solicitud.validateReject) && i18n.confirm("msgRechazar") && window.loading();
+    window.handleReport = (xhr, status, args) => window.showAlerts(xhr, status, args).redir(args?.url);
+
+    window.loadFiltro = (xhr, status, args) => {
+        window.showTab(xhr, status, args, 2) && solicitudes.render(JSON.read(args.data));
+    }
+    window.updateList = (xhr, status, args) => {
+        if (window.showTab(xhr, status, args, 2)) {
+            solicitudes.querySelectorAll(".firma-" + args.id).hide();
+            solicitudes.querySelectorAll(".estado-" + args.id).text("Procesando...");
+        }
+    }
+    /*** FORMULARIO DE RECHAZO Y FILTRO ***/
+}

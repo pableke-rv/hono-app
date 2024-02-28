@@ -1,7 +1,5 @@
 export default {
     lang: "en", // English
-    none: "", // cadena vacia
-
     //inputs errors messages
     errForm: "Form validation failed",
     errRequired: "Required field!",
@@ -45,4 +43,11 @@ export default {
     dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     dayNamesMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+
+    //Solicitudes
+    msgSend: "¿Confirma que desea firmar y enviar esta solicitud?",
+    msgFirmar: "¿Confirma que desea firmar esta solicitud?",
+    msgRechazar: "¿Confirma que desea rechazar esta solicitud?",
+    msgIntegrar: "¿Confirma que desea integrar esta solicitud en UXXI-EC?",
+    msgRemove: "¿Confirmas que desea eliminar esta solicitud?"
 }

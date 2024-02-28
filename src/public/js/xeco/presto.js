@@ -3,11 +3,16 @@ import alerts from "../components/Alerts.js";
 import Form from "../components/Form.js";
 import tabs from "../components/Tabs.js";
 import pf from "../components/Primefaces.js";
+import i18n from "../i18n/presto/langs.js";
 
 import presto from "../model/Presto.js";
-import uxxiec from "../model/Uxxiec.js";
+import uxxiec from "../model/Solicitud.js";
+import solicitudes from "./xeco.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+    i18n.setLanguage(); // Client language
+    solicitudes(presto); // init. actions
+
     const partida = presto.getPartida();
     const partidas = presto.getPartidas();
     tabs.setActive(uxxiec.isUxxiec() ? 0 : 2);
@@ -15,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /*** FORMULARIO PARA EL DC 030 DE LAS GCR ***/
     const form030 = new Form("#xeco-030");
     const acOrg030 = form030.setAcItems("#acOrg030", //selector
-                                        () => form030.click("#find-org-030"), //source
+                                        term => window.rcFindOrg030(pf.param("term", term)), //source
                                         item => form030.setval("#idEco030", item.imp)); //select
     form030.setClick("#save-030", ev => {
         partida.setData(lineas.getCurrentItem());
@@ -31,26 +36,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const emptyOption = "Seleccione una económica";
 	const ecoDec = pf.datalist(formPresto, "#idEcoDec", "#idEcoDecPF", {
         emptyOption,
-        onChange: item => { formPresto.setval("#cd", item.imp); },
-        onReset: () => { formPresto.setval("#impDec").setval("#cd"); }
+        onChange: item => formPresto.setval("#cd", item.imp),
+        onReset: () => formPresto.setval("#impDec").setval("#cd")
     });
 	const ecoInc = pf.datalist(formPresto, "#idEcoInc", "#idEcoIncPF", { emptyOption });
     const lineas = formPresto.setTable("#partidas-inc", {
         msgEmptyTable: "No existen partidas asociadas a la solicitud",
         beforeRender: resume => { resume.imp = 0; },
-        onRender: partida.render,
-        onFooter: partida.resume,
+        onHeader: partida.thead,
+        onRender: partida.row,
+        onFooter: partida.tfoot,
         afterRender: resume => {
             partidas.setData(lineas);
             const readonly = resume.size > 0;
             formPresto.readonly(readonly, "#ejDec").readonly(readonly || presto.isDisableEjInc(), "#ejInc");
-            lineas.toggle(".partida-min", !presto.isPartidaExt()).toggle(".partida-ext", presto.isPartidaExt());
         },
-        "#doc030": () => { // load tab view 3
-            const row = lineas.getCurrentItem();
+        "#doc030": row => { // load tab view 3
+            row.imp080 = i18n.isoFloat(row.imp); // formated float
             const readonly = presto.isDisabled() && !presto.isFirmable();
-            form030.render(".info-080", partida.format(row, {})).setData(row)
-                    .readonly(readonly).toggle("#save-030", !readonly).text("#memo-030", presto.getData("memo"));
+            form030.render(".info-080", row).setData(row)
+                    .readonly(readonly).toggle("#save-030", !readonly).text("#memo-030", presto.getMemo());
             acOrg030.setValue(row.idOrg030, row.o030 + " - " + row.dOrg030);
             tabs.showTab(3);
         }
@@ -66,11 +71,11 @@ document.addEventListener("DOMContentLoaded", () => {
         formPresto.setval("#faDec").click("#find-economicas-dec");
     }
     const acOrgDec = formPresto.setAcItems("#acOrgDec", //selector
-                                        () => formPresto.click("#find-organica-dec"), //source
+                                        term => window.rcFindOrgDec(pf.param("term", term)), //source
                                         fnSelectOrgDec, //select
                                         fnResetOrgDec); //reset
     const acOrgInc = formPresto.setAcItems("#acOrgInc", //selector
-                                        () => formPresto.click("#find-organica-inc"), //source
+                                        term => window.rcFindOrgInc(pf.param("term", term)), //source
                                         item => formPresto.loading().setval("#faInc", item.int & 1).click("#find-economicas-inc"), //select
                                         () => formPresto.setval("#faInc").setval("#impInc").click("#find-economicas-inc")); //reset
 
@@ -171,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (formPresto.isValid(presto.validate)) { //todas las validaciones estan ok?
             partidas.setPrincipal(); //marco la primera como principal
             formPresto.saveTable("#partidas-json", lineas); // save data to send to server
-            return confirm("¿Confirma que desea firmar y enviar esta solicitud?");
+			return i18n.confirm("msgSend");
         }
         return false;
     }

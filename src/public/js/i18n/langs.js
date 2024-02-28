@@ -9,7 +9,7 @@ i18n.getMsgs = () => MSGS;
 i18n.getMsg = name => MSGS[name];
 i18n.setMsg = (name, msg) => {
     MSGS[name] = i18n.get(msg);
-    return self;
+    return i18n;
 }
 
 i18n.setOk = msg => i18n.setMsg("msgOk", msg);
@@ -28,7 +28,7 @@ i18n.isError = () => (errors > 0);
 i18n.reset = () => {
     errors = 0;
     Object.clear(MSGS);
-    return self;
+    return i18n;
 }
 
 // Extends Date prototype

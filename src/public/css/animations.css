@@ -25,6 +25,16 @@
 @keyframes slideInRight { 0% { transform: translateX(100%); } 100% { transform: translateX(0%); } }
 @keyframes slideOutRight { 0% { transform: translateX(0%); } 100% { transform: translateX(100%); display: none; } }
 
+.slideInTop { animation: slideInTop 1s forwards; }
+.slideOutTop { animation: slideOutTop 1s forwards; }
+@keyframes slideInTop { 0% { transform: translateY(-100%); } 100% { transform: translateY(0%); } }
+@keyframes slideOutTop { 0% { transform: translateY(0%); } 100% { transform: translateY(-100%); display: none; } }
+
+.slideInBottom { animation: slideInBottom 1s forwards; }
+.slideOutBottom { animation: slideOutBottom 1s forwards; }
+@keyframes slideInBottom { 0% { transform: translateY(100%); } 100% { transform: translateY(0%); } }
+@keyframes slideOutBottom { 0% { transform: translateY(0%); } 100% { transform: translateY(100%); display: none; } }
+
 .resize:hover { animation: resize .5s forwards; }
 @keyframes resize { 0% { transform: scale(.9); } 100% { transform: scale(1.2); } }
 

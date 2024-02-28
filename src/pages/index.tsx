@@ -4,7 +4,7 @@ import { Tab0, Tab1 } from "../layouts/Index";
 
 export default (props: any) => {
     return (
-        <Layout {...props}>
+        <Layout i18n={props.i18n}>
             <Tab0/>
             <Tab1/>
         </Layout>

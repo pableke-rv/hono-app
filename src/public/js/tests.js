@@ -6,7 +6,8 @@ import maps from "./xeco/iris/tests.js";
 import i18n from "./i18n/langs.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    i18n.setLang(i18n.getIsoLang()); // Client language
+    i18n.setLanguage(); // Client language
+
     const menuHTML = document.querySelector("ul.menu");
     menuHTML.slideIn();
     // toggle phone menu

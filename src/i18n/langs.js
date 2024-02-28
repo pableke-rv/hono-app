@@ -12,5 +12,13 @@ const client = i18n.getLangs();
 Object.assign(client.en, en);
 Object.assign(client.es, es);
 
+// Server redefinitions
+i18n.confirm = () => true;
+i18n.getNavLang = i18n.getDefault;
+i18n.getLanguage = list => {
+    list = list || ""; // languages list (ej: es-ES,es)
+    return list.split(",").find(lang => _langs[lang]) || i18n.getDefault();
+}
+
 // Server language container
 export default i18n;

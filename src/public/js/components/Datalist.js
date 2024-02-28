@@ -10,17 +10,6 @@ export default function(select, opts) {
     const self = this; //self instance
     let _data = EMPTY; // default = empty array
 
-    this.getItems = () => _data;
-    this.getItem = index => _data[index];
-    this.getIndex = () => select.selectedIndex;
-	this.isOptional = () => !select.options[0]?.value;
-    this.getCurrentItem = () => _data[select.selectedIndex/* - (self.isOptional() ? 1 : 0)*/];
-
-    this.getSelect = () => select; // get select element
-    this.getOption = () => select.options[self.getIndex()]; // current option element
-	this.getText = () => self.getOption()?.innerHTML; // current option text
-	this.getValue = () => select.value; // current value
-
     const fnInit = (data, emptyOption) => { // init. datalist
         select.innerHTML = emptyOption ? `<option>${emptyOption}</option>` : ""; // Empty text = first option
         _data = data;
@@ -28,6 +17,21 @@ export default function(select, opts) {
     const fnChange = data => {
         opts.onChange(data, self); // call change event
         return self;
+    }
+
+    this.getItems = () => _data;
+    this.getItem = index => _data[index];
+    this.getIndex = () => select.selectedIndex;
+	this.isOptional = () => !select.options[0]?.value;
+    this.getCurrentItem = () => _data[select.selectedIndex];
+
+    this.getSelect = () => select; // get select element
+    this.getOption = () => select.options[self.getIndex()]; // current option element
+	this.getText = () => self.getOption()?.innerHTML; // current option text
+	this.getValue = () => select.value; // current value
+	this.setValue = value => {
+        select.value = value;
+        return fnChange(value);
     }
 
     this.reset = () => {
@@ -64,6 +68,16 @@ export default function(select, opts) {
         }
         return fnChange(_data[0]);
     }
+	this.setLabels = function(labels) {
+        if (!JSON.size(labels))
+            return self.reset();
+        fnInit([]); // Init. datalist
+        labels.forEach(label => {
+            select.innerHTML += `<option value="${label}">${label}</option>`;
+        });
+        _data = labels; // set values
+        return fnChange(_data[0]);
+	}
 	this.setRange = function(min, max, step, fnLabel) {
         step = step || 1; // default step = 1
         fnLabel = fnLabel || fnParam; // defautl label

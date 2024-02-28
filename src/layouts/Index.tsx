@@ -37,7 +37,7 @@ export const Tab0 = (props: any) => {
                 <a href="#next-tab" class="btn btn-primary tab-action">Sig. <i class="fas fa-angle-double-right"></i></a>
                 <a href="#tab-2" class="btn btn-primary tab-action"><i class="fas fa-angle-double-right"></i></a>
                 <a href="/maps" class="btn btn-green">Go maps <i class="fas fa-share"></i></a>
-                <a href="/api/maps" class="btn btn-green">Go API maps <i class="fas fa-undo-alt"></i></a>
+                <a href="/api/maps" class="btn btn-green">Go maps by AJAX <i class="fas fa-undo-alt"></i></a>
             </div>
         </Tab>
     );
@@ -51,7 +51,7 @@ export const Tab1 = (props: any) => {
                 <label class="ui-block-xl autocomplete">
                     <div class="label required">Pokemon finder:</div>
                     <i class="fas fa-search ui-icon-left"></i>
-                    <input type="search" id="pokemon" name="pokemon" class="ui-input ui-text ui-autocomplete"
+                    <input type="search" id="pokemon" name="pokemon" class="ui-input ui-autocomplete"
                         tabindex="1" autocomplete="off" placeholder="Search a pokemon" />
                     <input type="hidden" name="id"/>
                     <ul class="results"></ul>

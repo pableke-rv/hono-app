@@ -11,7 +11,8 @@ import i18n from "./i18n/langs.js";
 const menuTree = menus.filter(node => (node.tipo == 1)).sort((a, b) => (a.orden - b.orden));
 
 document.addEventListener("DOMContentLoaded", () => {
-    i18n.setLang(i18n.getIsoLang()); // Client language
+    i18n.setLanguage(); // Client language
+
     const menuHTML = document.querySelector("ul.menu");
     menuHTML.innerHTML = menu.html(menuTree);
     menuHTML.slideIn();
