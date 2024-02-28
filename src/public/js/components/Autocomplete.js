@@ -62,6 +62,7 @@ export default function(autocomplete, opts) {
     this.getItem = i => _results[i ?? _index];
     this.getCurrentItem = () => _results[_index];
     this.getCurrentOption = () => resultsHTML.children[_index];
+	this.getCode = sep => autocomplete.value.substring(0, autocomplete.value.indexOf(sep || " "));
     this.isItem = () => (_index > -1);
 
     this.getInputValue = () => inputValue;

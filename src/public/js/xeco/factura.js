@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		formFact.toggle(".grupo-exento", factura.isExento());
 	}
 	const updateView = subtipo => {
+		factura.setSubtipo(subtipo); // actualizo el nuevo subtipo
 		const item = acTercero.getCurrentItem(); // tercero seleccionado
-		factura.setSubtipo(subtipo || factura.getSubtipo()); // actualizo el nuevo subtipo
 		if (!item) return; // primer acceso
 
 		let keyEco = "cp"; // por defecto = carta de pago
@@ -41,7 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		const data = fiscal[keyEco + factura.getSubtipo()] || fiscal.default;
-        formFact.setData(data, ".ui-fiscal").toggle("#ac-recibo", factura.isRecibo()).toggle(".firma-gaca", factura.isFirmaGaca());
+        formFact.setData(data, ".ui-fiscal").setval("#nifTercero", acTercero.getCode())
+				.toggle("#ac-recibo", factura.isRecibo()).toggle(".firma-gaca", factura.isFirmaGaca());
 		updateSujeto(data.sujeto);
 		fnCalcIva(data.iva);
 	}
@@ -57,14 +58,17 @@ document.addEventListener("DOMContentLoaded", () => {
 	const acTercero = formFact.setAutocomplete("#acTercero", {
 		delay: 500, //milliseconds between keystroke occurs and when a search is performed
 		minLength: 5, //reduce matches
-		source: () => formFact.click("#find-tercero"),
+		source: term => pf.sendTerm("rcFindTercero", term),
 		render: item => item.label,
 		select: item => item.value,
-		afterSelect: () => { formFact.loading().click("#find-delegaciones"); updateView(); },
+		afterSelect: () => {
+			updateView(factura.getSubtipo());
+			formFact.loading().click("#find-delegaciones");
+		},
 		onReset: delegaciones.reset
 	});
-	const acOrganica = formFact.setAcItems("#acOrganica", () => formFact.click("#find-organica"));
-	const acRecibo = formFact.setAcItems("#acRecibo", () => formFact.click("#find-recibo"));
+	const acOrganica = formFact.setAcItems("#acOrganica", term => pf.sendTerm("rcFindOrganica", term));
+	const acRecibo = formFact.setAcItems("#acRecibo", term => pf.sendTerm("rcFindRecibo", term));
 	formFact.onChangeInput("#subtipo", ev => updateView(+ev.target.value))
 			.onChangeInput("#sujeto", ev => updateSujeto(+ev.target.value))
 			.onChangeInput("#face", ev => updateFace(+ev.target.value));

@@ -28,6 +28,7 @@ export default function(select, opts) {
     this.getSelect = () => select; // get select element
     this.getOption = () => select.options[self.getIndex()]; // current option element
 	this.getText = () => self.getOption()?.innerHTML; // current option text
+	this.getCode = sep => select.value.substring(0, select.value.indexOf(sep || " "));
 	this.getValue = () => select.value; // current value
 	this.setValue = value => {
         select.value = value;

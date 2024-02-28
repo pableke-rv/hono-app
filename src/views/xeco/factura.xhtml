@@ -73,6 +73,7 @@
 		<h:form id="xeco-fact" prependId="false" onsubmit="loading();">
 			<p:inputText id="id" value="#{fact.solicitud.id}" styleClass="ui-input ui-number hide" />
 			<p:inputText id="ivaPF" value="#{fact.solicitud.ivaView}" styleClass="ui-input ui-number hide" />
+			<p:inputText id="nifTercero" value="#{fact.solicitud.nifTerceroView}" styleClass="ui-input hide" />
 
 			<div class="card-xeco">
 				<h2 class="load-data">Solicitud de emisión de @titulo; @codigo;</h2>
@@ -80,10 +81,10 @@
 				<div class="ui-blocks">
 					<label class="ui-block-xl autocomplete">
 						<div class="label required">Tercero (CIF / NIF / Nombre):</div>
-						<p:inputText id="acTercero" value="#{fact.acTercero}" tabindex="1" styleClass="ui-input ui-autocomplete" autocomplete="off" />
+						<p:remoteCommand name="rcFindTercero" action="#{fact.findTercero()}" oncomplete="loadItems(xhr, status, args)" />
+						<input type="search" id="acTercero" name="acTercero" class="ui-input ui-autocomplete" tabindex="1" autocomplete="off" />
 						<h:inputText id="idTercero" value="#{fact.solicitud.idTerceroView}" styleClass="ui-input ui-number hide" />
 						<ul role="list" class="results"></ul>
-						<p:commandButton id="find-tercero" action="#{fact.findTercero()}" oncomplete="loadItems(xhr, status, args)" styleClass="hide" />
 						<div class="ui-errtip"></div> 
 					</label>
 					<label class="ui-block">
@@ -97,10 +98,10 @@
 				<div class="ui-blocks">
 					<label class="ui-block-xl autocomplete">
 						<div class="label required">Cual es la orgánica para la factura:</div>
-						<p:inputText id="acOrganica" value="#{fact.acCodigo}" tabindex="3" styleClass="ui-input ui-autocomplete" autocomplete="off" />
+						<p:remoteCommand name="rcFindOrganica" action="#{fact.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
+						<input type="search" id="acOrganica" name="acOrganica" class="ui-input ui-autocomplete" tabindex="3" autocomplete="off" />
 						<h:inputText id="idOrganica" value="#{fact.solicitud.organica}" styleClass="ui-input ui-number hide" />
 						<ul role="list" class="results"></ul>
-						<p:commandButton id="find-organica" action="#{fact.findOrganica()}" oncomplete="loadItems(xhr, status, args)" styleClass="hide" />
 						<div class="ui-errtip"></div> 
 					</label>
 				</div>
@@ -132,10 +133,10 @@
 					</label>
 					<label id="ac-recibo" class="autocomplete ui-block-md show-recibo">
 						<div class="label required">Recibo asociado a la factura:</div>
-						<p:inputText id="acRecibo" value="#{fact.acRecibo}" tabindex="4" styleClass="ui-input ui-autocomplete" autocomplete="off" />
+						<p:remoteCommand name="rcFindRecibo" action="#{fact.findRecibo()}" oncomplete="loadItems(xhr, status, args)" />
+						<input type="search" id="acRecibo" name="acRecibo" class="ui-input ui-autocomplete" tabindex="4" autocomplete="off" />
 						<h:inputText id="idRecibo" value="#{fact.solicitud.reciboView}" styleClass="ui-input hide" />
 						<ul role="list" class="results"></ul>
-						<p:commandButton id="find-recibo" action="#{fact.findRecibo()}" oncomplete="loadItems(xhr, status, args)" styleClass="hide" />
 						<div class="ui-errtip"></div> 
 					</label>
 				</div>
