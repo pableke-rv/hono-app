@@ -1,14 +1,16 @@
 
-import pf from "../components/Primefaces.js";
 import Form from "../components/Form.js";
 import tabs from "../components/Tabs.js";
+import pf from "../components/Primefaces.js";
+
+import i18n from "../i18n/langs.js";
 import buzon from "../model/Buzon.js";
 
 document.addEventListener("DOMContentLoaded", () => { // on load view
-	var justPagoRequired = false;
-
+    i18n.setLanguage(); // Client language
 	const formBuzon = new Form("#xeco-buzon");
 	const elTipo = formBuzon.getInput("#tipo");
+	var justPagoRequired = false;
 
 	function updateBuzonOrganica() {
 		const isIsu = buzon.setTipoPago(+elTipo.value).isIsu(table.getCurrentItem());
@@ -20,22 +22,21 @@ document.addEventListener("DOMContentLoaded", () => { // on load view
 		justPagoRequired = buzon.isPagoCesionario();
 		formBuzon.toggle("#justPago", justPagoRequired).hide("#check-jp");
 	}
-
-	const formOrganicas = new Form("#xeco-organicas");
-	const table = formOrganicas.setTable("#organcias");
-
-	const fnSend = (action, data) => {
+	function fnSend(action, data) {
 		pf.fetch(action, { org: data.org, cod: data.oCod, ut: data.grp });
 		return formOrganicas.reset(); // autofocus
 	}
 
-	table.set("onRender", buzon.render)
-		.set("msgEmptyTable", "No dispone de orgánicas recientes")
-		.set("#report", data => fnSend("report", data))
-		.set("onRemove", data => fnSend("remove", data))
-		.render(JSON.read(formOrganicas.html("#organcias-json")));
-	table.set("#buzon", () => {
-		const data = table.getCurrentItem();
+	const formOrganicas = new Form("#xeco-organicas");
+	const table = formOrganicas.setTable("#organcias", {
+		rowEmptyTable: buzon.lastRow(1),
+		onRender: buzon.row,
+		onFooter: buzon.tfoot,
+		onRemove: data => fnSend("remove", data)
+	});
+
+	table.set("#report", data => fnSend("report", data));
+	table.set("#buzon", data => {
 		formBuzon.setval("#buzon-id-org", data.org).setval("#buzon-cod-org", data.oCod)
 				.setval("#tramit-all", data.grp).readonly(true, "#tramit-all")
 				.text("#org-desc", data.oCod + " / " + data.oDesc);
@@ -44,20 +45,17 @@ document.addEventListener("DOMContentLoaded", () => { // on load view
 		tabs.showTab(1);
 	});
 	table.set("#buzon-otros", () => {
-		formBuzon.setval("#buzon-id-org", "").setval("#buzon-cod-org", "").readonly(false, "#tramit-all")
+		formBuzon.setval("#buzon-id-org").setval("#buzon-cod-org").readonly(false, "#tramit-all")
 				.text("#org-desc", table.html("#otras"));
 		elTipo.onchange = updateBuzonOtros;
 		updateBuzonOtros();
 		tabs.showTab(1);
 	});
+	table.render(JSON.read(formOrganicas.html("#organcias-json")));
 
-	formOrganicas.setAutocomplete("#organica", {
-		minLength: 4,
-		source: term => window.findOrganica(pf.param("cod", term)),
-		render: item => item.label,
-		select: item => item.value,
-		afterSelect: item => window.setUnidadesTramit(pf.param("org", item.value))
-	});
+	formOrganicas.setAcItems("#organica", 
+						term => window.findOrganica(pf.param("cod", term)),
+						item => window.setUnidadesTramit(pf.param("org", item.value)));
 	window.isOrganica = () => formOrganicas.isValid(buzon.isValidOrganica);
 
 	tabs.setShowEvent(2, tab => {

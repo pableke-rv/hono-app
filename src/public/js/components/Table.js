@@ -15,6 +15,7 @@ export default function(table, opts) {
     opts.tableActionClass = opts.tableActionClass || "table-action";
     opts.msgConfirmRemove = opts.msgConfirmRemove || "remove";
     opts.msgConfirmReset = opts.msgConfirmReset || "removeAll";
+    opts.rowEmptyTable = opts.rowEmptyTable || ('<tr><td class="no-data" colspan="99">' + i18n.get(opts.msgEmptyTable) + '</td></tr>');
 
     opts.beforeRender = opts.beforeRender || globalThis.void;
     opts.onHeader = opts.onHeader || (() => table.tHead.innerHTML);
@@ -27,7 +28,6 @@ export default function(table, opts) {
 	const self = this; //self instance
     const RESUME = {}; //Table parameters
     const tBody = table.tBodies[0]; //body element
-    const tplEmpty = opts.msgEmptyTable ? '<tr><td class="no-data" colspan="99">' + i18n.get(opts.msgEmptyTable) + '</td></tr>' : "";
 
     let _rows = EMPTY; // default = empty array
     let _index = -1; // current item position in data
@@ -69,7 +69,7 @@ export default function(table, opts) {
         opts.beforeRender(RESUME); // Fired init. event
         table.tHead.innerHTML = opts.onHeader(RESUME); // Render formatted header
         RESUME.columns = coll.size(table.tHead.rows[0]?.cells); // Number of columns <th>
-        tBody.innerHTML = RESUME.size ? coll.render(_rows, opts.onRender, RESUME) : tplEmpty; // body
+        tBody.innerHTML = RESUME.size ? coll.render(_rows, opts.onRender, RESUME) : opts.rowEmptyTable; // body
         table.tFoot.innerHTML = opts.onFooter(RESUME); // render formatted footer
         opts.afterRender(RESUME); // After body and footer is rendered
 

@@ -150,14 +150,14 @@ function Presto() {
     this.isAfc = () => (solicitud.getTipo() == 8);
     this.is030 = () => (solicitud.isUae() && (self.isGcr() || self.isAnt()));
 
-    this.isDisabled = () => solicitud.isDisabled();
-    this.isEditable = () => solicitud.isEditable();
-    this.isFirmable = () => solicitud.isFirmable();
-    this.isRechazable = () => solicitud.isRechazable();
-	this.isEditableUae = () => solicitud.isEditableUae();
-	this.isEjecutable = () => solicitud.isEjecutable();
+    this.isDisabled = solicitud.isDisabled;
+    this.isEditable = solicitud.isEditable;
+    this.isFirmable = solicitud.isFirmable;
+    this.isRechazable = solicitud.isRechazable;
+	this.isEditableUae = solicitud.isEditableUae;
+	this.isEjecutable = solicitud.isEjecutable;
 	this.isIntegrable = () => (!self.isAfc() && solicitud.isIntegrable());
-	this.isUrgente = () => solicitud.isUrgente();
+	this.isUrgente = solicitud.isUrgente;
 	this.isImpCd = () => (self.isEditable() && !self.isAnt());
 
     this.isPartidaDec = () => (self.isTcr() || self.isL83() || self.isAnt() || self.isAfc());
@@ -169,8 +169,8 @@ function Presto() {
     this.isAnticipada = () => (_data.mask & 4);
     this.isExcedida = () => (_data.mask & 8);
 
-    this.getSubtipo = () => solicitud.getSubtipo();
-    this.setSubtipo = val => { solicitud.set("subtipo", val); return self; }
+    this.getSubtipo = solicitud.getSubtipo;
+    this.setSubtipo = solicitud.setSubtipo;
     this.getMemo = () => _data.memo;
 
     this.row = data => {

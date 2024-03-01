@@ -2,6 +2,7 @@
 import api from "./components/Api.js";
 import Form from "./components/Form.js";
 import Table from "./components/Table.js";
+import sb from "./components/StringBox.js";
 import nav from "./components/Navigation.js";
 import menu from "./components/Menu.js";
 import menus from "./data/menus.js";
@@ -96,7 +97,7 @@ function fnLoadIndex() {
     formPokemon.submit(ev => ev.preventDefault()); // ajax submit
     formPokemon.setAutocomplete("#pokemon", {
         source: (term, acPokemon) => {
-            const fnFilter = pokemon => String.ilike(pokemon.name, term);
+            const fnFilter = pokemon => sb.ilike(pokemon.name, term);
             api.json("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0")
                 .then(data => acPokemon.render(data.results.filter(fnFilter)));
         },

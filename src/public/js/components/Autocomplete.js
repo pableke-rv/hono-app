@@ -1,34 +1,12 @@
 
 import alerts from "./Alerts.js";
 import coll from "./Collection.js";
+import sb from "./StringBox.js";
 
 const EMPTY = [];
-const TR1 = "àáâãäåāăąÀÁÂÃÄÅĀĂĄÆßèéêëēĕėęěÈÉĒĔĖĘĚìíîïìĩīĭÌÍÎÏÌĨĪĬòóôõöōŏőøÒÓÔÕÖŌŎŐØùúûüũūŭůÙÚÛÜŨŪŬŮçÇñÑþÐŔŕÿÝ";
-const TR2 = "aaaaaaaaaAAAAAAAAAABeeeeeeeeeEEEEEEEiiiiiiiiIIIIIIIIoooooooooOOOOOOOOOuuuuuuuuUUUUUUUUcCnNdDRryY";
-
 const fnEmpty = () => EMPTY;
 const fnParam = param => param;
-const insertAt = (str1, str2, i) => str1.substring(0, i) + str2 + str1.substring(i)
-const replaceAt = (str1, str2, i) => str1.substring(0, i) + str2 + str1.substring(i + str2.length);
-
-String.iIndexOf = (str1, str2) => tr(str1).toLowerCase().indexOf(tr(str2).toLowerCase()); // Mute String class with insensitive index
-String.ilike = (str1, str2) => (String.iIndexOf(str1, str2) > -1); // Mute String class with an insensitive search
 window.loadItems = globalThis.void; // Hack PF (only for CV-UAE)
-
-function tr(str) {
-    var output = str || "";
-    const size = coll.size(str);
-    for (let i = 0; i < size; i++) {
-        let j = TR1.indexOf(str.charAt(i)); // is char remplazable
-        output = (j < 0) ? output : replaceAt(output, TR2.charAt(j), i);
-    }
-    return output;
-}
-function wrap(str1, str2) {
-    const open = "<u><b>"; // open tag indicator
-    const i = String.iIndexOf(str1, str2); // Use extended insensitive search
-    return (i < 0) ? str1 : insertAt(insertAt(str1, open, i), "</b></u>", i + str2.length + open.length);
-}
 
 export default function(autocomplete, opts) {
     opts = opts || {};
@@ -62,7 +40,7 @@ export default function(autocomplete, opts) {
     this.getItem = i => _results[i ?? _index];
     this.getCurrentItem = () => _results[_index];
     this.getCurrentOption = () => resultsHTML.children[_index];
-	this.getCode = sep => autocomplete.value.substring(0, autocomplete.value.indexOf(sep || " "));
+	this.getCode = sep => sb.getCode(autocomplete.value, sep);
     this.isItem = () => (_index > -1);
 
     this.getInputValue = () => inputValue;
@@ -119,7 +97,7 @@ export default function(autocomplete, opts) {
         fnClear(); // clear previous results
         _results = data || EMPTY; // Force not unset var
         _results.slice(0, opts.maxResults).forEach((data, i) => {
-            const label = wrap(opts.render(data, i, _results), autocomplete.value);
+            const label = sb.wrap(opts.render(data, i, _results), autocomplete.value);
             resultsHTML.innerHTML += `<li class="${opts.optionClass}">${label}</li>`;
         });
         resultsHTML.children.forEach((li, i) => {

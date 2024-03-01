@@ -65,6 +65,7 @@ function Solicitud() {
 
     this.getTipo = () => _data.tipo;
     this.getSubtipo = () => _data.subtipo;
+    this.setSubtipo = function(value) { _data.subtipo = value; return this; }
     this.getEstado = () => _data.estado;
 
     this.isPendiente = () => (_data.estado == 5);

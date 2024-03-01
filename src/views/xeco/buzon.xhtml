@@ -53,44 +53,21 @@
 							<th>Crédito Disponible</th><th>Acciones</th>
 						</tr>
 					</thead>
-					<tbody class="hide">
-						<tr class="tb-data">
-							<td class="text-center">@count;</td>
-							<td>@oCod;</td><td>@oDesc;</td>
-							<td class="text-center">@utCod;</td><td>@utDesc;</td>
-							<td class="text-right">@cd; €</td>
-							<td class="text-right">
-								<a href="#report" class="action action-blue row-action" title="Informe al Proveedor"><i class="fal fa-file-pdf"></i></a>
-								<a href="#buzon" class="action action-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
-								@remove;
-							</td>
-						</tr>
-					</tbody>
-					<tbody>
-						<tr class="tb-data">
-							<td class="text-center">#</td>
-							<td id="otras" colspan="5">OTRAS SITUACIONES (acciones provisionalmente sin orgánica u otras circunstancias)</td>
-							<td class="text-right">
-								<a href="#buzon-otros" class="action action-green table-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
-							</td>
-						</tr>
-					</tbody>
-					<tfoot class="hide">
-						<tr><td colspan="99">Filas: @size;</td></tr>
-					</tfoot>
+					<tbody></tbody>
+					<tfoot></tfoot>
 				</table>
 			</div>
 
 			<div class="card-xeco">
 				<h2>Nueva Orgánica</h2>
 				<div class="ui-blocks">
-					<div class="ui-block-xl autocomplete">
-						<label for="organica">Orgánica:</label>
+					<label class="ui-block-xl autocomplete">
+						<div class="label">Orgánica:</div>
 						<p:inputText id="organica" value="#{buzon.acOrganica}" tabindex="1" styleClass="ui-input ui-autocomplete" autocomplete="off" />
 						<h:inputText id="idOrg" value="#{buzon.idOrganica}" styleClass="hide ui-number" />
 						<ul role="list" class="results"></ul>
 						<div class="ui-errtip"></div>
-					</div>
+					</label>
 					<div id="unidades-tramit" class="ui-block hide">
 						<label for="tramit"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</label>
 						<h:selectOneMenu id="tramit" value="#{buzon.idUnidadTramit}" styleClass="ui-input ui-select ui-number" tabindex="2">
@@ -159,12 +136,12 @@
 		</div>
 
 		<div id="tab-2" class="tab-content">
-			<p:outputPanel id="resumen" styleClass="card-xeco">
+			<div id="resumen" class="card-xeco">
 				<h2>Resumen de la Solicitud</h2>
 				<p><b>Archivos que se van a enviar:</b> <span id="file-name">NAME-XXX</span></p>
 				<p><b>Partida presupuestaria para la factura:</b> <span id="org-desc">ORG-XXX</span></p>
 				<p><b>Unidad que va a tramitar la factura:</b> <span id="ut-desc">UT-XXX</span></p>
-			</p:outputPanel>
+			</div>
 			<div>
 				<a href="#prev-tab" class="btn btn-primary tab-action" tabindex="20"><i class="fas fa-caret-left"></i></a>
 				<p:commandLink action="#{buzon.upload()}" ajax="false" styleClass="btn btn-green">Enviar <i class="fas fa-paper-plane btn-icon-right"></i></p:commandLink>

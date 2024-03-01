@@ -81,23 +81,23 @@ function Factura() {
     }
 
     this.getLineas = () => lineas;
-    this.setLineas = table => { lineas.setData(table); return self; }
+    this.setLineas = table => { lineas.setData(table.getData()); return self; }
     this.getLinea = lineas.getLinea;
 
     this.isFactura = () => (solicitud.getTipo() == 1);
     this.isCartaPago = () => (solicitud.getTipo() == 3);
 
-    this.isDisabled = () => solicitud.isDisabled();
-    this.isEditable = () => solicitud.isEditable();
-    this.isFirmable = () => solicitud.isFirmable();
-    this.isRechazable = () => solicitud.isRechazable();
-	this.isEditableUae = () => solicitud.isEditableUae();
-	this.isEjecutable = () => solicitud.isEjecutable();
-	this.isIntegrable = () => solicitud.isIntegrable();
+    this.isDisabled = solicitud.isDisabled;
+    this.isEditable = solicitud.isEditable;
+    this.isFirmable = solicitud.isFirmable;
+    this.isRechazable = solicitud.isRechazable;
+	this.isEditableUae = solicitud.isEditableUae;
+	this.isEjecutable = solicitud.isEjecutable;
+	this.isIntegrable = solicitud.isIntegrable;
     this.isFirmaGaca = () => solicitud.isUae() && self.isTtpp();
 
-    this.getSubtipo = () => solicitud.getSubtipo();
-    this.setSubtipo = val => { solicitud.set("subtipo", val); return self; }
+    this.getSubtipo = solicitud.getSubtipo;
+    this.setSubtipo = solicitud.setSubtipo;
     this.isTtpp = () => (solicitud.getSubtipo() == 3);
     this.isTituloOficial = () => (solicitud.getSubtipo() == 4);
     this.isExtension = () => (solicitud.getSubtipo() == 9);

@@ -10,7 +10,6 @@ const fnVoid = () => {}
 const fnSize = data => data ? data.length : 0; //string o array
 const fnParse = data => data && JSON.parse(data); //JSON parse
 const isset = val => ((typeof(val) !== "undefined") && (val !== null));
-const isstr = val => (typeof(val) === "string") || (val instanceof String);
 
 const fnHide = el => el.classList.add(HIDE_CLASS);
 const fnShow = el => el.classList.remove(HIDE_CLASS);
@@ -27,7 +26,13 @@ function Collection() {
 	this.indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;
 	this.shuffle = arr => arr.sort(() => (0.5 - Math.random()));
 	this.split = (str, sep) => str ? str.split(sep || ",") : [];
-    this.reset = arr => arr ? arr.splice(0, arr.length) : [];
+    this.reset = arr => {
+        if (arr) {
+            arr.splice(0, arr.length);
+            return arr;
+        }
+        return [];
+    }
 	this.multisort = function(arr, fnSorts, dirs) {
 		dirs = dirs || []; // directions
 		arr.sort((a, b) => {
@@ -87,7 +92,6 @@ function Collection() {
 // Client / Server global functions
 globalThis.void = fnVoid;
 globalThis.isset = isset;
-globalThis.isstr = isstr;
 
 // Mute JSON
 JSON.size = fnSize;

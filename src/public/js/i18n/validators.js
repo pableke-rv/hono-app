@@ -2,9 +2,6 @@
 import i18n from "./i18n.js";
 import entidades from "../data/entidades.js";
 
-// HTML special chars
-const ESCAPE_HTML = /"|'|&|<|>|\\/g;
-const ESCAPE_MAP = { '"': "&#34;", "'": "&#39;", "&": "&#38;", "<": "&#60;", ">": "&#62;", "\\": "&#92;" };
 const sysdate = (new Date()).toISOString();
 
 // RegEx for validating
@@ -18,9 +15,6 @@ const RE_AMEX = /^(?:3[47][0-9]{13})$/;
 const RE_DISCOVER = /^(?:6(?:011|5[0-9][0-9])[0-9]{12})$/;
 const RE_DINER_CLUB = /^(?:3(?:0[0-5]|[68][0-9])[0-9]{11})$/;
 const RE_JCB = /^(?:(?:2131|1800|35\d{3})\d{11})$/;*/
-
-i18n.unescape = str => str ? str.replace(/&#(\d+);/g, (key, num) => String.fromCharCode(num)) : null;
-i18n.escape = str => str ? str.trim().replace(ESCAPE_HTML, (matched) => ESCAPE_MAP[matched]) : null;
 
 i18n.gt0 = (name, value, msg) => (value && (value > 0)) || !i18n.setError(msg || "errGt0", name); // required gt0
 i18n.ge0 = (name, value, msg) => !value || (value > 0) || !i18n.setError(msg || "errGt0", name); // optional or gt0

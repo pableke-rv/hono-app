@@ -40,19 +40,4 @@ Date.prototype.diffDays = function(date) { // Days between to dates
     return Math.floor((date.getTime() - this.getTime()) / (1000 * 3600 * 24));
 }
 
-// String formats
-String.prototype.inDay = function(dt) {
-    return this.startsWith(dt.substring(0, 10)); //yyyy-mm-dd
-}
-String.prototype.isoTime = function() {
-    return this.substring(11, 19); //hh:MM:ss
-}
-String.prototype.isoTimeShort = function() {
-    return this.substring(11, 16); //hh:MM
-}
-String.prototype.getHours = function() {
-    return +this.substring(11, 13); //hh int format
-}
-i18n.getHours = str => str && str.getHours(); // Get HH int format
-
 export default i18n;

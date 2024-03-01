@@ -10,18 +10,32 @@ function Buzon() {
     this.isPagoProveedor = () => (tipoPago == 1);
     this.isPagoCesionario = () => (tipoPago == 2);
 
-	this.render = function(data, output) {
-        output.oCod = data.oCod;
-        output.oDesc = data.oDesc;
-        output.utCod = data.utCod;
-        output.utDesc = data.utDesc;
-        output.cd = i18n.isoFloat(data.cd);
-        output.remove = data.num ? "" : '<a href="#remove" class="action action-red row-action" title="Desvincular orgánica"><i class="fas fa-times"></i></a>';
-        return output;
+	this.lastRow = count => {
+        return `<tr class="tb-data">
+            <td class="text-center">${count}</td>
+            <td id="otras" colspan="5">OTRAS SITUACIONES (acciones provisionalmente sin orgánica u otras circunstancias)</td>
+            <td class="text-right">
+                <a href="#buzon-otros" class="action action-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
+            </td>
+        </tr>`;
     }
-    this.parse = function(input, data) {
-        return data;
+	this.row = (data, status) => {
+        const remove = data.num ? "" : '<a href="#remove" class="action action-red row-action" title="Desvincular orgánica"><i class="fas fa-times"></i></a>';
+        const last = (status.count == status.size) ? self.lastRow(status.count + 1) : "";
+        return `<tr class="tb-data">
+            <td class="text-center">${status.count}</td>
+            <td>${data.oCod}</td><td>${data.oDesc}</td>
+            <td class="text-center">${data.utCod}</td><td>${data.utDesc}</td>
+            <td class="text-right">${i18n.isoFloat(data.cd)} €</td>
+            <td class="text-right">
+                <a href="#report" class="action action-blue row-action" title="Informe al Proveedor"><i class="fal fa-file-pdf"></i></a>
+                <a href="#buzon" class="action action-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
+                ${remove};
+            </td>
+        </tr>` + last;
     }
+    this.tfoot = resume => `<tr><td colspan="99">Filas: ${resume.size + 1}</td></tr>`;
+
     this.isValidOrganica = function(data) {
         let ok = i18n.reset().isKey("organica", data.idOrg, "No ha seleccionado correctamente la orgánica"); // autocomplete required number
         ok &= i18n.isKey("tramit", data.tramit, "Unidad tramitadora no encontrada"); // select required number
