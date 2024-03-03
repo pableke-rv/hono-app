@@ -36,6 +36,9 @@ export default {
 
     //Collections
     msgBool: ["No", "Yes"],
+    descEstados: [
+        "Editable", "Accepted", "Reject", "Executed", "Integrated", "In Process", "Editable", "Cancel", "Caducada", "Error Capa SOA", "Error de Crédito Vinculante"
+    ],
 
     //datepicker language
     monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],

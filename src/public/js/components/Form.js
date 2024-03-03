@@ -39,6 +39,10 @@ export default function(form, opts) {
 	this.querySelector = selector => form.querySelector(selector); // Child element
 	this.querySelectorAll = selector => form.querySelectorAll(selector); // Children elements
 
+	this.setCache = id => { form.dataset.cache = id; return self; }
+	this.isCached = id => ((id == form.id.value) || (id == form.dataset.cache));
+	this.resetCache = () => { delete form.dataset.cache; return self.setval("id"); }
+
 	// Alerts helpers
 	this.loading = () => { alerts.loading(); return self; } // Encapsule loading frame
 	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message

@@ -55,9 +55,9 @@ export default function(select, opts) {
         if (!JSON.size(labels))
             return self.reset();
         fnInit([]); // Init. datalist
-        labels.forEach((label, i) => {
-            select.innerHTML += `<option value="${i+1}">${label}</option>`; // 1, 2, 3... Number array
-            _data.push(i + 1); // add value
+        labels.forEach((label, i) => { // keys = 0, 1, 2... Number array
+            select.innerHTML += `<option value="${i}">${label}</option>`;
+            _data.push(i); // add value
         });
         return fnChange(_data[0]);
 	}

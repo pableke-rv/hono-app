@@ -11,11 +11,8 @@ import solicitudes from "./xeco.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     i18n.setLanguage(); // Client language
-    solicitudes(presto); // init. actions
-
     const partida = presto.getPartida();
     const partidas = presto.getPartidas();
-    tabs.setActive(uxxiec.isUxxiec() ? 0 : 2);
 
     /*** FORMULARIO PARA EL DC 030 DE LAS GCR ***/
     const form030 = new Form("#xeco-030");
@@ -33,6 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /*** FORMULARIO PRINCIPAL ***/
     const formPresto = new Form("#xeco-presto");
+    solicitudes(presto, formPresto); // init. actions
+    tabs.setActive(uxxiec.isUxxiec() ? 0 : 2);
+
     const emptyOption = "Seleccione una económica";
 	const ecoDec = pf.datalist(formPresto, "#idEcoDec", "#idEcoDecPF", {
         emptyOption,

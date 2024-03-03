@@ -132,7 +132,7 @@ function Factura() {
         return `<tr class="tb-data">
             <td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
             <td class="hide-sm">${data.titulo}</td>
-            <td class="${solicitud.getStyleByEstado()} estado-${data.id}">${i18n.getItem("descEstados", data.estado)}</td>
+            <td class="${solicitud.getStyleByEstado()} estado-${data.id}">${solicitud.getDescEstado()}</td>
             <td class="text-center">${solicitud.getFirma().myFlag(data.fmask, data.info)}</td>
             <td class="hide-sm">${data.sig || ""}</td>
             <td class="text-right">${i18n.isoFloat(data.imp)} €</td>

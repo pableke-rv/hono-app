@@ -135,7 +135,7 @@ function Presto() {
     this.setData = data => {
         _data = data; // Update instance
         solicitud.setData(data);
-        data.titulo = i18n.getItem("descTipos", data.tipo);
+        data.titulo = i18n.getItem("descTipos", data.tipo - 1);
         return self;
     }
 
@@ -202,7 +202,7 @@ function Presto() {
             ${info}
             <td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
             <td class="hide-sm">${data.titulo}</td>
-            <td class="${solicitud.getStyleByEstado(data)} estado-${data.id}">${i18n.getItem("descEstados", data.estado)}</td>
+            <td class="${solicitud.getStyleByEstado(data)} estado-${data.id}">${solicitud.getDescEstado()}</td>
             <td class="text-center">${solicitud.getFirma().myFlag(data.fmask, data.info)}</td>
             <td class="hide-sm">${data.sig || ""}</td>
             <td title="${data.oIncDesc}">${data.orgInc}${otras}</td>

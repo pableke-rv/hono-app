@@ -84,7 +84,7 @@ function StringBox() {
 	this.match = (str, re) => str ? str.trim().match(re) : null;
 	this.array = str => self.split(str, ",");
 	this.lastId = str => +self.match(str, /\d+$/).pop();
-	this.chunk = (str, size) => self.match(str, new RegExp(".{1," + size + "}", "g"));
+	this.chunk = (str, size) => str ? str.trim().match(str, new RegExp(".{1," + size + "}", "g")) : null;
 }
 
 globalThis.isstr = isstr;

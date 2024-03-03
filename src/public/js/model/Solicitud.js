@@ -90,6 +90,7 @@ function Solicitud() {
     this.isIntegrable = () => (self.isUae() && self.isFinalizada()); // Requiere uae + estado finalizada (mejora grupo == -1)
 	this.isUrgente = () => (_data.fMax && _data.extra); //solicitud urgente?
 
+    this.getDescEstado = () => i18n.getItem("descEstados", _data.estado);
     this.getStyleByEstado = () => CSS_ESTADOS[_data.estado] || "text-warn";
 
     this.validate = data => {

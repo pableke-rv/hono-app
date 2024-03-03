@@ -31,7 +31,6 @@ export default function(table, opts) {
 
     let _rows = EMPTY; // default = empty array
     let _index = -1; // current item position in data
-    let _action = ""; // last name action
 
     this.clear = () => { _index = -1; return self; }
     this.set = (name, fn) => { opts[name] = fn; return self; }
@@ -53,13 +52,10 @@ export default function(table, opts) {
     this.html = selector => table.querySelector(selector).innerHTML; // read text
 
     function fnCallAction(name, link, i) {
-        if (!i18n.confirm(link.dataset.confirm))
-            return; // acction canceled by user
-        const fnCached = (_index == i) && (_action == name) && opts[name + "Cached"];
-        const fnCall = fnCached || opts[name];
-        _index = i; // update current item
-        _action = name; // save current acction
-        fnCall(_rows[i], link, i); // Action call
+        if (i18n.confirm(link.dataset.confirm)) {
+            _index = i; // update current item
+            opts[name](_rows[i], link, i); // Action call
+        }
     }
     function fnRender(data) {
         _index = -1; // clear previous selects

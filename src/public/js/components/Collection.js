@@ -1,4 +1,6 @@
 
+import sb from "./StringBox.js";
+
 const STATUS = {};
 const HIDE_CLASS = "hide";
 const FADE_IN = "fadeIn";
@@ -7,7 +9,6 @@ const SLIDE_IN = "slideIn";
 const SLIDE_OUT = "slideOut";
 
 const fnVoid = () => {}
-const fnSize = data => data ? data.length : 0; //string o array
 const fnParse = data => data && JSON.parse(data); //JSON parse
 const isset = val => ((typeof(val) !== "undefined") && (val !== null));
 
@@ -19,13 +20,12 @@ function Collection() {
 	const self = this; //self instance
 
     this.isset = isset;
-    this.size = fnSize;
+    this.size = sb.size;
+	this.empty = sb.empty;
     this.parse = fnParse;
-
-	this.empty = arr => (fnSize(arr) < 1);
+	this.split = sb.split;
 	this.indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;
 	this.shuffle = arr => arr.sort(() => (0.5 - Math.random()));
-	this.split = (str, sep) => str ? str.split(sep || ",") : [];
     this.reset = arr => {
         if (arr) {
             arr.splice(0, arr.length);
@@ -94,7 +94,7 @@ globalThis.void = fnVoid;
 globalThis.isset = isset;
 
 // Mute JSON
-JSON.size = fnSize;
+JSON.size = sb.size;
 JSON.read = fnParse;
 
 // Extends Array prototype

@@ -6,7 +6,7 @@ import solicitud from "../model/Solicitud.js";
 import uxxiec from "../model/Uxxiec.js";
 import i18n from "../i18n/presto/langs.js";
 
-export default model => {
+export default (model, formModel) => {
     /*** FORMULARIO PARA LA CREACIÓN DEL EXPEDIENTE CON UXXI-EC ***/
     const tabUxxi = tabs.getTab(15);
     solicitud.setUser(tabUxxi.dataset);
@@ -48,22 +48,24 @@ export default model => {
 
     solicitudes.setActions(document); // table-action
     const fnSend = (action, data) => pf.sendId(action, data.id);
-    solicitudes.set("#rcView", data => fnSend("rcView", data));
-    solicitudes.set("#rcViewCached", () => tabs.showTab(1));
+    solicitudes.set("#rcView", data => formModel.isCached(data.id) ? tabs.showTab(1) : fnSend("rcView", data));
     solicitudes.set("#rcFirmar", data => fnSend("rcFirmar", data));
     solicitudes.set("#tab-11", data => {
-        fnSend("rcFirmas", data);
-        formReject.restart("#rechazo");
+        if (formReject.isCached(data.id))
+            return tabs.showTab(11);
+        formReject.restart("#rechazo").setCache(data.id);
         tabs.render(".load-data", data);
+        fnSend("rcFirmas", data);
     });
-    solicitudes.set("#tab-11Cached", () => tabs.showTab(11));
     solicitudes.set("#rcReport", data => fnSend("rcReport", data));
     solicitudes.set("#rcUxxiec", data => {
-        formUxxi.restart("#uxxi").toggle(".show-ejecutable", solicitud.isEjecutable(data)); // Update view
+        if (formUxxi.isCached(data.id))
+            return tabs.showTab(15);
+        formUxxi.restart("#uxxi").setCache(data.id)
+                .toggle(".show-ejecutable", solicitud.isEjecutable(data)); // Update view
         tabs.render(".load-data", data);
         fnSend("rcUxxiec", data);
     });
-    solicitudes.set("#rcUxxiecCached", () => tabs.showTab(15));
     solicitudes.set("#rcEmails", data => fnSend("rcEmails", data));
     solicitudes.set("#rcRemove", data => fnSend("rcRemove", data));
     solicitudes.set("#rcIntegrar", (data, link) => {
@@ -72,6 +74,7 @@ export default model => {
     });
     const divSolicitudes = formFilter.querySelector("#solicitudes-json");
     solicitudes.render(JSON.read(divSolicitudes?.innerHTML)); // preload data
+    formModel.resetCache(); // initialize cache
 
     window.onList = () => formFilter.setData({ fMiFirma: "5" }).loading();
     window.fnFirmar = () => i18n.confirm("msgFirmar") && window.loading();

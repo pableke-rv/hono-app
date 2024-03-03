@@ -11,8 +11,6 @@ import solicitudes from "./xeco.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     i18n.setLanguage(); // Client language
-    solicitudes(factura); // init. actions
-
 	const linea = factura.getLinea();
 
 	const fnCalcIva = iva => {
@@ -54,6 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	/*** FORMULARIO PRINCIPAL ***/
     const formFact = new Form("#xeco-fact");
+    solicitudes(factura, formFact); // init. actions
+
 	const delegaciones = pf.datalist(formFact, "#delegacion", "#idDelegacion", { emptyOption: "Seleccione una delegación" });
 	const acTercero = formFact.setAutocomplete("#acTercero", {
 		delay: 500, //milliseconds between keystroke occurs and when a search is performed
