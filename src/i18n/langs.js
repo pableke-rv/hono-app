@@ -17,7 +17,14 @@ i18n.confirm = () => true;
 i18n.getNavLang = i18n.getDefault;
 i18n.getLanguage = list => {
     list = list || ""; // languages list (ej: es-ES,es)
-    return list.split(",").find(lang => _langs[lang]) || i18n.getDefault();
+    return list.split(",").find(lang => client[lang]) || i18n.getDefault();
+}
+
+globalThis.log = (err, msg) => {
+	if (err)
+		console.error(err);
+	else
+		console.log(msg);
 }
 
 // Server language container

@@ -4,17 +4,15 @@ import { Hono, Context, Next } from "hono";
 import { sessionMiddleware, CookieStore } from "hono-sessions";
 import { serveStatic } from "@hono/node-server/serve-static";
 
-import dotenv from "dotenv";
-import i18n from "./i18n/langs";
-import routes from "./routes/app";
+import config from "./config.js"; // Configurations
+import i18n from "./i18n/langs"; // Languages
+import routes from "./routes/app"; // Routes
 
-dotenv.config(); // Load environment variables from .env file
 const app = new Hono(); // Application instance
-
 app.use("/public/*", serveStatic({ root: "./dist/" }));
 app.use("*", sessionMiddleware({ // Session configration
     store: new CookieStore(), // interface for getting and setting cookies
-    encryptionKey: process.env.SESSION_KEY, // Required for CookieStore
+    encryptionKey: config.SESSION_KEY, // Required for CookieStore
     expireAfterSeconds: 900, // Expire session after 15 minutes of inactivity
     cookieOptions: { path: "/", httpOnly: true }
 }));

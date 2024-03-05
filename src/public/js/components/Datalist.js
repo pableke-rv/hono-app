@@ -51,13 +51,16 @@ export default function(select, opts) {
         select.innerHTML += _data.map(fnItem).join(""); // Render items
         return fnChange(_data[0]);
 	}
-	this.setOptions = function(labels) {
+	this.setOptions = function(labels, values) {
         if (!JSON.size(labels))
             return self.reset();
         fnInit([]); // Init. datalist
+        const fnDefault = i => i;
+        const fnValue = i => values[i];
+        const fn =  values ? fnValue : fnDefault;
         labels.forEach((label, i) => { // keys = 0, 1, 2... Number array
-            select.innerHTML += `<option value="${i}">${label}</option>`;
-            _data.push(i); // add value
+            select.innerHTML += `<option value="${fn(i)}">${label}</option>`;
+            _data.push(fn(i)); // add value
         });
         return fnChange(_data[0]);
 	}

@@ -4,9 +4,11 @@ import i18n from "../i18n/langs.js";
 function Uxxiec() {
 	const self = this; //self instance
 
-    let data; // Current presto data type
-    this.getData = name => (name ? data[name] : data);
-    this.setData = documentos => { data = documentos; return self; }
+    let _data; // Current presto data type
+    this.getData = () => _data;
+    this.get = name => _data[name];
+    this.setData = documentos => { _data = documentos; return self; }
+    this.set = (name, value) => { _data[name] = value; return self; }
 
     this.row = data => {
         return `<tr class="tb-data">

@@ -41,7 +41,7 @@ export default function(form, opts) {
 
 	this.setCache = id => { form.dataset.cache = id; return self; }
 	this.isCached = id => ((id == form.id.value) || (id == form.dataset.cache));
-	this.resetCache = () => { delete form.dataset.cache; return self.setval("id"); }
+	this.resetCache = () => { delete form.dataset.cache; return self.setval("#id"); }
 
 	// Alerts helpers
 	this.loading = () => { alerts.loading(); return self; } // Encapsule loading frame

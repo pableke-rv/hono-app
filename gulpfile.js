@@ -5,10 +5,11 @@ import uglify from "gulp-uglify";
 import htmlmin from "gulp-htmlmin";
 import cssnano from "gulp-cssnano";
 
-const HTML_PATH = [ "src/**/*.html", "src/views/xeco/**/*" ];
+const HTML_PATH = [ "src/*.html", "src/views/**/*" ];
 const CSS_FILES = "src/public/css/**/*.css";
 const JS_FILES = "src/public/js/**/*.js";
 const TS_FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
+const JS_MODULES = [ "src/*.js", "src/dao/**/*", "src/data/**/*", "src/i18n/**/*" ];
 const SYM_LINKS = [ "dist", "dist/public/js", "dist/public/js/i18n", "dist/public/js/model" ];
 
 // Tasks to copy all ts / tsx
@@ -26,9 +27,9 @@ gulp.task("minify-html", done => {
 		removeRedundantAttributes: false //remove attr with default value
 	};
 	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/modules/xeco";
-	gulp.src(HTML_PATH).pipe(htmlmin(options)).pipe(gulp.dest("dist")).on("end", () => {
-		gulp.src("src/views/xeco/**/*").pipe(gulp.dest(CV)).on("end", done);
-	});
+	gulp.src(HTML_PATH[0]).pipe(htmlmin(options)).pipe(gulp.dest("dist"));
+	gulp.src(HTML_PATH[1]).pipe(htmlmin(options)).pipe(gulp.dest("dist/views"));
+	gulp.src("src/views/xeco/**/*").pipe(gulp.dest(CV)).on("end", done);
 });
 
 // Tasks to minify CSS"s
@@ -50,19 +51,27 @@ gulp.task("minify-js", done => {
 	});
 });
 
-// Tasks to create static output
+// Tasks to create js modules
+gulp.task("modules", done => {
+	gulp.src(JS_MODULES[0]).pipe(gulp.dest("dist"));
+	gulp.src(JS_MODULES[1]).pipe(gulp.dest("dist/dao"));
+	gulp.src(JS_MODULES[2]).pipe(gulp.dest("dist/data"));
+	gulp.src(JS_MODULES[3]).pipe(gulp.dest("dist/i18n")).on("end", done);
+});
+
+// Tasks to create static data
 gulp.task("static", done => {
 	gulp.src(SYM_LINKS).pipe(gulp.symlink("node_modules/app"));
-	gulp.src("src/data/**/*").pipe(gulp.dest("dist/data"));
-	gulp.src("src/i18n/**/*").pipe(gulp.dest("dist/i18n"));
-	gulp.src("src/public/img/**/*").pipe(gulp.dest("dist/public/img")).on("end", done);
+	gulp.src("src/public/img/**/*").pipe(gulp.dest("dist/public/img"));
+	gulp.src("src/public/files/**/*").pipe(gulp.dest("dist/public/files")).on("end", done);
 });
 
 gulp.task("watch", () => {
 	gulp.watch(TS_FILES, gulp.series("copy-ts"));
+	gulp.watch(JS_MODULES, gulp.series("modules"));
 	gulp.watch(HTML_PATH, gulp.series("minify-html", "minify-css"));
 	gulp.watch(JS_FILES, gulp.series("minify-js"));
 	// Other watchers ...
 });
 
-gulp.task("default", gulp.series("copy-ts", "minify-html", "minify-css", "minify-js", "static", "watch"));
+gulp.task("default", gulp.series("copy-ts", "minify-html", "minify-css", "minify-js", "modules", "static", "watch"));

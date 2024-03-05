@@ -2,14 +2,16 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch dist/index.ts",
-    "test": "node --import tsx --test tests/*",
+    "test": "node --import tsx --test tests/index.ts",
     "build": "gulp"
   },
   "dependencies": {
     "@hono/node-server": "^1.7.0",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.4",
     "hono": "^4.0.2",
-    "hono-sessions": "^0.3.4"
+    "hono-sessions": "^0.3.4",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
