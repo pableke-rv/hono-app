@@ -1,5 +1,5 @@
 
-import coll from "./Collection.js";
+import coll from "./CollectionHTML.js";
 import i18n from "../i18n/langs.js";
 
 const EMPTY = [];

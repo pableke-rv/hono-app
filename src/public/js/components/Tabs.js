@@ -1,6 +1,6 @@
 
 import alerts from "./Alerts.js";
-import coll from "./Collection.js";
+import coll from "./CollectionHTML.js";
 
 const fnTrue = () => true; // always true
 const mask = (val, i) => ((val >> i) & 1); // check bit at i position

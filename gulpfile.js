@@ -10,7 +10,10 @@ const CSS_FILES = "src/public/css/**/*.css";
 const JS_FILES = "src/public/js/**/*.js";
 const TS_FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
 const JS_MODULES = [ "src/*.js", "src/dao/**/*", "src/data/**/*", "src/i18n/**/*" ];
-const SYM_LINKS = [ "dist", "dist/public/js", "dist/public/js/i18n", "dist/public/js/model" ];
+const SYM_LINKS = [
+	"dist", "dist/controllers", "dist/dao", "dist/data",
+	"dist/public/js", "dist/public/js/i18n", "dist/public/js/model"
+];
 
 // Tasks to copy all ts / tsx
 gulp.task("copy-ts", done => {

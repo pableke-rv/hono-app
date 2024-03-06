@@ -7,7 +7,7 @@ import Usuarios from "./usuarios.js"; //Users DAO
 
 // Database connection
 const db = new sqlite.Database(config.SQLITE_PATH, sqlite.OPEN_READWRITE, err => {
-	globalThis.log(err, "> Sqlite " + config.SQLITE_PATH + " open.");
+	console.log(err || "> Sqlite " + config.SQLITE_PATH + " open.");
 });
 
 // Add actions as promises
@@ -23,15 +23,21 @@ db.find = (sql, params) => {
 }
 db.insert = function(sql, params) {
 	return new Promise((resolve, reject) => { // Important! declare function to use this!!
-		db.run(sql, params, err => err ? reject(err) : resolve(db.lastID)); // get the last insert id
+		db.run(sql, params, function(err) { return err ? reject(err) : resolve(this.lastID); });
 	});
 }
 function fnUpdate(sql, params) {
 	return new Promise((resolve, reject) => { // Important! declare function to use this!!
-		db.run(sql, params, err => err ? reject(err) : resolve(db.changes));
+		db.run(sql, params, function(err) { return err ? reject(err) : resolve(this.changes); });
 	});
 }
 db.delete = db.update = fnUpdate;
+
+db.runUpdate = function(sql, params) {
+	return new Promise((resolve, reject) => { // Important! declare function to use this!!
+		db.run(sql, params, function(err) { return err ? reject(err) : resolve(this); });
+	});
+}
 
 const menus = new Menus(db);
 const usuarios = new Usuarios(db);

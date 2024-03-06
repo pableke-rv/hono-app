@@ -1,6 +1,6 @@
 
 import alerts from "./Alerts.js";
-import coll from "./Collection.js";
+import coll from "./CollectionHTML.js";
 import sb from "./StringBox.js";
 
 const EMPTY = [];

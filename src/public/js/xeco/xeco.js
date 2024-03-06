@@ -50,7 +50,7 @@ export default (model, formModel) => {
     const fnSend = (action, data) => pf.sendId(action, data.id);
     solicitudes.set("#rcView", data => {
         if (formModel.isCached(data.id))
-            tabs.showTab(1)
+            tabs.showTab(1);
         else
             fnSend("rcView", data);
         formReject.setCache(data.id);

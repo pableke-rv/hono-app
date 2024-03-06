@@ -20,12 +20,5 @@ i18n.getLanguage = list => {
     return list.split(",").find(lang => client[lang]) || i18n.getDefault();
 }
 
-globalThis.log = (err, msg) => {
-	if (err)
-		console.error(err);
-	else
-		console.log(msg);
-}
-
 // Server language container
 export default i18n;

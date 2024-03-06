@@ -1,48 +1,42 @@
 
-export default class Menus {
-    constructor(db) {
-        this.db = db;
-    }
+import coll from "app/js/components/Collection.js";
 
-    filter(data) {
+export default function(db) {
+    this.filter = data => {
         const sql = "select * from v_menu_padre where (? is null or tipo = ?) and (? is null or nombre like ?)";
-        return this.db.list(sql, [data.tipo, data.tipo, data.nombre, data.nombre + "%"]);
+        return db.list(sql, [data.tipo, data.tipo, data.nombre, data.nombre + "%"]);
     }
-    filterByParams(tipo, term) {
+    this.filterByParams = (tipo, term) => {
         const sql = "select * from v_menu_padre where (tipo = ?) and (UPPER(nombre) like ?)";
-        return this.db.list(sql, [ tipo, "%" + term.toUpperCase() + "%" ]);
+        return db.list(sql, [ tipo, "%" + term.toUpperCase() + "%" ]);
     }
 
-    getById(id) {
-        return this.db.find("select * from v_menu_padre where id = ?", id);
-    }
- 
-    getActions(user) { return this.db.list("select * from v_actions where usuario_id = ?", user); }
-    getMenus(user) { return this.db.list("select * from v_menus where usuario_id is null or usuario_id = ?", user) };
+    this.getById = id => db.find("select * from v_menu_padre where id = ?", id);
+    this.getActions = user => db.list("select * from v_actions where usuario_id = ?", user);
+    this.getMenus = user => db.list("select * from v_menus where usuario_id is null or usuario_id = ?", user);
 
-    insert(data) {
+    this.insert = data => {
         const sql = "insert into menus (tipo, padre, icono, nombre, titulo, enlace, orden, mask) values (?, ?, ?, ?, ?, ?, ?, ?)";
         const params = [data.tipo, data.padre, data.icono, data.nombre, data.titulo, data.enlace, data.orden, data.mask];
-        return this.db.insert(sql, params);
+        return db.insert(sql, params).then(lastID => { data.id = lastID; return data; });
     }
-    insertAll(data) {
+    this.insertAll = data => {
         const params = []; // values container
         const sql = "insert into menus (tipo, padre, icono, nombre, titulo, enlace, orden, mask) values ";
         const values = data.map(row => {
             params.push(row.tipo, row.padre, row.icono, row.nombre, row.titulo, row.enlace, row.orden, row.mask);
             return "(?, ?, ?, ?, ?, ?, ?, ?)";
         }).join(",");
-        return this.db.insert(sql + values, params);
+        return db.insert(sql + values, params).then(lastID => {
+            return coll.eachPrev(data, (row, i, j) => { row.id = lastID - j; });
+        });
     }
-    update(data) {
+    this.update = data => {
         const sql = "update menus set tipo = ?, padre = ?, icono = ?, nombre = ?, titulo = ?, enlace = ?, orden = ?, mask = ? where id = ?";
         const params = [data.tipo, data.padre, data.icono, data.nombre, data.titulo, data.enlace, data.orden, data.mask, data.id];
-        return this.db.update(sql, params);
+        return db.update(sql, params);
     }
-    save(data) {
-        return data.id ? this.update(data) : this.insert(data);
-    }
-    delete(id) {
-        return this.db.delete("delete from menus where id = ?", id);
-    }
+    this.save = data => data.id ? this.update(data) : this.insert(data);
+    this.delete = id => db.delete("delete from menus where id = ?", id);
+    this.deleteTest = () => db.runUpdate("delete from menus where id > 20");
 }
