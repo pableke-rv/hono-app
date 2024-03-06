@@ -13,6 +13,6 @@ const server = serve(OPTIONS, ({ port }) => {
 
 process.on("SIGINT", param => {
     dao.close(); // Close all db connections
-    server.close(console.error);
+    server.close(console.error); // Close http server
     console.log(`> ${param}: Ctrl-C was pressed! => server closed.`);
 });

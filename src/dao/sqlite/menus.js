@@ -2,11 +2,13 @@
 import coll from "app/js/components/Collection.js";
 
 export default function(db) {
+	const self = this; //self instance
+
     this.filter = data => {
         const sql = "select * from v_menu_padre where (? is null or tipo = ?) and (? is null or nombre like ?)";
         return db.list(sql, [data.tipo, data.tipo, data.nombre, data.nombre + "%"]);
     }
-    this.filterByParams = (tipo, term) => {
+    this.filterByTerm = (tipo, term) => {
         const sql = "select * from v_menu_padre where (tipo = ?) and (UPPER(nombre) like ?)";
         return db.list(sql, [ tipo, "%" + term.toUpperCase() + "%" ]);
     }
@@ -36,7 +38,7 @@ export default function(db) {
         const params = [data.tipo, data.padre, data.icono, data.nombre, data.titulo, data.enlace, data.orden, data.mask, data.id];
         return db.update(sql, params);
     }
-    this.save = data => data.id ? this.update(data) : this.insert(data);
+    this.save = data => data.id ? self.update(data) : self.insert(data);
     this.delete = id => db.delete("delete from menus where id = ?", id);
-    this.deleteTest = () => db.runUpdate("delete from menus where id > 20");
+    this.deleteTest = () => db.update("delete from menus where id > 20");
 }

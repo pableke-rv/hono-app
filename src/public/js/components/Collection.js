@@ -5,6 +5,10 @@ const fnVoid = () => {}
 const fnParse = data => data && JSON.parse(data); //JSON parse
 const isset = val => ((typeof(val) !== "undefined") && (val !== null));
 
+function fnReset(arr) {
+    arr.splice(0, arr.length);
+    return arr;
+}
 function fnEachPrev(arr, fn) {
     let j = 0; // increment index
     for (let i = arr.length - 1; (i > -1); i--)
@@ -21,15 +25,9 @@ function Collection() {
     this.parse = fnParse;
 	this.split = sb.split;
     this.eachPrev = fnEachPrev;
-	this.indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;
+    this.reset = arr => arr ? fnReset(arr) : [];
 	this.shuffle = arr => arr.sort(() => (0.5 - Math.random()));
-    this.reset = arr => {
-        if (arr) {
-            arr.splice(0, arr.length);
-            return arr;
-        }
-        return [];
-    }
+	this.indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;
 
     this.multisort = function(arr, fnSorts, dirs) {
 		dirs = dirs || []; // directions
@@ -96,6 +94,7 @@ JSON.size = sb.size;
 JSON.read = fnParse;
 
 // Extends Array prototype
+Array.prototype.reset = fnReset;
 Array.prototype.eachPrev = fnEachPrev;
 Array.prototype.item = function(i) { return this[i % this.length]; }
 Array.prototype.last = function() { return this.at(-1); }

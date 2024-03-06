@@ -33,20 +33,13 @@ function fnUpdate(sql, params) {
 }
 db.delete = db.update = fnUpdate;
 
-db.runUpdate = function(sql, params) {
-	return new Promise((resolve, reject) => { // Important! declare function to use this!!
-		db.run(sql, params, function(err) { return err ? reject(err) : resolve(this); });
-	});
-}
-
 const menus = new Menus(db);
 const usuarios = new Usuarios(db);
 
 export default {
 	menus, usuarios, 
 
-	open: function() {
-	},
+	open: globalThis.void,
 	close: function() {
 		db.close(console.error); // close the database connection
 		console.log("> Sqlite " + config.SQLITE_PATH + " closed.");

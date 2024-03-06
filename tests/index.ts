@@ -19,17 +19,25 @@ test.skip("Skipping tests", () => {
 });
 
 describe("Sqlite DB tests", () => {
-    it("Filter by params", async () => {
-        const data = await sqlite.filterByParams();
-        assert.equal(data.length, 1);
-        assert.equal(data[0].tipo, 1);
+    it("Filter by data", async () => {
+        const menus = await sqlite.filter({ tipo: 1 });
+        assert.equal(menus.length, 18);
+        const actions = await sqlite.filter({ tipo: 2 });
+        assert.equal(actions.length, 2);
+    });
+
+    it("Filter menu by term", async () => {
+        const menu = await sqlite.getById(2);
+        const data = await sqlite.filterMenu("inicio");
+        assert.equal(menu.nombre, data[0].nombre);
         assert.equal(data[0].nombre, "Inicio");
+        assert.equal(menu.tipo, data[0].tipo);
+        assert.equal(data.length, 1);
     });
 
     it("Multi insert values", () => {
-        sqlite.insertAll().then(results => {
-            console.log("test", results);
-            assert.equal(results.changes, 3);
+        sqlite.insertAll().then(changes => {
+            assert.equal(changes, 3);
         });
     });
 });

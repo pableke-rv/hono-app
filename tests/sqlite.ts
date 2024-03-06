@@ -10,6 +10,8 @@ const MENUS = [
 
 sqlite.open();
 export default {
-    filterByParams: () => sqlite.menus.filterByParams(1, "inicio"),
+    getById: id => sqlite.menus.getById(id),
+    filter: data => sqlite.menus.filter(data),
+    filterMenu: term => sqlite.menus.filterByTerm(1, term),
     insertAll: () => sqlite.menus.insertAll(MENUS).then(sqlite.menus.deleteTest)
 }

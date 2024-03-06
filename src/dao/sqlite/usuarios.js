@@ -4,6 +4,8 @@ import bcrypt from "bcrypt";
 const fnError = err => (err.errno == 19) ? "Users previously registered in the system" : err; //UK violated
 
 export default function(db) {
+	const self = this; //self instance
+
     this.all = () => db.list("select * from usuarios order by nif desc limit 10", []);
     this.filter = data => {
         const sql = "select * from usuarios where (? is null or nif like ?) and (? is null or email like ?)";
@@ -42,6 +44,6 @@ export default function(db) {
         const params = [bcrypt.hashSync(pass, 10), user]; // user = id
         return db.update(sql, params).catch(fnError);
     }
-    this.save = data => data.id ? this.update(data) : this.insert(data);
+    this.save = data => data.id ? self.update(data) : self.insert(data);
     this.delete = id => db.delete("delete from usuarios where id = ?", id);
 }
