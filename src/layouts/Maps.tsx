@@ -1,9 +1,10 @@
 
+import Layout from "./Main";
+import { Tab } from "../components/Tabs";
+
 export const Tab0 = () => {
     return (
-        <div id="tab-0" class="tab-content active">
-            <h2>GOOGLE MAPS API</h2>
-
+        <Tab id="tab-0" active="active" title="GOOGLE MAPS API">
             <div class="ui-blocks">
                 <label class="ui-block-xl ui-icon-block">
                     <div class="label required">Origen de la ruta:</div>
@@ -37,6 +38,14 @@ export const Tab0 = () => {
                     <li><b>Manutención 2:</b> @m2; €</li>
                 </ul>
             </div>
-        </div>
+        </Tab>
+    );
+}
+
+export default (props: any) => {
+    return (
+        <Layout i18n={props.i18n}>
+            <Tab0/>
+        </Layout>
     );
 }

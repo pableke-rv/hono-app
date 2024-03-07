@@ -1,16 +1,9 @@
+
+import Layout from "./Main";
+import { Tab } from "../components/Tabs";
 import { Notice } from "../components/Alerts";
 
-const Tab = (props: any) => {
-    const active = "tab-content " + (props.active || "");
-    return (
-        <div id={props.id} class={active}>
-            <h2>{props.title}</h2>
-            {props.children}
-        </div>
-    );
-}
-
-export const Tab0 = (props: any) => {
+const Tab0 = (props: any) => {
     return (
         <Tab id="tab-0" active="active" title="Hello Hono!">
             <Notice type="info" icon="fas fa-bullhorn"><b>Info:</b> <span>Area de pruebas</span></Notice>
@@ -43,7 +36,7 @@ export const Tab0 = (props: any) => {
     );
 }
 
-export const Tab1 = (props: any) => {
+const Tab1 = (props: any) => {
     return (
         <Tab id="tab-1" title="Actions">
             <form id="form-pokemon" action="#">
@@ -73,5 +66,14 @@ export const Tab1 = (props: any) => {
                 <a href="#tab-0" class="btn btn-primary tab-action"><i class="fas fa-angle-double-left"></i></a>
             </div>
         </Tab>
+    );
+}
+
+export default (props: any) => {
+    return (
+        <Layout i18n={props.i18n}>
+            <Tab0/>
+            <Tab1/>
+        </Layout>
     );
 }

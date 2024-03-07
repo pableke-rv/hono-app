@@ -9,8 +9,8 @@ export default function(db) {
         return db.list(sql, [data.tipo, data.tipo, data.nombre, data.nombre + "%"]);
     }
     this.filterByTerm = (tipo, term) => {
-        const sql = "select * from v_menu_padre where (tipo = ?) and (UPPER(nombre) like ?)";
-        return db.list(sql, [ tipo, "%" + term.toUpperCase() + "%" ]);
+        const sql = "select * from v_menu_padre where (tipo = ?) and (nombre like ?)";
+        return db.list(sql, [ tipo, "%" + term + "%" ]); // like is case insensitive
     }
 
     this.getById = id => db.find("select * from v_menu_padre where id = ?", id);

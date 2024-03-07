@@ -18,7 +18,16 @@ export default {
 	DIR_UPLOADS: path.join(FILES, "uploads"),
 	DIR_THUMBS: path.join(FILES, "thumbs"),
 
+	GMAIL_USER: process.env.GMAIL_USER,
+	GMAIL_PASS: process.env.GMAIL_PASS,
+
+	RECAPTCHA_PUBLIC: process.env.RECAPTCHA_PUBLIC,
+	RECAPTCHA_PRIVATE: process.env.RECAPTCHA_PRIVATE,
+
 	SESSION_KEY: process.env.SESSION_KEY || "EI1*cMijUIFg4^Q6uvmgB#D8lD&3iat1Axg%x@gj9OsgjN^bV1CO2R5q",
+
+	JWT_KEY: process.env.JWT_KEY || "2ioUHb2Lf0&U3sF49o%!mw3149G4H1qwHrE*14CmOrjTEM0*Jt",
+	JWT_EXPIRES: +process.env.JWT_EXPIRES || 3600000, // default=1h
 
 	SQLITE_PATH: path.join(SRC, "data/db.sqlite")
 };

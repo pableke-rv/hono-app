@@ -1,7 +1,8 @@
 
 import { Context } from "hono";
-import Index from "../pages/index";
-import Maps from "../pages/maps";
+import Index from "../layouts/Index";
+import Maps from "../layouts/Maps";
+import Email from "../layouts/Email";
 
 export const index = (ctx: Context) => {
     return ctx.html(<Index i18n={ctx.get("lang")}/>);
@@ -25,4 +26,7 @@ export const maps = (ctx: Context) => {
 
 export const test = (ctx: Context) => {
     return ctx.text("Hello Word!");
+}
+export const email = (ctx: Context) => {
+    return ctx.html(<Email/>);
 }

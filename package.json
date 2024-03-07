@@ -11,6 +11,8 @@
     "dotenv": "^16.4.4",
     "hono": "^4.0.2",
     "hono-sessions": "^0.3.4",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.11",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {

@@ -12,6 +12,24 @@ describe("Request example", () => {
         assert.equal(res.status, 200);
         assert.equal(await res.text(), "Hello Word!");
     });
+
+    it("GET /email", () => {
+        app.email().then(info => {
+            assert.ok(info);
+            assert.deepEqual(info.rejected, []);
+            assert.deepEqual(info.accepted, [ "pableke@gmail.com" ]);
+        });
+    });
+});
+describe("Login test", () => {
+    it("JWT", () => {
+        const name = "pablo Rosique";
+        app.jwt({ id: 123, name }).then(user => {
+            console.log(user);
+            assert.equal(user.id, 123);
+            assert.equal(user.name, name);
+        });
+    });
 });
 
 test.skip("Skipping tests", () => {
@@ -28,7 +46,7 @@ describe("Sqlite DB tests", () => {
 
     it("Filter menu by term", async () => {
         const menu = await sqlite.getById(2);
-        const data = await sqlite.filterMenu("inicio");
+        const data = await sqlite.filterMenu("ini");
         assert.equal(menu.nombre, data[0].nombre);
         assert.equal(data[0].nombre, "Inicio");
         assert.equal(menu.tipo, data[0].tipo);

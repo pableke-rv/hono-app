@@ -94,8 +94,8 @@ JSON.size = sb.size;
 JSON.read = fnParse;
 
 // Extends Array prototype
-Array.prototype.reset = fnReset;
-Array.prototype.eachPrev = fnEachPrev;
+Array.prototype.reset = function () { return fnReset(this); }
+Array.prototype.eachPrev = function(fn) { return fnEachPrev(this, fn); }
 Array.prototype.item = function(i) { return this[i % this.length]; }
 Array.prototype.last = function() { return this.at(-1); }
 
