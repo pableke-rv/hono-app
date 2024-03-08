@@ -15,5 +15,6 @@ const sendMailHTML = html => {
 export default {
     test: () => app.request("/test"),
     email: () => app.request("/email").then(res => res.text()).then(sendMailHTML),
-    jwt: user => util.verify(util.sign(user))
+    jwt: user => util.verify(util.sign(user)),
+    zip: (output, files) => util.zip(output, files)
 }

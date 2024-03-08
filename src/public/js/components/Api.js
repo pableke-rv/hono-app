@@ -1,17 +1,24 @@
 
+import sb from "./StringBox.js"
 import alerts from "./Alerts.js";
 
 function Api() {
+    var headers;
+
     function setHeaders(opts) {
         opts.headers = opts.headers || {}; // Headers container
         opts.headers["x-requested-with"] = "XMLHttpRequest"; // AJAX
         //opts.headers["user-agent"] = "Component API AJAX"; // user description
-        /*if (opts.token) {
+        if (opts.token) {
             opts.headers["x-access-token"] = opts.token;
             opts.headers["authorization"] = "Bearer " + opts.token;
-        }*/
-        //const token = req.headers["x-access-token"] || sb.substring(req.headers["authorization"], 7);
+        }
+        headers = opts.headers;
     }
+
+    this.getHeaders = () => headers;
+    this.getHeader = name => headers[name];
+    this.getToken = () => headers["x-access-token"] || sb.substring(headers["authorization"], 7);
 
     this.json = async (url, opts) => {
         opts = opts || {}; // Call options

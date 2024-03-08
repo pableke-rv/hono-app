@@ -1,6 +1,6 @@
 
 import nodemailer from "nodemailer"; //send emails
-import config from "app/dist/config.js";
+import config from "../config.js"; // Configurations
 
 // create reusable transporter object using the default SMTP transport
 // allow non secure apps to access gmail: https://myaccount.google.com/lesssecureapps

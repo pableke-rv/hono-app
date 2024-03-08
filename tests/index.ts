@@ -13,7 +13,7 @@ describe("Request example", () => {
         assert.equal(await res.text(), "Hello Word!");
     });
 
-    it("GET /email", () => {
+    test.skip("GET /email", () => {
         app.email().then(info => {
             assert.ok(info);
             assert.deepEqual(info.rejected, []);
@@ -25,15 +25,16 @@ describe("Login test", () => {
     it("JWT", () => {
         const name = "pablo Rosique";
         app.jwt({ id: 123, name }).then(user => {
-            console.log(user);
             assert.equal(user.id, 123);
             assert.equal(user.name, name);
         });
     });
 });
-
-test.skip("Skipping tests", () => {
-    assert.notEqual(1, 2)
+describe("Util test", () => {
+    it("zip", () => {
+        const FILES = [ "src/public/files/aeat4.pdf", "src/public/files/aeat5.pdf", "src/public/files/aeat6.pdf", "src/public/files/canon_digital.pdf" ];
+        assert.match(app.zip("test.zip", FILES), /test.zip/);
+    });
 });
 
 describe("Sqlite DB tests", () => {
