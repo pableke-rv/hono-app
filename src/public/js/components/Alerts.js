@@ -63,8 +63,8 @@ function Alerts() {
 	const _top = _loading.nextElementSibling;
     this.top = () => { document.body.scrollIntoView({ behavior: "smooth" }); return self; }
 	this.redir = (url, target) => { url && window.open(url, target || "_blank"); return self; };
+	_top.addEventListener("click", ev => { self.top(); ev.preventDefault(); });
 	window.onscroll = function() { _top.toggle(null, this.scrollY < 80); }
-	_top.addEventListener("click", self.top);
 
     const fnShow = (el, txt) => {
         el.innerHTML = i18n.get(txt);

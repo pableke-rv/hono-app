@@ -3,6 +3,7 @@ import en from "./en.js";
 import es from "./es.js";
 // referencia local a i18n en la parte publica (cliente)
 import i18n from "app/i18n/langs";
+import sb from "app/js/components/StringBox.js";
 
 // ¡¡Importante!!
 // usar siempre la referencia: app/i18n/langs.js en el servidor
@@ -16,8 +17,9 @@ Object.assign(client.es, es);
 i18n.confirm = () => true;
 i18n.getNavLang = i18n.getDefault;
 i18n.getLanguage = list => {
-    list = list || ""; // languages list (ej: es-ES,es)
-    return list.split(",").find(lang => client[lang]) || i18n.getDefault();
+    const langs = i18n.getIsoLangs(); // Keys array of langs
+    const fnLang = lang => langs.find(i18n => (lang == i18n) || lang.startsWith(i18n));
+    return fnLang(sb.split(list, ",").find(fnLang) || i18n.getDefault());
 }
 
 // Server language container

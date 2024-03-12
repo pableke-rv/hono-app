@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Static Test Page</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="../public/css/styles-min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/public/css/styles-min.css">
 	<script src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
-    <script type="module" src="../public/js/static.js"></script>
+    <script type="module" src="/public/js/tests.js"></script>
 </head>
 <body>
 	<header></header>
@@ -40,8 +40,8 @@
                     <i class="fas fa-chevron-down"></i>
                 </button>
                 <div>
-                    <a href="?lang=es" class="es"><img src="../public/img/flags/spain.png"> ES</a>
-                    <a href="?lang=en" class="en"><img src="../public/img/flags/great_britain.png"> EN</a>
+                    <a id="es" href="/index?lang=es"><img src="/public/img/flags/spain.png"> ES</a>
+                    <a id="en" href="/index?lang=en"><img src="/public/img/flags/great_britain.png"> EN</a>
                 </div>
             </div>
             <button id="theme-toggle">
@@ -137,9 +137,11 @@
 
             <div class="navbar">
                 <a href="#next-tab" class="btn btn-primary tab-action">Sig. <i class="fas fa-angle-double-right"></i></a>
-                <a href="#tab-2" class="btn btn-primary tab-action"><i class="fas fa-angle-double-right"></i></a>
-                <a href="/views/maps.html" class="btn btn-green">Go maps <i class="fas fa-share"></i></a>
-                <a href="/views/tables.html" class="btn btn-green">Tables <i class="fas fa-table"></i></a>
+                <a href="/login" class="btn btn-primary load-main">Login <i class="fas fa-angle-double-right"></i></a>
+                <a href="/views/en/maps.html" class="btn btn-green">Go maps <i class="fas fa-share"></i></a>
+                <a href="/maps" class="btn btn-green load-main">Go maps by AJAX <i class="fas fa-undo-alt"></i></a>
+                <a href="/views/en/tables.html" class="btn btn-green">Tables <i class="fas fa-table"></i></a>
+                <button class="btn btn-green">Button</button>
             </div>
         </div>
 
@@ -172,6 +174,7 @@
                 <a href="#tab-0" class="btn btn-primary tab-action"><i class="fas fa-angle-double-left"></i></a>
             </div>
         </div>
+        <script type="module" src="/public/js/web/index.js"></script>
     </main>
 
     <footer>Page Footer</footer>

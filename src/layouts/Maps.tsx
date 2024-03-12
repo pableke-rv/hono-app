@@ -1,8 +1,9 @@
 
 import Layout from "./Main";
 import { Tab } from "../components/Tabs";
+import i18n from "../i18n/langs.js";
 
-export const Tab0 = () => {
+export const MapsTab0 = () => {
     return (
         <Tab id="tab-0" active="active" title="GOOGLE MAPS API">
             <div class="ui-blocks">
@@ -42,10 +43,10 @@ export const Tab0 = () => {
     );
 }
 
-export default (props: any) => {
+export const Maps = (props: any) => {
     return (
-        <Layout i18n={props.i18n}>
-            <Tab0/>
+        <Layout>
+            <MapsTab0/>
         </Layout>
     );
 }

@@ -1,6 +1,7 @@
 
 import en from "./main/en.js";
 import es from "./main/es.js";
+import sb from "../components/StringBox.js";
 
 const isnum = val => ((typeof(val) === "number") || (val instanceof Number));
 const round = (num, scale) => +(Math.round(num + "e+" + scale)  + "e-" + scale);
@@ -9,15 +10,13 @@ function I18n() {
 	const self = this; //self instance
     const DEFAULT = "en"; // Default iso lang
 
-    let _langs = { en, "en-GB": en, es, "es-ES": es }; // All langs
+    let _langs = { en, es }; // All langs
     let _lang = en; // Default language
 
     this.getLangs = () => _langs;
     this.getLang = () => _lang;
-    this.setLang = lang => { // especific language
-        _lang = _langs[lang] || _lang;
-        return self;
-    }
+    this.setI18n = lang => { _lang = lang || _lang; return self; } // load language object
+    this.setLang = lang => self.setI18n(_langs[lang] || _langs[sb.substring(lang, 0, 2)]); // especific language by key
 
     this.addLang = function(name, lang) {
         Object.assign(_langs[name], lang);

@@ -1,15 +1,23 @@
 
-import api from "./components/Api.js";
-import Form from "./components/Form.js";
-import sb from "./components/StringBox.js";
 import nav from "./components/Navigation.js";
-import maps from "./xeco/iris/tests.js";
+import menu from "./components/Menu.js";
+import menus from "./data/menus.js";
 import i18n from "./i18n/langs.js";
+
+import maps from "./xeco/iris/tests.js";
+import index from "./web/index.js";
+import login from "./web/login.js";
+import tables from "./web/tables.js";
+
+// Initialize navigation
+maps(); index(); login(); tables();
+const menuTree = menus.filter(node => (node.tipo == 1)).sort((a, b) => (a.orden - b.orden));
 
 document.addEventListener("DOMContentLoaded", () => {
     i18n.setLanguage(); // Client language
 
     const menuHTML = document.querySelector("ul.menu");
+    menuHTML.innerHTML = menuHTML.innerHTML || menu.html(menuTree);
     menuHTML.slideIn();
     // toggle phone menu
     const menuToggleBtn = document.querySelector("#menu-toggle");
@@ -21,9 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Language selector
     const html = document.documentElement;
     const langs = document.getElementById("languages");
-    const fnLang = link => { langs.firstElementChild.firstElementChild.src = link.firstElementChild.src; };
-    //langs.querySelectorAll("a").forEach(link => link.addEventListener("click", ev => { fnLang(link); })); // force reload
-    fnLang(langs.querySelector("." + i18n.get("lang")));
+    const link = langs.querySelector("a#" + i18n.get("lang"));
+    langs.firstElementChild.firstElementChild.src = link.firstElementChild.src;
 
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
     const themeToggleBtn = document.querySelector("#theme-toggle");
@@ -59,48 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     });
+
+    nav.init();
 });
-
-function fnLoadIndex() {
-    // Tab0 = API Tests
-    document.querySelector('a[href="/api/maps"]').addEventListener("click", ev => {
-        api.text(ev.target.href).then(nav.setMain).then(maps);
-        ev.preventDefault();
-    });
-
-    // Tab1 = Pokemon API Tests
-    const info = document.getElementById("info-pokemon");
-    const fnSelect = data => {
-        info.innerHTML = `<div>
-                <h3>Pokemon ${data.name}</h3>
-                <ul>
-                    <li><b>Nombre:</b> ${data.name}</li>
-                    <li><b>Tipo:</b> ${data.types[0].type.name}</li>
-                    <li><b>Especie:</b> ${data.species.name}</li>
-                    <li><b>HP:</b> ${data.stats[0].base_stat}</li>
-                    <li><b>Ataque:</b> ${data.stats[1].base_stat}</li>
-                    <li><b>Defensa:</b> ${data.stats[3].base_stat}</li>
-                </ul>
-            </div>
-            <img src="${data.sprites.front_default}" alt="${data.name}">`;
-        info.show();
-        console.log(data);
-    }
-
-    const formPokemon = new Form("#form-pokemon"); // instance
-    formPokemon.submit(ev => ev.preventDefault()); // ajax submit
-    formPokemon.setAutocomplete("#pokemon", {
-        source: (term, acPokemon) => {
-            const fnFilter = pokemon => sb.ilike(pokemon.name, term);
-            api.json("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0")
-                .then(data => acPokemon.render(data.results.filter(fnFilter)));
-        },
-		render: item => item.name,
-		select: item => item.name,
-		afterSelect: item => api.json(`https://pokeapi.co/api/v2/pokemon/${item.name}`).then(fnSelect),
-		onReset: () => info.hide()
-    });
-}
-
-nav.addListener("/", fnLoadIndex).addListener("/index", fnLoadIndex)
-    .addListener("/maps", maps);

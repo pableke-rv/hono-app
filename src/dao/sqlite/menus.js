@@ -40,5 +40,5 @@ export default function(db) {
     }
     this.save = data => data.id ? self.update(data) : self.insert(data);
     this.delete = id => db.delete("delete from menus where id = ?", id);
-    this.deleteTest = () => db.update("delete from menus where id > 20");
+    this.deleteTest = () => db.delete("delete from menus where id > 20");
 }

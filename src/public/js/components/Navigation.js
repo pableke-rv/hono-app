@@ -1,16 +1,32 @@
 
 import api from "./Api.js";
+import alerts from "./Alerts.js";
 import tabs from "./Tabs.js";
 
 function Navigation() {
 	const self = this; //self instance
     const main = document.body.children.findOne("main");
+    var isVt = true;
 
-    this.setMain = data => {
-        main.innerHTML = data; // update contents
-        document.documentElement.scrollTop = 0; // scroll to top
-        tabs.load(main); // reload tabs events
+    function loadMain(el) { // Capture clicks to load main via AJAX
+        el.querySelectorAll("a.load-main").setClick((ev, link) => {
+            api.text(link.href).then(text => { // Load main via AJAX on click
+                self.setMain(text, link.getAttribute("href"));
+            }).catch(alerts.showError);
+            ev.preventDefault();
+        });
         return self;
+    }
+
+    this.init = () => loadMain(document);
+    this.setMain = (data, pathname, vt) => {
+        isVt = vt; // View Transition indicator
+        main.innerHTML = data; // update contents
+        document.dispatchEvent(new Event("vt:" + pathname)); // Dispatch vt event
+
+        alerts.top(); // Show top view
+        tabs.load(main); // reload tabs events
+        return loadMain(main); // Listen new clicks
     }
     this.addListener = (name, fn) => {
         if (window.location.pathname == name)
@@ -26,11 +42,10 @@ function Navigation() {
             // utilizamos la api de View Transitions
             document.startViewTransition(() => {
                 // extraigo el contenido de la etiqueta main
-                self.setMain(text.match(/<main[^>]*>([\s\S]*)<\/main>/im)[1]);
-                document.dispatchEvent(new Event("vt:" + url.pathname)); // Dispatch vt event
-                //console.log("Event name =", "vt:" + url.pathname); // specific name event
+                const re =/<main[^>]*>([\s\S]*)<\/main>/im;
+                self.setMain(text.match(re)[1], url.pathname, true);
             });
-        });
+        }).catch(alerts.showError);
     }
 
     // Check to see if API is supported
@@ -38,17 +53,18 @@ function Navigation() {
         // capture navigation event links
         window.navigation.addEventListener("navigate", ev => {
             const url = new URL(ev.destination.url);
-            if (url.searchParams.get("force"))
-                return; // Force refresh view
-            //if (location.pathname == url.pathname) // AJAX no cambia la url
-                //return ev.preventDefault(); // Current destination
+            //console.log(location.pathname, isVt, url, ev);
+            if (!url.pathname.endsWith("html"))
+                return; // Desactive View Transition intercept
+            // Current location, Important! AJAX NOT to change url
+            if (isVt && (location.pathname == url.pathname))
+                return ev.preventDefault(); // Current destination
             // Si es una pagina externa => ignoramos el evento
             if (location.origin == url.origin) {
                 // Navegación en el mismo dominio (origin)
                 const handler = () => fetchMain(url);
                 ev.intercept({ handler }); // intercept event
             }
-            //console.log(url, ev);
         });
     }
 }

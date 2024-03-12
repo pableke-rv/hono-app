@@ -3,6 +3,7 @@ import { raw } from "hono/html";
 import Menu from "../components/Menu";
 import { Alerts, Loading, BackToTop } from "../components/Alerts";
 import { User, Langs } from "../components/Dropdowns";
+import i18n from "../i18n/langs.js";
 
 const Head = (props: any) => {
     return (
@@ -12,9 +13,9 @@ const Head = (props: any) => {
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
             <title>{props.title}</title>
-            <link rel="stylesheet" type="text/css" media="screen" href="public/css/styles-min.css"/>
+            <link rel="stylesheet" type="text/css" media="screen" href="/public/css/styles-min.css"/>
             <script src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
-            <script type="module" src="public/js/tests.js"></script>
+            <script type="module" src="/public/js/tests.js"></script>
         </head>
     );
 }
@@ -33,14 +34,15 @@ const NavPhone = (props: any) => {
 }
 
 export default (props: any) => {
+    const lang = i18n.getLang();
     return (
-        <html lang={props.i18n.lang}>
-            <Head title={props.i18n.title}/>
+        <html lang={lang.lang}>
+            <Head title={lang.title}/>
             <body>
                 <header></header>
                 <NavPhone/>
                 <nav class="menu-main">
-                    <div><Menu>{raw(props.i18n.menu)}</Menu></div>
+                    <div><Menu>{raw(lang.menu)}</Menu></div>
                     <div class="separator"></div>
                     <div class="menu-group">
                         <User/>
@@ -52,7 +54,7 @@ export default (props: any) => {
                     </div>
                 </nav>
 
-                <Alerts/>
+                <Alerts {...i18n.getMsgs()}/>
                 <Loading/>
                 <BackToTop/>
 

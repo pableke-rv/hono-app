@@ -1,5 +1,5 @@
 
-import coll from "../../components/Collection.js";
+import nav from "../../components/Navigation.js";
 import Place from "../../model/iris/Place.js";
 import dieta from "../../model/iris/Dieta.js";
 
@@ -39,7 +39,7 @@ window.initMap = function() {
     });
 }
 
-export default function() {
+function fnMaps() {
     if (loaded) // is API loaded
         return window.initMap();
     // Create the script tag, set the appropriate attributes
@@ -49,4 +49,8 @@ export default function() {
     script.defer = true; // Will execute the script after the document has been parsed
     document.head.appendChild(script); // Append the "script" element to "head"
     loaded = true; // API loaded
+}
+
+export default () => {
+    nav.addListener("/views/es/maps.html", fnMaps).addListener("/views/en/maps.html", fnMaps).addListener("/maps", fnMaps);
 }

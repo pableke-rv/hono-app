@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return false; // Server error
 		const data = JSON.read(args.fact);
         factura.setData(data); // Load data-model before view
-		formFact.setData(data).readonly(factura.isDisabled())
+		formFact.setData(data).setval("#nifTercero", data.nif).readonly(factura.isDisabled())
 				.toggle(".insert-only", factura.isEditable()).toggle(".update-only", factura.isDisabled())
 				.toggle(".firmable-only", factura.isFirmable()).toggle(".rechazable-only", factura.isRechazable())
 				.toggle(".show-recibo", factura.isRecibo()).toggle(".show-factura", factura.isFactura()).toggle(".show-cp", factura.isCartaPago())

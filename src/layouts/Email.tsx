@@ -1,5 +1,6 @@
 
 import { raw } from "hono/html";
+import i18n from "../i18n/langs.js";
 
 export default (props: any) => {
     return (

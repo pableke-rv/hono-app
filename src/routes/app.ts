@@ -1,7 +1,7 @@
 
-import api from "./api";
+import login from "./login";
 import index from "./index";
 
-index.route("/api", api);
+index.route("/", login);
 
 export default index;

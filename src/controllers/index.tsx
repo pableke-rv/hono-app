@@ -1,32 +1,25 @@
 
 import { Context } from "hono";
-import Index from "../layouts/Index";
-import Maps from "../layouts/Maps";
+import { Index, IndexTabs } from "../layouts/Index";
+import { Maps, MapsTab0 } from "../layouts/Maps";
 import Email from "../layouts/Email";
 
-export const index = (ctx: Context) => {
-    return ctx.html(<Index i18n={ctx.get("lang")}/>);
-}
+import i18n from "../i18n/langs.js";
 
-export const auth = (ctx: Context) => {
-    return ctx.redirect("/");
-}
-export const login = (ctx: Context) => {
-    ctx.get("session").set("userId", 123456);
-    return ctx.redirect("/");
-}
-export const logout = (ctx: Context) => {
-    ctx.get("session").deleteSession();
-    return ctx.redirect("/");
+export const index = (ctx: Context) => {
+    i18n.init(ctx.get("lang"));
+    return ctx.get("xhr") ? ctx.html(<IndexTabs/>) : ctx.html(<Index/>);
 }
 
 export const maps = (ctx: Context) => {
-    return ctx.html(<Maps i18n={ctx.get("lang")}/>);
+    i18n.init(ctx.get("lang"));
+    return ctx.get("xhr") ? ctx.html(<MapsTab0/>) : ctx.html(<Maps/>);
 }
 
 export const test = (ctx: Context) => {
     return ctx.text("Hello Word!");
 }
 export const email = (ctx: Context) => {
+    i18n.init(ctx.get("lang"));
     return ctx.html(<Email/>);
 }

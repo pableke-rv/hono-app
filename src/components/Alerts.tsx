@@ -26,10 +26,10 @@ export const Alert = (props: AlertType) => {
 export const Alerts = (props: any) => {
     return (
         <div class="alerts">
-            <Alert type="success" icon="fas fa-check-circle fa-3x">{props.ok}</Alert>
-            <Alert type="info" icon="fas fa-info fa-3x">{props.info}</Alert>
-            <Alert type="warn" icon="fas fa-exclamation-triangle fa-3x">{props.warn}</Alert>
-            <Alert type="error" icon="fas fa-exclamation fa-2x">{props.error}</Alert>
+            <Alert type="success" icon="fas fa-check-circle fa-2x">{props.msgOk}</Alert>
+            <Alert type="info" icon="fas fa-info fa-2x">{props.msgInfo}</Alert>
+            <Alert type="warn" icon="fas fa-exclamation-triangle fa-2x">{props.msgWarn}</Alert>
+            <Alert type="error" icon="fas fa-exclamation fa-2x">{props.msgError}</Alert>
         </div>
     );
 }

@@ -1,4 +1,3 @@
-// @ts-nocheck 
 
 import { serve } from "@hono/node-server"; // http server
 import dao from "./dao/factory.js"; // DAO connections

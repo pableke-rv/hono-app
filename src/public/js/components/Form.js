@@ -239,7 +239,7 @@ export default function(form, opts) {
 		return fnValidate(data) ? data : !self.setErrors(i18n.getMsgs(), selector);
 	}
 
-	this.send = (url, opts) => {
+	this.send = async (url, opts) => {
 		opts = opts || {}; // Settings
 		const fd = new FormData(form); // Data container
 		opts.headers = opts.headers || {}; // Headers container
@@ -249,11 +249,9 @@ export default function(form, opts) {
 			//url += "?" + (new URLSearchParams(fd)).toString();
 		//else
 		opts.body = (form.enctype == "multipart/form-data") ? fd : new URLSearchParams(fd);
-		//const insertar = opts.insert && !data[opts.pkName || "id"]; // insert or update
-		//const fnSave = (insertar ? opts.insert : opts.update) || globalThis.void; // action
-		return api.send(url || form.action, opts)
-					//.then(info => { self.setOk(info); fnSave(data, info); })
-					.catch(info => { self.setErrors(info); });
+		return await api.send(url || form.action, opts)
+						.then(info => { self.setOk(info); return info; })
+						.catch(info => { self.setErrors(info); return info; });
 	}
 
 	// Form initialization

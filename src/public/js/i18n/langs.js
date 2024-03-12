@@ -31,6 +31,13 @@ i18n.reset = () => {
     return i18n;
 }
 
+i18n.init = lang => i18n.setLang(lang).reset();
+i18n.setMsgs = msgs => {
+    if (msgs[KEY_ERR])
+        i18n.setMsgError(KEY_ERR, msgs[KEY_ERR]);
+    return i18n.setOk(msgs.msgOk).setInfo(msgs.msgInfo).setWarn(msgs.msgWarn);
+}
+
 // Extends Date prototype
 Date.prototype.addHours = function(hours) {
     this.setHours(this.getHours() + hours);

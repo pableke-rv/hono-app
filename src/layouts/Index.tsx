@@ -2,8 +2,12 @@
 import Layout from "./Main";
 import { Tab } from "../components/Tabs";
 import { Notice } from "../components/Alerts";
+import i18n from "../i18n/langs.js";
 
-const Tab0 = (props: any) => {
+export const IndexTab0 = (props: any) => {
+    const lang = i18n.getLang();
+    const maps = `/views/${lang.lang}/maps.html`;
+    const tables = `/views/${lang.lang}/tables.html`;
     return (
         <Tab id="tab-0" active="active" title="Hello Hono!">
             <Notice type="info" icon="fas fa-bullhorn"><b>Info:</b> <span>Area de pruebas</span></Notice>
@@ -28,15 +32,17 @@ const Tab0 = (props: any) => {
 
             <div class="navbar">
                 <a href="#next-tab" class="btn btn-primary tab-action">Sig. <i class="fas fa-angle-double-right"></i></a>
-                <a href="#tab-2" class="btn btn-primary tab-action"><i class="fas fa-angle-double-right"></i></a>
-                <a href="/maps" class="btn btn-green">Go maps <i class="fas fa-share"></i></a>
-                <a href="/api/maps" class="btn btn-green">Go maps by AJAX <i class="fas fa-undo-alt"></i></a>
+                <a href="/login" class="btn btn-primary load-main">Login <i class="fas fa-angle-double-right"></i></a>
+                <a href={maps} class="btn btn-green">Go maps <i class="fas fa-share"></i></a>
+                <a href="/maps" class="btn btn-green load-main">Go maps by AJAX <i class="fas fa-undo-alt"></i></a>
+                <a href={tables} class="btn btn-green">Tables <i class="fas fa-table"></i></a>
+                <button class="btn btn-green">Button</button>
             </div>
         </Tab>
     );
 }
 
-const Tab1 = (props: any) => {
+export const IndexTab1 = (props: any) => {
     return (
         <Tab id="tab-1" title="Actions">
             <form id="form-pokemon" action="#">
@@ -69,11 +75,20 @@ const Tab1 = (props: any) => {
     );
 }
 
-export default (props: any) => {
+export const IndexTabs = (props: any) => {
     return (
-        <Layout i18n={props.i18n}>
-            <Tab0/>
-            <Tab1/>
+        <>
+            <IndexTab0/>
+            <IndexTab1/>
+        </>
+    );
+}
+
+
+export const Index = (props: any) => {
+    return (
+        <Layout>
+            <IndexTabs/>
         </Layout>
     );
 }

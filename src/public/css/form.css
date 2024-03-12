@@ -110,8 +110,9 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { margin-left
 .btn {
 	display: inline-flex; align-items: center; gap: 4px; height: 24px; margin-right: 3px; padding: .6rem 1rem;
 	font-weight: 500; font-size: 0.875rem/* 14px */; line-height: 1.25rem/* 20px */;
-	border-width: 1px; border-radius: 0.25rem/* 4px */; text-decoration: none;
+	border-width: 1px; border-radius: 0.25rem/* 4px */; border-style: none; box-sizing: content-box;
     outline: 2px solid transparent; outline-offset: 2px;
+    text-decoration: none; cursor: pointer;
 }
 .btn-primary { color: white; background-color: rgb(37 99 235)/* blue-600 */; border-color: rgb(37 99 235)/* blue-600 */; }
 .btn-primary:hover { background-color: rgb(30 64 175)/* blue-800 */; }

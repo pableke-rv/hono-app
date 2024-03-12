@@ -5,7 +5,7 @@ import uglify from "gulp-uglify";
 import htmlmin from "gulp-htmlmin";
 import cssnano from "gulp-cssnano";
 
-const HTML_PATH = [ "src/*.html", "src/views/**/*" ];
+const HTML_PATH = "src/views/**/*";
 const CSS_FILES = "src/public/css/**/*.css";
 const JS_FILES = "src/public/js/**/*.js";
 const TS_FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
@@ -30,8 +30,7 @@ gulp.task("minify-html", done => {
 		removeRedundantAttributes: false //remove attr with default value
 	};
 	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/modules/xeco";
-	gulp.src(HTML_PATH[0]).pipe(htmlmin(options)).pipe(gulp.dest("dist"));
-	gulp.src(HTML_PATH[1]).pipe(htmlmin(options)).pipe(gulp.dest("dist/views"));
+	gulp.src(HTML_PATH).pipe(htmlmin(options)).pipe(gulp.dest("dist/views"));
 	gulp.src("src/views/xeco/**/*").pipe(gulp.dest(CV)).on("end", done);
 });
 
