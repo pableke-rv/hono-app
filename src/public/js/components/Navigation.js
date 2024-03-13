@@ -2,10 +2,13 @@
 import api from "./Api.js";
 import alerts from "./Alerts.js";
 import tabs from "./Tabs.js";
+import i18n from "../i18n/langs.js";
 
 function Navigation() {
 	const self = this; //self instance
     const main = document.body.children.findOne("main");
+    const langs = document.getElementById("languages");
+    const links = langs.querySelectorAll("a");
     var isVt = true;
 
     function loadMain(el) { // Capture clicks to load main via AJAX
@@ -18,18 +21,22 @@ function Navigation() {
         return self;
     }
 
-    this.init = () => loadMain(document);
+    this.setLangs = pathname => {
+        links.forEach(link => { link.href = "/" + link.id + pathname; });
+        return self;
+    }
     this.setMain = (data, pathname, vt) => {
         isVt = vt; // View Transition indicator
         main.innerHTML = data; // update contents
-        document.dispatchEvent(new Event("vt:" + pathname)); // Dispatch vt event
+        const basename = pathname.substring(pathname.lastIndexOf("/"));
+        document.dispatchEvent(new Event("vt:" + basename)); // Dispatch vt event
 
         alerts.top(); // Show top view
         tabs.load(main); // reload tabs events
         return loadMain(main); // Listen new clicks
     }
     this.addListener = (name, fn) => {
-        if (window.location.pathname == name)
+        if (window.location.pathname.endsWith(name))
             document.addEventListener("DOMContentLoaded", fn);
         document.addEventListener("vt:" + name, fn);
         //console.log(window.location.pathname, name, "vt:" + name);
@@ -67,6 +74,14 @@ function Navigation() {
             }
         });
     }
+
+    // Executed when document ready
+    document.addEventListener("DOMContentLoaded", () => {
+        i18n.setLanguage(); // Client language
+        const link = langs.querySelector("a#" + i18n.get("lang")); // Language selector
+        langs.firstElementChild.firstElementChild.src = link.firstElementChild.src;
+        loadMain(document); // Add click events listeners
+    });
 }
 
 export default new Navigation();

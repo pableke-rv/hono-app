@@ -17,12 +17,12 @@ export const Langs = (props: any) => {
     return (
         <div id="languages" class="dropdown">
             <button>
-                <img src="public/img/flags/spain.png"/>
+                <img src="/public/img/flags/spain.png"/>
                 <i class="fas fa-chevron-down"></i>
             </button>
             <div>
-                <a id="es" href="?lang=es"><img src="/public/img/flags/spain.png"/> ES</a>
-                <a id="en" href="?lang=en"><img src="/public/img/flags/great_britain.png"/> EN</a>
+                <a id="es" href="/es"><img src="/public/img/flags/spain.png"/> ES</a>
+                <a id="en" href="/en"><img src="/public/img/flags/great_britain.png"/> EN</a>
             </div>
         </div>
     );

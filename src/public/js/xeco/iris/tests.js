@@ -40,6 +40,7 @@ window.initMap = function() {
 }
 
 function fnMaps() {
+    nav.setLangs("/maps");
     if (loaded) // is API loaded
         return window.initMap();
     // Create the script tag, set the appropriate attributes
@@ -52,5 +53,5 @@ function fnMaps() {
 }
 
 export default () => {
-    nav.addListener("/views/es/maps.html", fnMaps).addListener("/views/en/maps.html", fnMaps).addListener("/maps", fnMaps);
+    nav.addListener("/maps.html", fnMaps).addListener("/maps", fnMaps);
 }

@@ -16,8 +16,9 @@ function fnTables() { // Table-Tab
     });
     table.set("onFooter", resume => `<tr><td colspan="${resume.columns}">Filas: ${resume.size}</td></tr>`);
     table.render(menus.filter(node => (node.tipo == 1)));
+    nav.setLangs("/index");
 }
 
 export default () => {
-    nav.addListener("/views/es/tables.html", fnTables).addListener("/views/en/tables.html", fnTables);
+    nav.addListener("/tables.html", fnTables).addListener("/tables", fnTables);
 }

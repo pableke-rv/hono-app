@@ -1,12 +1,13 @@
 // @ts-nocheck
 
-import { Hono, Context, Next } from "hono";
-import { sessionMiddleware, CookieStore } from "hono-sessions";
+import { Hono } from "hono";
 import { serveStatic } from "@hono/node-server/serve-static";
+import { sessionMiddleware, CookieStore } from "hono-sessions";
+
+import { lang, init } from "./controllers/index"; // Init. language
 import { error404, error500 } from "./controllers/errors"; // Error handlers
 
 import config from "./config.js"; // Configurations
-import i18n from "./i18n/langs.js"; // Languages
 import routes from "./routes/app.js"; // Routes
 
 const app = new Hono(); // Application instance
@@ -18,17 +19,15 @@ app.use("*", sessionMiddleware({ // Session configration
     expireAfterSeconds: 900, // Expire session after 15 minutes of inactivity
     cookieOptions: { path: "/", httpOnly: true }
 }));
-app.use("*", (ctx: Context, next: Next) => {
-    const lang = ctx.req.query("lang");
-    const session = ctx.get("session");
-    if (lang || !session.get("lang")) // has language changed?
-        session.set("lang", i18n.getLanguage(lang + "," + ctx.req.header("Accept-Language")));
-    ctx.set("xhr", ctx.req.header("x-requested-with") == "XMLHttpRequest"); // Is AJAX call
-    ctx.set("lang", session.get("lang"));
-    next();
-});
+
+/*app.use("*", langByQuery);*/
+const LANG_ROUTE = "/:lang{[a-z]{2}(\-[A-Z]{2})?}";
+app.get(LANG_ROUTE, lang).get(LANG_ROUTE + "/*", lang);
+app.use("*", init); // Always load language info
 
 app.route("/", routes);
+app.route(LANG_ROUTE, routes);
+
 app.notFound(error404);
 app.onError(error500);
 

@@ -9,13 +9,13 @@ import util from "../lib/util.js";
 
 function logged(ctx: Context) {
 console.log('Log:', "logged", "ok");
-    i18n.init(ctx.get("lang")).setOk("login ok!");
+    i18n.init(ctx.var.lang).setOk("login ok!");
     return ctx.get("xhr") ? ctx.text("login ok!") : ctx.html(<Form/>);
 }
 function logerr(err: string, ctx: Context) {
 console.log("logerr", ctx.get("lang"), ctx.get("xhr"), err);
-    i18n.init(ctx.get("lang")).setError(err);
-    return ctx.get("xhr") ? ctx.text(err, 500) : ctx.html(<Login/>); // Go error
+    i18n.init(ctx.var.lang).setError(err);
+    return ctx.get("xhr") ? ctx.text(err, 500) : ctx.html(<Login/>, 500); // Go error
 }
 
 export const auth = (ctx: Context, next: Next) => { // Check if user is logged

@@ -8,6 +8,7 @@ function fnLogin() {
         formSignin.send();
         ev.preventDefault();
     });
+    nav.setLangs("/login");
 }
 
 export default () => {
