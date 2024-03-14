@@ -59,4 +59,10 @@ describe("Sqlite DB tests", () => {
             assert.equal(changes, 3);
         });
     });
+
+    it("Login", () => {
+        sqlite.login().then(user => {
+            assert.equal(user.nif, "23024374V");
+        });
+    });
 });

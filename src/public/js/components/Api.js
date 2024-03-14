@@ -15,6 +15,9 @@ function Api() {
         }
         headers = opts.headers;
     }
+    function fnError(err) {
+        alerts.showError(err);
+    }
 
     this.getHeaders = () => headers;
     this.getHeader = name => headers[name];
@@ -28,7 +31,7 @@ function Api() {
         const res = await globalThis.fetch(url, opts); // send api call
         const promise = res.ok ? res.json() : Promise.reject(res.statusText);
         // Add default catch and finally functions to promise
-        return promise.catch(alerts.showError).finally(alerts.working);
+        return promise.catch(fnError).finally(alerts.working);
     }
     this.text = async (url, opts) => {
         opts = opts || {}; // Call options
@@ -38,7 +41,7 @@ function Api() {
         const res = await globalThis.fetch(url, opts); // send api call
         const promise = res.ok ? res.text() : Promise.reject(res.statusText);
         // Add default catch and finally functions to promise
-        return promise.catch(alerts.showError).finally(alerts.working);
+        return promise.catch(fnError).finally(alerts.working);
     }
 
     this.send = async (url, opts) => {

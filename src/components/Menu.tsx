@@ -2,11 +2,11 @@
 
 import i18n from "../i18n/langs";
 import menu from "app/js/components/Menu.js";
-import menus from "app/js/data/menus.js";
+import sqlite from "app/dao/sqlite/factory.js";
 
-const tree = menus.filter(node => (node.tipo == 1)).sort((a, b) => (a.orden - b.orden));
-i18n.setLang("es").set("menu", menu.html(tree));
-i18n.setLang("en").set("menu", menu.html(tree));
+// Top level async
+i18n.setLang("es").set("menu", menu.html(await sqlite.menus.getPublic("es")));
+i18n.setLang("en").set("menu", menu.html(await sqlite.menus.getPublic("en")));
 
 export default (props: any) => {
     return ( <ul class="menu hide">{props.children}</ul> );

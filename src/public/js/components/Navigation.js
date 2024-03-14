@@ -11,21 +11,35 @@ function Navigation() {
     const links = langs.querySelectorAll("a");
     var isVt = true;
 
-    function loadMain(el) { // Capture clicks to load main via AJAX
-        el.querySelectorAll("a.load-main").setClick((ev, link) => {
+    this.isStatic = pathname => pathname.endsWith(".html");
+    this.isDynamic = pathname => !self.isStatic(pathname);
+    this.init = () => {
+        i18n.setLanguage(); // Client language
+        const link = langs.querySelector("a#" + i18n.get("lang")); // Language selector
+        langs.firstElementChild.firstElementChild.src = link.firstElementChild.src;
+        return self;
+    }
+    this.setLangs = pathname => {
+        const suffix = self.isStatic(window.location.pathname) ? ".html?nav=1" : "";
+        links.forEach(link => { link.href = "/" + link.id + pathname + suffix; });
+        return self;
+    }
+    // Capture clicks events to load main via AJAX
+    this.setClick = (el, selector) => {
+        selector = selector || "a.load-main";
+        el.querySelectorAll(selector).setClick((ev, link) => {
+            if (self.isStatic(link.href))
+                return; // Not click event necesary 
             api.text(link.href).then(text => { // Load main via AJAX on click
                 self.setMain(text, link.getAttribute("href"));
-            }).catch(alerts.showError);
+            });
             ev.preventDefault();
         });
         return self;
     }
-
-    this.setLangs = pathname => {
-        links.forEach(link => { link.href = "/" + link.id + pathname; });
-        return self;
-    }
     this.setMain = (data, pathname, vt) => {
+        if (!data) // exists changes
+            return self; // Not changes
         isVt = vt; // View Transition indicator
         main.innerHTML = data; // update contents
         const basename = pathname.substring(pathname.lastIndexOf("/"));
@@ -33,7 +47,7 @@ function Navigation() {
 
         alerts.top(); // Show top view
         tabs.load(main); // reload tabs events
-        return loadMain(main); // Listen new clicks
+        return self.setClick(main); // Listen new clicks
     }
     this.addListener = (name, fn) => {
         if (window.location.pathname.endsWith(name))
@@ -52,7 +66,7 @@ function Navigation() {
                 const re =/<main[^>]*>([\s\S]*)<\/main>/im;
                 self.setMain(text.match(re)[1], url.pathname, true);
             });
-        }).catch(alerts.showError);
+        });
     }
 
     // Check to see if API is supported
@@ -61,8 +75,8 @@ function Navigation() {
         window.navigation.addEventListener("navigate", ev => {
             const url = new URL(ev.destination.url);
             //console.log(location.pathname, isVt, url, ev);
-            if (!url.pathname.endsWith("html"))
-                return; // Desactive View Transition intercept
+            if (url.searchParams.get("nav") || self.isDynamic(url.pathname))
+                return; // Desactive View Transition interceptor
             // Current location, Important! AJAX NOT to change url
             if (isVt && (location.pathname == url.pathname))
                 return ev.preventDefault(); // Current destination
@@ -74,14 +88,6 @@ function Navigation() {
             }
         });
     }
-
-    // Executed when document ready
-    document.addEventListener("DOMContentLoaded", () => {
-        i18n.setLanguage(); // Client language
-        const link = langs.querySelector("a#" + i18n.get("lang")); // Language selector
-        langs.firstElementChild.firstElementChild.src = link.firstElementChild.src;
-        loadMain(document); // Add click events listeners
-    });
 }
 
 export default new Navigation();

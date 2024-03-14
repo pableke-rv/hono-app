@@ -30,7 +30,6 @@ function StringBox() {
     this.insertAt = insertAt;
     this.replaceAt = replaceAt;
 	this.empty = str => (fnSize(str) < 1); // length > 0
-	this.split = (str, sep) => str ? str.split(sep || ",") : [];
 
     this.unescape = str => str ? str.replace(/&#(\d+);/g, (key, num) => String.fromCharCode(num)) : null;
     this.escape = str => str ? str.trim().replace(ESCAPE_HTML, (matched) => ESCAPE_MAP[matched]) : null;
@@ -52,12 +51,6 @@ function StringBox() {
 
 	this.clean = str => str ? str.replace(/\s+/g, EMPTY) : str;
 	this.minify = str => str ? str.trim().replace(/\s+/g, " ") : str;
-    this.getCode = (str, sep) => str && str.substring(0, str.indexOf(sep || " "));
-	this.toCode = str => str ? fnWord(str).toUpperCase() : str;
-	this.toWord = str => str ? fnWord(str) : str;
-	this.lines = str => self.split(str, /[\n\r]+/);
-	this.words = str => self.split(str, /\s+/);
-
     this.trim = str => str ? str.trim() : str;
     this.ltrim = (str, sep) => str ? str.replace(new RegExp("^" + sep + "+"), EMPTY) : str;
     this.rtrim = (str, sep) => str ? str.replace(new RegExp(sep + "+$"), EMPTY) : str;
@@ -78,13 +71,19 @@ function StringBox() {
     this.isoTimeShort = str => str && str.substring(11, 16); //hh:MM
     this.getHours = str => str && +str.substring(11, 13); //hh int format
 
-    //chunk string in multiple parts
+    // Chunk string in multiple parts
 	this.test = (str, re) => re.test(str) ? str : null;
-	this.split = (str, sep) => str ? str.trim().split(sep) : null;
+	this.split = (str, sep) => str ? str.split(sep || ",") : [];
 	this.match = (str, re) => str ? str.trim().match(re) : null;
-	this.array = str => self.split(str, ",");
 	this.lastId = str => +self.match(str, /\d+$/).pop();
 	this.chunk = (str, size) => str ? str.trim().match(str, new RegExp(".{1," + size + "}", "g")) : null;
+
+    // Modificators
+    this.getCode = (str, sep) => str && str.substring(0, str.indexOf(sep || " "));
+	this.toCode = str => str ? fnWord(str).toUpperCase() : str;
+	this.toWord = str => str ? fnWord(str) : str;
+	this.lines = str => self.split(str, /[\n\r]+/);
+	this.words = str => self.split(str, /\s+/);
 }
 
 globalThis.isstr = isstr;

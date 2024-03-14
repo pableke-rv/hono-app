@@ -1,4 +1,5 @@
 
+import nav from "./components/Navigation.js";
 import menu from "./components/Menu.js";
 import menus from "./data/menus.js";
 
@@ -12,15 +13,18 @@ maps(); index(); login(); tables();
 const menuTree = menus.filter(node => (node.tipo == 1)).sort((a, b) => (a.orden - b.orden));
 
 document.addEventListener("DOMContentLoaded", () => {
+    nav.init(); // Init. navigation
     const menuHTML = document.querySelector("ul.menu");
     menuHTML.innerHTML = menuHTML.innerHTML || menu.html(menuTree);
     menuHTML.slideIn();
+
     // toggle phone menu
     const menuToggleBtn = document.querySelector("#menu-toggle");
     menuToggleBtn.addEventListener("click", ev => {
         menuHTML.closest("nav").toggle("active");
         menuToggleBtn.children.toggle();
     });
+    nav.setClick(document);
 
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
     const html = document.documentElement;

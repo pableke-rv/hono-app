@@ -37,9 +37,9 @@ function fnIndex() {
 		afterSelect: item => api.json(`https://pokeapi.co/api/v2/pokemon/${item.name}`).then(fnSelect),
 		onReset: () => info.hide()
     });
-    nav.setLangs("/");
+    nav.setLangs("/index");
 }
 
 export default () => {
-    nav.addListener("/index.html", fnIndex).addListener("/index", fnIndex)
+    nav.addListener("/index.html", fnIndex).addListener("/index", fnIndex).addListener("/", fnIndex);
 }

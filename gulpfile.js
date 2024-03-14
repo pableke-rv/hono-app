@@ -64,15 +64,18 @@ gulp.task("modules", done => {
 
 // Tasks to create static data
 gulp.task("static", done => {
-	gulp.src(SYM_LINKS).pipe(gulp.symlink("node_modules/app"));
+	gulp.src("dist/public").pipe(gulp.symlink("dist/views")); // static server links
+	gulp.src(SYM_LINKS).pipe(gulp.symlink("node_modules/app")); // dynamic links
+
 	gulp.src("src/public/img/**/*").pipe(gulp.dest("dist/public/img"));
 	gulp.src("src/public/files/**/*").pipe(gulp.dest("dist/public/files")).on("end", done);
 });
 
 gulp.task("watch", () => {
+	gulp.watch(HTML_PATH, gulp.series("minify-html"));
+	gulp.watch(CSS_FILES, gulp.series("minify-css"));
 	gulp.watch(TS_FILES, gulp.series("copy-ts"));
 	gulp.watch(JS_MODULES, gulp.series("modules"));
-	gulp.watch(HTML_PATH, gulp.series("minify-html", "minify-css"));
 	gulp.watch(JS_FILES, gulp.series("minify-js"));
 	// Other watchers ...
 });

@@ -1,6 +1,7 @@
 // @ts-nocheck
 
-import { Hono } from "hono";
+import { Hono, Next } from "hono";
+import { Context } from "hono/jsx";
 import { serveStatic } from "@hono/node-server/serve-static";
 import { sessionMiddleware, CookieStore } from "hono-sessions";
 
@@ -12,7 +13,12 @@ import routes from "./routes/app.js"; // Routes
 
 const app = new Hono(); // Application instance
 const mwStatic = serveStatic({ root: "./dist/" }); // Stastic middleware
+const mwSimule = serveStatic({ root: "./dist/", rewriteRequestPath: path => "/views" + path });
 app.use("/public/*", mwStatic).use("/views/*", mwStatic); // Static paths
+app.use("*", (ctx: Context, next: Next) => { // simule static path
+    return ctx.req.path.endsWith(".html") ? mwSimule(ctx, next) : next();
+});
+
 app.use("*", sessionMiddleware({ // Session configration
     store: new CookieStore(), // interface for getting and setting cookies
     encryptionKey: config.SESSION_KEY, // Required for CookieStore

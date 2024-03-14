@@ -10,8 +10,12 @@ const MENUS = [
 
 sqlite.open();
 export default {
+    // Menus
     getById: id => sqlite.menus.getById(id),
     filter: data => sqlite.menus.filter(data),
     filterMenu: term => sqlite.menus.filterByTerm(1, term),
-    insertAll: () => sqlite.menus.insertAll(MENUS).then(sqlite.menus.deleteTest)
+    insertAll: () => sqlite.menus.insertAll(MENUS).then(sqlite.menus.deleteTest),
+
+    // Users
+    login: () => sqlite.usuarios.login("pableke@gmail.com", "123456")
 }

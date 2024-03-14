@@ -3,7 +3,7 @@ export default [
     {
         "id":1,
         "tipo":1,
-        "icono":"<i class=\"icon-left fas fa-address-card nav-icon\"></i>",
+        "icono":"<i class=\"icon-left fas fa-address-card\"></i>",
         "nombre":"About",
         "titulo":"Nav Link About",
         "enlace":"#",
@@ -14,11 +14,11 @@ export default [
     {
         "id":2,
         "tipo":1,
-        "icono":"<i class=\"icon-left fas fa-home nav-icon\"></i>",
+        "icono":"<i class=\"icon-left fas fa-home\"></i>",
         "nombre":"Inicio",
         "nombre_en":"Home",
         "titulo":"Nav Link Inicio",
-        "enlace":"/",
+        "enlace":"/es/index.html",
         "orden":1,
         "mask":1,
         "creado":"2023-06-02T10:46:12.000Z"
@@ -47,7 +47,7 @@ export default [
     {
         "id":5,
         "tipo":1,
-        "icono":"<i class=\"icon-left fas fa-euro-sign nav-icon\"></i>",
+        "icono":"<i class=\"icon-left fas fa-euro-sign\"></i>",
         "nombre":"Ingresos",
         "titulo":"Nav Link 1",
         "enlace":"#",
