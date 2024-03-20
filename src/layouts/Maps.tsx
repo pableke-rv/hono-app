@@ -1,5 +1,5 @@
 
-import Layout from "./Main";
+import { Layout } from "./Main";
 import { Tab } from "../components/Tabs";
 import i18n from "../i18n/langs.js";
 

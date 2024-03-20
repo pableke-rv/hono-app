@@ -1,5 +1,5 @@
 
-import Layout from "./Main";
+import { Layout } from "./Main";
 import i18n from "../i18n/langs.js";
 
 export const contact = (props: any) => {

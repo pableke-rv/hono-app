@@ -9,7 +9,7 @@ const HTML_PATH = "src/views/**/*";
 const CSS_FILES = "src/public/css/**/*.css";
 const JS_FILES = "src/public/js/**/*.js";
 const TS_FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
-const JS_MODULES = [ "src/*.js", "src/dao/**/*", "src/data/**/*", "src/i18n/**/*", "src/lib/**/*" ];
+const JS_MODULES = [ "src/*.js", "src/dao/**/*", "src/data/**/*", "src/i18n/**/*", "src/lib/**/*", "src/routes/**/*" ];
 const SYM_LINKS = [
 	"dist", "dist/controllers", "dist/dao", "dist/data", "dist/lib",
 	"dist/public/js", "dist/public/js/i18n", "dist/public/js/model"
@@ -58,8 +58,9 @@ gulp.task("modules", done => {
 	gulp.src(JS_MODULES[0]).pipe(gulp.dest("dist"));
 	gulp.src(JS_MODULES[1]).pipe(gulp.dest("dist/dao"));
 	gulp.src(JS_MODULES[2]).pipe(gulp.dest("dist/data"));
-	gulp.src(JS_MODULES[3]).pipe(gulp.dest("dist/i18n"))
-	gulp.src(JS_MODULES[4]).pipe(gulp.dest("dist/lib")).on("end", done);
+	gulp.src(JS_MODULES[3]).pipe(gulp.dest("dist/i18n"));
+	gulp.src(JS_MODULES[4]).pipe(gulp.dest("dist/lib"));
+	gulp.src(JS_MODULES[5]).pipe(gulp.dest("dist/routes")).on("end", done);
 });
 
 // Tasks to create static data

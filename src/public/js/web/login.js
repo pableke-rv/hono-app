@@ -5,12 +5,14 @@ import nav from "../components/Navigation.js";
 function fnLogin() {
     const formSignin = new Form("#signin"); // instance
     formSignin.submit(ev => {
-        formSignin.send();
+        formSignin.send().then(info => { // Access allowed
+            window.location.href = "admin?ok=" + info;
+        });
         ev.preventDefault();
     });
     nav.setLangs("/login");
 }
 
 export default () => {
-    nav.addListener("/login", fnLogin);
+    nav.addListener("/login", fnLogin).addListener("/logout", fnLogin);
 }

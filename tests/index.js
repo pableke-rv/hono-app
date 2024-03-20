@@ -1,10 +1,9 @@
-// @ts-nocheck 
 
 import { describe, it, test } from "node:test";
 import assert from "node:assert";
 
-import app from "./app";
-import sqlite from "./sqlite";
+import app from "./app.js";
+import sqlite from "./sqlite.js";
 
 describe("Request example", () => {
     it("GET /test", async () => {
@@ -54,15 +53,20 @@ describe("Sqlite DB tests", () => {
         assert.equal(data.length, 1);
     });
 
+    it("Get all menus", async () => {
+        const menus = await sqlite.getMenus();
+        assert.equal(menus.length, 18);
+        assert.equal(menus[1].nombre, "Private");
+    });
+
     it("Multi insert values", () => {
         sqlite.insertAll().then(changes => {
             assert.equal(changes, 3);
         });
     });
 
-    it("Login", () => {
-        sqlite.login().then(user => {
-            assert.equal(user.nif, "23024374V");
-        });
+    it("Login", async () => {
+        const user = await sqlite.login();
+        assert.equal(user.nif, "23024374V");
     });
 });

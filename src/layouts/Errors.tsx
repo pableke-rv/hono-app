@@ -1,5 +1,5 @@
 
-import Layout from "./Main";
+import { Layout } from "./Main";
 
 export const Error404 = (props: any) => {
     //TODO: error 404 not found

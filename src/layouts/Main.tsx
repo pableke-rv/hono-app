@@ -1,11 +1,11 @@
 
-import { raw } from "hono/html";
-import Menu from "../components/Menu";
 import { Alerts, Loading, BackToTop } from "../components/Alerts";
 import { User, Langs } from "../components/Dropdowns";
+import { ButtonTheme } from "../components/Buttons";
+import Menu from "../components/Menu";
 import i18n from "../i18n/langs.js";
 
-const Head = (props: any) => {
+export const Head = (props: any) => {
     return (
         <head>
             <meta charset="utf-8"/>
@@ -21,7 +21,7 @@ const Head = (props: any) => {
     );
 }
 
-const NavPhone = (props: any) => {
+export const NavPhone = (props: any) => {
     return (
         <nav class="show-xs">
             <button id="menu-toggle">
@@ -34,8 +34,8 @@ const NavPhone = (props: any) => {
     );
 }
 
-export default (props: any) => {
-    const lang = i18n.getLang();
+export const Layout = (props: any) => {
+    const lang:any = i18n.getLang();
     return (
         <html lang={lang.lang}>
             <Head title={lang.title}/>
@@ -43,25 +43,26 @@ export default (props: any) => {
                 <header></header>
                 <NavPhone/>
                 <nav class="menu-main">
-                    <div><Menu>{raw(lang.menu)}</Menu></div>
+                    <div><Menu>{props.menu}</Menu></div>
                     <div class="separator"></div>
                     <div class="menu-group">
-                        <User/>
+                        <User user={props.user}/>
                         <Langs/>
-                        <button id="theme-toggle">
-                            <i class="fas fa-moon hide"></i>
-                            <i class="fas fa-sun hide"></i>
-                        </button>
+                        <ButtonTheme/>
                     </div>
                 </nav>
 
-                <Alerts {...i18n.getMsgs()}/>
+                <Alerts/>
                 <Loading/>
                 <BackToTop/>
 
                 <main>{props.children}</main>
-                <footer>Page Footer</footer>
+                <Footer/>
             </body>
         </html>
     );
+}
+
+export const Footer = () => {
+    return (<footer>Page Footer</footer>);
 }

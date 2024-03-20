@@ -15,7 +15,7 @@ export default function(db) {
 
     this.getById = id => db.find("select * from v_menu_padre where id = ?", id);
     this.getActions = user => db.list("select * from v_actions where usuario_id = ?", user);
-    this.getMenus = user => db.list("select * from v_menus where usuario_id is null or usuario_id = ?", user);
+    this.getMenus = (user, lang) => db.list(`select * from v_menus_${lang} where (tipo = 1) and usuario_id is null or usuario_id = ?`, user);
     this.getPublic = lang => db.list(`select * from v_menus_${lang} where (tipo = 1) and ((mask & 1) = 1)`);
 
     this.insert = data => {

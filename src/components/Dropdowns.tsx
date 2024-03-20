@@ -1,5 +1,5 @@
 
-export const User = (props: any) => {
+export const UserPublic = (props: any) => {
     return (
         <div id="user" class="dropdown">
             <button><i class="fas fa-user"></i></button>
@@ -7,10 +7,29 @@ export const User = (props: any) => {
                 <a href="mailto:#">email@google.com</a>
                 <a href="/">Home</a>
                 <hr class="slim"/>
-                <a href="#">Login</a>
+                <a href="/login">Login</a>
             </div>
         </div>
     );
+}
+export const UserLogged = (props: any) => {
+    const { logo, email } = props.user;
+    const mailto = "mailto:" + email;
+    return (
+        <div id="user" class="dropdown">
+            <button><i class="fas fa-user"></i></button>
+            <div>
+                <a href={mailto}>{email}</a>
+                <a href="/">Home</a>
+                <hr class="slim"/>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    );
+}
+export const User = (props: any) => {
+    const user = props.user ? <UserLogged user={props.user}/> : <UserPublic/>;
+    return (user);
 }
 
 export const Langs = (props: any) => {

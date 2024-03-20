@@ -155,7 +155,7 @@ function Presto() {
     this.isFirmable = solicitud.isFirmable;
     this.isRechazable = solicitud.isRechazable;
 	this.isEditableUae = solicitud.isEditableUae;
-	this.isEjecutable = solicitud.isEjecutable;
+	this.isEjecutable = () => ((solicitud.isUae() && solicitud.isPendiente()) || solicitud.isEjecutable());
 	this.isIntegrable = () => (!self.isAfc() && solicitud.isIntegrable());
 	this.isUrgente = solicitud.isUrgente;
 	this.isImpCd = () => (self.isEditable() && !self.isAnt());

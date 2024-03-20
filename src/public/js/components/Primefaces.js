@@ -31,7 +31,7 @@ function datalist(form, select, input, opts) {
     input = form.getInput(input); // get input element
     opts.onChange = item => { // fired on load event
         input.value = item.value ?? item; // item object or simple string
-        fnChange(item);
+        fnChange(input.value);
     }
     opts.onReset = () => { // fired on reset event
         input.value = "";

@@ -1,13 +1,13 @@
 
-import Layout from "./Main";
+import { Layout } from "./Main";
 import { Tab } from "../components/Tabs";
 import { Notice } from "../components/Alerts";
 import i18n from "../i18n/langs.js";
 
 export const IndexTab0 = (props: any) => {
     const lang = i18n.getLang();
-    const maps = `/views/${lang.lang}/maps.html`;
-    const tables = `/views/${lang.lang}/tables.html`;
+    const maps = `/${lang.lang}/maps.html`;
+    const tables = `/${lang.lang}/tables.html`;
     return (
         <Tab id="tab-0" active="active" title="Hello Hono!">
             <Notice type="info" icon="fas fa-bullhorn"><b>Info:</b> <span>Area de pruebas</span></Notice>

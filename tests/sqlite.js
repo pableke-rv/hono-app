@@ -1,4 +1,3 @@
-// @ts-nocheck 
 
 import sqlite from "app/dao/sqlite/factory.js";
 
@@ -14,6 +13,7 @@ export default {
     getById: id => sqlite.menus.getById(id),
     filter: data => sqlite.menus.filter(data),
     filterMenu: term => sqlite.menus.filterByTerm(1, term),
+    getMenus: () => sqlite.menus.getMenus(1, "en"),
     insertAll: () => sqlite.menus.insertAll(MENUS).then(sqlite.menus.deleteTest),
 
     // Users

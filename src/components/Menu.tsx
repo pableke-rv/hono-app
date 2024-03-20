@@ -1,5 +1,5 @@
-// @ts-nocheck 
 
+import { raw } from "hono/html";
 import i18n from "../i18n/langs";
 import menu from "app/js/components/Menu.js";
 import sqlite from "app/dao/sqlite/factory.js";
@@ -9,5 +9,6 @@ i18n.setLang("es").set("menu", menu.html(await sqlite.menus.getPublic("es")));
 i18n.setLang("en").set("menu", menu.html(await sqlite.menus.getPublic("en")));
 
 export default (props: any) => {
-    return ( <ul class="menu hide">{props.children}</ul> );
+    const menus = props.children || i18n.get("menu");
+    return ( <ul class="menu hide">{raw(menus)}</ul> );
 }

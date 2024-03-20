@@ -1,5 +1,6 @@
 
 import i18n from "./validators.js";
+import { ValidationError } from "./error.js";
 
 const KEY_ERR = "msgError"; // Error key
 const MSGS = {}; // Messages container
@@ -22,20 +23,21 @@ i18n.setInputError = (name, tip, msg) => i18n.setMsgError(name, tip).setMsg(KEY_
 i18n.setError = (msg, name, tip) => {
     return tip ? i18n.setInputError(name, tip, msg): i18n.setMsgError(name || KEY_ERR, msg);
 }
+i18n.setException = (lang, err) => {
+    console.error(err); // Show log
+    i18n.setLang(lang); // Define lang
+    if (err instanceof ValidationError)
+        return i18n.setError(err.message, err.field, err.tiperr);
+    return i18n.setError(err.message);
+}
 
 i18n.isOk = () => (errors == 0);
 i18n.isError = () => (errors > 0);
+i18n.init = lang => i18n.setLang(lang).reset();
 i18n.reset = () => {
     errors = 0;
     Object.clear(MSGS);
     return i18n;
-}
-
-i18n.init = lang => i18n.setLang(lang).reset();
-i18n.setMsgs = msgs => {
-    if (msgs[KEY_ERR])
-        i18n.setMsgError(KEY_ERR, msgs[KEY_ERR]);
-    return i18n.setOk(msgs.msgOk).setInfo(msgs.msgInfo).setWarn(msgs.msgWarn);
 }
 
 // Extends Date prototype

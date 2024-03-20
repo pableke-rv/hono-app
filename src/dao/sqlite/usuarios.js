@@ -1,7 +1,12 @@
 
 import bcrypt from "bcrypt";
+import { ValidationError } from "app/i18n/error.js";
 
-const fnError = err => (err.errno == 19) ? "Users previously registered in the system" : err; //UK violated
+const fnError = err => {
+    if (err.errno == 19) //UK violated
+        err.message = "Users previously registered in the system";
+    throw err;
+}
 
 export default function(db) {
 	const self = this; //self instance
@@ -13,16 +18,19 @@ export default function(db) {
         return db.list(sql, [data.nif, data.nif + "%", data.email, data.email + "%"]);
     }
 
-    this.getById =id => db.find("select * from usuarios where id = ?", id);
+    this.getById = id => db.find("select * from usuarios where id = ?", id);
     this.getByLogin = login => {
         const sql = "select * from usuarios where nif = ? or email = ?";
         return db.find(sql, [login.toUpperCase(), login.toLowerCase()]);
     }
     this.login = (login, pass) => {
-        pass = pass || "__none#pass__"; // not empty avoid exception
-        const fnMatch = user => user ? Promise.resolve(user) : Promise.reject("Password not match!");
-        const fnCompare = (pass, user) => bcrypt.compare(pass, user.clave).then(result => fnMatch(result && user));
-        return this.getByLogin(login).then(user => user ? fnCompare(pass, user) : Promise.reject("Login not found!"));
+        return this.getByLogin(login).then(user => {
+            if (!user)
+                throw new ValidationError("userNotFound", "login", "errLogin");
+            if (bcrypt.compareSync(pass, user.clave))
+                return user;
+            throw new ValidationError("userNotFound", "pass", "errPass");
+        });
     }
 
     this.insert = data => {

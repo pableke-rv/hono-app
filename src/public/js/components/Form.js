@@ -251,7 +251,7 @@ export default function(form, opts) {
 		opts.body = (form.enctype == "multipart/form-data") ? fd : new URLSearchParams(fd);
 		return await api.send(url || form.action, opts)
 						.then(info => { self.setOk(info); return info; })
-						.catch(info => { self.setErrors(info); return info; });
+						.catch(info => { self.setErrors(info); throw info; });
 	}
 
 	// Form initialization

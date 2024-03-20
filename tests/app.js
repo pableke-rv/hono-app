@@ -1,6 +1,5 @@
-// @ts-nocheck 
 
-import app from "../src/app";
+import app from "../src/app.js";
 import util from "app/lib/util.js";
 import send from "app/lib/mailer.js";
 

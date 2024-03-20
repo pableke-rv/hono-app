@@ -75,11 +75,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	const lineas = formFact.setTable("#lineas-fact", {
         msgEmptyTable: "No existen conceptos asociados a la solicitud",
-        beforeRender: resume => { resume.imp = 0; },
+        beforeRender: resume => { resume.imp = 0; resume.iva = factura.getIva(); },
         onRender: linea.row,
         onFooter: linea.tfoot,
-		afterRender: () => pf.datalist(formFact, "#iva", "#ivaPF").setLabels([0, 4, 10, 21]).setValue(factura.getIva()),
-		ivaChange: el => fnCalcIva(+el.value)
+		afterRender: resume => {
+			const opts = { onChange: fnCalcIva };
+			pf.datalist(formFact, "#iva", "#ivaPF", opts).setLabels([0, 4, 10, 21]).setValue(resume.iva);
+		}
+		//ivaChange: el => fnCalcIva(+el.value)
     });
 	formFact.setClick("a#add-linea", ev => {
 		const data = formFact.isValid(linea.validate, ".ui-linea");
