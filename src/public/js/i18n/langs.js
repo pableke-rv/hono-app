@@ -1,6 +1,5 @@
 
 import i18n from "./validators.js";
-import { ValidationError } from "./error.js";
 
 const KEY_ERR = "msgError"; // Error key
 const MSGS = {}; // Messages container
@@ -21,14 +20,7 @@ i18n.reject = msg => !i18n.setMsg(KEY_ERR, msg);
 i18n.setMsgError = (name, msg) => { errors++; return i18n.setMsg(name, msg); }
 i18n.setInputError = (name, tip, msg) => i18n.setMsgError(name, tip).setMsg(KEY_ERR, msg);
 i18n.setError = (msg, name, tip) => {
-    return tip ? i18n.setInputError(name, tip, msg): i18n.setMsgError(name || KEY_ERR, msg);
-}
-i18n.setException = (lang, err) => {
-    console.error(err); // Show log
-    i18n.setLang(lang); // Define lang
-    if (err instanceof ValidationError)
-        return i18n.setError(err.message, err.field, err.tiperr);
-    return i18n.setError(err.message);
+    return tip ? i18n.setInputError(name, tip, msg) : i18n.setMsgError(name || KEY_ERR, msg);
 }
 
 i18n.isOk = () => (errors == 0);

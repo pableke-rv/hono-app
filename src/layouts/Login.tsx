@@ -1,5 +1,6 @@
 
 import { Layout } from "./Main";
+import { ButtonSubmit } from "../components/Buttons";
 import i18n from "../i18n/langs.js";
 
 export const contact = (props: any) => {
@@ -33,7 +34,7 @@ export const Form = (props: any) => {
                 </label>
             </div>
             <div class="navbar">
-                <button type="submit" class="btn btn-green">Actions</button>
+                <ButtonSubmit>Entrar</ButtonSubmit>
             </div>
         </form>
     );

@@ -55,12 +55,9 @@ export const signin = async (ctx: Context) => {
     });
 }
 export const logout = (ctx: Context) => {
-    const session = ctx.get("session");
-    //session.deleteSession();
-    session.set("user", null);
-    session.set("menu", null);
-    i18n.init(session.get("lang")).setOk("msgLogout");
-    return ctx.html(<Login/>);
+    ctx.get("session").deleteSession();
+    ctx.get("session").set("lang", ctx.get("lang"));
+    return ctx.redirect("/login?ok=msgLogout");
 }
 
 export const sign = async (ctx: Context, next: Next) => {

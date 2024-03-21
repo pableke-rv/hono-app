@@ -1,23 +1,26 @@
 
+const UserIcon = <i class="fas fa-user"></i>;
+
 export const UserPublic = (props: any) => {
     return (
         <div id="user" class="dropdown">
-            <button><i class="fas fa-user"></i></button>
+            <button>{UserIcon}</button>
             <div>
-                <a href="mailto:#">email@google.com</a>
-                <a href="/">Home</a>
+                <a href="/" class="load-main">Home</a>
+                <a href="/signup" class="load-main">Sign Up</a>
                 <hr class="slim"/>
-                <a href="/login">Login</a>
+                <a href="/login" class="load-main">Login</a>
             </div>
         </div>
     );
 }
 export const UserLogged = (props: any) => {
     const { logo, email } = props.user;
+    const logoHtml = logo ? <img src={logo} alt="Avatar"/> : UserIcon;
     const mailto = "mailto:" + email;
     return (
         <div id="user" class="dropdown">
-            <button><i class="fas fa-user"></i></button>
+            <button>{logoHtml}</button>
             <div>
                 <a href={mailto}>{email}</a>
                 <a href="/">Home</a>
@@ -28,8 +31,7 @@ export const UserLogged = (props: any) => {
     );
 }
 export const User = (props: any) => {
-    const user = props.user ? <UserLogged user={props.user}/> : <UserPublic/>;
-    return (user);
+    return ( props.user ? <UserLogged user={props.user}/> : <UserPublic/> );
 }
 
 export const Langs = (props: any) => {

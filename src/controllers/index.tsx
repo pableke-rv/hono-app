@@ -13,16 +13,16 @@ export const lang = (ctx: Context, next: Next) => {
     const lang = ctx.req.param("lang");
     const session = ctx.get("session");
     if (lang != session.get("lang")) // has language changed?
-        session.set("lang", i18n.getLanguage(lang + "," + ctx.req.header("Accept-Language")));
+        session.set("lang", i18n.getLanguage(lang/* + "," + ctx.req.header("Accept-Language")*/));
     //ctx.set("lang", session.get("lang"));
-    next();
+    return next();
 }
 export const init = (ctx: Context, next: Next) => {
     const session = ctx.get("session");
     if (!session.get("lang"))
         session.set("lang", i18n.getLanguage(ctx.req.header("Accept-Language")));
     ctx.set("lang", session.get("lang")); // current lang
-    next();
+    return next();
 }
 /*export const langByQuery = (ctx: Context, next: Next) => {
     const lang = ctx.req.query("lang");
@@ -30,7 +30,7 @@ export const init = (ctx: Context, next: Next) => {
     if (lang || !session.get("lang")) // has language changed?
         session.set("lang", i18n.getLanguage(lang + "," + ctx.req.header("Accept-Language")));
     ctx.set("lang", session.get("lang"));
-    next();
+    return next();
 }*/
 
 export const index = (ctx: Context) => {

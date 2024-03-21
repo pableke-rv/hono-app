@@ -13,6 +13,11 @@ function fnLogin() {
     nav.setLangs("/login");
 }
 
+function fnAdmin() {
+    nav.setLangs("/admin");
+}
+
 export default () => {
-    nav.addListener("/login", fnLogin).addListener("/logout", fnLogin);
+    nav.addListener("/login", fnLogin).addListener("/logout", fnLogin)
+        .addListener("/admin", fnAdmin);
 }

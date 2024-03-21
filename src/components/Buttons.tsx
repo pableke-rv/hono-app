@@ -7,3 +7,9 @@ export const ButtonTheme = (props: any) => {
         </button>
     );
 }
+
+export const ButtonSubmit = (props: any) => {
+    return (
+        <button type="submit" class="btn btn-green">{props.children}</button>
+    );
+}

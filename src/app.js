@@ -31,7 +31,7 @@ app.use("*", sessionMiddleware({ // Session configration
 /*app.use("*", langByQuery);*/
 const LANG_ROUTE = "/:lang{[a-z]{2}(\-[A-Z]{2})?}";
 app.get(LANG_ROUTE, lang).get(LANG_ROUTE + "/*", lang);
-app.get("*", init); // Always load language info
+app.use("*", init); // Always load language info
 
 app.route("/", routes);
 app.route(LANG_ROUTE, routes);

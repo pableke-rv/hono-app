@@ -1,7 +1,7 @@
 
 import { Layout } from "./Main";
-import { Tab } from "../components/Tabs";
 import { Notice } from "../components/Alerts";
+import { Tab, TabNav0, TabNext } from "../components/Tabs";
 import i18n from "../i18n/langs.js";
 
 export const IndexTab0 = (props: any) => {
@@ -31,7 +31,7 @@ export const IndexTab0 = (props: any) => {
             </Notice>
 
             <div class="navbar">
-                <a href="#next-tab" class="btn btn-primary tab-action">Sig. <i class="fas fa-angle-double-right"></i></a>
+                <TabNext>Sig.</TabNext>
                 <a href="/login" class="btn btn-primary load-main">Login <i class="fas fa-angle-double-right"></i></a>
                 <a href={maps} class="btn btn-green">Go maps <i class="fas fa-share"></i></a>
                 <a href="/maps" class="btn btn-green load-main">Go maps by AJAX <i class="fas fa-undo-alt"></i></a>
@@ -69,7 +69,7 @@ export const IndexTab1 = (props: any) => {
             </div>
 
             <div class="navbar">
-                <a href="#tab-0" class="btn btn-primary tab-action"><i class="fas fa-angle-double-left"></i></a>
+                <TabNav0/>
             </div>
         </Tab>
     );
