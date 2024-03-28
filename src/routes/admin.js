@@ -5,6 +5,9 @@ import * as ctrl from "../controllers/admin";
 
 const routes = new Hono();
 
-routes.get("/admin", auth, ctrl.admin)
+routes.use("*", auth)
+routes.get("/", ctrl.admin).get("/index", ctrl.admin)
+    .get("/profile", ctrl.viewProfile).get("/perfil", ctrl.viewProfile);
+routes.post("/profile", ctrl.saveProfile).post("/perfil", ctrl.saveProfile);
 
 export default routes;

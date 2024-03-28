@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 import { Context, Next } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
@@ -29,7 +30,7 @@ export const auth = (ctx: Context, next: Next) => {
         return redir("msgAuthFail", ctx);
     if (!session.sessionValid())
         return redir("msgExpired", ctx);
-    next();
+    return next();
 }
 export const login = (ctx: Context) => {
     return util.loadMessages(ctx).xhr(ctx) ? ctx.html(<Form/>) : ctx.html(<Login/>);

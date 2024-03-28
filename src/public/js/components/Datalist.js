@@ -57,7 +57,7 @@ export default function(select, opts) {
         fnInit([]); // Init. datalist
         const fnDefault = i => i;
         const fnValue = i => values[i];
-        const fn =  values ? fnValue : fnDefault;
+        const fn = values ? fnValue : fnDefault;
         labels.forEach((label, i) => { // keys = 0, 1, 2... Number array
             select.innerHTML += `<option value="${fn(i)}">${label}</option>`;
             _data.push(fn(i)); // add value

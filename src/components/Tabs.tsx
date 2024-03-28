@@ -1,6 +1,8 @@
 
-export const Tab = (props: any) => {
-    const active = "tab-content " + (props.active || "");
+import { TabType } from "../types/Components";
+
+export const Tab = (props: TabType) => {
+    const active = "tab-content" + (props.active ? " active" : "");
     return (
         <div id={props.id} class={active}>
             <h2>{props.title}</h2>

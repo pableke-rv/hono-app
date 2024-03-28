@@ -12,7 +12,7 @@ var loaded = false;
 
 window.initMap = function() {
     const salida = new Place(); // Place model instance
-    const inputOrigen = document.getElementById("origen");
+    const inputOrigen = document.getElementById("ac-origen");
     const origen = new google.maps.places.Autocomplete(inputOrigen, OPTIONS);
     const divAddress = document.querySelector(".address-components");
     const divDieta = document.querySelector(".dieta");

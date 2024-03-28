@@ -13,6 +13,7 @@
     "hono-sessions": "^0.3.4",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.11",
+    "sharp": "^0.33.2",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {

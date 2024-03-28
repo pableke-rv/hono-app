@@ -1,7 +1,8 @@
 
 import { Layout } from "./Main";
-import { Notice } from "../components/Alerts";
 import { Tab, TabNav0, TabNext } from "../components/Tabs";
+import { Autocomplete } from "../components/Inputs";
+import { Notice } from "../components/Alerts";
 import i18n from "../i18n/langs.js";
 
 export const IndexTab0 = (props: any) => {
@@ -47,15 +48,7 @@ export const IndexTab1 = (props: any) => {
         <Tab id="tab-1" title="Actions">
             <form id="form-pokemon" action="#">
             <div class="ui-blocks">
-                <label class="ui-block-xl autocomplete">
-                    <div class="label required">Pokemon finder:</div>
-                    <i class="fas fa-search ui-icon-left"></i>
-                    <input type="search" id="pokemon" name="pokemon" class="ui-input ui-autocomplete"
-                        tabindex="1" autocomplete="off" placeholder="Search a pokemon" />
-                    <input type="hidden" name="id"/>
-                    <ul class="results"></ul>
-                    <div class="ui-errtip"></div>
-                </label>
+                <Autocomplete name="pokemon" required={true} label="Pokemon finder" tabindex="1" placeholder="Search a pokemon"/>
             </div>
             </form>
 

@@ -1,5 +1,5 @@
 
-import { AlertType } from "../types/Alert";
+import { AlertType } from "../types/Components";
 import i18n from "../i18n/langs.js";
 
 export const Notice = (props: AlertType) => {

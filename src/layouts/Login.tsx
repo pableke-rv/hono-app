@@ -1,5 +1,6 @@
 
 import { Layout } from "./Main";
+import { InputText } from "../components/Inputs";
 import { ButtonSubmit } from "../components/Buttons";
 import i18n from "../i18n/langs.js";
 
@@ -21,11 +22,7 @@ export const Form = (props: any) => {
     return (
         <form id="signin" action="/signin" method="post">
             <div class="ui-blocks">
-                <label class="ui-block-xl">
-                    <div class="label required">{i18n.get("lblLogin")}:</div>
-                    <input type="text" id="login" name="login" class="ui-input" tabindex="1" placeholder="DNI, NIF or Email" />
-                    <div class="ui-errtip"></div>
-                </label>
+                <InputText name="login" required={true} label={i18n.get("lblLogin")} tabindex="1" placeholder="DNI, NIF or Email"/>
                 <div class="ui-block-break"></div>
                 <label class="ui-block-xl">
                     <div class="label required">{i18n.get("lblPass")}:</div>

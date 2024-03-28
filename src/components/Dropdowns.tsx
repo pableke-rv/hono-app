@@ -17,13 +17,12 @@ export const UserPublic = (props: any) => {
 export const UserLogged = (props: any) => {
     const { logo, email } = props.user;
     const logoHtml = logo ? <img src={logo} alt="Avatar"/> : UserIcon;
-    const mailto = "mailto:" + email;
     return (
         <div id="user" class="dropdown">
             <button>{logoHtml}</button>
             <div>
-                <a href={mailto}>{email}</a>
-                <a href="/">Home</a>
+                <a href="/admin/profile" class="load-main">{email}</a>
+                <a href="/" class="load-main">Home</a>
                 <hr class="slim"/>
                 <a href="/logout">Logout</a>
             </div>

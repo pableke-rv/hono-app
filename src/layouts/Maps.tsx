@@ -1,19 +1,14 @@
 
 import { Layout } from "./Main";
 import { Tab } from "../components/Tabs";
+import { Autocomplete } from "../components/Inputs";
 import i18n from "../i18n/langs.js";
 
 export const MapsTab0 = () => {
     return (
         <Tab id="tab-0" active="active" title="GOOGLE MAPS API">
             <div class="ui-blocks">
-                <label class="ui-block-xl ui-icon-block">
-                    <div class="label required">Origen de la ruta:</div>
-                    <i class="fas fa-map-marker-alt ui-icon-left"></i>
-                    <input type="search" id="origen" name="origen" class="ui-input ui-ruta" 
-                        tabindex="1" autocomplete="off" placeholder="Search a place" />
-                    <div class="ui-errtip"></div>
-                </label>
+                <Autocomplete name="origen" required={true} label="Origen de la ruta" tabindex="1" placeholder="Search a place"/>
             </div>
 
             <div class="address-components hide">
