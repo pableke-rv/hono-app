@@ -41,8 +41,8 @@ export const Langs = (props: any) => {
                 <i class="fas fa-chevron-down"></i>
             </button>
             <div>
-                <a id="es" href="/es"><img src="/public/img/flags/spain.png"/> ES</a>
-                <a id="en" href="/en"><img src="/public/img/flags/great_britain.png"/> EN</a>
+                <a id="es" href="/es/lang"><img src="/public/img/flags/spain.png"/> ES</a>
+                <a id="en" href="/en/lang"><img src="/public/img/flags/great_britain.png"/> EN</a>
             </div>
         </div>
     );

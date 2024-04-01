@@ -12,7 +12,7 @@ export type AlertType = {
 
 export type TabType = {
     id: string;
-    active?: string;
     title: string;
+    active?: boolean;
     children: JSX.Element | JSX.Element[];
 }

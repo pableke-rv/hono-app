@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "dev": "tsx watch dist/index.ts",
+    "dev": "tsx watch dist/index.js",
     "test": "node --import tsx --test tests/index.js",
     "build": "gulp"
   },
@@ -25,5 +25,11 @@
     "gulp-uglify": "^3.0.2",
     "tsx": "^3.12.2",
     "typescript": "^5.3.3"
+  },
+  "imports": {
+    "#config.js": "./src/config.js",
+    "#client/components/*.js": "./src/public/js/components/*.js",
+    "#client/i18n/*.js": "./src/public/js/i18n/*.js",
+    "#sqlite/*.js": "./src/dao/sqlite/*.js"
   }
 }

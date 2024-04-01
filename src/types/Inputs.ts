@@ -15,6 +15,11 @@ type Input = {
     placeholder?: string;
 }
 export interface InputType extends Input {
+    type?: string;
+}
+export interface FileType extends Input {
+    accept?: string;
+    multiple?: boolean;
 }
 export interface AutocompleteType extends Input {
     acId?: string;

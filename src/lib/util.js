@@ -2,6 +2,7 @@
 import fs from "fs"; //file system module
 import path from "path"; //file and directory paths
 import cp from "child_process"; //system calls
+import sharp from "sharp"; // Image handler
 import jwt from "jsonwebtoken"; // JSON web token
 import mimetypes from "../data/mime-types.json" assert { type: "json" };
 import config from "../config.js"; // Configurations
@@ -11,9 +12,28 @@ function Util() {
 	const self = this; //self instance
 
 	this.xhr = ctx => (ctx.req.header("x-requested-with") == "XMLHttpRequest"); // Is AJAX call
+	this.msg = (ctx, msg) => ctx.text(i18n.get(msg)); // Send i18n message
 	this.loadMessages = ctx => { // Load messages from query
 		const { ok, info, warn, err } = ctx.req.query();
 		i18n.init(ctx.var.lang).setOk(ok).setInfo(info).setWarn(warn).setError(err);
+		return self;
+	}
+
+	this.upload = file => { // Upload single file
+		return file.arrayBuffer().then(buffer => {
+			const filepath = path.join(config.DIR_UPLOADS, file.name);
+			fs.writeFileSync(filepath, Buffer.from(buffer)); // If error => throw
+			if (file.type.startsWith("image/")) { // If image => try to resize it
+				const filethumb = path.join(config.DIR_THUMBS, file.name);
+				return sharp(buffer).resize(320, 240).toFile(filethumb);
+			}
+			return Promise.resolve(file);
+		});
+	}
+	this.uploadAll = files => Promise.all(files.map(self.upload));
+	this.unload = name => { // Remove all file copies
+		fs.unlink(path.join(config.DIR_THUMBS, name));
+		fs.unlink(path.join(config.DIR_UPLOADS, name));
 		return self;
 	}
 

@@ -1,46 +1,56 @@
 
 import { Layout } from "./Main";
-import { InputText } from "../components/Inputs";
+import { Tab } from "../components/Tabs";
+import { InputText, InputPass } from "../components/Inputs";
 import { ButtonSubmit } from "../components/Buttons";
 import i18n from "../i18n/langs.js";
 
-export const contact = (props: any) => {
+export const Contact = (props: any) => {
     // TODO tab to contact mail
     return (
         <div></div>
     );
 }
 
-export const remember = (props: any) => {
+export const Remember = (props: any) => {
     // TODO tab to remember pass
     return (
-        <div></div>
+        <Tab id="tab-1" active={props.active} title="Remember Form">
+        <form id="remember" action="/remember" method="post">
+        </form>
+        </Tab>
     );
 }
 
-export const Form = (props: any) => {
+export const LoginForm = (props: any) => {
     return (
+        <Tab id="tab-0" active={props.active} title="Login Form">
         <form id="signin" action="/signin" method="post">
             <div class="ui-blocks">
-                <InputText name="login" required={true} label={i18n.get("lblLogin")} tabindex="1" placeholder="DNI, NIF or Email"/>
+                <InputText name="login" required={true} label={i18n.get("lblLogin")} icon="fas fa-user ui-icon-right" tabindex="1" placeholder="DNI, NIF or Email"/>
                 <div class="ui-block-break"></div>
-                <label class="ui-block-xl">
-                    <div class="label required">{i18n.get("lblPass")}:</div>
-                    <input type="password" id="pass" name="pass" class="ui-input" tabindex="2" placeholder="**********" />
-                    <div class="ui-errtip"></div>
-                </label>
+                <InputPass name="pass" label={i18n.get("lblPass")} tabindex="2" />
             </div>
             <div class="navbar">
                 <ButtonSubmit>Entrar</ButtonSubmit>
             </div>
         </form>
+        </Tab>
     );
 }
 
-export const Login = (props: any) => {
+export const LoginTabs = (props: any) => {
     return (
-        <Layout>
-            <Form/>
-        </Layout>
+        <>
+            <LoginForm active={props.login} />
+            <Remember active={props.remember} />
+        </>
     );
+}
+
+export const LoginActiveTab = (props: any) => { return (<LoginTabs login="active"/>); }
+export const RememberActiveTab = (props: any) => { return (<LoginTabs remember="active"/>); }
+
+export const Login = (props: any) => {
+    return (<Layout><LoginActiveTab/></Layout>);
 }

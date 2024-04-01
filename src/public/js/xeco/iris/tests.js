@@ -40,7 +40,6 @@ window.initMap = function() {
 }
 
 function fnMaps() {
-    nav.setLangs("/maps");
     if (loaded) // is API loaded
         return window.initMap();
     // Create the script tag, set the appropriate attributes

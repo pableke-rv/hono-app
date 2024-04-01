@@ -3,37 +3,32 @@
 import { Context, Next } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 
-import { Login, Form } from "../layouts/Login";
+import { Login, LoginActiveTab } from "../layouts/Login";
 import sqlite from "../dao/sqlite/factory.js";
-import menu from "app/js/components/Menu.js";
+import menu from "../public/js/components/Menu.js";
 import i18n from "../i18n/langs.js";
 import util from "../lib/util.js";
 
 function logged(ctx: Context) {
-console.log("logged:", ctx.var.xhr);
     i18n.init(ctx.var.lang).setOk("login ok!");
-    return util.xhr(ctx) ? ctx.text("login ok!") : ctx.html(<Form/>);
+    return util.xhr(ctx) ? ctx.text("login ok!") : ctx.html(<LoginActiveTab/>);
 }
 function logerr(err: string, ctx: Context) {
-console.log("logerr:", ctx.var.xhr, err);
     i18n.init(ctx.var.lang).setError(err);
     return util.xhr(ctx) ? ctx.text(err, 500) : ctx.html(<Login/>, 500); // Go error
-}
-function redir(err: string, ctx: Context) { // Go login error
-    return util.xhr(ctx) ? ctx.text(err, 500) : ctx.redirect("/login?err=" + err);
 }
 
 // Check if user is logged
 export const auth = (ctx: Context, next: Next) => {
     const session = ctx.get("session");
     if (!session.get("user"))
-        return redir("msgAuthFail", ctx);
+        return logerr("msgAuthFail", ctx);
     if (!session.sessionValid())
-        return redir("msgExpired", ctx);
+        return logerr("msgExpired", ctx);
     return next();
 }
 export const login = (ctx: Context) => {
-    return util.loadMessages(ctx).xhr(ctx) ? ctx.html(<Form/>) : ctx.html(<Login/>);
+    return util.xhr(ctx) ? ctx.html(<LoginActiveTab/>) : ctx.html(<Login/>);
 }
 export const signin = async (ctx: Context) => {
     const session = ctx.get("session");
@@ -49,16 +44,17 @@ export const signin = async (ctx: Context) => {
         return sqlite.menus.getMenus(user.id, lang);
     }).then(menus => {
         session.set("menu", menu.html(menus));
-        return ctx.text(i18n.get("msgLoginOk"));
+        return ctx.text("ok");
     }).catch(err => {
         i18n.setException(lang, err);
         return ctx.json(i18n.getMsgs(), 500);
     });
 }
 export const logout = (ctx: Context) => {
+    i18n.setOk("msgLogout");
     ctx.get("session").deleteSession();
     ctx.get("session").set("lang", ctx.get("lang"));
-    return ctx.redirect("/login?ok=msgLogout");
+    return ctx.html(<Login/>);
 }
 
 export const sign = async (ctx: Context, next: Next) => {

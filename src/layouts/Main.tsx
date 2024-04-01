@@ -34,6 +34,10 @@ export const NavPhone = (props: any) => {
     );
 }
 
+export const Footer = () => {
+    return (<footer>Page Footer</footer>);
+}
+
 export const Layout = (props: any) => {
     const lang:any = i18n.getLang();
     return (
@@ -61,8 +65,4 @@ export const Layout = (props: any) => {
             </body>
         </html>
     );
-}
-
-export const Footer = () => {
-    return (<footer>Page Footer</footer>);
 }

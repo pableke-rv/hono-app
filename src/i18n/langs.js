@@ -2,11 +2,11 @@
 import en from "./en.js";
 import es from "./es.js";
 // referencia local a i18n en la parte publica (cliente)
-import i18n from "app/i18n/langs";
-import sb from "app/js/components/StringBox.js";
+import i18n from "#client/i18n/langs.js";
+import sb from "#client/components/StringBox.js";
 
 // ¡¡Importante!!
-// usar siempre la referencia: app/i18n/langs.js en el servidor
+// usar siempre la referencia: #client/i18n/langs.js en el servidor
 // para evitar crear mas de una instancia del modulo
 // usar la referncia local: ./i18n/langs.js en el cliente
 const client = i18n.getLangs();

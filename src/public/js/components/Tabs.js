@@ -28,7 +28,8 @@ function Tabs() {
         el && el.focus();
         return self;
     }
-    const fnSetTab = (tab, index) => {
+    const fnSetTab = (tab, index) => { // update tabs style
+        tabs.forEach(tab => tab.classList.remove(ACTIVE_CLASS));
         tab.classList.add(ACTIVE_CLASS);
         _tabIndex = index ?? fnCurrentIndex();
         return autofocus(tab);
@@ -77,7 +78,6 @@ function Tabs() {
                 bar.children.forEach(child => child.classList.toggle(ACTIVE_CLASS, child.id <= step));
             });
             tab.dataset.back = updateBack ? _tabIndex : tab.dataset.back; // Save source tab index
-            tabs.forEach(tab => tab.classList.remove(ACTIVE_CLASS)); // update tabs style
             fnSetTab(tab, i); // set current tab
             fnCallEvent("view", tab); // Fire when show tab
         }

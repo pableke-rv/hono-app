@@ -239,18 +239,11 @@ export default function(form, opts) {
 		return fnValidate(data) ? data : !self.setErrors(i18n.getMsgs(), selector);
 	}
 
-	this.send = async (url, opts) => {
-		opts = opts || {}; // Settings
+	this.send = async url => {
 		const fd = new FormData(form); // Data container
-		opts.headers = opts.headers || {}; // Headers container
-		opts.headers["content-type"] = form.enctype || "application/x-www-form-urlencoded";
-		opts.method = opts.method || form.method; //method-override
-		//if (opts.method == "get") // Form get => prams in url
-			//url += "?" + (new URLSearchParams(fd)).toString();
-		//else
-		opts.body = (form.enctype == "multipart/form-data") ? fd : new URLSearchParams(fd);
-		return await api.send(url || form.action, opts)
-						.then(info => { self.setOk(info); return info; })
+		const body = (form.enctype == "multipart/form-data") ? fd : new URLSearchParams(fd);
+		return await api.init().setMethod(form.method).setBody(body)
+						.send(url || form.action)
 						.catch(info => { self.setErrors(info); throw info; });
 	}
 

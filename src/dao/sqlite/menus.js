@@ -1,5 +1,5 @@
 
-import coll from "app/js/components/Collection.js";
+import coll from "#client/components/Collection.js";
 
 export default function(db) {
 	const self = this; //self instance

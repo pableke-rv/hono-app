@@ -10,10 +10,10 @@ const CSS_FILES = "src/public/css/**/*.css";
 const JS_FILES = "src/public/js/**/*.js";
 const TS_FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
 const JS_MODULES = [ "src/*.js", "src/dao/**/*", "src/data/**/*", "src/i18n/**/*", "src/lib/**/*", "src/routes/**/*" ];
-const SYM_LINKS = [
+/*const SYM_LINKS = [
 	"dist", "dist/controllers", "dist/dao", "dist/data", "dist/lib",
 	"dist/public/js", "dist/public/js/i18n", "dist/public/js/model"
-];
+];*/
 
 // Tasks to copy all ts / tsx
 gulp.task("copy-ts", done => {
@@ -66,7 +66,7 @@ gulp.task("modules", done => {
 // Tasks to create static data
 gulp.task("static", done => {
 	gulp.src("dist/public").pipe(gulp.symlink("dist/views")); // static server links
-	gulp.src(SYM_LINKS).pipe(gulp.symlink("node_modules/app")); // dynamic links
+	//gulp.src(SYM_LINKS).pipe(gulp.symlink("node_modules/app")); // dynamic links
 
 	gulp.src("src/public/img/**/*").pipe(gulp.dest("dist/public/img"));
 	gulp.src("src/public/files/**/*").pipe(gulp.dest("dist/public/files")).on("end", done);

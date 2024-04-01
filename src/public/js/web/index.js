@@ -29,7 +29,8 @@ function fnIndex() {
     formPokemon.setAutocomplete("#ac-pokemon", {
         source: (term, acPokemon) => {
             const fnFilter = pokemon => sb.ilike(pokemon.name, term);
-            api.json("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0")
+            api.init()
+                .json("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0")
                 .then(data => acPokemon.render(data.results.filter(fnFilter)));
         },
 		render: item => item.name,
@@ -37,7 +38,6 @@ function fnIndex() {
 		afterSelect: item => api.json(`https://pokeapi.co/api/v2/pokemon/${item.name}`).then(fnSelect),
 		onReset: () => info.hide()
     });
-    nav.setLangs("/index");
 }
 
 export default () => {

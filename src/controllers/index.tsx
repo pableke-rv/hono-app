@@ -1,12 +1,15 @@
 // @ts-nocheck
 
 import { Context, Next } from "hono";
+
+import { admin } from "./admin";
 import { Index, IndexTabs } from "../layouts/Index";
 import { Maps, MapsTab0 } from "../layouts/Maps";
 import { Email } from "../layouts/Email";
 
+import sqlite from "../dao/sqlite/factory.js";
+import menu from "../public/js/components/Menu.js";
 import i18n from "../i18n/langs.js";
-import Menu from "../components/Menu";
 import util from "../lib/util.js";
 
 export const lang = (ctx: Context, next: Next) => {
@@ -38,9 +41,16 @@ export const index = (ctx: Context) => {
     return util.xhr(ctx) ? ctx.html(<IndexTabs/>) : ctx.html(<Index/>);
 }
 
-export const menus = (ctx: Context) => {
-    i18n.init(ctx.get("lang"));
-    return ctx.html(<Menu/>);
+export const setLang = async (ctx: Context) => {
+    const session = ctx.get("session");
+    const user = session.get("user");
+    if (!user)
+        return ctx.html(<Index/>);
+    const lang = ctx.get("lang");
+    return await sqlite.menus.getMenus(user.id, lang).then(menus => {
+        session.set("menu", menu.html(menus));
+        return admin(ctx);
+    });
 }
 
 export const maps = (ctx: Context) => {

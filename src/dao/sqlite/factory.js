@@ -1,6 +1,6 @@
 
 import sqlite from "sqlite3"; //Database
-import config from "app/dist/config.js"; // Configurations
+import config from "#config.js"; // Configurations
 
 import Menus from "./menus.js"; //Users DAO
 import Usuarios from "./usuarios.js"; //Users DAO

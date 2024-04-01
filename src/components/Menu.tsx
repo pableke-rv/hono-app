@@ -1,8 +1,8 @@
 
 import { raw } from "hono/html";
 import i18n from "../i18n/langs";
-import menu from "app/js/components/Menu.js";
-import sqlite from "app/dao/sqlite/factory.js";
+import menu from "../public/js/components/Menu.js";
+import sqlite from "../dao/sqlite/factory.js";
 
 // Top level async
 i18n.setLang("es").set("menu", menu.html(await sqlite.menus.getPublic("es")));
