@@ -12,8 +12,10 @@ function Util() {
 	const self = this; //self instance
 
 	this.xhr = ctx => (ctx.req.header("x-requested-with") == "XMLHttpRequest"); // Is AJAX call
-	this.msg = (ctx, msg) => ctx.text(i18n.get(msg)); // Send i18n message
-	this.loadMessages = ctx => { // Load messages from query
+	this.msgs = ctx => ctx.json(i18n.getMsgs()); // Send messages status = ok (200)
+	this.error = (ctx, msg) => ctx.text(i18n.get(msg), 500); // Send error message
+	this.errors = ctx => ctx.json(i18n.getMsgs(), 500); // Send errors
+	this.loadQueryMessages = ctx => { // Load messages from query
 		const { ok, info, warn, err } = ctx.req.query();
 		i18n.init(ctx.var.lang).setOk(ok).setInfo(info).setWarn(warn).setError(err);
 		return self;

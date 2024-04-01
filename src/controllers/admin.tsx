@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 import { Context } from "hono";
 import { Admin, AdminTabs } from "../layouts/Admin";
@@ -12,8 +13,7 @@ export const admin = (ctx: Context) => {
 
 export const welcome = (ctx: Context) => {
     i18n.setOk("msgLoginOk");
-    const session = ctx.get("session");
-    return ctx.html(<Admin user={session.get("user")} menu={session.get("menu")}/>);
+    return admin(ctx);
 }
 
 export const viewProfile = (ctx: Context) => {

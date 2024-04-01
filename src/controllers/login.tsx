@@ -57,7 +57,7 @@ export const logout = (ctx: Context) => {
     return ctx.html(<Login/>);
 }
 
-export const sign = async (ctx: Context, next: Next) => {
+export const sign = async (ctx: Context) => {
     return await ctx.req.parseBody().then(body => {
         return sqlite.usuarios.login(body.login, body.pass);
     }).then(user => {
