@@ -45,6 +45,11 @@ export const Layout = (props: any) => {
             <Head title={lang.title}/>
             <body>
                 <header></header>
+
+                <Alerts/>
+                <Loading/>
+                <BackToTop/>
+
                 <NavPhone/>
                 <nav class="menu-main">
                     <div><Menu>{props.menu}</Menu></div>
@@ -55,10 +60,6 @@ export const Layout = (props: any) => {
                         <ButtonTheme/>
                     </div>
                 </nav>
-
-                <Alerts/>
-                <Loading/>
-                <BackToTop/>
 
                 <main>{props.children}</main>
                 <Footer/>

@@ -9,7 +9,8 @@ main {
 }
 
 hr { margin: 15px 0; border-top: 1px solid skyblue; }
-hr.slim { margin: 1px; border-top: 1px solid #ccc; }
+hr.underline { margin-top: 2px; margin-bottom: 15px; border-top: 1px solid skyblue; }
+hr.slim { margin: 1px; border-top: 1px solid skyblue; }
 :is(.dark hr) { border-color: #ccc; }
 
 /* TABLES */

@@ -12,7 +12,7 @@ export const Contact = (props: any) => {
     );
 }
 
-export const Remember = (props: any) => {
+export const RememberTab = (props: any) => {
     // TODO tab to remember pass
     return (
         <Tab id="tab-1" active={props.active} title="Remember Form">
@@ -22,7 +22,7 @@ export const Remember = (props: any) => {
     );
 }
 
-export const LoginForm = (props: any) => {
+export const LoginTab = (props: any) => {
     return (
         <Tab id="tab-0" active={props.active} title="Login Form">
         <form id="signin" action="/signin" method="post">
@@ -42,8 +42,9 @@ export const LoginForm = (props: any) => {
 export const LoginTabs = (props: any) => {
     return (
         <>
-            <LoginForm active={props.login} />
-            <Remember active={props.remember} />
+            <LoginTab active={props.login} />
+            <RememberTab active={props.remember} />
+            <script id="login-js" type="module" src="/public/js/web/login.js"></script>
         </>
     );
 }
@@ -53,4 +54,7 @@ export const RememberActiveTab = (props: any) => { return (<LoginTabs remember="
 
 export const Login = (props: any) => {
     return (<Layout><LoginActiveTab/></Layout>);
+}
+export const Remember = (props: any) => {
+    return (<Layout><RememberActiveTab/></Layout>);
 }

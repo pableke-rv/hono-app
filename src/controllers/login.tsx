@@ -15,6 +15,8 @@ function logged(ctx: Context) {
 }
 function logerr(err: string, ctx: Context) {
     i18n.init(ctx.var.lang).setError(err);
+    if ("GET" == ctx.req.method) // Session helper
+        ctx.get("session").set("url", ctx.req.url);
     return util.xhr(ctx) ? ctx.text(err, 500) : ctx.html(<Login/>, 500); // Go error
 }
 
@@ -43,8 +45,8 @@ export const signin = async (ctx: Context) => {
         session.set("user", user);
         return sqlite.menus.getMenus(user.id, lang);
     }).then(menus => {
-        session.set("menu", menu.html(menus));
-        return ctx.text("ok");
+        session.set("menu", menu.html(menus)); // Specific menus
+        return ctx.text(session.get("url") || "/admin/welcome"); // Session redirect
     }).catch(err => {
         i18n.setException(lang, err);
         return ctx.json(i18n.getMsgs(), 500);

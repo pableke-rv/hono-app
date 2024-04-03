@@ -10,7 +10,7 @@ export const IndexTab0 = (props: any) => {
     const maps = `/${lang.lang}/maps.html`;
     const tables = `/${lang.lang}/tables.html`;
     return (
-        <Tab id="tab-0" active="active" title="Hello Hono!">
+        <Tab id="tab-0" active={true} title="Hello Hono!">
             <Notice type="info" icon="fas fa-bullhorn"><b>Info:</b> <span>Area de pruebas</span></Notice>
             <Notice type="note" icon="fas fa-bell"><b>Note:</b> <span>Area de pruebas</span></Notice>
             <Notice type="ok" icon="fas fa-check-circle"><b>OK:</b> <span>Area de pruebas</span></Notice>
@@ -73,10 +73,10 @@ export const IndexTabs = (props: any) => {
         <>
             <IndexTab0/>
             <IndexTab1/>
+            <script id="index-js" type="module" src="/public/js/web/index.js"></script>
         </>
     );
 }
-
 
 export const Index = (props: any) => {
     return (

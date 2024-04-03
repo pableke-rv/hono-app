@@ -1,6 +1,6 @@
 
 /* Alerts */
-.alerts { position: fixed; top: 3rem; right: 1em; width: 45%; }
+.alerts { position: fixed; top: 3rem; right: 1em; width: 45%; z-index: 1; }
 .alert {
 	display: flex; gap: .8rem; align-items: center; margin: 1rem/* 16px */; padding: 1rem/* 16px */; 
 	border-radius: 0.5rem/* 8px */; border: 1px solid;

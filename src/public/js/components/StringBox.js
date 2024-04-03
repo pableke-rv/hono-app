@@ -60,6 +60,18 @@ function StringBox() {
         return (i < 0) ? str1 : insertAt(insertAt(str1, open, i), close || "</b></u>", i + str2.length + open.length);
     }
 
+    // Random values
+	this.rand = size => Math.random().toString(36).substring(2, 2 + (size || 8));
+	this.randFloat = (min, max) => Math.random() * ((max || 1e9) - min) + min;
+	this.randInt = (min, max) => Math.floor(self.randFloat(min || 0, max));
+    this.randString = (size, characters) => { // Declare all characters
+        characters = characters || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        let result = "";
+        for (let i = 0; i < size; i++)
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        return result;
+    }
+
     // String Datetime handlers
 	this.toDate = str => str ? new Date(str) : null;
 	this.inYear = (str1, str2) => str1.startsWith(self.substring(str2, 0, 4)); //yyyy

@@ -6,7 +6,7 @@ import i18n from "../i18n/langs.js";
 
 export const MapsTab0 = () => {
     return (
-        <Tab id="tab-0" active="active" title="GOOGLE MAPS API">
+        <Tab id="tab-0" active={true} title="GOOGLE MAPS API">
             <div class="ui-blocks">
                 <Autocomplete name="origen" required={true} label="Origen de la ruta" tabindex="1" placeholder="Search a place"/>
             </div>
@@ -34,6 +34,7 @@ export const MapsTab0 = () => {
                     <li><b>Manutención 2:</b> @m2; €</li>
                 </ul>
             </div>
+            <script id="maps-js" type="module" src="/public/js/xeco/iris/tests.js"></script>
         </Tab>
     );
 }

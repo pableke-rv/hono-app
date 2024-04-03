@@ -3,7 +3,7 @@ import Table from "../components/Table.js";
 import nav from "../components/Navigation.js";
 import menus from "../data/menus.js";
 
-function fnTables() { // Table-Tab
+function fnTable() {
     const table = new Table(document.querySelector("table"));
     table.set("onRender", (data, status, resume) => {
         return `<tr class="tb-data">
@@ -16,8 +16,11 @@ function fnTables() { // Table-Tab
     });
     table.set("onFooter", resume => `<tr><td colspan="${resume.columns}">Filas: ${resume.size}</td></tr>`);
     table.render(menus.filter(node => (node.tipo == 1)));
+
+    // Register handler for navigation
+    nav.setScript("table-js", fnTable);
 }
 
-export default () => {
-    nav.addListener("/tables.html", fnTables).addListener("/tables", fnTables);
-}
+// Register event on page load and export default handler
+document.addEventListener("DOMContentLoaded", fnTable);
+export default fnTable;

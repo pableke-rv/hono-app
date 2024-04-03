@@ -1,28 +1,18 @@
 
-import tabs from "../components/Tabs.js";
 import Form from "../components/Form.js";
 import nav from "../components/Navigation.js";
 
-function fnLogin() {
+function fnLogin() { // Script id
     const formSignin = new Form("#signin"); // instance
     formSignin.submit(ev => {
-        formSignin.send().then(() => nav.redirect("/admin/welcome")); // Access allowed
+        formSignin.send().then(nav.redirect); // Access allowed
         ev.preventDefault();
     });
+
+    // Register handler for navigation
+    nav.setScript("login-js", fnLogin);
 }
 
-function fnAdmin() {
-    const formProfile = new Form("#profile"); // instance
-    formProfile.submit(ev => {
-        formProfile.send().then(info => {
-            tabs.setActive(0);
-            formProfile.setOk(info);
-        });
-        ev.preventDefault();
-    });
-}
-
-export default () => {
-    nav.addListener("/login", fnLogin).addListener("/logout", fnLogin)
-        .addListener("/admin", fnAdmin);
-}
+// Register event on page load and export default handler
+document.addEventListener("DOMContentLoaded", fnLogin);
+export default fnLogin;

@@ -8,7 +8,6 @@ const OPTIONS = {
     types: [ "geocode", "establishment" ],
     strictBounds: false
 };
-var loaded = false;
 
 window.initMap = function() {
     const salida = new Place(); // Place model instance
@@ -40,17 +39,19 @@ window.initMap = function() {
 }
 
 function fnMaps() {
-    if (loaded) // is API loaded
-        return window.initMap();
+    if (nav.getScript("maps-js"))
+        return window.initMap(); // API loaded
     // Create the script tag, set the appropriate attributes
     const script = document.createElement("script");
     script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBIlqxZkVg9GyjzyNzC0rrZiuY6iPLzTZI&libraries=places&callback=initMap";
     script.async = true; // Solicita al navegador que descargue y ejecute la secuencia de comandos de manera asíncrona, despues llamará a initMap
     script.defer = true; // Will execute the script after the document has been parsed
     document.head.appendChild(script); // Append the "script" element to "head"
-    loaded = true; // API loaded
+
+    // Register handler for navigation
+    nav.setScript("maps-js", fnMaps);
 }
 
-export default () => {
-    nav.addListener("/maps.html", fnMaps).addListener("/maps", fnMaps);
-}
+// Register event on page load and export default handler
+document.addEventListener("DOMContentLoaded", fnMaps);
+export default fnMaps;

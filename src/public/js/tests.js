@@ -2,15 +2,8 @@
 import nav from "./components/Navigation.js";
 //import menu from "./components/Menu.js";
 //import menus from "./data/menus.js";
-
-import maps from "./xeco/iris/tests.js";
-import index from "./web/index.js";
-import login from "./web/login.js";
-import tables from "./web/tables.js";
 import i18n from "./i18n/langs.js";
 
-// Initialize navigation
-maps(); index(); login(); tables();
 //const menuTree = menus.filter(node => (node.tipo == 1)).sort((a, b) => (a.orden - b.orden));
 
 document.addEventListener("DOMContentLoaded", () => {

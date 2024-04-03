@@ -5,6 +5,7 @@ import cp from "child_process"; //system calls
 import sharp from "sharp"; // Image handler
 import jwt from "jsonwebtoken"; // JSON web token
 import mimetypes from "../data/mime-types.json" assert { type: "json" };
+import sb from "#client/components/StringBox.js";
 import config from "../config.js"; // Configurations
 import i18n from "../i18n/langs.js";
 
@@ -12,6 +13,7 @@ function Util() {
 	const self = this; //self instance
 
 	this.xhr = ctx => (ctx.req.header("x-requested-with") == "XMLHttpRequest"); // Is AJAX call
+	this.msg = (ctx, msg) => ctx.text(i18n.get(msg)); // Send single message
 	this.msgs = ctx => ctx.json(i18n.getMsgs()); // Send messages status = ok (200)
 	this.error = (ctx, msg) => ctx.text(i18n.get(msg), 500); // Send error message
 	this.errors = ctx => ctx.json(i18n.getMsgs(), 500); // Send errors
@@ -21,18 +23,24 @@ function Util() {
 		return self;
 	}
 
-	this.upload = file => { // Upload single file
+	this.upload = (user, file, index) => { // Upload single file
 		return file.arrayBuffer().then(buffer => {
-			const filepath = path.join(config.DIR_UPLOADS, file.name);
+			const output = Object.copy({ userId: user }, file, [ "size", "type", "name" ]); // Initialize results
+			if ((file.size < 1) || !file.name)
+				return output; // Not selected file
+			output.path = "" + user + sb.randString(3) + Date.now() + sb.randString(3) + (index || 0) + sb.lower(path.extname(file.name));
+			const filepath = path.join(config.DIR_UPLOADS, output.path);
 			fs.writeFileSync(filepath, Buffer.from(buffer)); // If error => throw
 			if (file.type.startsWith("image/")) { // If image => try to resize it
-				const filethumb = path.join(config.DIR_THUMBS, file.name);
-				return sharp(buffer).resize(320, 240).toFile(filethumb);
+				const filethumb = path.join(config.DIR_THUMBS, output.path);
+				const fnThen = info => { output.format = info.format; return output; }
+				const fnError = err => { fs.unlink(filepath); throw err; };
+				return sharp(buffer).resize(320, 240).toFile(filethumb).then(fnThen).catch(fnError);
 			}
-			return Promise.resolve(file);
+			return output;
 		});
 	}
-	this.uploadAll = files => Promise.all(files.map(self.upload));
+	this.uploadAll = (user, files) => Promise.all(files.map((file, i) => self.upload(user, file, i)));
 	this.unload = name => { // Remove all file copies
 		fs.unlink(path.join(config.DIR_THUMBS, name));
 		fs.unlink(path.join(config.DIR_UPLOADS, name));
