@@ -236,7 +236,7 @@ export default function(form, opts) {
 	}
 	this.isValid = (fnValidate, selector) => {
 		const data = self.closeAlerts().getData(selector);
-		const valid = fnValidate(data); // Get validation results
+		const valid = fnValidate(data, i18n.getValidators()); // Get validation results
 		return valid.isOk() ? data : !self.setErrors(valid.getMsgs(), selector);
 	}
 

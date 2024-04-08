@@ -2,6 +2,20 @@
 import Msgs from "./msgs.js";
 import { BankNames, IbanCodeLengths } from "../data/banks.js";
 
+function fnSize(valid, name, value, max, msg) {
+	if (!value) // String length validations
+		return !valid.setError("errRequired", name);
+	if (value.length > max)
+		 !valid.setError(msg || "errMaxlength", name);
+	return true;
+}
+function fnDate(valid, name, value, msg) {
+	if (!value) // iso date validation
+		return !valid.setError("errRequired", name); // required
+	const ok = /^\d{4}-[01]\d-[0-3]\d/.test(value); // RE_DATE format
+	return ok || !valid.setError(msg || "errDate", name);
+}
+
 export default class Validators extends Msgs {
 	static #sysdate = (new Date()).toISOString();
 
@@ -30,29 +44,23 @@ export default class Validators extends Msgs {
 		return (value > 0) ? this : this.setError(msg || "notFound", name);
 	}
 
-	#fnSize(name, value, max, msg) { // required and length <= max
-		if (!value) // String length validations
-			return !this.setError("errRequired", name);
-		if (value.length > max)
-			 !this.setError(msg || "errMaxlength", name);
-		return true;
-	}
-	size(name, value, max, msg) { this.#fnSize(name, value, max ?? 1000, msg); return this; } // Default max size == 1000
-	size20(name, value, msg) { this.#fnSize(name, value, 20, msg); return this; }
-	size50(name, value, msg) { this.#fnSize(name, value, 50, msg); return this; }
-	size100(name, value, msg) { this.#fnSize(name, value, 100, msg); return this; }
-	size200(name, value, msg) { this.#fnSize(name, value, 200, msg); return this; }
-	size250(name, value, msg) { this.#fnSize(name, value, 250, msg); return this; }
-	size500(name, value, msg) { this.#fnSize(name, value, 500, msg); return this; }
+	// required and length <= max (Default max size == 1000)
+	size(name, value, max, msg) { fnSize(this, name, value, max ?? 1000, msg); return this; }
+	size20(name, value, msg) { fnSize(this, name, value, 20, msg); return this; }
+	size50(name, value, msg) { fnSize(this, name, value, 50, msg); return this; }
+	size100(name, value, msg) { fnSize(this, name, value, 100, msg); return this; }
+	size200(name, value, msg) { fnSize(this, name, value, 200, msg); return this; }
+	size250(name, value, msg) { fnSize(this, name, value, 250, msg); return this; }
+	size500(name, value, msg) { fnSize(this, name, value, 500, msg); return this; }
 
 	isEmail(name, value, msg) {
-		if (!this.#fnSize(name, value, 200))
+		if (!fnSize(this, name, value, 200))
 			return this; // size message error
 		const ok = /\w+[^\s@]+@[^\s@]+\.[^\s@]+/.test(value); // RE_MAIL format
 		return ok ? this : this.setError(msg || "errCorreo", name);
 	}
 	isLogin(name, value, msg) { // Loggin / Password / Code
-		if (!this.#fnSize(name, value, 200))
+		if (!fnSize(this, name, value, 200))
 			return this; // size message error
 		if (value.length < 8)
 			return this.setError("errMinlength8", name); // min length
@@ -61,39 +69,33 @@ export default class Validators extends Msgs {
 	}
 
 	word(name, value, msg) {
-		if (!this.#fnSize(name, value, 50))
+		if (!fnSize(this, name, value, 50))
 			return this; // size message error
 		const ok = /\w+/.test(value); // RE_WORD format
 		return ok ? this : this.setError(msg || "errFormat", name);
 	}
 	words(name, value, msg) {
-		if (!this.#fnSize(name, value, 200))
+		if (!fnSize(this, name, value, 200))
 			return this; // size message error
 		const ok = /^\w+(,\w+)*$/.test(value); // RE_WORDS format
 		return ok ? this : this.setError(msg || "errFormat", name);
 	}
 	digits(name, value, msg) {
-		if (!this.#fnSize(name, value, 20))
+		if (!fnSize(this, name, value, 20))
 			return this; // size message error
 		const ok = /^[1-9]\d*$/.test(value); // RE_DIGITS format
 		return ok ? this : this.setError(msg || "errFormat", name);
 	}
 	numbers(name, value, msg) {
-		if (!this.#fnSize(name, value, 200))
+		if (!fnSize(this, name, value, 200))
 			return this; // size message error
 		const ok = /^\d+(,\d+)*$/.test(value); // RE_NUMBERS format
 		return ok ? this : this.setError(msg || "errFormat", name);
 	}
 
 	// Date validations in string iso format (ej: "2022-05-11T12:05:01")
-	#fnDate(name, value, msg) {
-		if (!value) // iso date validation
-			return !this.setError("errRequired", name); // required
-		const ok = /^\d{4}-[01]\d-[0-3]\d/.test(value); // RE_DATE format
-		return ok || !this.setError(msg || "errDate", name);
-	}
 	isDate(name, value, msg) {
-		this.#fnDate(name, value, msg);
+		fnDate(this, name, value, msg);
 		return this;
 	}
 	isTime(name, value, msg) {
@@ -109,14 +111,14 @@ export default class Validators extends Msgs {
 		return ok ? this : this.setError(msg || "errDate", name);
 	}
 	leToday(name, value, msg) {
-		if (!this.#fnDate(name, value))
+		if (!fnDate(this, name, value))
 			return this; // format message error
 		if (value.substring(0, 10) > Validators.#sysdate.substring(0, 10))
 			return this.setError(msg || "errDateLe", name); // not in time
 		return this;
 	}
 	geToday(name, value, msg) {
-		if (!this.#fnDate(name, value))
+		if (!fnDate(this, name, value))
 			return this; // format message error
 		if (value.substring(0, 10) < Validators.#sysdate.substring(0, 10))
 			return this.setError(msg || "errDateGe", name); // not in time
