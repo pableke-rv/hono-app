@@ -1,6 +1,5 @@
 
 import { raw } from "hono/html";
-import i18n from "../i18n/langs.js";
 
 const css = `table { margin:auto; width: 94%; border-collapse: collapse; }
     thead { border-bottom: solid 1px #000; }

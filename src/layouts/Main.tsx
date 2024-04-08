@@ -3,7 +3,6 @@ import { Alerts, Loading, BackToTop } from "../components/Alerts";
 import { User, Langs } from "../components/Dropdowns";
 import { ButtonTheme } from "../components/Buttons";
 import Menu from "../components/Menu";
-import i18n from "../i18n/langs.js";
 
 export const Head = (props: any) => {
     return (
@@ -39,17 +38,13 @@ export const Footer = () => {
 }
 
 export const Layout = (props: any) => {
-    const lang:any = i18n.getLang();
+    const { lang, title } = props.msgs.getLang();
     return (
-        <html lang={lang.lang}>
-            <Head title={lang.title}/>
+        <html lang={lang}>
+            <Head title={title}/>
             <body>
+                <Alerts {...props.msgs.getMsgs()}/>
                 <header></header>
-
-                <Alerts/>
-                <Loading/>
-                <BackToTop/>
-
                 <NavPhone/>
                 <nav class="menu-main">
                     <div><Menu>{props.menu}</Menu></div>
@@ -60,9 +55,10 @@ export const Layout = (props: any) => {
                         <ButtonTheme/>
                     </div>
                 </nav>
-
                 <main>{props.children}</main>
                 <Footer/>
+                <Loading/>
+                <BackToTop/>
             </body>
         </html>
     );

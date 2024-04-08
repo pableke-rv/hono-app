@@ -29,5 +29,8 @@ export default {
 	JWT_KEY: process.env.JWT_KEY || "2ioUHb2Lf0&U3sF49o%!mw3149G4H1qwHrE*14CmOrjTEM0*Jt",
 	JWT_EXPIRES: +process.env.JWT_EXPIRES || 3600000, // default=1h
 
+	SUPABASE_URL: process.env.SUPABASE_URL,
+	SUPABASE_KEY: process.env.SUPABASE_KEY,
+
 	SQLITE_PATH: path.join(SRC, "data/db.sqlite")
 };

@@ -3,10 +3,9 @@ import { Layout } from "./Main";
 import { Tab, TabNav0, TabNext } from "../components/Tabs";
 import { Autocomplete } from "../components/Inputs";
 import { Notice } from "../components/Alerts";
-import i18n from "../i18n/langs.js";
 
 export const IndexTab0 = (props: any) => {
-    const lang = i18n.getLang();
+    const lang = props.msgs.getLang();
     const maps = `/${lang.lang}/maps.html`;
     const tables = `/${lang.lang}/tables.html`;
     return (
@@ -71,17 +70,13 @@ export const IndexTab1 = (props: any) => {
 export const IndexTabs = (props: any) => {
     return (
         <>
-            <IndexTab0/>
-            <IndexTab1/>
-            <script id="index-js" type="module" src="/public/js/web/index.js"></script>
+            <IndexTab0 msgs={props.msgs}/>
+            <IndexTab1 msgs={props.msgs}/>
+            <script id="index-js" type="module" src="/public/js/modules/web/index.js"></script>
         </>
     );
 }
 
 export const Index = (props: any) => {
-    return (
-        <Layout>
-            <IndexTabs/>
-        </Layout>
-    );
+    return (<Layout msgs={props.msgs}><IndexTabs msgs={props.msgs}/></Layout>);
 }

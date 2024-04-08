@@ -25,13 +25,12 @@ export const Alert = (props: AlertType) => {
 }
 
 export const Alerts = (props: any) => {
-    const { msgOk, msgInfo, msgWarn, msgError } = i18n.getMsgs();
     return (
         <div class="alerts">
-            <Alert type="success" icon="fas fa-check-circle fa-2x">{msgOk}</Alert>
-            <Alert type="info" icon="fas fa-info fa-2x">{msgInfo}</Alert>
-            <Alert type="warn" icon="fas fa-exclamation-triangle fa-2x">{msgWarn}</Alert>
-            <Alert type="error" icon="fas fa-exclamation fa-2x">{msgError}</Alert>
+            <Alert type="success" icon="fas fa-check-circle fa-2x">{props.msgOk}</Alert>
+            <Alert type="info" icon="fas fa-info fa-2x">{props.msgInfo}</Alert>
+            <Alert type="warn" icon="fas fa-exclamation-triangle fa-2x">{props.msgWarn}</Alert>
+            <Alert type="error" icon="fas fa-exclamation fa-2x">{props.msgError}</Alert>
         </div>
     );
 }

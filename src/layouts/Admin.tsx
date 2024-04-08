@@ -40,7 +40,7 @@ export const AdminTabs = (props: any) => {
         <>
             <ActionsTab active={props.actions}/>
             <ProfileTab active={props.profile} user={props.user}/>
-            <script id="admin-js" type="module" src="/public/js/web/admin.js"></script>
+            <script id="admin-js" type="module" src="/public/js/modules/web/admin.js"></script>
         </>
     );
 }
@@ -49,8 +49,8 @@ export const ActionsActiveTab = (props: any) => { return (<AdminTabs actions="ac
 export const ProfileActiveTab = (props: any) => { return (<AdminTabs profile="active" user={props.user}/>); }
 
 export const Admin = (props: any) => {
-    return (<Layout user={props.user} menu={props.menu}><ActionsActiveTab user={props.user}/></Layout>);
+    return (<Layout {...props}><ActionsActiveTab user={props.user}/></Layout>);
 }
 export const Profile = (props: any) => {
-    return (<Layout user={props.user} menu={props.menu}><ProfileActiveTab user={props.user}/></Layout>);
+    return (<Layout {...props}><ProfileActiveTab user={props.user}/></Layout>);
 }

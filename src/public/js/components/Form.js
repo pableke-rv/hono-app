@@ -229,14 +229,15 @@ export default function(form, opts) {
 			return self.showError(messages);
 		// Style error inputs and set focus on first error
 		selector = selector || INPUTS; // Default = inputs type
-		messages = messages || i18n.getMsgs(); // default messages
+		//messages = messages || i18n.getMsgs(); // default messages
 		const fnToggleError = (el, tip) => tip ? fnSetInputError(el, tip) : fnSetInputOk(el);
 		form.elements.eachPrev(el => (el.isVisible(selector) && fnToggleError(el, messages[el.name])));
 		return self.showError(messages.msgError || opts.defaultMsgError);
 	}
 	this.isValid = (fnValidate, selector) => {
 		const data = self.closeAlerts().getData(selector);
-		return fnValidate(data) ? data : !self.setErrors(i18n.getMsgs(), selector);
+		const valid = fnValidate(data); // Get validation results
+		return valid.isOk() ? data : !self.setErrors(valid.getMsgs(), selector);
 	}
 
 	this.send = async url => {

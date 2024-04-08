@@ -1,34 +1,41 @@
-// @ts-nocheck
 
-import { Context } from "hono";
+import { ContextMsgs } from "../types/hono";
 import { Admin, Profile, ProfileActiveTab } from "../layouts/Admin";
 
-import i18n from "../i18n/langs.js";
+import supabase from "../dao/supabase/factory.js";
 import util from "../lib/util.js";
 
-export const admin = (ctx: Context) => {
+export const admin = (ctx: ContextMsgs) => {
     const session = ctx.get("session");
-    return ctx.html(<Admin user={session.get("user")} menu={session.get("menu")}/>);
+    return ctx.html(<Admin msgs={ctx.getMsgs()} user={session.get("user")} menu={session.get("menu")}/>);
 }
 
-export const welcome = (ctx: Context) => {
-    i18n.setOk("msgLoginOk");
-    return admin(ctx);
-}
-
-export const viewProfile = (ctx: Context) => {
+export const welcome = async (ctx: ContextMsgs) => {
     const session = ctx.get("session");
-    return util.xhr(ctx) ? ctx.html(<ProfileActiveTab user={session.get("user")}/>)
-                        : ctx.html(<Profile user={session.get("user")} menu={session.get("menu")}/>);
+    const msgs = ctx.getMsgs().setOk("msgLoginOk");
+//const result = await supabase.file.filter(session.get("user").id);
+//console.log('Log:', result.data, result.error);
+    return ctx.html(<Admin msgs={msgs} user={session.get("user")} menu={session.get("menu")}/>);
 }
 
-export const saveProfile = async (ctx: Context) => {
+export const viewProfile = async (ctx: ContextMsgs) => {
+    const session = ctx.get("session");
+    const user = session.get("user");
+    return ctx.xhr() ? ctx.html(<ProfileActiveTab user={user}/>)
+                    : ctx.html(<Profile msgs={ctx.getMsgs()} user={user} menu={session.get("menu")}/>);
+}
+
+export const saveProfile = async (ctx: ContextMsgs) => {
     const user = ctx.get("session").get("user");
-    const fd = await ctx.req.formData(); // Read FormData object
-
-    //const files = fd.getAll("logo");
-    //return await util.uploadAll(user.id, files).then(() => ctx.text("saveOk"));
-
-    const file = fd.get("logo"); // TODO: store file in supabase
-    return await util.upload(user.id, file).then(info => {console.log(info); return ctx.text("saveOk");});
+    return await ctx.req.formData().then(fd => { // FormData object
+        //return util.uploadAll(user.id, fd.getAll("logo"));
+        return util.upload(user.id, fd.get("logo"));
+    }).then(info => {
+        // TODO: store file in supabase
+        console.log(info);
+        return ctx.text("saveOk");
+    })/*.then(result => { // Multifile
+        // TODO: store file in supabase
+        ctx.text("saveOk");
+    })*/;
 }

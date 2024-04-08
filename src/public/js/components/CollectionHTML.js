@@ -1,5 +1,6 @@
 
 import coll from "./Collection.js";
+import i18n from "../i18n/langs.js";
 
 const STATUS = {};
 const HIDE_CLASS = "hide";
@@ -46,6 +47,7 @@ NodeList.prototype.show = HTMLCollection.prototype.show;
 NodeList.prototype.toggle = HTMLCollection.prototype.toggle;
 
 // Extends HTMLElement prototype
+HTMLElement.prototype.setMsg = function(msg) { this.innerHTML = i18n.get(msg); return this }
 HTMLElement.prototype.show = function() { fnShow(this); return this }
 HTMLElement.prototype.hide = function() { fnHide(this); return this }
 HTMLElement.prototype.toggle = function(name, force) { this.classList.toggle(name || HIDE_CLASS, force); }
@@ -90,5 +92,10 @@ HTMLElement.prototype.slideIn = function() { return fnAnimate(this, SLIDE_IN, SL
 HTMLElement.prototype.slideOut = function() { return fnVisible(this) ? fnAnimate(this, SLIDE_OUT, SLIDE_IN) : this; }
 //HTMLElement.prototype.slideInRight = function() { return fnAnimate(this, SLIDE_IN_RIGHT, SLIDE_OUT_RIGHT); }
 //HTMLElement.prototype.slideOutRight = function() { return fnVisible(this) ? fnAnimate(this, SLIDE_OUT_RIGHT, SLIDE_IN_RIGHT) : this; }
+
+// Commons initializations in the HTML client
+document.addEventListener("DOMContentLoaded", () => {
+    i18n.setLanguage(); // Client language
+});
 
 export default coll;

@@ -2,7 +2,6 @@
 import { Layout } from "./Main";
 import { Tab } from "../components/Tabs";
 import { Autocomplete } from "../components/Inputs";
-import i18n from "../i18n/langs.js";
 
 export const MapsTab0 = () => {
     return (
@@ -40,9 +39,5 @@ export const MapsTab0 = () => {
 }
 
 export const Maps = (props: any) => {
-    return (
-        <Layout>
-            <MapsTab0/>
-        </Layout>
-    );
+    return (<Layout><MapsTab0/></Layout>);
 }

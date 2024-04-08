@@ -1,21 +1,19 @@
 
-import { Context } from "hono";
+import { ContextMsgs } from "../types/hono";
 import { Error404, Error500 } from "../layouts/Errors";
-import i18n from "../i18n/langs.js";
-import util from "../lib/util.js";
 
-export const error404 = (ctx: Context) => {
+export const error404 = (ctx: ContextMsgs) => {
     const msg = "Error 404: Resource not found";
-    if (util.xhr(ctx))
+    if (ctx.xhr())
         return ctx.text(msg, 404); // AJAX call
-    i18n.init(ctx.get("lang")).setError(msg);
-    return ctx.html(<Error404/>);
+    const msgs = ctx.getMsgs().setError(msg);
+    return ctx.html(<Error404 msgs={msgs}/>);
 }
 
-export const error500 = (err: Error, ctx: Context) => {
+export const error500 = (err: Error, ctx: ContextMsgs) => {
     console.error(err); // log error
-    if (util.xhr(ctx))
+    if (ctx.xhr())
         return ctx.text("" + err, 500); // AJAX call
-    i18n.init(ctx.get("lang")).setError("" + err);
-    return ctx.html(<Error500/>);
+    const msgs = ctx.getMsgs().setError("" + err);
+    return ctx.html(<Error500 msgs={msgs}/>);
 }

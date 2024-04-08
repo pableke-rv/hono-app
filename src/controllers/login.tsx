@@ -1,27 +1,27 @@
-// @ts-nocheck
 
-import { Context, Next } from "hono";
+import { ContextMsgs, Next } from "../types/hono";
 import { getCookie, setCookie } from "hono/cookie";
-
 import { Login, LoginActiveTab } from "../layouts/Login";
+
 import sqlite from "../dao/sqlite/factory.js";
-import menu from "../public/js/components/Menu.js";
-import i18n from "../i18n/langs.js";
+import menu from "app/js/components/Menu.js";
+import user from "app/model/web/User.js";
 import util from "../lib/util.js";
 
-function logged(ctx: Context) {
-    i18n.init(ctx.var.lang).setOk("login ok!");
-    return util.xhr(ctx) ? ctx.text("login ok!") : ctx.html(<LoginActiveTab/>);
+function logged(ctx: ContextMsgs) {
+    return ctx.xhr() ? ctx.text("login ok!") : ctx.html(<LoginActiveTab/>);
 }
-function logerr(err: string, ctx: Context) {
-    i18n.init(ctx.var.lang).setError(err);
+function logerr(err: string, ctx: ContextMsgs) {
+    if (ctx.xhr()) // AJAX error
+        return ctx.text(err, 500);
     if ("GET" == ctx.req.method) // Session helper
         ctx.get("session").set("url", ctx.req.url);
-    return util.xhr(ctx) ? ctx.text(err, 500) : ctx.html(<Login/>, 500); // Go error
+    const msgs = ctx.getMsgs().setError(err);
+    return ctx.html(<Login msgs={msgs}/>); // Go error
 }
 
 // Check if user is logged
-export const auth = (ctx: Context, next: Next) => {
+export const auth = (ctx: ContextMsgs, next: Next) => {
     const session = ctx.get("session");
     if (!session.get("user"))
         return logerr("msgAuthFail", ctx);
@@ -29,37 +29,36 @@ export const auth = (ctx: Context, next: Next) => {
         return logerr("msgExpired", ctx);
     return next();
 }
-export const login = (ctx: Context) => {
-    return util.xhr(ctx) ? ctx.html(<LoginActiveTab/>) : ctx.html(<Login/>);
+export const login = (ctx: ContextMsgs) => {
+    const msgs = ctx.getMsgs();
+    return ctx.xhr() ? ctx.html(<LoginActiveTab msgs={msgs}/>) : ctx.html(<Login msgs={msgs}/>);
 }
-export const signin = async (ctx: Context) => {
+export const signin = async (ctx: ContextMsgs) => {
+    const valid = ctx.getValidators();
     const session = ctx.get("session");
-    const lang = session.get("lang");
     return await ctx.req.parseBody().then(body => {
-        i18n.init(lang).isLogin("login", body.login, "errLogin");
-        //i18n.isLogin("pass", body.pass, "errPass");
-        if (i18n.isError())
+        if (user.validateLogin(body, valid).isError())
             throw new Error("msgAuthFail");
         return sqlite.usuarios.login(body.login, body.pass);
     }).then(user => {
         session.set("user", user);
-        return sqlite.menus.getMenus(user.id, lang);
+        return sqlite.menus.getMenus(user.id, ctx.getLang());
     }).then(menus => {
         session.set("menu", menu.html(menus)); // Specific menus
         return ctx.text(session.get("url") || "/admin/welcome"); // Session redirect
     }).catch(err => {
-        i18n.setException(lang, err);
-        return ctx.json(i18n.getMsgs(), 500);
+        return ctx.json(valid.setException(err).getMsgs(), 500);
     });
 }
-export const logout = (ctx: Context) => {
-    i18n.setOk("msgLogout");
-    ctx.get("session").deleteSession();
-    ctx.get("session").set("lang", ctx.get("lang"));
-    return ctx.html(<Login/>);
+export const logout = (ctx: ContextMsgs) => {
+    const session = ctx.get("session"); // User session
+    session.deleteSession(); // Remove currrent session
+    session.set("lang", ctx.getLang()); // save current lang
+    const msgs = ctx.getMsgs().setOk("msgLogout");
+    return ctx.html(<Login msgs={msgs}/>); // Go login view
 }
 
-export const sign = async (ctx: Context) => {
+export const sign = async (ctx: ContextMsgs) => {
     return await ctx.req.parseBody().then(body => {
         return sqlite.usuarios.login(body.login, body.pass);
     }).then(user => {
@@ -70,7 +69,7 @@ export const sign = async (ctx: Context) => {
         return logerr("" + err, ctx);
     });
 }
-export const verify = async (ctx: Context, next: Next) => {
+export const verify = async (ctx: ContextMsgs, next: Next) => {
     const token = getCookie(ctx, "token");
     return await util.verify(token).then(user => next())
                     .catch(err => logerr("" + err, ctx));

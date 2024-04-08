@@ -1,6 +1,6 @@
 
 import bcrypt from "bcrypt";
-import { LoginError } from "#client/i18n/error.js";
+import { LoginError } from "../../public/js/i18n/errors.js";
 
 const fnError = err => {
     if (err.errno == 19) //UK violated

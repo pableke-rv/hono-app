@@ -1,6 +1,5 @@
 
 import coll from "./CollectionHTML.js";
-import i18n from "../i18n/langs.js";
 
 HTMLElement.prototype.eachPrev = function(fn) {
     var el = this.previousElementSibling;
@@ -67,8 +66,8 @@ function Alerts() {
 	window.onscroll = function() { _top.toggle(null, this.scrollY < 80); }
 
     const fnShow = (el, txt) => {
-        el.innerHTML = i18n.get(txt);
         el.parentNode.fadeIn();
+        el.setMsg(txt);
         return self;
     }
     const fnClose = el => el.fadeOut();
@@ -97,7 +96,6 @@ function Alerts() {
     }
 
     this.closeAlerts = function() {
-        i18n.reset(); // Clear previos messages
         texts.forEach(fnCloseParent); // fadeOut all alerts
         return self;
     }

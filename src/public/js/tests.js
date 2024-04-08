@@ -7,8 +7,6 @@ import i18n from "./i18n/langs.js";
 //const menuTree = menus.filter(node => (node.tipo == 1)).sort((a, b) => (a.orden - b.orden));
 
 document.addEventListener("DOMContentLoaded", () => {
-    i18n.setLanguage(); // Client language
-
     const html = document.documentElement;
     const langs = document.getElementById("languages");
     const link = langs.querySelector("a#" + i18n.get("lang")); // Language selector
