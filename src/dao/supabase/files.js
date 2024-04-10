@@ -5,4 +5,8 @@ export default function(db) {
     this.filter = user => {
         return db.from("files").select().eq("user_id", user);
     }
+
+    this.insert = data => {
+        return db.from("files").insert(data);
+    }
 }

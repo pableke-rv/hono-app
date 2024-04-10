@@ -39,6 +39,7 @@ export default class Msgs {
 
     setException(err) {
         console.error(err); // Show log error
-        return this.setError(err.message, err.field, err.tiperr);
+        const msg = err.message || err; // Main message
+        return this.setError(msg, err.field, err.tiperr);
     }
 }

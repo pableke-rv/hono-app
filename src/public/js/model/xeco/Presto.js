@@ -82,7 +82,8 @@ function Partida(presto) {
         valid.isKey("acOrg030", data030.idOrg030, ERR_ORGANICA); // autocomplete required key
         valid.isKey("idEco030", data030.idEco030, "Debe seleccionar una económica"); // select required number
         valid.gt0("imp030", data030.imp030); // float number > 0
-        if (!data030.acOrg030?.split(" - ")) // Code separator
+        const label = data030.acOrg030?.split(" - ");
+        if (!label) // Code separator
             return valid.setError("No ha seleccionada correctamente la aplicación para el DC 030.", "acOrg030", ERR_ORGANICA);
         if (data.imp < data030.imp030)
             return valid.setInputError("imp030", "errExceeded", "El importe del documento 030 excede al del 080.");

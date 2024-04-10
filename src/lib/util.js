@@ -11,9 +11,13 @@ import config from "../config.js"; // Configurations
 function Util() {
 	const self = this; //self instance
 
+	this.error = (ctx, err) => {
+		console.error(err); // Log error for console
+		return ctx.text(err.message || err, 500);
+	}
 	this.upload = (user, file, index) => { // Upload single file
 		return file.arrayBuffer().then(buffer => {
-			const output = { userId: user }; // Initialize output results
+			const output = { user_id: user }; // Initialize output results
 			Object.copy(output, file, [ "size", "type", "name" ]); // Initialize results
 			if ((file.size < 1) || !file.name)
 				return output; // Not selected file
@@ -31,9 +35,9 @@ function Util() {
 	}
 	// allSettled = [ { status: 'fulfilled', value: output }, { status: 'rejected', reason: Error: an error }, ... ]
 	this.uploadAll = (user, files) => Promise.allSettled(files.map((file, i) => self.upload(user, file, i)));
-	this.unload = name => { // Remove all file copies
-		fs.unlink(path.join(config.DIR_THUMBS, name));
-		fs.unlink(path.join(config.DIR_UPLOADS, name));
+	this.unload = file => { // Remove all file copies
+		fs.unlink(path.join(config.DIR_THUMBS, file), globalThis.void);
+		fs.unlink(path.join(config.DIR_UPLOADS, file), globalThis.void);
 		return self;
 	}
 
