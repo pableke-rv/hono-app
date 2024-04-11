@@ -16,11 +16,11 @@ function Util() {
 		return ctx.text(err.message || err, 500);
 	}
 	this.upload = (user, file, index) => { // Upload single file
+		if (!file || (file.size < 1) || !file.name) // Has file selected
+			return Promise.resolve(null); // Not selected file
 		return file.arrayBuffer().then(buffer => {
 			const output = { user_id: user }; // Initialize output results
 			Object.copy(output, file, [ "size", "type", "name" ]); // Initialize results
-			if ((file.size < 1) || !file.name)
-				return output; // Not selected file
 			output.path = "" + user + sb.randString(3) + Date.now() + sb.randString(3) + (index || 0) + sb.lower(path.extname(file.name));
 			const filepath = path.join(config.DIR_UPLOADS, output.path);
 			fs.writeFileSync(filepath, Buffer.from(buffer)); // If error => throw

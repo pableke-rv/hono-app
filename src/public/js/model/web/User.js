@@ -7,6 +7,11 @@ function User() {
         //valid.isLogin("pass", data.pass, "errPass");
         return valid;
     }
+    this.validateProfile = (data, valid) => {
+        valid.size200("nombre", data.nombre);
+        valid.isEmail("email", data.email);
+        return valid;
+    }
 }
 
 export default new User();

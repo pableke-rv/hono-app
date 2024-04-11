@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "tsx watch dist/index.js",
     "test": "node --import tsx --test tests/index.js",
+    "postinstall": "gulp deploy",
     "build": "gulp"
   },
   "dependencies": {

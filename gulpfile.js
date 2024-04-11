@@ -72,6 +72,9 @@ gulp.task("static", done => {
 	gulp.src("src/public/files/**/*").pipe(gulp.dest("dist/public/files")).on("end", done);
 });
 
+// Task to build dist when deployment on server
+gulp.task("deploy", gulp.series("modules", "minify-html", "minify-css", "copy-ts", "minify-js"));
+
 gulp.task("watch", () => {
 	gulp.watch(HTML_PATH, gulp.series("minify-html"));
 	gulp.watch(CSS_FILES, gulp.series("minify-css"));

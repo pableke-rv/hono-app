@@ -2,14 +2,13 @@
 import tabs from "../../components/Tabs.js";
 import Form from "../../components/Form.js";
 import nav from "../../components/Navigation.js";
+import user from "../../model/web/User.js";
 
 function fnAdmin() { // Script id
     const formProfile = new Form("#profile"); // instance
     formProfile.submit(ev => {
-        formProfile.send().then(info => {
-            tabs.setActive(0);
-            formProfile.setOk(info);
-        });
+        if (formProfile.isValid(user.validateProfile))
+            formProfile.send().then(info => { tabs.setActive(0); formProfile.setOk(info); });
         ev.preventDefault();
     });
 

@@ -13,7 +13,8 @@ function Navigation() {
     this.redirect = pathname => { window.location.href = pathname; }
 
     this.getScript = name => SCRIPTS[name];
-    this.setScript = (name, fn) => { SCRIPTS[name] = fn; return self; }
+    this.setScript = (name, fn) => { SCRIPTS[name] = fn; return self; } // save script
+    this.runScript = (name, fn) => { fn(); return self.setScript(name, fn); } // Execute and save handler
 
     // Capture clicks events to load main via AJAX
     this.setClick = (el, selector) => {
@@ -34,8 +35,7 @@ function Navigation() {
             if (fn) // Is function registered?
                 return fn(); // Simule dispatch vt event
             import(script.src).then(module => {
-                module.default(); // Execute once and save handler
-                self.setScript(script.id, module.default);
+                self.runScript(script.id, module.default);
             }).catch(err => {
                 alerts.showError(err);
             });
