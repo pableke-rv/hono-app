@@ -28,16 +28,22 @@ function Util() {
 				const filethumb = path.join(config.DIR_THUMBS, output.path);
 				const fnThen = info => { output.format = info.format; return output; }
 				const fnError = err => { fs.unlink(filepath); throw err; };
-				return sharp(buffer).resize(320, 240).toFile(filethumb).then(fnThen).catch(fnError);
+				return sharp(buffer).resize(320, 340).toFile(filethumb).then(fnThen).catch(fnError);
 			}
 			return output;
 		});
 	}
 	// allSettled = [ { status: 'fulfilled', value: output }, { status: 'rejected', reason: Error: an error }, ... ]
 	this.uploadAll = (user, files) => Promise.allSettled(files.map((file, i) => self.upload(user, file, i)));
-	this.unload = file => { // Remove all file copies
-		fs.unlink(path.join(config.DIR_THUMBS, file), globalThis.void);
-		fs.unlink(path.join(config.DIR_UPLOADS, file), globalThis.void);
+	this.getUrlImage = file => (config.URL_IMGS + file);
+	this.getUrlThumb = file => (config.URL_THUMBS + file);
+	this.getFileThumb = file => path.join(config.DIR_THUMBS, file);
+	this.getFileUpload = file => path.join(config.DIR_UPLOADS, file);
+	this.unload = file => {
+		if (file) { // Remove all file copies
+			fs.unlink(self.getFileThumb(file), globalThis.void);
+			fs.unlink(self.getFileUpload(file), globalThis.void);
+		}
 		return self;
 	}
 

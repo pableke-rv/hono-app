@@ -52,7 +52,7 @@ function Collection() {
             return fnRender(item, status, resume, data);
         }).join("");
     }
-    
+
     this.copy = function(output, data, keys) {
         if (keys)
             keys.forEach(key => { output[key] = data[key]; });

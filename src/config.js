@@ -15,8 +15,12 @@ export default {
 
 	DIR_SRC: SRC,
 	DIR_FILES: FILES,
-	DIR_UPLOADS: path.join(FILES, "uploads"),
 	DIR_THUMBS: path.join(FILES, "thumbs"),
+	DIR_UPLOADS: path.join(FILES, "uploads"),
+
+	URL_IMGS: "/public/img/png/",
+	URL_THUMBS: "/public/files/thumbs/",
+	URL_UPLOADS: "/public/files/uploads/",
 
 	GMAIL_USER: process.env.GMAIL_USER,
 	GMAIL_PASS: process.env.GMAIL_PASS,

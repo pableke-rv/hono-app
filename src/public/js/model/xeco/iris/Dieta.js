@@ -1,11 +1,11 @@
 
-import dietas from "../../../data/iris/dietas.js"
+import { RD, UPCT, EUT} from "../../../data/iris/dietas.js"
 import i18n from "../../../i18n/langs.js";
 
 function Dieta() {
 	const self = this; //self instance
 
-    this.getDieta = pais => dietas[pais] || dietas.ZZ;
+    this.getDieta = pais => RD[pais] || RD.ZZ;
 
 	this.getImporte = function(pais, tipo, grupo, isRD) {
 		const dieta = self.getDieta(pais); //dieta actual

@@ -1,4 +1,6 @@
 
+import util from "../lib/util.js";
+
 const UserIcon = <i class="fas fa-user"></i>;
 
 export const UserPublic = (props: any) => {
@@ -16,7 +18,7 @@ export const UserPublic = (props: any) => {
 }
 export const UserLogged = (props: any) => {
     const { logo, email } = props.user;
-    const logoHtml = logo ? <img src={logo} alt="Avatar"/> : UserIcon;
+    const logoHtml = logo ? <img src={util.getUrlThumb(logo)} alt="Avatar"/> : UserIcon;
     return (
         <div id="user" class="dropdown">
             <button>{logoHtml}</button>

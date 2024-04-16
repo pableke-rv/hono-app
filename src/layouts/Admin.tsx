@@ -1,9 +1,8 @@
 
 import { Layout } from "./Main";
 import { Tab, TabNav0 } from "../components/Tabs";
-import { InputEmail, InputFile, InputText } from "../components/Inputs";
+import { InputEmail, InputImage, InputText } from "../components/Inputs";
 import { ButtonSubmit } from "../components/Buttons";
-import i18n from "../i18n/langs.js";
 
 export const ActionsTab = (props: any) => {
     return (
@@ -24,7 +23,7 @@ export const ProfileTab = (props: any) => {
                 <InputText name="nombre" value={user.nombre} required={true} label="Nombre" tabindex="1" placeholder="User name"/>
                 <InputEmail name="email" value={user.email} required={true} label="Email" tabindex="2" placeholder="Type your Email"/>
                 <div class="ui-block-break"></div>
-                <InputFile name="logo" label="Logo" tabindex="3" multiple={false} accept="image/*" />
+                <InputImage name="logo" label="Logo" value={user.logo} tabindex="3" />
             </div>
             <div class="navbar">
                 <TabNav0/>

@@ -1,6 +1,7 @@
 
 import { raw } from "hono/html";
 import { InputType, AutocompleteType, SelectType, SelectItemType, SelectOptionType, FileType } from "../types/Inputs";
+import util from "../lib/util.js";
 
 export const InputText = (props: InputType) => {
     const id = props.id || props.name; // Default input id
@@ -37,6 +38,16 @@ export const InputFile = (props: FileType) => {
             <input type="file" id={id} name={props.name} class="ui-file" 
                 tabindex={props.tabindex} multiple={props.multiple} accept={accept} title={props.title} />
             <div class="ui-errtip"></div>
+        </label>
+    );
+}
+export const InputImage = (props: InputType) => {
+    const id = props.id || props.name; // Default input id
+    const src = props.value ? util.getUrlThumb(props.value) : util.getUrlImage("user_config.png");
+    const style = "background-image:url('" + src + "');";
+    return (
+        <label class="ui-block-img" style={style}>
+            <input type="file" id={id} name={props.name} accept="image/*" class="ui-file hide"/>
         </label>
     );
 }

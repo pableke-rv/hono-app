@@ -2,6 +2,7 @@
 import { ContextMsgs } from "../types/hono";
 import { Admin, Profile, ProfileActiveTab } from "../layouts/Admin";
 
+import sqlite from "../dao/sqlite/factory.js";
 import supabase from "../dao/supabase/factory.js";
 import user from "app/model/web/User.js";
 import util from "../lib/util.js";
@@ -37,9 +38,12 @@ export const saveProfile = async (ctx: ContextMsgs) => {
         if (file) { // Optional file
             file.fk = 1;
             delete file.format;
-            const { error } = await supabase.file.insert(file);
-            if (error) // Insert row fails
-                return util.unload(file.path).error(ctx, error);
+            const results = await supabase.file.insert(file);
+            if (results.error) // Insert row fails
+                return util.unload(file.path).error(ctx, results.error);
+            util.unload(userSession.logo);
+            userSession.logo = file.path;
+            await sqlite.usuarios.update(userSession);
         }
         return ctx.text("saveOk");
     } catch (err) {

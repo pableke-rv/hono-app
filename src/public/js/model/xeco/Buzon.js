@@ -30,7 +30,7 @@ function Buzon() {
             <td class="text-right">
                 <a href="#report" class="action action-blue row-action" title="Informe al Proveedor"><i class="fal fa-file-pdf"></i></a>
                 <a href="#buzon" class="action action-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
-                ${remove};
+                ${remove}
             </td>
         </tr>` + last;
     }

@@ -34,13 +34,13 @@ export default function(db) {
     }
 
     this.insert = data => {
-        const sql = "insert into usuarios (nif, nombre, apellido1, apellido2, email, clave) values (?, ?, ?, ?, ?, ?)";
-        const params = [data.nif.toUpperCase(), data.nombre, data.apellido1, data.apellido2, data.email.toLowerCase(), bcrypt.hashSync(data.clave, 10)];
+        const sql = "insert into usuarios (nif, nombre, apellido1, apellido2, email, logo, clave) values (?, ?, ?, ?, ?, ?, ?)";
+        const params = [data.nif.toUpperCase(), data.nombre, data.apellido1, data.apellido2, data.email.toLowerCase(), logo, bcrypt.hashSync(data.clave, 10)];
         return db.insert(sql, params).then(lastID => { data.id = lastID; return data; });
     }
     this.update = data => {
-        const sql = "update usuarios set nif = ?, nombre = ?, apellido1 = ?, apellido2 = ?, email = ?, activado = ? where id = ?";
-        const params = [data.nif, data.nombre, data.apellido1, data.apellido2, data.email, data.activado, data.id];
+        const sql = "update usuarios set nif = ?, nombre = ?, apellido1 = ?, apellido2 = ?, email = ?, logo = ?, activado = ? where id = ?";
+        const params = [data.nif, data.nombre, data.apellido1, data.apellido2, data.email, data.logo, data.activado, data.id];
         return db.update(sql, params).catch(fnError);
     }
     this.activate = user => { //ej: select datetime('2023-06-07T12:00:25.0Z') -> select strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
