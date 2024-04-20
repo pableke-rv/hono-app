@@ -28,17 +28,6 @@
 	<ui:define name="body">
 		<ui:include src="parts/msgs.xhtml"></ui:include>
 
-		<div class="ui-blocks">
-		<div class="ui-block">
-			<div class="card-xeco">
-			<h2>Aplicaciones Económicas</h2>
-			<ul>
-				<li><a href="/uae/modules/irse/inicio.xhtml"><i class="fab fa-telegram-plane"></i> IRIS</a></li>
-				<li><a href="https://campusvirtual.upct.es/uportal/ifPage.xhtml?module=MIS_GASTOS#"><i class="fal fa-file-invoice-dollar"></i> Mis Orgánicas</a></li>
-			</ul>
-			</div>
-		</div>
-		<div class="ui-block-main">
 		<div id="tab-0" class="tab-content active">
 			<h:form id="xeco-organicas" prependId="false" method="post">
 			<div class="card-xeco">
@@ -77,13 +66,15 @@
 					</div>
 					<div class="ui-block-btn">
 						<p:commandLink action="#{buzon.addOrganica()}" update="tramit" styleClass="btn btn-green" tabindex="3" title="Añadir nueva Orgánica"
-							onclick="if (!window.isOrganica()) return false;" oncomplete="reloadOrganicas(xhr, status, args)">
+							onclick="if (!window.isOrganica()) return false;" oncomplete="loadBuzon(xhr, status, args)">
 							<i class="fas fa-plus btn-icon-left"></i>Añadir
 						</p:commandLink>
 					</div>
 				</div>
 			</div>
 
+			<p:remoteCommand name="anclar" action="#{buzon.anclar()}" oncomplete="loadBuzon(xhr, status, args)" />
+			<p:remoteCommand name="desanclar" action="#{buzon.desanclar()}" oncomplete="loadBuzon(xhr, status, args)" />
 			<p:remoteCommand name="findOrganica" action="#{buzon.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
 			<p:remoteCommand name="setUnidadesTramit" action="#{buzon.setUnidadesTramit()}" update="tramit" oncomplete="loadUnidadesTramit(xhr, status, args)" />
 			<p:remoteCommand name="report" action="#{buzon.report()}" oncomplete="showAlerts(xhr, status, args);"/>
@@ -108,6 +99,8 @@
 				</div>
 				<div class="ui-block-row">
 					<p:fileUpload id="factura" label="Seleccionar 1 Factura" value="#{buzon.factura}" mode="simple" skinSimple="true" />
+				</div>
+				<div id="file-jp" class="ui-block-row">
 					<p:fileUpload id="justPago" label="Seleccionar 1 Justificante de Pago" value="#{buzon.justPago}" mode="simple" skinSimple="true" />
 				</div>
 				<div id="check-jp" class="ui-block-row">
@@ -148,7 +141,5 @@
 			</div>
 		</div>
 		</h:form>
-		</div>
-		</div>
 	</ui:define>
 </ui:composition>

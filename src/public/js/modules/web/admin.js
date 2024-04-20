@@ -17,5 +17,5 @@ function fnAdmin() { // Script id
 }
 
 // Register event on page load and export default handler
-document.addEventListener("DOMContentLoaded", fnAdmin);
+nav.ready(fnAdmin);
 export default fnAdmin;

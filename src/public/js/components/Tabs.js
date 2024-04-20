@@ -10,13 +10,13 @@ const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
 const TAB_CLASS = "tab-content";
 const ACTIVE_CLASS = "active";
 const ACTION_CLASS = "tab-action";
-const PROGRESS_BAR = "progress-bar";
+//const PROGRESS_BAR = "progress-bar";
 
 function Tabs() {
 	const self = this; //self instance
     const EVENTS = {}; //events tab container
 
-	let tabs, progressbar;
+	let tabs/*, progressbar*/;
     let _tabIndex, _tabSize, _tabMask;
 
     const fnSet = (name, fn) => { EVENTS[name] = fn; return self; }
@@ -32,6 +32,10 @@ function Tabs() {
         tabs.forEach(tab => tab.classList.remove(ACTIVE_CLASS));
         tab.classList.add(ACTIVE_CLASS);
         _tabIndex = index ?? fnCurrentIndex();
+        /*const step = "step-" + _tabIndex; //current step
+        progressbar.forEach(bar => { // progressbar is optional
+            bar.children.forEach(child => child.classList.toggle(ACTIVE_CLASS, child.id <= step));
+        });*/
         return autofocus(tab);
     }
 
@@ -51,11 +55,8 @@ function Tabs() {
         return fn(tab, self);
     }
 
-    this.setInitEvent = (tab, fn) => fnSet("init-tab-" + tab, fn);
     this.setShowEvent = (tab, fn) => fnSet("show-tab-" + tab, fn);
     this.setViewEvent = (tab, fn) => fnSet("view-tab-" + tab, fn);
-    this.setValidEvent = (tab, fn) => fnSet("valid-tab-" + tab, fn);
-    this.isValid = () => fnCallEvent("valid", tabs[_tabIndex]); // is current tab valid
 
 	// Alerts helpers
 	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message
@@ -64,35 +65,30 @@ function Tabs() {
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
 
-    function fnShowTab(i, updateBack) { //show tab by index
+    function fnShowTab(i, backward) { //show tab by index
         i = (i < 0) ? 0 : Math.min(i, _tabSize);
         if (i == _tabIndex) // is current tab
             return self; // nothing to do
         const tab = tabs[i]; // get next tab
-        const ok = (i < _tabIndex) || self.isValid(); // Event fired before leave current tab to next tab
-        // If valid => Init event handler fire once and then Show event handler fire each access to tab
-        if (ok && fnCallEvent("init", tab) && fnCallEvent("show", tab)) { // Validate change tab
+        if (fnCallEvent("show", tab)) { // Validate change tab
+            // calculate the source tab index
+            tab.dataset.back = backward ? Math.max(tab.dataset.back ?? (i - 1), 0)
+                                        : Math.max(_tabIndex, i - 1, 0);
             alerts.closeAlerts(); // Close all previous messages
-            const step = "step-" + i; //go to a specific step on progressbar
-            progressbar.forEach(bar => { // progressbar is optional
-                bar.children.forEach(child => child.classList.toggle(ACTIVE_CLASS, child.id <= step));
-            });
-            tab.dataset.back = updateBack ? _tabIndex : tab.dataset.back; // Save source tab index
             fnSetTab(tab, i); // set current tab
             fnCallEvent("view", tab); // Fire when show tab
         }
-        delete EVENTS["init-" + tab.id];
         alerts.working().top(); // go up
         return self;
     }
 
-    this.showTab = id => fnShowTab(fnFindIndex(id), true); //find by id selector
-    this.backTab = () => fnShowTab(+tabs[_tabIndex].dataset.back, false); // Back to previous tab
+    this.showTab = id => fnShowTab(fnFindIndex(id)); //find by id selector
+    this.lastTab = () => fnShowTab(_tabSize);
+    this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +tabs[_tabIndex].dataset.back, true);
     this.prevTab = () => self.backTab; // Synonym for back to previous tab
-    this.lastTab = () => fnShowTab(_tabSize, true);
     this.nextTab = () => { // Ignore 0's mask tab
         for (var i = _tabIndex + 1; !mask(_tabMask, i) && (i < _tabSize); i++);
-        return fnShowTab(i, true); // Show calculated next tab
+        return fnShowTab(i); // Show calculated next tab
     }
 
     this.setActions = el => {
@@ -117,7 +113,7 @@ function Tabs() {
     }
     this.load = el => {
         tabs = el.getElementsByClassName(TAB_CLASS);
-        progressbar = el.getElementsByClassName(PROGRESS_BAR);
+        //progressbar = el.getElementsByClassName(PROGRESS_BAR);
         _tabIndex = fnCurrentIndex(); // current index tab
         _tabSize = tabs.length - 1; // max tabs size
         return self.setMask(~0).setActions(el); // all 11111... + actions

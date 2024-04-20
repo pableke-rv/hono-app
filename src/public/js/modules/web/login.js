@@ -16,5 +16,5 @@ function fnLogin() { // Script id
 }
 
 // Register event on page load and export default handler
-document.addEventListener("DOMContentLoaded", fnLogin);
+nav.ready(fnLogin);
 export default fnLogin;

@@ -94,8 +94,7 @@ HTMLElement.prototype.slideOut = function() { return fnVisible(this) ? fnAnimate
 //HTMLElement.prototype.slideOutRight = function() { return fnVisible(this) ? fnAnimate(this, SLIDE_OUT_RIGHT, SLIDE_IN_RIGHT) : this; }
 
 // Commons initializations in the HTML client
-document.addEventListener("DOMContentLoaded", () => {
-    i18n.setLanguage(); // Client language
-});
+coll.ready = fn => document.addEventListener("DOMContentLoaded", fn);
+coll.ready(i18n.setLanguage);  // Load client language
 
 export default coll;

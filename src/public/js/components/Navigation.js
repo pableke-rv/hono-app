@@ -1,6 +1,7 @@
 
 import api from "./Api.js";
 import alerts from "./Alerts.js";
+import coll from "./CollectionHTML.js";
 import tabs from "./Tabs.js";
 
 function Navigation() {
@@ -8,6 +9,7 @@ function Navigation() {
     const SCRIPTS = {}; //function container
     const main = document.body.children.findOne("main");
 
+    this.ready = coll.ready; // synonym
     this.isStatic = pathname => pathname.endsWith(".html");
     this.isDynamic = pathname => !self.isStatic(pathname);
     this.redirect = pathname => { window.location.href = pathname; }

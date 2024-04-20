@@ -1,13 +1,12 @@
 
 import nav from "./components/Navigation.js";
-import xlsx from "./components/xlsx.js";
 //import menu from "./components/Menu.js";
-import menus from "./data/menus.js";
+//import menus from "./data/menus.js";
 import i18n from "./i18n/langs.js";
 
 //const menuTree = menus.filter(node => (node.tipo == 1)).sort((a, b) => (a.orden - b.orden));
 
-document.addEventListener("DOMContentLoaded", () => {
+nav.ready(() => {
     const html = document.documentElement;
     const langs = document.getElementById("languages");
     const link = langs.querySelector("a#" + i18n.get("lang")); // Language selector
@@ -60,14 +59,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     nav.setClick(document);
-
-    /********************* EXCEL *********************/
-    xlsx(menus, {
-        keys: [ "id", "tipo", "nombre", "titulo", "orden", "mask", "creado", "padre" ],
-        columns: {
-            titulo: (cell, row) => { cell.l = { Target:row.enlace, Tooltip:"Find us @ SheetJS.com!" }; },
-            orden: cell => { cell.t = "n" }, // type number
-            creado: cell => { cell.t = "d"; } // type date
-        }
-    });
 });

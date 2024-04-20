@@ -22,5 +22,5 @@ function fnTable() {
 }
 
 // Register event on page load and export default handler
-document.addEventListener("DOMContentLoaded", fnTable);
+nav.ready(fnTable);
 export default fnTable;

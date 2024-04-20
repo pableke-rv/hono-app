@@ -3,6 +3,8 @@ import api from "../../components/Api.js";
 import Form from "../../components/Form.js";
 import nav from "../../components/Navigation.js";
 import sb from "../../components/StringBox.js";
+import excel from "../../components/Excel.js";
+import menus from "../../data/menus.js";
 
 function fnIndex() {
     // Tab1 = Pokemon API Tests
@@ -39,10 +41,22 @@ function fnIndex() {
         onReset: () => info.hide()
     });
 
+    /********************* EXCEL *********************/
+    document.getElementById("xlsx").addEventListener("click", ev => {
+        excel.json(menus, {
+            keys: [ "id", "tipo", "nombre", "titulo", "orden", "mask", "creado", "padre" ], // column order
+            columns: {
+                titulo: (cell, row) => { cell.l = { Target:row.enlace, Tooltip:"Find us @ SheetJS.com!" }; },
+                orden: cell => { cell.t = "n" }, // type number
+                creado: cell => { cell.t = "d"; } // type date
+            }
+        });
+    });
+
     // Register handler for navigation
     nav.setScript("index-js", fnIndex);
 }
 
 // Register event on page load and export default handler
-document.addEventListener("DOMContentLoaded", fnIndex);
+nav.ready(fnIndex);
 export default fnIndex;
