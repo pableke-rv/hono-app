@@ -56,6 +56,7 @@ function Tabs() {
     }
 
     this.setShowEvent = (tab, fn) => fnSet("show-tab-" + tab, fn);
+    this.setInitEvent = (tab, fn) => fnSet("init-tab-" + tab, fn);
     this.setViewEvent = (tab, fn) => fnSet("view-tab-" + tab, fn);
 
 	// Alerts helpers
@@ -75,8 +76,10 @@ function Tabs() {
             tab.dataset.back = backward ? Math.max(tab.dataset.back ?? (i - 1), 0)
                                         : Math.max(_tabIndex, i - 1, 0);
             alerts.closeAlerts(); // Close all previous messages
-            fnSetTab(tab, i); // set current tab
+            fnCallEvent("init", tab); // Fire once when show tab
+            delete EVENTS["init-" + tab.id]; // delete handler
             fnCallEvent("view", tab); // Fire when show tab
+            fnSetTab(tab, i); // set current tab
         }
         alerts.working().top(); // go up
         return self;
@@ -127,8 +130,8 @@ function Tabs() {
         if (!args) // Has server response?
             return self.showTab(tab); // Show tab and return true
         const msgs = coll.parse(args.msgs); // Parse server messages
-        const ok = !msgs?.msgError; // is ok?
-        if (ok && globalThis.isset(tab))
+        const ok = !msgs?.msgError; // has error message
+        if (ok && globalThis.isset(tab)) // has destination
             self.showTab(tab); // Show tab if NO error
         alerts.showAlerts(msgs); // Always show alerts after change tab
         return ok;

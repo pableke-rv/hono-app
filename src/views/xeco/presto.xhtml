@@ -172,7 +172,7 @@
 				</label>
 				<div class="ui-block-btn">
 					<p:commandLink action="#{presto.findPartidaInc()}" styleClass="btn btn-green" tabindex="14"
-						onclick="if (!fnAddPartidaInc()) return false;" oncomplete="loadPartidaInc(xhr, status, args)">
+						onclick="if (!fnAddPartidaInc()) return false;" update="@(.update-presto)" oncomplete="loadPartidaInc(xhr, status, args)">
 						<i class="fas fa-plus btn-icon-left"></i> #{msg['lbl.add.tabla']}</p:commandLink>
 				</div>
 				</div>
@@ -262,7 +262,7 @@
 				<div class="ui-blocks">
 					<div class="ui-block">
 						<div class="label">Ejercicio:</div>
-						<h:selectOneMenu id="ej030" value="#{presto.solicitud.ejOrgDec}" readonly="readonly" styleClass="ui-input ui-select">
+						<h:selectOneMenu id="ej030" value="#{presto.solicitud.ejOrgDec}" readonly="readonly" styleClass="ui-input ui-select disabled">
 							<f:selectItems value="#{presto.ejercicios}" />
 						</h:selectOneMenu>
 					</div>
@@ -276,7 +276,7 @@
 					</label>
 					<label class="ui-block">
 						<div class="label required">Económica 030:</div>
-						<h:selectOneMenu id="idEco030" styleClass="ui-input ui-select ui-number" tabindex="2">
+						<h:selectOneMenu id="idEco030" styleClass="ui-input ui-select ui-number update-presto" tabindex="2">
 							<f:selectItems value="#{presto.economicasIng}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
 						</h:selectOneMenu>
 						<div class="ui-errtip"></div>

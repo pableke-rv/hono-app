@@ -1,7 +1,7 @@
 
-import nav from "../../components/Navigation.js";
-import Place from "../../model/xeco/iris/Place.js";
-import dieta from "../../model/xeco/iris/Dieta.js";
+import nav from "../../../components/Navigation.js";
+import Place from "../../../model/xeco/iris/Place.js";
+import dieta from "../../../model/xeco/iris/Dieta.js";
 
 const OPTIONS = {
     fields: [ "address_component", "formatted_address", "geometry", "name" ],

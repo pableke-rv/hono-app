@@ -33,7 +33,7 @@ export const MapsTab0 = () => {
                     <li><b>Manutención 2:</b> @m2; €</li>
                 </ul>
             </div>
-            <script id="maps-js" type="module" src="/public/js/xeco/iris/tests.js"></script>
+            <script id="maps-js" type="module" src="/public/js/modules/xeco/iris/tests.js"></script>
         </Tab>
     );
 }

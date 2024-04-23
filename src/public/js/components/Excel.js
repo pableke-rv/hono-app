@@ -47,6 +47,7 @@ function Excel() {
 
         XLSX.utils.book_append_sheet(workBook, workSheet, "Sheet1");
         XLSX.writeFile(workBook, opts.file, opts);
+        return self;
     }
 }
 

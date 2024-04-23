@@ -36,7 +36,7 @@ export const IndexTab0 = (props: any) => {
                 <a href={maps} class="btn btn-green">Go maps <i class="fas fa-share"></i></a>
                 <a href="/maps" class="btn btn-green load-main">Go maps by AJAX <i class="fas fa-undo-alt"></i></a>
                 <a href={tables} class="btn btn-green">Tables <i class="fas fa-table"></i></a>
-                <button class="btn btn-green">Button</button>
+                <button id="xlsx" class="btn btn-green">Button</button>
             </div>
         </Tab>
     );

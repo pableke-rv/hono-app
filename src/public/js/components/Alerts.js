@@ -100,9 +100,9 @@ function Alerts() {
         return self;
     }
 
-    // Show posible server messages and close click event
-    texts.forEach(el => { el.innerHTML && fnShow(el, el.innerHTML); });
-    close.forEach(el => el.addEventListener("click", ev => fnCloseParent(el)));
+    close.forEach(el => el.addEventListener("click", ev => fnCloseParent(el))); // Add close click event
+    const fnAlerts = () => texts.forEach(el => { el.innerHTML && fnShow(el, el.innerHTML); }); // Alerts with contents
+    coll.ready(() => setTimeout(fnAlerts, 1)); // Show posible server messages after DOMContentLoaded event
 
     // Global singleton instance
     window.loading = self.loading;

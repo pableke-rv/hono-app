@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
             formPresto.readonly(readonly, "#ejDec").readonly(readonly || presto.isDisableEjInc(), "#ejInc");
         },
         "#doc030": row => { // load tab view 3
+            row.ej030 = row.ej; // Ejercicio de la partida a añadir
             row.imp080 = i18n.isoFloat(row.imp); // formated float
             const readonly = presto.isDisabled() && !presto.isFirmable();
             form030.render(".info-080", row).setData(row)

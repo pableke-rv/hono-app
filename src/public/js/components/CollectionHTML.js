@@ -95,6 +95,6 @@ HTMLElement.prototype.slideOut = function() { return fnVisible(this) ? fnAnimate
 
 // Commons initializations in the HTML client
 coll.ready = fn => document.addEventListener("DOMContentLoaded", fn);
-coll.ready(i18n.setLanguage);  // Load client language
+coll.ready(i18n.setLanguage); // Load client language
 
 export default coll;
