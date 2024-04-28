@@ -29,7 +29,7 @@ gulp.task("minify-html", done => {
 		removeComments: true, //removeComments => remove CDATA
 		removeRedundantAttributes: false //remove attr with default value
 	};
-	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/modules/xeco";
+	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/xeco";
 	gulp.src(HTML_PATH).pipe(htmlmin(options)).pipe(gulp.dest("dist/views"));
 	gulp.src("src/views/xeco/**/*").pipe(gulp.dest(CV)).on("end", done);
 });

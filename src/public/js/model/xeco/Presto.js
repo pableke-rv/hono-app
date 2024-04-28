@@ -162,6 +162,7 @@ function Presto() {
 	this.isIntegrable = () => (!self.isAfc() && solicitud.isIntegrable());
 	this.isUrgente = solicitud.isUrgente;
 	this.isImpCd = () => (self.isEditable() && !self.isAnt());
+	this.getAdjunto = () => _data.file;
 
     this.isPartidaDec = () => (self.isTcr() || self.isL83() || self.isAnt() || self.isAfc());
 	this.isMultipartida = () => (self.isTcr() || self.isFce() || self.isGcr());

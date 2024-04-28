@@ -68,13 +68,11 @@ function Tabs() {
 
     function fnShowTab(i, backward) { //show tab by index
         i = (i < 0) ? 0 : Math.min(i, _tabSize);
-        if (i == _tabIndex) // is current tab
-            return self; // nothing to do
         const tab = tabs[i]; // get next tab
         if (fnCallEvent("show", tab)) { // Validate change tab
             // calculate the source tab index
             tab.dataset.back = backward ? Math.max(tab.dataset.back ?? (i - 1), 0)
-                                        : Math.max(_tabIndex, i - 1, 0);
+                                        : Math.max(Math.min(_tabIndex, i - 1), 0);
             alerts.closeAlerts(); // Close all previous messages
             fnCallEvent("init", tab); // Fire once when show tab
             delete EVENTS["init-" + tab.id]; // delete handler
@@ -89,10 +87,11 @@ function Tabs() {
     this.lastTab = () => fnShowTab(_tabSize);
     this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +tabs[_tabIndex].dataset.back, true);
     this.prevTab = () => self.backTab; // Synonym for back to previous tab
-    this.nextTab = () => { // Ignore 0's mask tab
-        for (var i = _tabIndex + 1; !mask(_tabMask, i) && (i < _tabSize); i++);
+    this.nextTab = () => fnShowTab(_tabIndex + 1); // next tab by position
+    /*this.nextTab = () => { // Ignore 0's mask tab
+            for (var i = _tabIndex + 1; !mask(_tabMask, i) && (i < _tabSize); i++);
         return fnShowTab(i); // Show calculated next tab
-    }
+    }*/
 
     this.setActions = el => {
         el.getElementsByClassName(ACTION_CLASS).setClick((ev, link) => {
@@ -126,13 +125,11 @@ function Tabs() {
     self.load(document);
     window.showTab = (xhr, status, args, tab) => {
         if (!xhr || (status != "success"))
-            return !alerts.showError("Error 500: Internal server error.").working();
-        if (!args) // Has server response?
-            return self.showTab(tab); // Show tab and return true
+            return !alerts.showError(xhr || "Error 500: Internal server error.").working();
         const msgs = coll.parse(args.msgs); // Parse server messages
         const ok = !msgs?.msgError; // has error message
-        if (ok && globalThis.isset(tab)) // has destination
-            self.showTab(tab); // Show tab if NO error
+        if (ok) // If no error => Show next tab
+            globalThis.isset(tab) ? self.showTab(tab) : self.nextTab();
         alerts.showAlerts(msgs); // Always show alerts after change tab
         return ok;
     }

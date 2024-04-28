@@ -150,6 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return formPresto.setError("#acOrgInc", "¡Partida ya asociada a la solicitud!", "notAllowed");
         partida.imp030 = partida.imp = formPresto.valueOf("#impInc"); // Importe de la partida a añadir
         lineas.add(partida); // Add and remove PK autocalculated in extraeco.v_presto_partidas_inc
+        formPresto.toggle(".link-adjunto", presto.getAdjunto());
         acOrgInc.reload();
     }
     //****** tabla de partidas a incrementar ******//
@@ -165,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     .toggle(".firmable-only", presto.isFirmable()).toggle(".rechazable-only", presto.isRechazable())
                     .toggle(".show-partida-dec", presto.isPartidaDec()).toggle(".show-partida-inc", presto.isMultipartida() && presto.isEditable())
                     .toggle(".show-imp-cd", presto.isImpCd()).toggle(".show-memoria", !presto.isL83()).toggle(".grp-urgente", presto.isUrgente())
-                    .toggle(".show-subtipo", uxxiec.isUae() && presto.isGcr()).toggle(".is-fce", presto.isFce()).toggle(".link-adjunto", data.file);
+                    .toggle(".show-subtipo", uxxiec.isUae() && presto.isGcr()).toggle(".is-fce", presto.isFce()).toggle(".link-adjunto", presto.getAdjunto());
         fnLoadEcoDec(args); // cargo las econonomicas a decrementar
         lineas.render(JSON.read(args.data)); // Load table partidas
         acOrgDec.setValue(data.idOrgDec, data.orgDec + " - " + data.dOrgDec);

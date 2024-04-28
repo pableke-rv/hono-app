@@ -25,7 +25,7 @@ function Buzon() {
 	this.row = (data, status) => {
         const anclar = '<a href="#anclar" class="action action-red row-action" title="Marca la orgánica como favorita"><i class="fas fa-thumbtack action action-blue"></i></a>';
         const desanclar = '<a href="#desanclar" class="action action-red row-action" title="Marca la orgánica como normal"><i class="fas fa-thumbtack action action-green"></i></a>';
-        const remove = (data.mask & 1) ? '<a href="#remove" class="action action-red row-action" title="Desvincular orgánica"><i class="fas fa-times"></i></a>' : "";
+        //const remove = (data.mask & 1) ? '<a href="#remove" class="action action-red row-action" title="Desvincular orgánica"><i class="fas fa-times"></i></a>' : "";
         const last = (status.count == status.size) ? self.lastRow(status.count + 1) : "";
         return `<tr class="tb-data">
             <td class="text-center">${status.count}</td>
@@ -36,7 +36,6 @@ function Buzon() {
                 ${(data.mask & 2) ? desanclar : anclar}
                 <a href="#report" class="action action-blue row-action" title="Informe al Proveedor"><i class="fal fa-file-pdf"></i></a>
                 <a href="#buzon" class="action action-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
-                ${remove}
             </td>
         </tr>` + last;
     }
