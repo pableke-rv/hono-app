@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => { // on load view
 		formOrganicas.toggle("#unidades-tramit", JSON.size(utSelect.children) > 1);
 	}
 	window.loadBuzon = (xhr, status, args) => {
-		if (window.showTab(xhr, status, args, 0)) {
+		if (pf.showAlerts(xhr, status, args)) {
 			const data = JSON.read(args.data); // read data
 			data && table.render(data); // reload table if has rows
 			formOrganicas.reset().showOk("saveOk"); // clear inputs, autofocus and message

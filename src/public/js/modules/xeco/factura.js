@@ -93,12 +93,12 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
     window.loadDelegaciones = (xhr, status, args) => {
-        if (window.showTab(xhr, status, args))
+        if (pf.showAlerts(xhr, status, args))
             delegaciones.setItems(JSON.read(args.delegaciones));
     }
 
 	window.viewFactura = (xhr, status, args) => {
-        if (!window.showTab(xhr, status, args))
+        if (!pf.showAlerts(xhr, status, args))
             return false; // Server error
 		const data = JSON.read(args.fact);
         factura.setData(data); // Load data-model before view

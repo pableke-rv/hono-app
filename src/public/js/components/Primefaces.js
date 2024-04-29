@@ -23,6 +23,18 @@ function sendTerm(action, term) { send(action, param("term", term)); }
 function sendIndex(action, index) { send(action, param("i", index)); }
 function fetch(action, data) { send(action, params(data)); }
 
+function isLoaded(xhr, status, args) { // Error or parse server messages
+    return (xhr && (status == "success")) || !alerts.showError(xhr || "Error 500: Internal server error.").working();
+}
+function showAlerts(xhr, status, args) {
+    if (isLoaded(xhr, status, args)) { // Error or parse server messages
+        const msgs = args.msgs && JSON.parse(args.msgs); // Parse server messages
+        alerts.showAlerts(msgs); // Always show alerts after change tab
+        return !msgs?.msgError; // has error message
+    }
+    return false; // Server error
+}
+
 function datalist(form, select, input, opts) {
     opts = opts || {}; // Init. options
     const fnChange = opts.onChange || globalThis.void; // fired on load event
@@ -56,5 +68,6 @@ function multiNameInput(form, main, inputs) {
 export default {
     param, params, 
     send, sendId, sendTerm, sendIndex, fetch,
+    isLoaded, showAlerts, 
     datalist, multiNameInput
 }

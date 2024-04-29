@@ -3,7 +3,7 @@ import alerts from "./Alerts.js";
 import coll from "./CollectionHTML.js";
 
 const fnTrue = () => true; // always true
-const mask = (val, i) => ((val >> i) & 1); // check bit at i position
+//const mask = (val, i) => ((val >> i) & 1); // check bit at i position
 const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
 
 // Classes Configuration
@@ -72,7 +72,7 @@ function Tabs() {
         if (fnCallEvent("show", tab)) { // Validate change tab
             // calculate the source tab index
             tab.dataset.back = backward ? Math.max(tab.dataset.back ?? (i - 1), 0)
-                                        : Math.max(Math.min(_tabIndex, i - 1), 0);
+                                        : Math.max(Math.min(_tabIndex, i - 1), i - 1, 0);
             alerts.closeAlerts(); // Close all previous messages
             fnCallEvent("init", tab); // Fire once when show tab
             delete EVENTS["init-" + tab.id]; // delete handler

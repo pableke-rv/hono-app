@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //****** tabla de partidas a incrementar ******//
 
     window.viewPresto = (xhr, status, args) => {
-        if (!window.showTab(xhr, status, args))
+        if (!pf.showAlerts(xhr, status, args))
             return false; // Server error
         const data = JSON.read(args.presto);
         presto.setData(data); // Load data-model before view
