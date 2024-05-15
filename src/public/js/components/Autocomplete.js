@@ -22,14 +22,19 @@ export default function(autocomplete, opts) {
     opts.source = opts.source || fnEmpty; //empty source by default
     opts.render = opts.render || fnParam; //render label on autocomplete
     opts.select = opts.select || fnParam; //set value in id input
-    opts.afterSelect = opts.afterSelect || globalThis.void; //fired after an item is selected
     opts.onReset = opts.onReset || globalThis.void; //fired when no value selected
 
 	const self = this; //self instance
+    if (!autocomplete)
+        return self; // Input not found
+
     const block = autocomplete.closest(opts.blockSelector);
     const resultsHTML = block.querySelector(opts.resultsSelector);
     const inputValue = autocomplete.nextElementSibling;
-    autocomplete.type = "search"; // Force type
+
+    // Force default props/attr
+    autocomplete.type = "search";
+    autocomplete.setAttribute("autocomplete", "off");
 
     let _searching, _time; // call and time indicator (reduce calls)
     let _results = EMPTY; // default = empty array
@@ -41,7 +46,9 @@ export default function(autocomplete, opts) {
     this.getCurrentItem = () => _results[_index];
     this.getCurrentOption = () => resultsHTML.children[_index];
 	this.getCode = sep => sb.getCode(autocomplete.value, sep);
+
     this.isItem = () => (_index > -1);
+    this.isLoaded = () => inputValue.value;
 
     this.getInputValue = () => inputValue;
     this.getAutocomplete = () => autocomplete;
@@ -56,9 +63,9 @@ export default function(autocomplete, opts) {
     }
 
     const isChildren = i => ((0 <= i) && (i < coll.size(resultsHTML.children)));
-    const unselect = () => { _index = -1; inputValue.value = ""; return self; }
-    const removeList = () => { resultsHTML.innerHTML = ""; return self; }
-    const fnClear = () => { unselect(); return removeList(); }
+    const unselect = () => { _index = -1; inputValue.value = ""; }
+    const removeList = () => { resultsHTML.innerHTML = ""; }
+    const fnClear = () => { unselect(); removeList(); return self; }
 
     function activeItem(i) {
         _index = isChildren(i) ? i : _index; // current item
@@ -68,7 +75,6 @@ export default function(autocomplete, opts) {
         if (li && isChildren(i)) {
             _index = i; // Update current index
             self.setValue(opts.select(_results[i], self), li.innerText);
-            opts.afterSelect(_results[i], self);
             removeList();
         }
     }
@@ -84,12 +90,12 @@ export default function(autocomplete, opts) {
     }
 
     this.reset = () => {
-        fnClear(); // Reset previous values
-        autocomplete.value = ""; // Clear input
-        opts.onReset(self); // Fire event onFinish
-        return self;
+        if (inputValue.value)
+            opts.onReset(self); // Fire event onFinish
+        return fnClear(); // Reset previous values
     }
     this.reload = () => {
+        autocomplete.value = ""; // Clear input
         autocomplete.focus(); // Set focus
         return self.reset(); // Reset all data
     }
@@ -118,23 +124,28 @@ export default function(autocomplete, opts) {
             return activeItem(_index - 1);
         if (ev.keyCode == DOWN)
             return activeItem(_index + 1);
-        if ((ev.keyCode == TAB) || (ev.keyCode == ENTER))
+        if ((ev.keyCode == TAB))
+            return selectItem(self.getCurrentOption(), _index);
+        if (ev.keyCode == ENTER) {
+            ev.preventDefault(); // Avoid fire submit event
             selectItem(self.getCurrentOption(), _index);
+        }
     }
-    // Event fired when value changes, ignore ctrl, alt...
+    // Event fired when value changes, ignore ctrl, alt, etc...
+    // also occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
     autocomplete.oninput = ev => {
         const size = coll.size(autocomplete.value);
         if (size < opts.minLength)
-            return fnClear(); // Min legnth required
+            return self.reset(); // Min legnth required
         if ((size < opts.maxLength) && !_searching) { // Reduce server calls
             clearTimeout(_time); // Clear previous searches
             _time = setTimeout(fnSearch, opts.delay);
         }
     }
-    //event occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
-    autocomplete.onsearch = ev => {
+    // Event occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
+    /*autocomplete.onsearch = ev => {
         autocomplete.value || self.reset();
-    }
+    }*/
     // Event fired before onblur only when text changes
     autocomplete.onchange = ev => {
         if (!autocomplete.value)

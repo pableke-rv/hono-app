@@ -69,7 +69,7 @@ export default (model, formModel) => {
         if (formUxxi.isCached(data.id))
             return tabs.showTab(15);
         formUxxi.restart("#uxxi").setCache(data.id)
-                .toggle(".show-ejecutable", solicitud.isEjecutable(data)); // Update view
+                .setVisible(".show-ejecutable", solicitud.isEjecutable(data)); // Update view
         tabs.render(".load-data", data);
         fnSend("rcUxxiec", data);
     });

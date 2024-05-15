@@ -36,8 +36,7 @@ function fnIndex() {
                 .then(data => acPokemon.render(data.results.filter(fnFilter)));
         },
         render: item => item.name,
-        select: item => item.name,
-        afterSelect: item => api.json(`https://pokeapi.co/api/v2/pokemon/${item.name}`).then(fnSelect),
+        select: item => { api.json(`https://pokeapi.co/api/v2/pokemon/${item.name}`).then(fnSelect); return item.name; },
         onReset: () => info.hide()
     });
 

@@ -28,10 +28,18 @@
 	<ui:define name="body">
 		<ui:include src="parts/msgs.xhtml"></ui:include>
 
+		<!-- Home tab -->
 		<div id="tab-0" class="tab-content">
 			<ui:include src="tabs/presto/init.xhtml"></ui:include>
 		</div>
 
+		<!-- listado de solicitudes -->
+		<div id="tab-2" class="tab-content">
+			<ui:include src="tabs/presto/list.xhtml"></ui:include>
+			<ui:include src="parts/leyenda_firmas.xhtml"></ui:include>
+		</div>
+
+		<!-- Form PRESTO -->
 		<div id="tab-1" class="tab-content">
 		<h:form id="xeco-presto" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
 			<p:inputText id="id" value="#{presto.solicitud.id}" styleClass="ui-input ui-number hide" />
@@ -50,7 +58,7 @@
 				<label class="ui-block-xl autocomplete">
 					<div class="label required">Orgánica:</div>
 					<p:remoteCommand name="rcFindOrgDec" action="#{presto.findOrganicaDec()}" oncomplete="loadItems(xhr, status, args)" />
-					<input type="search" id="acOrgDec" name="acOrgDec" class="ui-input ui-autocomplete" tabindex="6" autocomplete="off" />
+					<input type="search" id="acOrgDec" name="acOrgDec" class="ui-input ui-autocomplete" tabindex="6" />
 					<h:inputText id="idOrgDec" value="#{presto.solicitud.idOrganicaDec}" styleClass="ui-input ui-number hide" />
 					<ul role="list" class="results"></ul>
 					<div class="ui-errtip"></div> 
@@ -63,7 +71,7 @@
 					<div class="label required">Económica:</div>
 					<select id="idEcoDec" name="idEcoDec" class="ui-input ui-select ui-number" tabindex="7"></select>
 					<h:inputText id="idEcoDecPF" value="#{presto.solicitud.idEconomicaDec}" styleClass="ui-input ui-number hide" />
-					<p:commandButton id="find-economicas-dec" action="#{presto.findEconomicasDec()}" oncomplete="loadEconomicasDec(xhr, status, args)" styleClass="hide" />
+					<p:remoteCommand name="rcEcoDec" action="#{presto.findEconomicasDec()}" oncomplete="loadEconomicasDec(xhr, status, args)" />
 					<p:commandButton id="autoload-l83" action="#{presto.autoloadL83()}" oncomplete="autoloadL83(xhr, status, args)" styleClass="hide" />
 					<p:commandButton id="autoload-ant" action="#{presto.autoloadAnt()}" oncomplete="autoloadAnt(xhr, status, args)" styleClass="hide" />
 					<div class="ui-errtip"></div>
@@ -94,7 +102,7 @@
 				<label class="ui-block-xl autocomplete">
 					<div class="label required">Orgánica:</div>
 					<p:remoteCommand name="rcFindOrgInc" action="#{presto.findOrganicaInc()}" oncomplete="loadItems(xhr, status, args)" />
-					<input type="search" id="acOrgInc" name="acOrgInc" class="ui-input ui-autocomplete" tabindex="11" autocomplete="off" />
+					<input type="search" id="acOrgInc" name="acOrgInc" class="ui-input ui-autocomplete" tabindex="11" />
 					<h:inputText id="idOrgInc" value="#{presto.solicitud.idOrgInc}" styleClass="ui-input ui-number hide" />
 					<ul role="list" class="results"></ul>
 					<div class="ui-errtip"></div> 
@@ -107,7 +115,7 @@
 					<div class="label required">Económica:</div>
 					<select id="idEcoInc" name="idEcoInc" class="ui-input ui-select ui-number" tabindex="12"></select>
 					<h:inputText id="idEcoIncPF" value="#{presto.solicitud.idEcoInc}" styleClass="ui-input ui-number hide" />
-					<p:commandButton id="find-economicas-inc" action="#{presto.findEconomicasInc()}" oncomplete="loadEconomicasInc(xhr, status, args)" styleClass="hide" />
+					<p:remoteCommand name="rcEcoInc" action="#{presto.findEconomicasInc()}" oncomplete="loadEconomicasInc(xhr, status, args)" />
 					<div class="ui-errtip"></div>
 				</label>
 				<label class="ui-block">
@@ -177,7 +185,7 @@
 			</div>
 
 			<div class="navbar">
-				<a href="#back-tab" class="btn btn-primary tab-action" title="#{msg['tit.btn.volver.ini']}" tabindex="20">
+				<a href="#back-tab" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}" tabindex="20">
 					<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 				<p:commandLink action="#{presto.save()}" ajax="false" styleClass="btn btn-green insert-only" tabindex="21"
 					onclick="if (!fnSend()) return false;" title="Pone la solicitud a la firma">
@@ -196,19 +204,14 @@
 			<ui:include src="tabs/presto/doc030.xhtml"></ui:include>
 		</div>
 
-		<div id="tab-2" class="tab-content">
-			<ui:include src="tabs/presto/list.xhtml"></ui:include>
-			<ui:include src="parts/leyenda_firmas.xhtml"></ui:include>
+		<!-- vinculación con uxxiec -->
+		<div id="tab-15" class="tab-content" data-nif="#{uae.nif}" data-grupo="#{uae.idGrupo}">
+			<ui:include src="tabs/presto/uxxiec.xhtml"></ui:include>
 		</div>
 
 		<!-- formulario de rechazo/cancelacion -->
 		<div id="tab-11" class="tab-content">
 			<ui:include src="tabs/presto/reject.xhtml"></ui:include>
-		</div>
-
-		<!-- vinculación con uxxiec -->
-		<div id="tab-15" class="tab-content" data-nif="#{uae.nif}" data-grupo="#{uae.idGrupo}">
-			<ui:include src="tabs/presto/uxxiec.xhtml"></ui:include>
 		</div>
 	</ui:define>
 </ui:composition>

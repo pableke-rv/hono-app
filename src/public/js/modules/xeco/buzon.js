@@ -11,12 +11,12 @@ document.addEventListener("DOMContentLoaded", () => { // on load view
 	function updateBuzonOrganica() {
 		const isIsu = buzon.setTipoPago(+elTipo.value).isIsu(table.getCurrentItem());
 		buzon.setJustPagoRequired(buzon.isPagoCesionario() && isIsu);
-		formBuzon.toggle("#file-jp", buzon.isJustPagoRequired()).toggle("#check-jp", buzon.isPagoCesionario() && !isIsu);
+		formBuzon.setVisible("#file-jp", buzon.isJustPagoRequired()).setVisible("#check-jp", buzon.isPagoCesionario() && !isIsu);
 	}
 	function updateBuzonOtros() {
 		buzon.setTipoPago(+elTipo.value);
 		buzon.setJustPagoRequired(buzon.isPagoCesionario());
-		formBuzon.toggle("#file-jp", buzon.isJustPagoRequired()).hide("#check-jp");
+		formBuzon.setVisible("#file-jp", buzon.isJustPagoRequired()).hide("#check-jp");
 	}
 	function fnSend(action, data) {
 		pf.fetch(action, { org: data.org, cod: data.oCod, ut: data.grp, m: data.mask });
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => { // on load view
 
 	window.loadUnidadesTramit = (xhr, status, args) => {
 		const utSelect = formOrganicas.getInput("#tramit");
-		formOrganicas.toggle("#unidades-tramit", JSON.size(utSelect.children) > 1);
+		formOrganicas.setVisible("#unidades-tramit", JSON.size(utSelect.children) > 1);
 	}
 	window.loadBuzon = (xhr, status, args) => {
 		if (pf.showAlerts(xhr, status, args)) {

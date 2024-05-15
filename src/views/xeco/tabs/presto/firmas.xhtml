@@ -9,9 +9,9 @@
 
 <p:outputPanel styleClass="update-presto #{presto.cssFirmas}">
 	<hr/><h3><h:outputText value="#{msg['lbl.firmantes']}" escape="false" />:</h3>
-	<div id="firmas" class="ui-blocks">
+	<div class="ui-blocks">
 	<c:forEach items="#{presto.principales}" var="f">
-		<div id="#{f.grupo}" class="ui-block-box">
+		<div class="ui-block-box">
 			<p>#{f.cargo}</p>
 			<p>#{f.fullName}</p>
 			<p>

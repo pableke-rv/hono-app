@@ -9,7 +9,7 @@ const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
 // Classes Configuration
 const TAB_CLASS = "tab-content";
 const ACTIVE_CLASS = "active";
-const ACTION_CLASS = "tab-action";
+//const ACTION_CLASS = "tab-action";
 //const PROGRESS_BAR = "progress-bar";
 
 function Tabs() {
@@ -17,7 +17,7 @@ function Tabs() {
     const EVENTS = {}; //events tab container
 
 	let tabs/*, progressbar*/;
-    let _tabIndex, _tabSize, _tabMask;
+    let _tabIndex, _tabSize;
 
     const fnSet = (name, fn) => { EVENTS[name] = fn; return self; }
     const fnActive = el => el.classList.contains(ACTIVE_CLASS);
@@ -41,7 +41,6 @@ function Tabs() {
 
     this.getCurrent = () => tabs[_tabIndex]; // current tab
     this.getTab = id => tabs.find(tab => (tab.id == ("tab-" + id))); // Find by id selector
-    this.setMask = mask => { _tabMask = mask; return self; } // set mask for tabs
     this.setActive = id => fnSetTab(self.getTab(id)); // Force active class whithot events and alerts
     this.isActive = id => fnActive(self.getTab(id)); // is current tab active
 	this.render = (selector, data) => { // HTMLElement.prototype.render is implemented in Collection
@@ -56,7 +55,7 @@ function Tabs() {
     }
 
     this.setShowEvent = (tab, fn) => fnSet("show-tab-" + tab, fn);
-    this.setInitEvent = (tab, fn) => fnSet("init-tab-" + tab, fn);
+    //this.setInitEvent = (tab, fn) => fnSet("init-tab-" + tab, fn);
     this.setViewEvent = (tab, fn) => fnSet("view-tab-" + tab, fn);
 
 	// Alerts helpers
@@ -66,16 +65,15 @@ function Tabs() {
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
 
-    function fnShowTab(i, backward) { //show tab by index
+    function fnShowTab(i) { //show tab by index
         i = (i < 0) ? 0 : Math.min(i, _tabSize);
         const tab = tabs[i]; // get next tab
         if (fnCallEvent("show", tab)) { // Validate change tab
-            // calculate the source tab index
-            tab.dataset.back = backward ? Math.max(tab.dataset.back ?? (i - 1), 0)
-                                        : Math.max(Math.min(_tabIndex, i - 1), i - 1, 0);
+            if (_tabIndex < i) // calculate the source tab index
+                tab.dataset.back = Math.max((_tabIndex < 0) ? (i - 1) : _tabIndex, 0);
             alerts.closeAlerts(); // Close all previous messages
-            fnCallEvent("init", tab); // Fire once when show tab
-            delete EVENTS["init-" + tab.id]; // delete handler
+            //fnCallEvent("init", tab); // Fire once when show tab
+            //delete EVENTS["init-" + tab.id]; // delete handler
             fnCallEvent("view", tab); // Fire when show tab
             fnSetTab(tab, i); // set current tab
         }
@@ -85,31 +83,32 @@ function Tabs() {
 
     this.showTab = id => fnShowTab(fnFindIndex(id)); //find by id selector
     this.lastTab = () => fnShowTab(_tabSize);
-    this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +tabs[_tabIndex].dataset.back, true);
+    this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +(tabs[_tabIndex].dataset.back ?? (_tabIndex - 1)));
     this.prevTab = () => self.backTab; // Synonym for back to previous tab
     this.nextTab = () => fnShowTab(_tabIndex + 1); // next tab by position
-    /*this.nextTab = () => { // Ignore 0's mask tab
-            for (var i = _tabIndex + 1; !mask(_tabMask, i) && (i < _tabSize); i++);
-        return fnShowTab(i); // Show calculated next tab
-    }*/
+    this.toggle = el => {
+        const icon = el.querySelector(el.dataset.icon || "i"); // icon indicator
+        document.querySelectorAll(el.dataset.target || (".info-" + el.id)).toggle(); // toggle info
+        coll.split(el.dataset.toggle, " ").forEach(name => icon.toggle(name));
+        return self;
+    }
 
-    this.setActions = el => {
-        el.getElementsByClassName(ACTION_CLASS).setClick((ev, link) => {
-            ev.preventDefault(); // avoid navigation
-            const href = link.getAttribute("href");
-            if ((href == "#back-tab") || (href == "#prev-tab"))
-                return self.backTab();
-            if (href == "#next-tab")
-                return self.nextTab();
-            if (href.startsWith("#tab-"))
-                return self.showTab(+href.match(/\d+$/).pop());
-            if (href == "#last-tab")
-                return self.lastTab();
-            if (href == "#toggle") {
-                const icon = link.querySelector(link.dataset.icon || "i"); // icon indicator
-                self.getCurrent().querySelectorAll(link.dataset.target).toggle(); // toggle info
-                coll.split(link.dataset.toggle, " ").forEach(name => icon.toggle(name));
-            }
+    this.setActions = el => { // avoid navigation and go to tab x
+        el.querySelectorAll("[href='#back-tab'],[href='#prev-tab']").forEach(link => {
+            link.onclick = ev => { ev.preventDefault(); self.backTab(); }
+        });
+        el.querySelectorAll("[href='#next-tab']").forEach(link => {
+            link.onclick = ev => { ev.preventDefault(); self.nextTab(); }
+        });
+        el.querySelectorAll("[href^='#tab-']").forEach(link => {
+            const id = link.href.substring(link.href.lastIndexOf("-") + 1);
+            link.onclick = ev => { ev.preventDefault(); self.showTab(id); }
+        });
+        el.querySelectorAll("[href='#last-tab']").forEach(link => {
+            link.onclick = ev => { ev.preventDefault(); self.lastTab(); }
+        });
+        el.querySelectorAll("[href='#toggle']").forEach(link => {
+            link.onclick = ev => { ev.preventDefault(); self.toggle(link); }
         });
         return self;
     }
@@ -118,7 +117,7 @@ function Tabs() {
         //progressbar = el.getElementsByClassName(PROGRESS_BAR);
         _tabIndex = fnCurrentIndex(); // current index tab
         _tabSize = tabs.length - 1; // max tabs size
-        return self.setMask(~0).setActions(el); // all 11111... + actions
+        return self.setActions(el); // all 11111... + actions
     }
 
     // Init. view and PF navigation (only for CV-UAE)

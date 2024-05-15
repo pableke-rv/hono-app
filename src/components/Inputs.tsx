@@ -61,7 +61,7 @@ export const Autocomplete = (props: AutocompleteType) => {
             <div class={cssLabel}>{props.label}:</div>
             <i class={props.icon || "fas fa-search ui-icon-left"}></i>
             <input type="search" id={acId} value={props.acValue} class="ui-input ui-autocomplete" 
-                readonly={props.readonly} disabled={props.disabled} autocomplete="off" 
+                readonly={props.readonly} disabled={props.disabled} 
                 tabindex={props.tabindex} placeholder={props.placeholder} title={props.title} />
             <input type="hidden" id={id} name={props.name} value={props.value} />
             <ul class="results"></ul>

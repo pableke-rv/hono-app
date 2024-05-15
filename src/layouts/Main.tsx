@@ -15,6 +15,7 @@ export const Head = (props: any) => {
             <link rel="icon" type="image/png" href="/public/img/png/star-yellow.png"></link>
             <link rel="stylesheet" type="text/css" media="screen" href="/public/css/styles-min.css"/>
             <script type="text/javascript" src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.67/pdf.min.mjs"></script> 
             <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script> 
             <script type="module" src="/public/js/tests.js"></script>
         </head>

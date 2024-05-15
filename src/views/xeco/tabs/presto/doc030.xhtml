@@ -28,7 +28,7 @@
                 <label class="ui-block-xl autocomplete">
                     <div class="label required">Orgánica 030:</div>
                     <p:remoteCommand name="rcFindOrg030" action="#{presto.findOrg030()}" oncomplete="loadItems(xhr, status, args)" />
-                    <input type="search" id="acOrg030" name="acOrg030" class="ui-input ui-autocomplete" tabindex="1" autocomplete="off" />
+                    <input type="search" id="acOrg030" name="acOrg030" class="ui-input ui-autocomplete" tabindex="1" />
                     <input type="text" id="idOrg030" name="idOrg030" class="hide ui-number" />
                     <ul role="list" class="results"></ul>
                     <div class="ui-errtip"></div>
@@ -50,7 +50,7 @@
         </div>
 
         <div class="navbar">
-            <a href="#back-tab" class="btn btn-primary tab-action" tabindex="13" title="Volver al formulario de la solicitud">
+            <a href="#back-tab" class="btn btn-primary" tabindex="13" title="Volver al formulario de la solicitud">
                 <i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
             <a id="save-030" href="#tab-1" class="btn btn-success save-030" tabindex="14" title="Guarda los cambios del 030">
                 <i class="fas fa-save btn-icon-left"></i>Guardar</a>

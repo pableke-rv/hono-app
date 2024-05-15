@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h:form id="xeco-uxxi" prependId="false" onsubmit="loading();">
-		<h2>Consulta de Formación de Expediente<hr/></h2>
+		<h2>Consulta de Formación de Expediente<hr class="underline"/></h2>
 		<p class="notice notice-info load-data">@codigo;: @memo;</p>
 		<div class="ui-blocks">
 			<label class="ui-block">
@@ -20,7 +20,7 @@
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Operación UXXI-EC:</div>
 				<p:remoteCommand name="rcFindUxxi" action="#{presto.findUxxi()}" oncomplete="loadItems(xhr, status, args)" />
-				<input type="search" id="uxxi" name="uxxi" class="ui-input ui-autocomplete" tabindex="2" autocomplete="off" />
+				<input type="search" id="uxxi" name="uxxi" class="ui-input ui-autocomplete" tabindex="2" />
 				<input type="text" id="idUxxi" name="idUxxi" class="ui-number hide" />
 				<ul role="list" class="results"></ul>
 				<div class="errtip"></div>
@@ -49,7 +49,7 @@
 		</table>
 
 		<div class="navbar">
-			<a href="#tab-2" class="btn btn-primary tab-action" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
+			<a href="#tab-2" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 			<p:commandLink action="#{presto.ejecutar()}" styleClass="btn btn-green" onclick="saveUxxiec();" oncomplete="showAlerts(xhr, status, args)" 
 				tabindex="14" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">

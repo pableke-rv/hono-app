@@ -12,7 +12,7 @@ export const Tab = (props: TabType) => {
 }
 
 export const TabNavigate = (props: any) => {
-    return (<a href={props.href} class="btn btn-primary tab-action">{props.children}</a>);
+    return (<a href={props.href} class="btn btn-primary">{props.children}</a>);
 }
 export const TabNav0 = (props: any) => {
     const icon = props.icon || "fas fa-angle-double-left"; // Default icon

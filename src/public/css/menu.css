@@ -12,7 +12,7 @@ nav button:hover { color: #333; background-color: gainsboro; }
 nav .separator { flex-grow: 1; }
 
 /* Menu dropdown UL > LI */
-.menu { display: flex; padding: 4px; }
+.menu { display: flex; margin: 0; padding: 4px; }
 .menu-group { display: flex; padding: 4px; }
 .menu li { position: relative; list-style: none; }
 .menu .icon-left { margin-right: 8px; }
@@ -93,4 +93,8 @@ ul.breadcrumb li a:hover { color: #01447e; text-decoration: underline; }
 }
 /* Extra large devices (large desktops, 1200px and up) */
 @media screen and (min-width: 1200px) {
+}
+
+@media print {
+	.menu { display: none; }
 }

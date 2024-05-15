@@ -3,7 +3,7 @@ function DateBox() {
 	const self = this; //self instance
 	const sysdate = new Date(); //global sysdate readonly
 	const ONE_DAY = 86400000; //1d = 24 * 60 * 60 * 1000 = hours*minutes*seconds*milliseconds
-	const daysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //january..december
+	const daysInMonths = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]; //january..december
 
 	//const lpad = val => (val < 10) ? ("0" + val) : val; //always 2 digits
 	const isDate = date => date && date.getTime && !isNaN(date.getTime()); // full date validator
@@ -26,7 +26,6 @@ function DateBox() {
 	this.eq = (d1, d2) => isDate(d1) && isDate(d2) && (d1.getTime() == d2.getTime());
 	this.ge = (d1, d2) => isDate(d1) && isDate(d2) && (d1.getTime() >= d2.getTime());
 	this.gt = (d1, d2) => isDate(d1) && isDate(d2) && (d1.getTime() > d2.getTime());
-	this.multicmp = names => names.map(name => ((a, b) => self.cmp(a[name], b[name])));
 	this.diffDate = (d1, d2) => (d1.getTime() - d2.getTime());
 	this.cmp = function(d1, d2) {
 		if (d1 && d2)

@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	const updateSujeto = sujeto => {
 		factura.setSujeto(sujeto);
-		formFact.toggle(".grupo-exento", factura.isExento());
+		formFact.setVisible(".grupo-exento", factura.isExento());
 	}
 	const updateView = subtipo => {
 		factura.setSubtipo(subtipo); // actualizo el nuevo subtipo
@@ -39,14 +39,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		const data = fiscal[keyEco + factura.getSubtipo()] || fiscal.default;
         formFact.setData(data, ".ui-fiscal").setval("#nifTercero", acTercero.getCode())
-				.toggle("#ac-recibo", factura.isRecibo()).toggle(".firma-gaca", factura.isFirmaGaca());
+				.setVisible("#ac-recibo", factura.isRecibo()).setVisible(".firma-gaca", factura.isFirmaGaca());
 		updateSujeto(data.sujeto);
 		fnCalcIva(data.iva);
 	}
 	const updateFace = face => {
 		factura.setFace(face);
 		formFact.text(".grupo-gestor > .label", factura.isPlataforma() ? "Nombre de la plataforma:" : "Órgano Gestor:")
-				.toggle(".grupo-face", factura.isFace()).toggle(".grupo-gestor", factura.isFace() || factura.isPlataforma());
+				.setVisible(".grupo-face", factura.isFace()).setVisible(".grupo-gestor", factura.isFace() || factura.isPlataforma());
 	}
 
 	/*** FORMULARIO PRINCIPAL ***/
@@ -59,10 +59,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		minLength: 5, //reduce matches
 		source: term => pf.sendTerm("rcFindTercero", term),
 		render: item => item.label,
-		select: item => item.value,
-		afterSelect: () => {
+		select: item => {
 			updateView(factura.getSubtipo());
-			formFact.loading().click("#find-delegaciones");
+			pf.sendId("rcDelegaciones", item.value);
+			return item.value
 		},
 		onReset: delegaciones.reset
 	});
@@ -103,12 +103,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		const data = JSON.read(args.fact);
         factura.setData(data); // Load data-model before view
 		formFact.setData(data).setval("#nifTercero", data.nif).readonly(factura.isDisabled())
-				.toggle(".insert-only", factura.isEditable()).toggle(".update-only", factura.isDisabled())
-				.toggle(".firmable-only", factura.isFirmable()).toggle(".rechazable-only", factura.isRechazable())
-				.toggle(".show-recibo", factura.isRecibo()).toggle(".show-factura", factura.isFactura()).toggle(".show-cp", factura.isCartaPago())
-				.toggle(".show-factura-uae", uxxiec.isUae() && factura.isFactura()).toggle(".show-uae", uxxiec.isUae())
-				.toggle(".show-gestor", factura.isFace() || factura.isPlataforma()).toggle(".show-face", factura.isFace())
-				.toggle(".firma-gaca", factura.isFirmaGaca());
+				.setVisible(".insert-only", factura.isEditable()).setVisible(".update-only", factura.isDisabled())
+				.setVisible(".firmable-only", factura.isFirmable()).setVisible(".rechazable-only", factura.isRechazable())
+				.setVisible(".show-recibo", factura.isRecibo()).setVisible(".show-factura", factura.isFactura()).setVisible(".show-cp", factura.isCartaPago())
+				.setVisible(".show-factura-uae", uxxiec.isUae() && factura.isFactura()).setVisible(".show-uae", uxxiec.isUae())
+				.setVisible(".show-gestor", factura.isFace() || factura.isPlataforma()).setVisible(".show-face", factura.isFace())
+				.setVisible(".firma-gaca", factura.isFirmaGaca());
 		delegaciones.setItems(JSON.read(args.delegaciones)); // cargo las delegaciones
 		lineas.render(JSON.read(args.data)); // Load conceptos and iva input
 		formFact.readonly(!factura.isEditableUae(), ".editable-uae"); // disable iva input

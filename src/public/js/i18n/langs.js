@@ -15,6 +15,7 @@ function Langs() {
 
     this.getLangs = () => _langs;
     this.getLang = () => _lang;
+    this.getCurrent = () => _lang;
     this.getI18n = lang => _langs[lang] || _langs[sb.substring(lang, 0, 2)] || _lang;
     this.setLang = lang => { // Load especific language by key
         _lang = self.getI18n(lang);

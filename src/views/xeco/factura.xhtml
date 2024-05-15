@@ -28,10 +28,18 @@
 	<ui:define name="body">
 		<ui:include src="parts/msgs.xhtml"></ui:include>
 
+		<!-- Home tab -->
 		<div id="tab-0" class="tab-content active">
 			<ui:include src="tabs/fact/init.xhtml"></ui:include>
 		</div>
 
+		<!-- listado de solicitudes -->
+		<div id="tab-2" class="tab-content">
+			<ui:include src="tabs/fact/list.xhtml"></ui:include>
+			<ui:include src="parts/leyenda_firmas.xhtml"></ui:include>
+		</div>
+
+		<!-- Form factura -->
 		<div id="tab-1" class="tab-content">
 		<h:form id="xeco-fact" prependId="false" onsubmit="loading();">
 			<p:inputText id="id" value="#{fact.solicitud.id}" styleClass="ui-input ui-number hide" />
@@ -45,7 +53,7 @@
 					<label class="ui-block-xl autocomplete">
 						<div class="label required">Tercero (CIF / NIF / Nombre):</div>
 						<p:remoteCommand name="rcFindTercero" action="#{fact.findTercero()}" oncomplete="loadItems(xhr, status, args)" />
-						<input type="search" id="acTercero" name="acTercero" class="ui-input ui-autocomplete" tabindex="1" autocomplete="off" />
+						<input type="search" id="acTercero" name="acTercero" class="ui-input ui-autocomplete" tabindex="1" />
 						<h:inputText id="idTercero" value="#{fact.solicitud.idTerceroView}" styleClass="ui-input ui-number hide" />
 						<ul role="list" class="results"></ul>
 						<div class="ui-errtip"></div> 
@@ -54,7 +62,7 @@
 						<div class="label required">Delegación:</div>
 						<select id="delegacion" name="delegacion" class="ui-input ui-select ui-number" tabindex="2"></select>
 						<h:inputText id="idDelegacion" value="#{fact.solicitud.delegacion}" styleClass="ui-input ui-number hide" />
-						<p:commandButton id="find-delegaciones" action="#{fact.findDelegaciones()}" oncomplete="loadDelegaciones(xhr, status, args)" styleClass="hide" />
+						<p:remoteCommand name="rcDelegaciones" action="#{fact.findDelegaciones()}" oncomplete="loadDelegaciones(xhr, status, args)" />
 						<div class="ui-errtip"></div> 
 					</label>
 				</div>
@@ -62,7 +70,7 @@
 					<label class="ui-block-xl autocomplete">
 						<div class="label required">Cual es la orgánica para la factura:</div>
 						<p:remoteCommand name="rcFindOrganica" action="#{fact.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
-						<input type="search" id="acOrganica" name="acOrganica" class="ui-input ui-autocomplete" tabindex="3" autocomplete="off" />
+						<input type="search" id="acOrganica" name="acOrganica" class="ui-input ui-autocomplete" tabindex="3" />
 						<h:inputText id="idOrganica" value="#{fact.solicitud.organica}" styleClass="ui-input ui-number hide" />
 						<ul role="list" class="results"></ul>
 						<div class="ui-errtip"></div> 
@@ -97,7 +105,7 @@
 					<label id="ac-recibo" class="autocomplete ui-block-md show-recibo">
 						<div class="label required">Recibo asociado a la factura:</div>
 						<p:remoteCommand name="rcFindRecibo" action="#{fact.findRecibo()}" oncomplete="loadItems(xhr, status, args)" />
-						<input type="search" id="acRecibo" name="acRecibo" class="ui-input ui-autocomplete" tabindex="4" autocomplete="off" />
+						<input type="search" id="acRecibo" name="acRecibo" class="ui-input ui-autocomplete" tabindex="4" />
 						<h:inputText id="idRecibo" value="#{fact.solicitud.reciboView}" styleClass="ui-input hide" />
 						<ul role="list" class="results"></ul>
 						<div class="ui-errtip"></div> 
@@ -235,7 +243,7 @@
 			</div>
 
 			<div class="navbar">
-				<a href="#back-tab" class="btn btn-primary tab-action" title="#{msg['tit.btn.volver.ini']}" tabindex="41">
+				<a href="#back-tab" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}" tabindex="41">
 					<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 				<p:commandLink action="#{fact.save()}" styleClass="btn btn-green insert-only" tabindex="42" title="Pone la solicitud a la firma"
 					onclick="if (!fnSend()) return false;" oncomplete="showTab(xhr, status, args, 0);">
@@ -250,19 +258,14 @@
 		</h:form>
 		</div>
 
-		<div id="tab-2" class="tab-content">
-			<ui:include src="tabs/fact/list.xhtml"></ui:include>
-			<ui:include src="parts/leyenda_firmas.xhtml"></ui:include>
+		<!-- vinculación con uxxiec -->
+		<div id="tab-15" class="tab-content" data-nif="#{uae.nif}" data-grupo="#{uae.idGrupo}">
+			<ui:include src="tabs/fact/uxxiec.xhtml"></ui:include>
 		</div>
 
 		<!-- formulario de rechazo/cancelacion -->
 		<div id="tab-11" class="tab-content">
 			<ui:include src="tabs/fact/reject.xhtml"></ui:include>
-		</div>
-
-		<!-- vinculación con uxxiec -->
-		<div id="tab-15" class="tab-content" data-nif="#{uae.nif}" data-grupo="#{uae.idGrupo}">
-			<ui:include src="tabs/fact/uxxiec.xhtml"></ui:include>
 		</div>
 	</ui:define>
 </ui:composition>

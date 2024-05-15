@@ -1,8 +1,8 @@
 
+import sb from "./StringBox.js";
 import coll from "./Collection.js";
 import i18n from "../i18n/langs.js";
 
-const STATUS = {};
 const HIDE_CLASS = "hide";
 const FADE_IN = "fadeIn";
 const FADE_OUT = "fadeOut";
@@ -14,6 +14,7 @@ const fnShow = el => el.classList.remove(HIDE_CLASS);
 const fnVisible = el => (el.offsetWidth || el.offsetHeight || el.getClientRects().length);
 
 // Extends HTMLCollection prototype
+HTMLCollection.prototype.map = Array.prototype.map;
 HTMLCollection.prototype.find = Array.prototype.find;
 HTMLCollection.prototype.filter = Array.prototype.filter;
 HTMLCollection.prototype.forEach = Array.prototype.forEach;
@@ -21,36 +22,43 @@ HTMLCollection.prototype.eachPrev = Array.prototype.eachPrev;
 HTMLCollection.prototype.findIndex = Array.prototype.findIndex;
 HTMLCollection.prototype.findOne = function(selector) { return this.find(el => el.matches(selector)); }
 HTMLCollection.prototype.query = function(selector) { return this.filter(el => el.matches(selector)); }
+HTMLCollection.prototype.render = function(data) { this.forEach((el, i) => el.render(data, i, this.length)); }
 HTMLCollection.prototype.text = function(text) { this.forEach(el => { el.innerHTML = text; }); }
 HTMLCollection.prototype.setClick = function(fn) { this.forEach(el => el.setClick(fn)); };
-HTMLCollection.prototype.render = function(data) { this.forEach((el, i) => el.render(data, i, this.length)); }
-HTMLCollection.prototype.mask = function(flags) { this.forEach((el, i) => el.toggle((flags >> i) & 1)); }
 HTMLCollection.prototype.hide = function() { this.forEach(fnHide); }
 HTMLCollection.prototype.show = function() { this.forEach(fnShow); }
 HTMLCollection.prototype.toggle = function(name, force) {
-    name = name || HIDE_CLASS;
+    name = name || HIDE_CLASS; // Toggle class name
     this.forEach(el => el.classList.toggle(name, force));
+}
+HTMLCollection.prototype.mask = function(flags, name) {
+    if (!name) { // Toggle class name
+        name = HIDE_CLASS; // Default = hide
+        flags = ~flags; // Negate flags
+    }
+    this.forEach((el, i) => el.toggle(name, (flags >> i) & 1));
 }
 
 // Extends NodeList prototype
+NodeList.prototype.map = Array.prototype.map;
 NodeList.prototype.find = Array.prototype.find;
 NodeList.prototype.filter = Array.prototype.filter;
 NodeList.prototype.eachPrev = Array.prototype.eachPrev;
 NodeList.prototype.findOne = HTMLCollection.prototype.findOne;
 NodeList.prototype.query = HTMLCollection.prototype.query;
+NodeList.prototype.render = HTMLCollection.prototype.render;
 NodeList.prototype.text = HTMLCollection.prototype.text;
 NodeList.prototype.setClick = HTMLCollection.prototype.setClick;
-NodeList.prototype.render = HTMLCollection.prototype.render;
-NodeList.prototype.mask = HTMLCollection.prototype.mask;
 NodeList.prototype.hide = HTMLCollection.prototype.hide;
 NodeList.prototype.show = HTMLCollection.prototype.show;
 NodeList.prototype.toggle = HTMLCollection.prototype.toggle;
+NodeList.prototype.mask = HTMLCollection.prototype.mask;
 
 // Extends HTMLElement prototype
 HTMLElement.prototype.setMsg = function(msg) { this.innerHTML = i18n.get(msg); return this }
 HTMLElement.prototype.show = function() { fnShow(this); return this }
 HTMLElement.prototype.hide = function() { fnHide(this); return this }
-HTMLElement.prototype.toggle = function(name, force) { this.classList.toggle(name || HIDE_CLASS, force); }
+HTMLElement.prototype.toggle = function(name, force) { this.classList.toggle(name || HIDE_CLASS, force); return this; }
 //HTMLElement.prototype.trigger = function(name, detail) { this.dispatchEvent(detail ? new CustomEvent(name, { detail }) : new Event(name)); } //ev.detail
 HTMLElement.prototype.setClick = function(fn) { this.addEventListener("click", ev => fn(ev, this)); return this; }
 HTMLElement.prototype.setVisible = function(force) { return force ? this.show() : this.hide(); }
@@ -59,13 +67,8 @@ HTMLElement.prototype.isVisible = function(selector) {
     return fnVisible(this) && (selector ? this.matches(selector) : true);
 }
 HTMLElement.prototype.render = function(data, i, size) {
-    i = i || 0;
-    STATUS.index = i;
-    STATUS.count = i + 1;
-    STATUS.size = size || 1;
-    const fnReplace = (m, k) => (data[k] ?? STATUS[k] ?? ""); // remplace function
     this.dataset.template = this.dataset.template || this.innerHTML; // save current template
-    this.innerHTML = this.dataset.template.replace(/@(\w+);/g, fnReplace); // display new data
+    this.innerHTML = sb.render(this.dataset.template, data, i, size); // display new data
     return this;
 }
 

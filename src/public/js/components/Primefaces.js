@@ -1,5 +1,6 @@
 
 import alerts from "./Alerts.js";
+import coll from "./CollectionHTML.js";
 
 const PARAMS = []; // params container
 function param(name, value) {
@@ -68,6 +69,6 @@ function multiNameInput(form, main, inputs) {
 export default {
     param, params, 
     send, sendId, sendTerm, sendIndex, fetch,
-    isLoaded, showAlerts, 
+    ready: coll.ready, isLoaded, showAlerts, 
     datalist, multiNameInput
 }

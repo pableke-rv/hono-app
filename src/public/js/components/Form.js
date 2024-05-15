@@ -11,7 +11,6 @@ const divNull = document.createElement("div");
 export default function(form, opts) {
 	form = isstr(form) ? document.forms.findOne(form) : form; // Find by name
 	opts = opts || {}; // default options
-
 	opts.defaultMsgOk = opts.defaultMsgOk || "saveOk"; // default key for message ok
 	opts.defaultMsgError = opts.defaultMsgError || "errForm"; // default key error
 
@@ -31,6 +30,7 @@ export default function(form, opts) {
 	const INPUTS = "input:not([type=hidden]),select,textarea"; // All input fields
 	const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
 
+	this.isset = () => form;
 	this.focus = el => { el && el.focus(); return self; }
 	this.setFocus = selector => self.focus(self.getInput(selector));
 	this.autofocus = () => self.focus(form.elements.find(el => el.isVisible(FOCUSABLED)));
@@ -66,7 +66,7 @@ export default function(form, opts) {
 
 	this.hide = selector => { form.querySelectorAll(selector).hide(); return self; }
 	this.show = selector => { form.querySelectorAll(selector).show(); return self; }
-	this.toggle = (selector, force) => force ? self.show(selector) : self.hide(selector);
+	this.setVisible = (selector, force) => force ? self.show(selector) : self.hide(selector);
 	this.disabled = (force, selector) => fnUpdate(selector, el => el.setDisabled(force));
 	this.readonly = (force, selector) => fnUpdate(selector, el => el.setReadonly(force));
 	this.eachInput = (selector, fn) => fnUpdate(selector, fn);
@@ -102,7 +102,11 @@ export default function(form, opts) {
 	}
 	this.setValue = (el, value) => el ? fnSetValue(el, value) : self;
 	this.setval = (selector, value) => self.setValue(self.getInput(selector), value);
+	this.values = (selector, value) => fnUpdate(selector, el => fnSetValue(el, value));
 	this.setData = (data, selector) => fnUpdate(selector, el => fnSetValue(el, data[el.name]));
+
+	this.setAttribute = (el, name, value) => { el && el.setAttribute(name, value); return self;}
+	this.setAttr = (selector, name, value) => self.setAttribute(self.getInput(selector), name, value);
 
 	function fnParseValue(el) {
 		if (fnContains(el, opts.floatFormatClass))
@@ -142,12 +146,12 @@ export default function(form, opts) {
 	this.setDatalist = (selector, opts) => new Datalist(form.querySelector(selector), opts); // select / optgroup
 	this.setAutocomplete = (selector, opts) => new Autocomplete(self.getInput(selector), opts); // Input type text / search
 	this.setAcItems = (selector, fnSource, fnSelect, fnReset) => {
+		fnSelect = fnSelect || globalThis.void;
 		return self.setAutocomplete(selector, {
 			minLength: 4,
 			source: fnSource,
 			render: item => item.label,
-			select: item => item.value,
-			afterSelect: fnSelect,
+			select: item => { fnSelect(item); return item.value; },
 			onReset: fnReset
 		});
 	}
@@ -174,26 +178,32 @@ export default function(form, opts) {
 	this.submit = fn => fnEvent(form, "submit", fn);
 	this.beforeReset = fn => fnEvent(form, "reset", fn);
 	this.afterReset = fn => fnEvent(form, "reset", ev => setTimeout(() => fn(ev), 1));
-	this.setClick = (selector, fn) => fnEach(selector, el => el.addEventListener("click", fn))
+	this.setClick = (selector, fn) => fnEach(selector, el => el.setClick(fn));
 	this.click = selector => { form.querySelector(selector).click(); return self; } // Fire event only for PF
 
-	this.onChangeInput = (selector, fn) => {
-		return fnEvent(self.getInput(selector), "change", fn);
-	}
+	this.onChange = (el, fn) => el ? fnEvent(el, "change", fn) : self;
+	this.onChangeInput = (selector, fn) => self.onChange(self.getInput(selector), fn);
 	this.onChangeFile = (selector, fn) => {
+		let file, index = 0; // file, position;
 		const reader = new FileReader();
-		return self.onChangeInput(selector, ev => {
-			const el = ev.target; // file input elem
-			let index = 0; // position
-			let file = el.files[index];
-			const fnRead = () => reader.readAsBinaryString(file); //reader.readAsText(file, "UTF-8");
-			reader.onload = ev => { // event on load file
-				fn(el, file, ev.target.result, index);
-				file = el.files[++index];
-				file && fnRead();
-			}
-			file ? fnRead() : fn(el);
-		});
+		const el = self.getInput(selector);
+		const fnLoad = i => {
+			file = el.files[i]; // multifile
+			file && reader.readAsArrayBuffer(file); //reader.readAsText(file, "UTF-8");
+		}
+		reader.onload = ev => { // event on load file
+			fn(el, file, reader.result, index);
+			fnLoad(++index);
+		}
+		return fnEvent(el, "change", () => fnLoad(index));
+	}
+	this.setField = (selector, value, fnChange) => {
+		const el = self.getInput(selector);
+		if (el) { // Exists element?
+			fnEvent(el, "change", fnChange);
+			return fnSetValue(el, value);
+		}
+		return self;
 	}
 
 	// Form Validator
@@ -248,25 +258,27 @@ export default function(form, opts) {
 						.catch(info => { self.setErrors(info); throw info; });
 	}
 
-	// Form initialization
-	form.elements.forEach(el => {
-		if (fnContains(el, opts.floatFormatClass)) {
-			el.addEventListener("change", ev => fnNumber(el, i18n.fmtFloat(el.value)));
-			return fnNumber(el, el.value && i18n.isoFloat(+el.value)); // iso format float
-		}
-		if (fnContains(el, opts.integerFormatClass)) {
-			el.addEventListener("change", ev => fnNumber(el, i18n.fmtInt(el.value)));
-			return fnNumber(el, el.value && i18n.isoInt(+el.value)); // iso format integer
-		}
-		if (fnContains(el, opts.boolClass))
-			el.value = i18n.boolval(el.value); // Hack PF type
-		else if (fnContains(el, opts.dateClass))
-			el.type = "date"; // Hack PF type
-		else if (fnContains(el, opts.checkAllClass))
-			el.addEventListener("click", ev => {
-				const fnCheck = input => (input.type == "checkbox") && (input.name == el.id);
-				form.elements.forEach(input => { if (fnCheck(input)) input.checked = el.checked; });
-			});
-	});
-	self.autofocus().beforeReset(ev => self.closeAlerts().autofocus());
+    if (form)  {// Form initialization
+		form.elements.forEach(el => {
+			if (fnContains(el, opts.floatFormatClass)) {
+				el.addEventListener("change", ev => fnNumber(el, i18n.fmtFloat(el.value)));
+				return fnNumber(el, el.value && i18n.isoFloat(+el.value)); // iso format float
+			}
+			if (fnContains(el, opts.integerFormatClass)) {
+				el.addEventListener("change", ev => fnNumber(el, i18n.fmtInt(el.value)));
+				return fnNumber(el, el.value && i18n.isoInt(+el.value)); // iso format integer
+			}
+			if (fnContains(el, opts.boolClass))
+				el.value = i18n.boolval(el.value); // Hack PF type
+			else if (fnContains(el, opts.dateClass))
+				el.type = "date"; // Hack PF type
+			else if (fnContains(el, opts.checkAllClass))
+				el.addEventListener("click", ev => {
+					const fnCheck = input => (input.type == "checkbox") && (input.name == el.id);
+					form.elements.forEach(input => { if (fnCheck(input)) input.checked = el.checked; });
+				});
+		});
+		form.setAttribute("novalidate", "1");
+		self.autofocus().beforeReset(ev => self.closeAlerts().autofocus());
+	}
 }

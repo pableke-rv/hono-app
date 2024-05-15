@@ -24,7 +24,7 @@ export const IndexTab0 = (props: any) => {
             <Notice type="dark" icon="fas fa-skull-crossbones"><b>Dark:</b> <span>Area de pruebas</span></Notice>
             <Notice type="info">
                 <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. A, dolorum, veritatis tenetur ea dolor quo consequuntur ullam molestias fugit quam. </span>
-                <a href="#toggle" class="link tab-action" data-toggle="fa-angle-double-down fa-angle-double-up" data-target=".info-test">
+                <a href="#toggle" class="link" data-toggle="fa-angle-double-down fa-angle-double-up" data-target=".info-test">
                     Más Info <i class="fas fa-angle-double-down"></i>
                 </a>
                 <div class="info-test hide"><hr/>Lorem ipsum dolor, sit amet consectetur adipisicing, elit. Corrupti rem aut, minus asperiores, sunt eligendi hic ipsum maiores itaque numquam sequi eius voluptates consequuntur debitis impedit quae dolore ad, enim?</div>

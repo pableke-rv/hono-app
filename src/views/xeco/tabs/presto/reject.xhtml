@@ -9,7 +9,7 @@
 
 	<h:form id="xeco-reject" prependId="false" onsubmit="loading();">
 		<div class="card-xeco">
-			<h2>Motivo / Causa del rechazo de la solicitud<hr/></h2>
+			<h2>Motivo / Causa del rechazo de la solicitud<hr class="underline"/></h2>
 			<p class="notice notice-info load-data">@codigo;: @memo;</p>
 
 			<label class="ui-block">
@@ -19,7 +19,7 @@
 			</label>
 		</div>
 
-		<a href="#back-tab" class="btn btn-primary tab-action" tabindex="2">
+		<a href="#back-tab" class="btn btn-primary" tabindex="2">
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 		<p:commandLink action="#{presto.rechazar()}" styleClass="btn btn-error" tabindex="3" 
 				onclick="if (!fnRechazar()) return false;" oncomplete="updateList(xhr, status, args);">

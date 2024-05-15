@@ -97,7 +97,7 @@ export default function(select, opts) {
 
 	this.toggleOptions = function(flags) {
 		const option = self.getOption(); //get current option
-		select.options.forEach((option, i) => option.toggle(flags.mask(i)));
+		select.options.mask(flags); // toggle hide class
 		if (option && option.isHidden()) // is current option hidden?
 			select.selectedIndex = select.options.findIndex(el => !el.isHidden());
 		return self;

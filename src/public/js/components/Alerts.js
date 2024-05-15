@@ -63,7 +63,7 @@ function Alerts() {
     this.top = () => { document.body.scrollIntoView({ behavior: "smooth" }); return self; }
 	this.redir = (url, target) => { url && window.open(url, target || "_blank"); return self; };
 	_top.addEventListener("click", ev => { self.top(); ev.preventDefault(); });
-	window.onscroll = function() { _top.toggle(null, this.scrollY < 80); }
+	window.onscroll = function() { _top.setVisible(this.scrollY > 80); }
 
     const fnShow = (el, txt) => {
         el.parentNode.fadeIn();

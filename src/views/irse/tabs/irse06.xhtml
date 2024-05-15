@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div class="card-xeco">
+		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><h:outputText value="#{msg['uae.irse.tab6.msg.tit']}" escape="false" /></h2>
+
+		<div class="#{gasto.cssAc}">
+			<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.ac']}" escape="false" />: <b class="text-green">#{gasto.totAcI18n} €</b></h3>
+		</div>
+
+		<c:choose>
+			<c:when test="#{irse.mun}">
+				<div class="navbar">
+					<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />: <b id="imp-km" class="text-green">#{gasto.kmCalcI18n} €</b></h3>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="navbar rutas-vp">
+					<ui:include src="irse06_km.xhtml"></ui:include>
+				</div>
+			</c:otherwise>
+		</c:choose>
+
+		<div class="#{gasto.cssTransporte}">
+			<h3>
+			<a id="p6-trans" href="#toggle" data-toggle="fa-caret-right fa-caret-down">
+				<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.2']}" escape="false" />: <b class="text-green">#{gasto.impTransporteI18n} €</b>
+			</a>
+			</h3>
+			<table id="gastos" class="info-p6-trans hide tb-xeco">
+				<thead>
+				<tr>
+					<th>Nº</th>
+					<th><h:outputText value="#{msg['lbl.tipo.gasto']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.desc.obsev']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.adjunto']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.importe']}" escape="false" /></th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:forEach items="#{gasto.transporte}" var="g" varStatus="loop">
+					<tr id="#{g.idGasto}" class="tb-data tb-data-tc">
+						<td>#{loop.count}</td>
+						<td>#{gasto.getSubtipoDesc(g)}</td>
+						<td>#{gasto.getDescGasto(g)}</td>
+						<td>#{g.nombre}</td>
+						<td>#{gasto.getGastoImporte(g)} €</td>
+					</tr>
+				</c:forEach>
+				</tbody>
+				<tbody class="hide no-data">
+					<tr><td colspan="5"><p class="textc"><h:outputText value="#{msg['msg.no.fac.tickets']}" escape="false" /></p></td></tr>
+				</tbody>
+				<tfoot>
+					<tr><td colspan="4"><h:outputText value="#{msg['lbl.fac.tickets']}" escape="false" />: #{gasto.numTransporte}</td><td class="tb-data-tc">#{gasto.impTransporteI18n} €</td></tr>
+				</tfoot>
+			</table>
+		</div>
+
+		<div class="#{gasto.cssPernoctas}">
+			<h3>
+			<a id="p6-aloja" href="#toggle" data-toggle="fa-caret-right fa-caret-down">
+				<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.3']}" escape="false" />: <b class="text-green">#{gasto.minPernoctasI18n} €</b>
+			</a>
+			</h3>
+			<table id="pernoctas" class="info-p6-aloja hide tb-xeco">
+				<thead>
+					<tr>
+						<th>Nº</th>
+						<th><h:outputText value="#{msg['lbl.pais']}" escape="false" /></th>
+						<th><h:outputText value="#{msg['lbl.fecha.inicio']}" escape="false" /></th>
+						<th><h:outputText value="#{msg['lbl.fecha.fin']}" escape="false" /></th>
+						<th><h:outputText value="#{msg['lbl.noches']}" escape="false" /></th>
+						<th><h:outputText value="#{msg['lbl.imp.noche']}" escape="false" /></th>
+						<th><h:outputText value="#{msg['lbl.imp.tot']}" escape="false" /></th>
+						<th><h:outputText value="#{msg['lbl.imp.justifi']}" escape="false" /></th>
+						<th><h:outputText value="#{msg['lbl.imp.percibir']}" escape="false" /></th><th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="#{gasto.pernoctas}" var="g" varStatus="loop">
+					<tr id="#{g.idGasto}" class="tb-data tb-data-tc">
+						<td>#{loop.count}</td><td>#{g.descripcion}</td><td>#{gasto.getGastoF1(g)}</td><td>#{gasto.getGastoF2(g)}</td><td>#{g.num}</td>
+						<td>#{gasto.getGastoImpCalc(g)} €</td><td>#{gasto.getImpCalcPernoctaI18n(g)} €</td><td>#{gasto.getGastoImporte(g)} €</td>
+						<td>#{irse.getMinPernoctaI18n(g)} €</td><td></td>
+					</tr>
+					</c:forEach>
+				</tbody>
+				<tbody class="hide no-data">
+					<tr><td colspan="9"><p class="textc"><h:outputText value="#{msg['msg.no.pernoctas']}" escape="false" /></p></td></tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4"><h:outputText value="#{msg['lbl.alojamientos']}" escape="false" />: #{gasto.numPernoctas}</td><td class="tb-data-tc">#{gasto.numNoches}</td><td></td>
+						<td class="tb-data-tc">#{gasto.maxPernoctasI18n} €</td><td class="tb-data-tc">#{gasto.impPernoctasI18n} €</td>
+						<td class="tb-data-tc">#{gasto.minPernoctasI18n} €</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+		<div class="#{irse.cssTab7}">
+			<ui:include src="irse07.xhtml"></ui:include>
+		</div>
+
+		<c:if test="#{irse.tab8}">
+			<ui:include src="irse08.xhtml"></ui:include>
+		</c:if>
+
+		<div class="#{irse.cssIrpf}">
+			<ui:include src="irse06_irpf.xhtml"></ui:include>
+		</div>
+	</div>
+
+	<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.paso.0']}" tabindex="129"><i class="fas fa-arrow-to-left"></i></a>
+	<a href="#tab-5" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="130">
+		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+	<c:choose>
+	<c:when test="#{irse.editable}">
+		<p:commandLink
+				onclick="if (!ir.paso6()) return false;" action="#{irse.paso6()}" oncomplete="showNextTab(xhr, status, args);" 
+				styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="131">
+			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i>
+		</p:commandLink>
+		<p:commandButton onclick="if (!ir.paso6()) return false;" action="#{irse.save6()}" oncomplete="saveTab();"
+			styleClass="btn btn-green success-btn" icon="far fa-save" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="132" />
+	</c:when>
+	<c:otherwise>
+		<a href="#next-tab" class="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="131">
+			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
+	</c:otherwise>
+	</c:choose>
+
+	<c:if test="#{irse.firmable}">
+		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
+	</c:if>
+	<c:if test="#{irse.cancelable}">
+		<a href="#tab-reject" class="btn btn-warn warning-btn" tabindex="134" title="#{msg['tit.btn.cancelar']}">
+			<i class="fas fa-times btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.cancelar']}" escape="false" /></a>
+	</c:if>
+	<ui:include src="../parts/btn_doc.xhtml"></ui:include>
+</html>

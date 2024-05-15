@@ -48,14 +48,15 @@ document.addEventListener("DOMContentLoaded", () => {
         afterRender: resume => {
             partidas.setData(lineas);
             const readonly = resume.size > 0;
-            formPresto.readonly(readonly, "#ejDec").readonly(readonly || presto.isDisableEjInc(), "#ejInc");
+            formPresto.readonly(readonly, "#ejDec").readonly(readonly || presto.isDisableEjInc(), "#ejInc")
+                        .setVisible(".show-partida-inc", lineas.size() < 20);
         },
         "#doc030": row => { // load tab view 3
             row.ej030 = row.ej; // Ejercicio de la partida a añadir
             row.imp080 = i18n.isoFloat(row.imp); // formated float
             const readonly = presto.isDisabled() && !presto.isFirmable();
             form030.render(".info-080", row).setData(row)
-                    .readonly(readonly).toggle("#save-030", !readonly).text("#memo-030", presto.getMemo());
+                    .readonly(readonly).setVisible("#save-030", !readonly).text("#memo-030", presto.getMemo());
             acOrg030.setValue(row.idOrg030, row.o030 + " - " + row.dOrg030);
             tabs.showTab(3);
         }
@@ -64,11 +65,13 @@ document.addEventListener("DOMContentLoaded", () => {
     //****** partida a decrementar ******//
     const fnSelectOrgDec = item => {
         presto.isAutoLoadInc() && lineas.render(); //autoload => clear table
-        formPresto.loading().setval("#faDec", item.int & 1).click("#find-economicas-dec");
+        formPresto.setval("#faDec", item.int & 1);
+        pf.sendId("rcEcoDec", item.value);
     }
     const fnResetOrgDec = () => {
         presto.isAutoLoadInc() && lineas.render(); //autoload => clear table
-        formPresto.setval("#faDec").click("#find-economicas-dec");
+        formPresto.setval("#faDec");
+        pf.sendId("rcEcoDec");
     }
     const acOrgDec = formPresto.setAcItems("#acOrgDec", //selector
                                         term => window.rcFindOrgDec(pf.param("term", term)), //source
@@ -76,8 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                         fnResetOrgDec); //reset
     const acOrgInc = formPresto.setAcItems("#acOrgInc", //selector
                                         term => window.rcFindOrgInc(pf.param("term", term)), //source
-                                        item => formPresto.loading().setval("#faInc", item.int & 1).click("#find-economicas-inc"), //select
-                                        () => formPresto.setval("#faInc").setval("#impInc").click("#find-economicas-inc")); //reset
+                                        item => { formPresto.setval("#faInc", item.int & 1); pf.sendId("rcEcoInc", item.value); }, //select
+                                        () => { formPresto.setval("#faInc").setval("#impInc"); pf.sendId("rcEcoInc"); }); //reset
 
     formPresto.onChangeInput("#idEcoDec", ev => {
         if (presto.isL83()) //L83 => busco su AIP
@@ -92,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
             lineas.render(partidas);
         }
     });
-    formPresto.onChangeInput("#urgente", ev => formPresto.toggle(".grp-urgente", ev.target.value == "2"))
+    formPresto.onChangeInput("#urgente", ev => formPresto.setVisible(".grp-urgente", ev.target.value == "2"))
             .onChangeInput("#ejDec", ev => { formPresto.setval("#ejInc", ev.target.value); acOrgDec.reset(); })
             .onChangeInput("#ejInc", acOrgInc.reset);
 
@@ -150,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return formPresto.setError("#acOrgInc", "¡Partida ya asociada a la solicitud!", "notAllowed");
         partida.imp030 = partida.imp = formPresto.valueOf("#impInc"); // Importe de la partida a añadir
         lineas.add(partida); // Add and remove PK autocalculated in extraeco.v_presto_partidas_inc
-        formPresto.toggle(".link-adjunto", presto.getAdjunto());
+        formPresto.setVisible(".link-adjunto", presto.getAdjunto());
         acOrgInc.reload();
     }
     //****** tabla de partidas a incrementar ******//
@@ -162,11 +165,11 @@ document.addEventListener("DOMContentLoaded", () => {
         presto.setData(data); // Load data-model before view
         ecoInc.reset(); // cargo las econonomicas a incrementar
         formPresto.setData(data).readonly(presto.isDisabled()).readonly(!presto.isEditableUae(), ".editable-uae")
-                    .toggle(".insert-only", presto.isEditable()).toggle(".update-only", presto.isDisabled())
-                    .toggle(".firmable-only", presto.isFirmable()).toggle(".rechazable-only", presto.isRechazable())
-                    .toggle(".show-partida-dec", presto.isPartidaDec()).toggle(".show-partida-inc", presto.isMultipartida() && presto.isEditable())
-                    .toggle(".show-imp-cd", presto.isImpCd()).toggle(".show-memoria", !presto.isL83()).toggle(".grp-urgente", presto.isUrgente())
-                    .toggle(".show-subtipo", uxxiec.isUae() && presto.isGcr()).toggle(".is-fce", presto.isFce()).toggle(".link-adjunto", presto.getAdjunto());
+                    .setVisible(".insert-only", presto.isEditable()).setVisible(".update-only", presto.isDisabled())
+                    .setVisible(".firmable-only", presto.isFirmable()).setVisible(".rechazable-only", presto.isRechazable())
+                    .setVisible(".show-partida-dec", presto.isPartidaDec()).setVisible(".show-partida-inc", presto.isMultipartida() && presto.isEditable())
+                    .setVisible(".show-imp-cd", presto.isImpCd()).setVisible(".show-memoria", !presto.isL83()).setVisible(".grp-urgente", presto.isUrgente())
+                    .setVisible(".show-subtipo", uxxiec.isUae() && presto.isGcr()).setVisible(".is-fce", presto.isFce()).setVisible(".link-adjunto", presto.getAdjunto());
         fnLoadEcoDec(args); // cargo las econonomicas a decrementar
         lineas.render(JSON.read(args.data)); // Load table partidas
         acOrgDec.setValue(data.idOrgDec, data.orgDec + " - " + data.dOrgDec);
