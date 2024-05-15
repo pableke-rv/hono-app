@@ -111,6 +111,7 @@ function Partidas(presto) {
         return self.setPartidas(table.getData());
     }
 
+    this.size = () => data.length;
     this.getImporte = () => resume.imp;
     this.getPartida = () => partida;
 
@@ -166,6 +167,7 @@ function Presto() {
 
     this.isPartidaDec = () => (self.isTcr() || self.isL83() || self.isAnt() || self.isAfc());
 	this.isMultipartida = () => (self.isTcr() || self.isFce() || self.isGcr());
+    this.showPartidasInc = () => (self.isMultipartida() && self.isEditable() && (partidas.size() < 20));
     this.isPartidaExt = () => (self.isGcr() || self.isAnt());
     this.isDisableEjInc = () => (self.isDisabled() || self.isTcr() || self.isFce());
     this.isAutoLoadImp = () => (self.isL83() || self.isAnt() || self.isAfc());

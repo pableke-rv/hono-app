@@ -259,7 +259,7 @@ export default function(form, opts) {
 						.catch(info => { self.setErrors(info); throw info; });
 	}
 
-    if (form)  {// Form initialization
+    if (form) { // Form initialization
 		form.elements.forEach(el => {
 			if (fnContains(el, opts.floatFormatClass)) {
 				el.addEventListener("change", ev => fnNumber(el, i18n.fmtFloat(el.value)));

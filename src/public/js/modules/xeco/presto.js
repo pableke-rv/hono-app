@@ -49,13 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
             partidas.setData(lineas);
             const readonly = resume.size > 0;
             formPresto.readonly(readonly, "#ejDec").readonly(readonly || presto.isDisableEjInc(), "#ejInc")
-                        .setVisible(".show-partida-inc", !formPresto.getId() && (lineas.size() < 20));
+                        .setVisible(".show-partida-inc", presto.showPartidasInc());
         },
         "#doc030": row => { // load tab view 3
             row.ej030 = row.ej; // Ejercicio de la partida a añadir
             row.imp080 = i18n.isoFloat(row.imp); // formated float
             const readonly = presto.isDisabled() && !presto.isFirmable();
-            form030.render(".info-080", row).setData(row)
+            form030.render(".info-080", row).setData(row).setVisible("#memo-030", presto.getMemo())
                     .readonly(readonly).setVisible("#save-030", !readonly).text("#memo-030", presto.getMemo());
             acOrg030.setValue(row.idOrg030, row.o030 + " - " + row.dOrg030);
             tabs.showTab(3);
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formPresto.setData(data).readonly(presto.isDisabled()).readonly(!presto.isEditableUae(), ".editable-uae")
                     .setVisible(".insert-only", presto.isEditable()).setVisible(".update-only", presto.isDisabled())
                     .setVisible(".firmable-only", presto.isFirmable()).setVisible(".rechazable-only", presto.isRechazable())
-                    .setVisible(".show-partida-dec", presto.isPartidaDec()).setVisible(".show-partida-inc", presto.isMultipartida() && presto.isEditable())
+                    .setVisible(".show-partida-dec", presto.isPartidaDec()).setVisible(".show-partida-inc", presto.showPartidasInc())
                     .setVisible(".show-imp-cd", presto.isImpCd()).setVisible(".show-memoria", !presto.isL83()).setVisible(".grp-urgente", presto.isUrgente())
                     .setVisible(".show-subtipo", uxxiec.isUae() && presto.isGcr()).setVisible(".is-fce", presto.isFce()).setVisible(".link-adjunto", presto.getAdjunto());
         fnLoadEcoDec(args); // cargo las econonomicas a decrementar
