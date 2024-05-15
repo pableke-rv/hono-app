@@ -15,7 +15,7 @@
 		</f:metadata>
 	</ui:define>
 	<ui:define name="header">
-		<link rel="stylesheet" type="text/css" href="/uae/resources/css/main.css" />
+		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
 	</ui:define>
 	<ui:define name="outputScript">
 		<script type="module" src="/uae/resources/js/modules/xeco/buzon.js"></script>
@@ -52,7 +52,7 @@
 				<div class="ui-blocks">
 					<label class="ui-block-xl autocomplete">
 						<div class="label">Orgánica:</div>
-						<p:inputText id="organica" value="#{buzon.acOrganica}" tabindex="1" styleClass="ui-input ui-autocomplete" />
+						<h:inputText id="organica" value="#{buzon.acOrganica}" tabindex="1" styleClass="ui-input ui-autocomplete" />
 						<h:inputText id="idOrg" value="#{buzon.idOrganica}" styleClass="hide ui-number" />
 						<ul role="list" class="results"></ul>
 						<div class="ui-errtip"></div>
@@ -81,7 +81,7 @@
 			<p:remoteCommand name="remove" action="#{buzon.remove()}" oncomplete="showAlerts(xhr, status, args);"/>
 			</h:form>
 
-			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}">
+			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 		</div>
 
@@ -123,8 +123,8 @@
 				</div>
 			</div>
 			<div>
-				<a href="#tab-0" class="btn btn-primary"><i class="fas fa-caret-left"></i></a>
-				<a href="#next-tab" class="btn btn-primary">Siguiente<i class="fas fa-caret-right btn-icon-right"></i></a>
+				<a href="#tab-0" class="btn btn-info"><i class="fas fa-caret-left"></i></a>
+				<a href="#next-tab" class="btn btn-info">Siguiente<i class="fas fa-caret-right btn-icon-right"></i></a>
 			</div>
 		</div>
 
@@ -136,7 +136,7 @@
 				<p><b>Unidad que va a tramitar la factura:</b> <span id="ut-desc">UT-XXX</span></p>
 			</div>
 			<div>
-				<a href="#prev-tab" class="btn btn-primary" tabindex="20"><i class="fas fa-caret-left"></i></a>
+				<a href="#prev-tab" class="btn btn-info" tabindex="20"><i class="fas fa-caret-left"></i></a>
 				<p:commandLink action="#{buzon.upload()}" ajax="false" styleClass="btn btn-green">Enviar <i class="fas fa-paper-plane btn-icon-right"></i></p:commandLink>
 			</div>
 		</div>

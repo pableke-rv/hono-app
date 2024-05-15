@@ -15,7 +15,7 @@
 		</f:metadata>
 	</ui:define>
 	<ui:define name="header">
-		<link rel="stylesheet" type="text/css" href="/uae/resources/css/main.css" />
+		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
 	</ui:define>
 	<ui:define name="outputScript">
 		<script type="module" src="/uae/resources/js/modules/xeco/factura.js"></script>
@@ -42,9 +42,9 @@
 		<!-- Form factura -->
 		<div id="tab-1" class="tab-content">
 		<h:form id="xeco-fact" prependId="false" onsubmit="loading();">
-			<p:inputText id="id" value="#{fact.solicitud.id}" styleClass="ui-input ui-number hide" />
-			<p:inputText id="ivaPF" value="#{fact.solicitud.ivaView}" styleClass="ui-input ui-number hide" />
-			<p:inputText id="nifTercero" value="#{fact.solicitud.nifTerceroView}" styleClass="ui-input hide" />
+			<h:inputText id="id" value="#{fact.solicitud.id}" styleClass="ui-input ui-number hide" />
+			<h:inputText id="ivaPF" value="#{fact.solicitud.ivaView}" styleClass="ui-input ui-number hide" />
+			<h:inputText id="nifTercero" value="#{fact.solicitud.nifTerceroView}" styleClass="ui-input hide" />
 
 			<div class="card-xeco">
 				<h2 class="load-data">Solicitud de emisión de @titulo; @codigo;</h2>
@@ -177,22 +177,22 @@
 					</label>
 					<label class="grupo-gestor ui-block-md show-gestor">
 						<div class="label required">Órgano Gestor:</div>
-						<p:inputText id="og" value="#{fact.solicitud.gestor}" maxlength="20" tabindex="9" styleClass="ui-input" />
+						<h:inputText id="og" value="#{fact.solicitud.gestor}" maxlength="20" tabindex="9" styleClass="ui-input" />
 						<div class="ui-errtip"></div> 
 					</label>
 					<label class="grupo-face ui-block-md show-face">
 						<div class="label">Oficina Contable:</div>
-						<p:inputText id="oc" value="#{fact.solicitud.contable}" maxlength="20" tabindex="10" styleClass="ui-input" />
+						<h:inputText id="oc" value="#{fact.solicitud.contable}" maxlength="20" tabindex="10" styleClass="ui-input" />
 						<div class="ui-errtip"></div> 
 					</label>
 					<label class="grupo-face ui-block-md show-face">
 						<div class="label">Unidad Tramitadora:</div>
-						<p:inputText id="ut" value="#{fact.solicitud.tramit}" maxlength="20" tabindex="11" styleClass="ui-input" />
+						<h:inputText id="ut" value="#{fact.solicitud.tramit}" maxlength="20" tabindex="11" styleClass="ui-input" />
 						<div class="ui-errtip"></div> 
 					</label>
 					<label class="grupo-face ui-block-md show-face">
 						<div class="label">Órgano Proponente:</div>
-						<p:inputText id="op" value="#{fact.solicitud.prop}" maxlength="20" tabindex="12" styleClass="ui-input" />
+						<h:inputText id="op" value="#{fact.solicitud.prop}" maxlength="20" tabindex="12" styleClass="ui-input" />
 						<div class="ui-errtip"></div> 
 					</label>
 				</div>
@@ -243,7 +243,7 @@
 			</div>
 
 			<div class="navbar">
-				<a href="#back-tab" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}" tabindex="41">
+				<a href="#back-tab" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="41">
 					<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 				<p:commandLink action="#{fact.save()}" styleClass="btn btn-green insert-only" tabindex="42" title="Pone la solicitud a la firma"
 					onclick="if (!fnSend()) return false;" oncomplete="showTab(xhr, status, args, 0);">

@@ -126,7 +126,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { margin-left
 .btn {
 	display: inline-flex; align-items: center; gap: 4px; height: 24px;
     margin: 2px 4px !important; padding: .5rem 1rem;
-	color: white !important; font-weight: 500; font-size: 0.875rem/* 14px */; line-height: 1.25rem/* 20px */;
+	color: white; font-weight: 500; font-size: 0.875rem/* 14px */; line-height: 1.25rem/* 20px */;
 	border-width: 1px; border-radius: 0.25rem/* 4px */; border-style: solid; box-sizing: content-box;
     outline: 2px solid transparent; outline-offset: 2px;
     text-decoration: none; cursor: pointer;
@@ -151,8 +151,8 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { margin-left
 :is(.dark .btn-light) { }
 :is(.dark .btn-light:hover) { }*/
 
-.btn-green { background-color: rgb(22 163 74)/* green-600 */; border-color: rgb(22 163 74)/* green-600 */; }
-.btn-green:hover { background-color: rgb(21 128 61)/* green-700 */; }
+.btn-green { color: white; background-color: rgb(22 163 74)/* green-600 */; border-color: rgb(22 163 74)/* green-600 */; }
+.btn-green:hover { color: white; background-color: rgb(21 128 61)/* green-700 */; }
 :is(.dark .btn-green) { background-color: rgb(22 163 74)/* green-600 */; }
 :is(.dark .btn-green:hover) { background-color: rgb(21 128 61)/* green-700 */; }
 

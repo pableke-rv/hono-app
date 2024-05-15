@@ -15,7 +15,7 @@
 		</f:metadata>
 	</ui:define>
 	<ui:define name="header">
-		<link rel="stylesheet" type="text/css" href="/uae/resources/css/main.css" />
+		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
 	</ui:define>
 	<ui:define name="outputScript">
 		<script type="module" src="/uae/resources/js/modules/xeco/presto.js"></script>
@@ -42,7 +42,7 @@
 		<!-- Form PRESTO -->
 		<div id="tab-1" class="tab-content">
 		<h:form id="xeco-presto" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
-			<p:inputText id="id" value="#{presto.solicitud.id}" styleClass="ui-input ui-number hide" />
+			<h:inputText id="id" value="#{presto.solicitud.id}" styleClass="ui-input ui-number hide" />
 
 			<h2 class="load-data">@titulo; @codigo;</h2>
 			<div class="card-xeco show-partida-dec">
@@ -65,7 +65,7 @@
 				</label>
 				<label class="ui-block">
 					<div class="label" title="Orgánica afectada">FA:</div>
-					<p:inputText id="faDec" value="#{presto.solicitud.faDec}" class="ui-input ui-bool disabled" tabindex="-1" title="Orgánica afectada" />
+					<h:inputText id="faDec" value="#{presto.solicitud.faDec}" class="ui-input ui-bool disabled" tabindex="-1" title="Orgánica afectada" />
 				</label>
 				<label class="ui-block">
 					<div class="label required">Económica:</div>
@@ -174,7 +174,7 @@
 					</h:selectOneMenu>
 				</label>
 				<p:outputPanel styleClass="ui-block-row link-adjunto update-presto">
-					<a href="#{presto.linkAdjunto}" class="btn btn-primary" target="_blank" title="Descargar / visualizar la documentación asociada">Documentación Adjunta<i class="far fa-paperclip btn-icon-right"></i></a>
+					<a href="#{presto.linkAdjunto}" class="btn btn-info" target="_blank" title="Descargar / visualizar la documentación asociada">Documentación Adjunta<i class="far fa-paperclip btn-icon-right"></i></a>
 				</p:outputPanel>
 				<div class="ui-block-row insert-only">
 					<p:fileUpload id="fileGasto" label="Adjuntar Documentación" value="#{presto.adjunto}" mode="simple" skinSimple="true" />
@@ -185,7 +185,7 @@
 			</div>
 
 			<div class="navbar">
-				<a href="#back-tab" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}" tabindex="20">
+				<a href="#back-tab" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="20">
 					<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 				<p:commandLink action="#{presto.save()}" ajax="false" styleClass="btn btn-green insert-only" tabindex="21"
 					onclick="if (!fnSend()) return false;" title="Pone la solicitud a la firma">

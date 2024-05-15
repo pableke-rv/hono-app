@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
             partidas.setData(lineas);
             const readonly = resume.size > 0;
             formPresto.readonly(readonly, "#ejDec").readonly(readonly || presto.isDisableEjInc(), "#ejInc")
-                        .setVisible(".show-partida-inc", lineas.size() < 20);
+                        .setVisible(".show-partida-inc", !formPresto.getId() && (lineas.size() < 20));
         },
         "#doc030": row => { // load tab view 3
             row.ej030 = row.ej; // Ejercicio de la partida a añadir

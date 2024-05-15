@@ -7,7 +7,7 @@ function Linea(factura) {
 
     this.row = (data, status, resume) => {
         resume.imp += data.imp; // sum
-        const remove = factura.isEditable() ? '<a href="#remove" class="fas fa-times action action-red row-action" title="Desasociar partida"></a>' : "";
+        const remove = factura.isEditable() ? '<a href="#remove" class="fas fa-times action text-red row-action" title="Desasociar partida"></a>' : "";
         return `<tr class="tb-data">
             <td class="text-center">${status.count}</td>
             <td>${data.desc}</td><td class="text-right">${i18n.isoFloat(data.imp)} €</td>
@@ -121,16 +121,16 @@ function Factura() {
 
     this.row = data => {
         self.setData(data); // initialize 
-        let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action action-blue"></i></a>';
+        let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action text-blue"></i></a>';
         if (self.isFirmable())
-            acciones += `<a href="#rcFirmar" class="row-action firma-${data.id}" data-confirm="msgFirmar"><i class="fas fa-check action action-green"></i></a>
-                         <a href="#tab-11" class="row-action firma-${data.id}"><i class="fas fa-times action action-red"></i></a>`;
+            acciones += `<a href="#rcFirmar" class="row-action firma-${data.id}" data-confirm="msgFirmar"><i class="fas fa-check action text-green"></i></a>
+                         <a href="#tab-11" class="row-action firma-${data.id}"><i class="fas fa-times action text-red"></i></a>`;
         if (self.isIntegrable())
-            acciones += '<a href="#rcIntegrar" class="row-action" data-confirm="msgIntegrar"><i class="far fa-save action action-blue"></i></a>';
+            acciones += '<a href="#rcIntegrar" class="row-action" data-confirm="msgIntegrar"><i class="far fa-save action text-blue"></i></a>';
         if (self.isEjecutable())
-            acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action action-green"></i></a>';
+            acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action text-green"></i></a>';
         if (solicitud.isAdmin())
-            acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action action-blue"></i></a><a href="#rcRemove" class="row-action" data-confirm="msgRemove"><i class="fal fa-trash-alt action action-red"></i></a>';
+            acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action text-blue"></i></a><a href="#rcRemove" class="row-action" data-confirm="msgRemove"><i class="fal fa-trash-alt action text-red"></i></a>';
 
         return `<tr class="tb-data">
             <td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>

@@ -33,8 +33,8 @@ function Partida(presto) {
         const NO_APLICA = "N/A"; // default table float
         const excedido = self.isExcedida(data) ? '<span class="text-warn text-xl" title="La cantidad solicitada excede el margen registrado por el Buzón de Ingresos">&#9888;</span>' : "";
         const anticipada = self.isAnticipada(data) ? '<span class="text-xl" title="Este contrato ha gozado de anticipo en algún momento">&#65;</span>' : "";
-        const doc030 = presto.is030() ? '<a href="#doc030" class="fal fa-money-bill-alt action action-green row-action" title="Asociar los datos del documento 030"></a>' : "";
-        const remove = (presto.isEditable() && !presto.isAfc()) ? '<a href="#remove" class="fas fa-times action action-red row-action" title="Desasociar partida"></a>' : "";
+        const doc030 = presto.is030() ? '<a href="#doc030" class="fal fa-money-bill-alt action text-green row-action" title="Asociar los datos del documento 030"></a>' : "";
+        const remove = (presto.isEditable() && !presto.isAfc()) ? '<a href="#remove" class="fas fa-times action text-red row-action" title="Desasociar partida"></a>' : "";
         resume.imp += data.imp; // sum
 
         let output = "";
@@ -189,18 +189,18 @@ function Presto() {
         if ((solicitud.isUae() || solicitud.isOtri()) && self.isExcedida())
             info = '<td class="text-center text-warn text-xl" title="La cantidad solicitada excede el margen registrado por el Buzón de Ingresos">&#9888;</td>';
 
-        let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action action-blue"></i></a>';
+        let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action text-blue"></i></a>';
         if (self.isFirmable())
-            acciones += `<a href="#rcFirmar" class="row-action firma-${data.id}" data-confirm="msgFirmar"><i class="fas fa-check action action-green"></i></a>
-                         <a href="#tab-11" class="row-action firma-${data.id}"><i class="fas fa-times action action-red"></i></a>`;
+            acciones += `<a href="#rcFirmar" class="row-action firma-${data.id}" data-confirm="msgFirmar"><i class="fas fa-check action text-green"></i></a>
+                         <a href="#tab-11" class="row-action firma-${data.id}"><i class="fas fa-times action text-red"></i></a>`;
         if (!self.isEditable())
-            acciones += '<a href="#rcReport" class="row-action"><i class="fal fa-file-pdf action action-red"></i></a>';
+            acciones += '<a href="#rcReport" class="row-action"><i class="fal fa-file-pdf action text-red"></i></a>';
         if (self.isIntegrable())
-            acciones += '<a href="#rcIntegrar" class="row-action" data-confirm="msgIntegrar"><i class="far fa-save action action-blue"></i></a>';
+            acciones += '<a href="#rcIntegrar" class="row-action" data-confirm="msgIntegrar"><i class="far fa-save action text-blue"></i></a>';
         if (self.isEjecutable())
-            acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action action-green"></i></a>';
+            acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action text-green"></i></a>';
         if (solicitud.isAdmin())
-            acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action action-blue"></i></a><a href="#rcRemove" class="row-action" data-confirm="msgRemove"><i class="fal fa-trash-alt action action-red"></i></a>';
+            acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action text-blue"></i></a><a href="#rcRemove" class="row-action" data-confirm="msgRemove"><i class="fal fa-trash-alt action text-red"></i></a>';
 
         return `<tr class="tb-data">
             ${info}

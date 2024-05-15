@@ -31,7 +31,7 @@
 		</div>
 
 		<h:inputText id="docs-json" value="#{presto.operaciones}" styleClass="hide" />
-		<table id="docs-uxxi">
+		<table id="docs-uxxi" class="tb-xeco">
 			<thead>
 				<tr>
 					<th>Operación</th>
@@ -49,7 +49,7 @@
 		</table>
 
 		<div class="navbar">
-			<a href="#tab-2" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
+			<a href="#tab-2" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 			<p:commandLink action="#{presto.ejecutar()}" styleClass="btn btn-green" onclick="saveUxxiec();" oncomplete="showAlerts(xhr, status, args)" 
 				tabindex="14" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">

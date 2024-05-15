@@ -53,27 +53,27 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.codigo']}" escape="false" />:</div>
-				<p:inputText value="#{fact.filtro.codigoView}" styleClass="ui-input ui-code" tabindex="4" />
+				<h:inputText value="#{fact.filtro.codigoView}" styleClass="ui-input ui-code" tabindex="4" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.organica']}" escape="false" />:</div>
-				<p:inputText value="#{fact.filtro.organicaView}" tabindex="5"  styleClass="ui-input ui-code"/>
+				<h:inputText value="#{fact.filtro.organicaView}" tabindex="5"  styleClass="ui-input ui-code"/>
 			</label>
 			<label class="ui-block">
 				<div class="fInicio"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" />:</div>
-				<p:inputText value="#{fact.filtro.f1}" tabindex="6" styleClass="ui-input ui-date"/> ...
-				<p:inputText value="#{fact.filtro.f2}" tabindex="7" styleClass="ui-input ui-date"/>
+				<h:inputText value="#{fact.filtro.f1}" tabindex="6" styleClass="ui-input ui-date"/> ...
+				<h:inputText value="#{fact.filtro.f2}" tabindex="7" styleClass="ui-input ui-date"/>
 			</label>
 			<label class="ui-block-lg">
 				<div class="label">Solicitante:</div>
-				<p:inputText value="#{fact.filtro.solicitante}" styleClass="ui-input" tabindex="8" />
+				<h:inputText value="#{fact.filtro.solicitante}" styleClass="ui-input" tabindex="8" />
 			</label>
 		</div>
 
 		<div class="navbar">
-			<a href="#tab-0" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
+			<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-			<p:commandLink action="#{fact.list()}" onclick="loading();" oncomplete="loadFiltro(xhr, status, args)" styleClass="btn btn-primary" tabindex="13">
+			<p:commandLink action="#{fact.list()}" onclick="loading();" oncomplete="loadFiltro(xhr, status, args)" styleClass="btn btn-info" tabindex="13">
 				<i class="far fa-search btn-icon-left"></i>Buscar</p:commandLink>
 			<p:commandLink action="#{fact.relist()}" onclick="onList();" oncomplete="loadFiltro(xhr, status, args)" styleClass="btn btn-warn" tabindex="14">
 				<i class="far fa-times-circle btn-icon-left"></i>Limpiar</p:commandLink>
@@ -107,6 +107,6 @@
 		<p:remoteCommand name="rcRemove" action="#{fact.remove()}" oncomplete="showAlerts(xhr, status, args)" />
 	</h:form>
 
-	<a href="#tab-0" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
+	<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 		<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 </html>

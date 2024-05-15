@@ -72,7 +72,7 @@
 					<div class="input-group input-group-block">
 						<label for="jg">Nº de JG / Descripción:</label>
 						<div>
-							<p:inputText id="jg" value="#{uae.acJg}" tabindex="2" styleClass="input-item input-control input-control-text ac-xeco-item" />
+							<h:inputText id="jg" value="#{uae.acJg}" tabindex="2" styleClass="input-item input-control input-control-text ac-xeco-item" />
 							<p:commandButton id="find-jg" action="#{uae.findCargoInterno()}" oncomplete="handleJson(xhr, status, args)" styleClass="hide" />
 							<h:inputHidden id="id-jg" value="#{uae.jg}" />
 						</div>
@@ -90,7 +90,7 @@
 					<div class="input-group input-group-block">
 						<label for="tercero">Tercero (CIF / NIF / Nombre):</label>
 						<div>
-							<p:inputText id="tercero" value="#{uae.acTercero}" tabindex="4" styleClass="input-item input-control input-control-text ac-xeco-item" />
+							<h:inputText id="tercero" value="#{uae.acTercero}" tabindex="4" styleClass="input-item input-control input-control-text ac-xeco-item" />
 							<p:commandButton id="find-tercero" action="#{uae.findTercero()}" oncomplete="handleJson(xhr, status, args)" styleClass="hide" />
 							<h:inputHidden id="nif-tercero" value="#{uae.tercero}" />
 						</div>
