@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="xeco-isu" prependId="false" onsubmit="MostrarProgreso();">
+		<h2>JG #{listIsu.jg.numJg}<hr class="underline"/></h2>
+
+		<div class="card-xeco">
+			<div class="notice notice-info">#{listIsu.jg.descJg}</div>
+			<div class="notice notice-warn">TODO: campo de enlace + campos de consulta del iris asociado + guardar</div>
+		</div>
+	</h:form>
+
+	<div class="navbar">
+		<a href="#tab-16" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="100">
+			<i class="btn-icon-left fas fa-caret-left"></i><span class="ui-button-text ui-c"><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></span></a>
+		<p:commandLink action="#{listIsu.link()}" styleClass="btn btn-green" oncomplete="viewIrse(xhr, status, args, 16)" tabindex="101">
+			<i class="far fa-save btn-icon-left"></i>Guardar</p:commandLink>
+	</div>
+</html>

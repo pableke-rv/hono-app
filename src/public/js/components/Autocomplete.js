@@ -65,7 +65,7 @@ export default function(autocomplete, opts) {
 
     const isChildren = i => ((0 <= i) && (i < coll.size(resultsHTML.children)));
     const unselect = () => { _index = -1; inputValue.value = ""; }
-    const removeList = () => { resultsHTML.innerHTML = ""; }
+    const removeList = () => { resultsHTML.innerHTML = ""; resultsHTML.classList.remove(opts.activeClass); }
     const fnClear = () => { unselect(); removeList(); return self; }
 
     function activeItem(i) {
@@ -110,6 +110,7 @@ export default function(autocomplete, opts) {
         resultsHTML.children.forEach((li, i) => {
             li.addEventListener("click", ev => selectItem(li, i));
         });
+        resultsHTML.classList.add(opts.activeClass);
         alerts.working(); // Hide loading frame
         return self;
     }

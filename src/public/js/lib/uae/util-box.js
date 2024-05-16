@@ -63,29 +63,15 @@ dom.toggleInfo = el => {
 	return dom;
 }
 
-//DOM is fully loaded
-dom.ready(function() {
-	// Common validators for fields
-	dom.addError = dom.setError = dom.setInputError; // Synonym
-	dom.required = (el, msg) => dom.setError(el, msg, null, i18n.required);
-	dom.login = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.login);
-	dom.email = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.email);
-	dom.user = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.user);
-	dom.intval = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.intval);
-	dom.gt0 = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.gt0);
-	dom.fk = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.fk);
-	dom.past = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.past);
-	dom.leToday = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.leToday);
-	dom.geToday = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.geToday);
-
-	dom.eachInput(".ac-xeco-item:not(.ui-state-disabled)", el => {
-		$(el).attr("type", "search").keydown(fnAcChange).change(fnAcReset).on("search", fnAcReset).autocomplete({
-			delay: 500, //milliseconds between keystroke occurs and when a search is performed
-			minLength: 4, //reduce matches
-			focus: fnFalse, //no change focus on select
-			search: fnAcSearch, //lunch source
-			source: fnSourceItems, //show datalist
-			select: fnSelectItem //show item selected
-		});
-	});
-});
+// Common validators for fields
+dom.addError = dom.setError = dom.setInputError; // Synonym
+dom.required = (el, msg) => dom.setError(el, msg, null, i18n.required);
+dom.login = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.login);
+dom.email = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.email);
+dom.user = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.user);
+dom.intval = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.intval);
+dom.gt0 = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.gt0);
+dom.fk = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.fk);
+dom.past = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.past);
+dom.leToday = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.leToday);
+dom.geToday = (el, msg, msgtip) => dom.setError(el, msg, msgtip, i18n.geToday);

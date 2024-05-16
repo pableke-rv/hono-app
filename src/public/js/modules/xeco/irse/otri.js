@@ -1,8 +1,8 @@
 
 import Form from "../../../components/Form.js";
 import pf from "../../../components/Primefaces.js";
-import sb from "../../../components/StringBox.js";
 import excel from "../../../components/Excel.js";
+import i18n from "../../../i18n/langs.js";
 import rutas from "./rutas.js";
 
 function Otri() {
@@ -90,7 +90,8 @@ window.xlsx = (xhr, status, args) => {
         columns: {
             km: cell => { cell.z = "#,##0.00"; }, // currency format
             impKm: cell => { cell.z = "#,##0.00"; }, // currency format
-            //fCong1: (cell, data) => { cell.v = sb.isoDate(data.fCong1); console.log('Log:', sb.isoDate(data.fCong1), cell.v); }, // iso date format
+            fCong1: (cell, data) => { cell.v = i18n.isoDate(data.fCong1); }, // iso date format
+            fCong2: (cell, data) => { cell.v = i18n.isoDate(data.fCong2); }, // iso date format
             impTrans: cell => { cell.z = "#,##0.00"; }, // currency format
             impPern: cell => { cell.z = "#,##0.00"; }, // currency format
             impDietas: cell => { cell.z = "#,##0.00"; }, // currency format

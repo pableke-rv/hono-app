@@ -1,9 +1,11 @@
 
 import coll from "./Collection.js";
+import i18n from "../i18n/langs.js";
 
 // doc link: https://docs.sheetjs.com/docs/csf/cell
 const isnum = val => ((typeof(val) === "number") || (val instanceof Number));
-const isDate = val => /^\d{4}-[01]\d-[0-3]\d/.test(val);
+const isDate = val => ((coll.size(val) == 10) || val.endsWith("T00:00:00.0Z"));
+const isDateTime = val => /^\d{4}-[01]\d-[0-3]\d/.test(val);
 const fnVoid = () => {};
 
 const LETTERS = [ // Columns names
@@ -28,7 +30,7 @@ function Excel() {
         opts.file = opts.file || "myFile.xlsx"; // File name
         opts.type = opts.type || "binary"; // Export settings
         opts.bookType = opts.bookType || "xlsx"; // Export settings
-        opts.cellStyles = opts.cellStyles ?? true;
+        opts.cellStyles = opts.cellStyles ?? true; // Save style/theme info to the .s field
 
         const workBook = XLSX.utils.book_new();
         workBook.Props = {
@@ -56,8 +58,8 @@ function Excel() {
                 const cell = workSheet[col + (i + 2)]; // Avoid header
                 if (isnum(cell.v)) // Autodetect type
                     cell.t = "n"; // type number => //cell.z = "#,##0.00"; // currency format
-                else if (isDate(cell.v)) // Date ISO format
-                    cell.t = "d"; // type date
+                else if (isDateTime(cell.v)) // Date ISO format
+                    cell.v = isDate(cell.v) ? i18n.isoDate(cell.v) : i18n.isoDateTime(cell.v);
                 //else // default type string
                     //cell.t = "s"; // not ignore null's
                 fnCol(cell, data[i]); // avoid header

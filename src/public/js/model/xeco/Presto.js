@@ -1,4 +1,5 @@
 
+import coll from "../../components/Collection.js";
 import solicitud from "./Solicitud.js";
 import i18n from "../../i18n/langs.js";
 
@@ -111,7 +112,7 @@ function Partidas(presto) {
         return self.setPartidas(table.getData());
     }
 
-    this.size = () => data.length;
+    this.size = () => coll.size(data);
     this.getImporte = () => resume.imp;
     this.getPartida = () => partida;
 

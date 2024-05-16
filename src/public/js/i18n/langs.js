@@ -50,8 +50,8 @@ function Langs() {
     _langs.es.isoDate = str => str && (str.substring(8, 10) + "/" + str.substring(5, 7) + "/" + str.substring(0, 4)); //Iso string to dd/mm/yyyy
 
     this.enDate = _langs.en.isoDate; //Iso string = yyyy-mm-dd
-    this.isoTime = str => str && str.isoTime(); //Iso hh:MM:ss
-    this.isoTimeShort = str => str && str.isoTimeShort(); //Iso hh:MM
+    this.isoTime = str => str && str.substring(11, 19); //hh:MM:ss
+    this.isoTimeShort = str => str && str.substring(11, 16); //hh:MM
     this.isoDate = str => _lang.isoDate(str); // String locale date
     this.isoDateTime = str => self.isoDate(str) + " " + self.isoTime(str); //ISO date + hh:MM:ss
 

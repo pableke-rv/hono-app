@@ -71,7 +71,7 @@ tfoot { font-weight: bold; border-top: 1px dashed black; }
 
 /* Specific styles */
 .hide { display: none !important; } /* force display none */
-.navbar { margin: 4px 0; padding: 4px; display: inline-block; width: 100%; clear: both; }
+.navbar { margin: 4px 0; padding: 0; display: inline-block; width: 100%; clear: both; }
 
 .link { color: rgb(37 99 235); text-decoration-line: underline; }
 .link:hover { text-decoration-line: none; }
