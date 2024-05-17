@@ -123,6 +123,26 @@ function Langs() {
     globalThis.isnum = isnum; // Check if Number type
     globalThis.dec = (num, min) => ((num > (min ?? 0)) ? num-- : num); // Decrement number until min
     globalThis.inc = (num, max) => ((num < max) ? num++ : num); // Increment number until max
+
+    // Render styled string
+    const STATUS = {};
+    const RE_VAR = /[@$](\w+)(\.\w+)?;/g;
+    this.render = function(str, data, i, size) {
+        if (!str) // has string
+            return str;
+        i = i || 0;
+        STATUS.index = i;
+        STATUS.count = i + 1;
+        STATUS.size = size || 1;
+        data = data || _lang; // default lang
+        return str.replace(RE_VAR, (m, k, t) => { // remplace function
+            if (m.startsWith("$") || (t == ".f")) // float
+                return self.isoFloat(data[k]);
+            if (t == ".d") // ISO String format
+                return self.isoDate(data[k]); // substring = 0, 10
+            return (data[k] ?? STATUS[k] ?? ""); // Default = String
+        });
+    }
 }
 
 export default new Langs();

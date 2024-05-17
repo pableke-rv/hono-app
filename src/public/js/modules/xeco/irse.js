@@ -18,7 +18,6 @@ var formIrse;
 pf.ready(() => {
 	list.init();
 	uxxiec.init();
-	otri.init();
 });
 
 /*********** subvención, congreso, asistencias/colaboraciones ***********/

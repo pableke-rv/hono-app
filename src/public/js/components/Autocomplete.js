@@ -64,9 +64,8 @@ export default function(autocomplete, opts) {
     }
 
     const isChildren = i => ((0 <= i) && (i < coll.size(resultsHTML.children)));
-    const unselect = () => { _index = -1; inputValue.value = ""; }
     const removeList = () => { resultsHTML.innerHTML = ""; resultsHTML.classList.remove(opts.activeClass); }
-    const fnClear = () => { unselect(); removeList(); return self; }
+    const fnClear = () => { _index = -1; inputValue.value = ""; removeList(); return self; }
 
     function activeItem(i) {
         _index = isChildren(i) ? i : _index; // current item

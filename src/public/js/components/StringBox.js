@@ -1,6 +1,4 @@
 
-import i18n from "../i18n/langs.js";
-
 const EMPTY = "";
 const ESCAPE_HTML = /"|'|&|<|>|\\/g;
 const ESCAPE_MAP = { '"': "&#34;", "'": "&#39;", "&": "&#38;", "<": "&#60;", ">": "&#62;", "\\": "&#92;" };
@@ -99,26 +97,6 @@ function StringBox() {
 	this.toWord = str => str ? fnWord(str) : str;
 	this.lines = str => self.split(str, /[\n\r]+/);
 	this.words = str => self.split(str, /\s+/);
-
-    // Render styled string
-    const STATUS = {};
-    const RE_VAR = /[@$](\w+)(\.\w+)?;/g;
-    this.render = function(str, data, i, size) {
-        if (!str) // has string
-            return str;
-        i = i || 0;
-        STATUS.index = i;
-        STATUS.count = i + 1;
-        STATUS.size = size || 1;
-        data = data || i18n.getLang(); // default lang
-        return str.replace(RE_VAR, (m, k, t) => { // remplace function
-            if (m.startsWith("$") || (t == ".f")) // float
-                return i18n.isoFloat(data[k]);
-            if (t == ".d") // ISO String format
-                return i18n.isoDate(data[k]); // substring = 0, 10
-            return (data[k] ?? STATUS[k] ?? ""); // Default = String
-        });
-    }
 }
 
 globalThis.isstr = isstr;

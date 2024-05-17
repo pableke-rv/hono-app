@@ -1,5 +1,6 @@
 
 import Form from "../../../components/Form.js";
+import tabs from "../../../components/Tabs.js";
 import pf from "../../../components/Primefaces.js";
 import excel from "../../../components/Excel.js";
 import i18n from "../../../i18n/langs.js";
@@ -7,18 +8,6 @@ import rutas from "./rutas.js";
 
 function Otri() {
 	const self = this; //self instance
-
-    this.init = () => {
-        const formListIsu = new Form("#xeco-filtro-isu");
-        if (formListIsu.isset())
-            formListIsu.setAutocomplete("#organica-isu", {
-                minLength: 4,
-                source: term => pf.sendTerm("rcFindOrg", term),
-                render: item => item.o + " - " + item.dOrg,
-                select: item => item.id
-            });
-        return self; // No isu
-    }
 
     this.colaboracion = (form, tab3) => {
         window.fnPaso3 = () => dom.closeAlerts().required("#justifi", "errJustifiSubv", "errRequired").isOk();
@@ -69,6 +58,21 @@ function Otri() {
         return self;
     }
 }
+
+/*********** Listado + FORM ISU ***********/
+tabs.setInitEvent(16, tab16 => {
+    const formListIsu = new Form("#xeco-filtro-isu");
+    formListIsu.setAutocomplete("#organica-isu", {
+        minLength: 4,
+        source: term => pf.sendTerm("rcFindOrg", term),
+        render: item => item.o + " - " + item.dOrg,
+        select: item => item.id
+    });
+});
+tabs.setViewEvent(17, tab17 => {
+    const formIsu = new Form("#xeco-isu");
+    formIsu.setAcItems("#acIrse", term => pf.sendTerm("rcSolicitudesIrse", term));
+});
 
 window.xlsx = (xhr, status, args) => {
     if (!showAlerts(xhr, status, args))

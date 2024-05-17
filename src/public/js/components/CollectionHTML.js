@@ -1,5 +1,4 @@
 
-import sb from "./StringBox.js";
 import coll from "./Collection.js";
 import i18n from "../i18n/langs.js";
 
@@ -68,7 +67,7 @@ HTMLElement.prototype.isVisible = function(selector) {
 }
 HTMLElement.prototype.render = function(data, i, size) {
     this.dataset.template = this.dataset.template || this.innerHTML; // save current template
-    this.innerHTML = sb.render(this.dataset.template, data, i, size); // display new data
+    this.innerHTML = i18n.render(this.dataset.template, data, i, size); // display new data
     return this;
 }
 

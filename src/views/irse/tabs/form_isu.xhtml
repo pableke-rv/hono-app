@@ -12,6 +12,18 @@
 
 		<div class="card-xeco">
 			<div class="notice notice-info">#{listIsu.jg.descJg}</div>
+			<div class="ui-blocks">
+				<label class="ui-block-xl autocomplete">
+					<div class="label">Solicitud IRSE</div>
+					<div>
+						<p:remoteCommand name="rcSolicitudesIrse" action="#{listIsu.findSolicitudesIrse()}" oncomplete="loadItems(xhr, status, args)" />
+						<h:inputText id="acIrse" value="#{listIsu.acIrse}" styleClass="ui-input ui-autocomplete" tabindex="1" />
+						<h:inputHidden id="id-irse" value="#{listIsu.jg.idIrse}" />
+						<ul role="list" class="results"></ul>
+						<div class="ui-errtip"></div> 
+					</div>
+				</label>
+			</div>
 			<div class="notice notice-warn">TODO: campo de enlace + campos de consulta del iris asociado + guardar</div>
 		</div>
 	</h:form>
@@ -19,7 +31,7 @@
 	<div class="navbar">
 		<a href="#tab-16" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="100">
 			<i class="btn-icon-left fas fa-caret-left"></i><span class="ui-button-text ui-c"><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></span></a>
-		<p:commandLink action="#{listIsu.link()}" styleClass="btn btn-green" oncomplete="viewIrse(xhr, status, args, 16)" tabindex="101">
+		<p:commandLink action="#{listIsu.link()}" update="xeco-list-isu" oncomplete="viewIrse(xhr, status, args, 16)" tabindex="101" styleClass="btn btn-green">
 			<i class="far fa-save btn-icon-left"></i>Guardar</p:commandLink>
 	</div>
 </html>

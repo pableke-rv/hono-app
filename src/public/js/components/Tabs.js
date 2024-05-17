@@ -55,7 +55,7 @@ function Tabs() {
     }
 
     this.setShowEvent = (tab, fn) => fnSet("show-tab-" + tab, fn);
-    //this.setInitEvent = (tab, fn) => fnSet("init-tab-" + tab, fn);
+    this.setInitEvent = (tab, fn) => fnSet("init-tab-" + tab, fn);
     this.setViewEvent = (tab, fn) => fnSet("view-tab-" + tab, fn);
 
 	// Alerts helpers
@@ -72,8 +72,8 @@ function Tabs() {
             if (_tabIndex < i) // calculate the source tab index
                 tab.dataset.back = Math.max((_tabIndex < 0) ? (i - 1) : _tabIndex, 0);
             alerts.closeAlerts(); // Close all previous messages
-            //fnCallEvent("init", tab); // Fire once when show tab
-            //delete EVENTS["init-" + tab.id]; // delete handler
+            fnCallEvent("init", tab); // Fire once when show tab
+            delete EVENTS["init-" + tab.id]; // delete handler
             fnCallEvent("view", tab); // Fire when show tab
             fnSetTab(tab, i); // set current tab
         }
