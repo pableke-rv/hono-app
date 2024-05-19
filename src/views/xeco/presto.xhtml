@@ -177,7 +177,9 @@
 					<a href="#{presto.linkAdjunto}" class="btn btn-info" target="_blank" title="Descargar / visualizar la documentación asociada">Documentación Adjunta<i class="far fa-paperclip btn-icon-right"></i></a>
 				</p:outputPanel>
 				<div class="ui-block-row insert-only">
-					<p:fileUpload id="fileGasto" label="Adjuntar Documentación" value="#{presto.adjunto}" mode="simple" skinSimple="true" />
+					<p:fileUpload id="fileGasto" label="" value="#{presto.uploadAdjunto}" fileUploadListener="#{presto.uploadAdjunto}" mode="advanced" auto="true" styleClass="hide"/>
+					<a href="#open-upload" class="btn btn-info"><i class="fas fa-search icon"></i>Adjuntar Documentación</a>
+					<span class="filename"></span>
 					<div class="notice notice-info">Formato preferente: PDF; Tamaño máximo 6 MB; Nombre de archivo breve; Evitar símbolos y caracteres especiales.</div>
 					<div class="notice notice-warn is-fce"><b>Advertencia:</b> es especialmente importante en caso que se requiera la utilización de fondos propios de la universidad adjuntar la documentación explicativa.</div>
 				</div>
@@ -187,11 +189,11 @@
 			<div class="navbar">
 				<a href="#back-tab" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="20">
 					<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-				<p:commandLink action="#{presto.save()}" ajax="false" styleClass="btn btn-green insert-only" tabindex="21"
-					onclick="if (!fnSend()) return false;" title="Pone la solicitud a la firma">
+				<p:commandLink action="#{presto.save()}" onclick="if (!fnSend()) return false;" oncomplete="showTab(xhr, status, args, 0)"
+						styleClass="btn btn-green insert-only" tabindex="21" title="Pone la solicitud a la firma">
 					#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></p:commandLink>
-				<p:commandLink action="#{presto.firmar()}" styleClass="btn btn-green firmable-only" tabindex="22" title="#{msg['tit.btn.firmar']}"
-					onclick="if (!fnFirmar()) return false;" oncomplete="updateList(xhr, status, args);">
+				<p:commandLink action="#{presto.firmar()}" onclick="if (!fnFirmar()) return false;" oncomplete="updateList(xhr, status, args);"
+						styleClass="btn btn-green firmable-only" tabindex="22" title="#{msg['tit.btn.firmar']}">
 					<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</p:commandLink>
 				<a href="#tab-11" class="tab-action btn btn-error rechazable-only" tabindex="23" title="#{msg['tit.btn.rechazar']}">
 					<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>

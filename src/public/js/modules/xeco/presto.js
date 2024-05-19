@@ -61,6 +61,13 @@ document.addEventListener("DOMContentLoaded", () => {
             tabs.showTab(3);
         }
     });
+	formPresto.querySelectorAll("[href='#open-upload']").setClick(ev => {
+		const parent = ev.target.parentNode;
+		parent.querySelector("[type='file']").onchange = ev => {
+			parent.querySelector(".filename").innerHTML = ev.target.files[0]?.name || "";
+		};
+		parent.querySelector(".ui-fileupload-choose").click();
+	});
 
     //****** partida a decrementar ******//
     const fnSelectOrgDec = item => {

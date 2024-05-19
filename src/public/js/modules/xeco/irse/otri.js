@@ -59,7 +59,7 @@ function Otri() {
     }
 }
 
-/*********** Listado + FORM ISU ***********/
+/*********** Listado / FORM ISU ***********/
 tabs.setInitEvent(16, tab16 => {
     const formListIsu = new Form("#xeco-filtro-isu");
     formListIsu.setAutocomplete("#organica-isu", {
@@ -71,7 +71,9 @@ tabs.setInitEvent(16, tab16 => {
 });
 tabs.setViewEvent(17, tab17 => {
     const formIsu = new Form("#xeco-isu");
-    formIsu.setAcItems("#acIrse", term => pf.sendTerm("rcSolicitudesIrse", term));
+    const fnSource = term => pf.sendTerm("rcSolicitudesIrse", term);
+    const fnSelect = () => {}
+    formIsu.setAcItems("#acIrse", fnSource, fnSelect);
 });
 
 window.xlsx = (xhr, status, args) => {

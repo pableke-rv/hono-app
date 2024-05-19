@@ -18,7 +18,7 @@
 					<div>
 						<p:remoteCommand name="rcSolicitudesIrse" action="#{listIsu.findSolicitudesIrse()}" oncomplete="loadItems(xhr, status, args)" />
 						<h:inputText id="acIrse" value="#{listIsu.acIrse}" styleClass="ui-input ui-autocomplete" tabindex="1" />
-						<h:inputHidden id="id-irse" value="#{listIsu.jg.idIrse}" />
+						<h:inputHidden id="id-irse" value="#{listIsu.idIrse}" />
 						<ul role="list" class="results"></ul>
 						<div class="ui-errtip"></div> 
 					</div>

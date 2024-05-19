@@ -56,14 +56,21 @@ document.addEventListener("DOMContentLoaded", () => { // on load view
 						item => window.setUnidadesTramit(pf.param("org", item.value)));
 	window.isOrganica = () => formOrganicas.isValid(buzon.isValidOrganica);
 
+	formBuzon.querySelectorAll("[href='#open-upload']").setClick(ev => {
+		const parent = ev.target.parentNode;
+		parent.querySelector("[type='file']").onchange = ev => {
+			parent.querySelector(".filename").innerHTML = ev.target.files[0]?.name || "";
+		};
+		parent.querySelector(".ui-fileupload-choose").click();
+	});
+
 	tabs.setShowEvent(2, tab => {
-		const factura = formBuzon.getInput("#factura_input").files[0];
-		const justPago = formBuzon.getInput("#justPago_input").files[0];
-		if (!factura)
+		const files = formBuzon.querySelectorAll(".filename").filter(el => el.innerHTML);
+		const fileNames = files.map(el => el.innerHTML).join(", ");
+		if (!fileNames)
 			return !formBuzon.showError("Debe seleccionar una factura.");
-		if (buzon.isJustPagoRequired() && !justPago)
+		if (buzon.isJustPagoRequired() && (files.length < 2))
 			return !formBuzon.showError("Debe seleccionar Justificante de pago.");
-		const fileNames = factura.name + (buzon.isJustPagoRequired() ? (", " + justPago.name) : "");
 		return formBuzon.text("#ut-desc", formBuzon.getOptionText("#tramit-all")).text("#file-name", fileNames);
 	});
 

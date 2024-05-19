@@ -34,10 +34,10 @@ tabs.setShowEvent(3, tab3 => {
 tabs.setShowEvent(2, maps);
 
 /*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
-tabs.setShowEvent(5, tab5 => {
+tabs.setViewEvent(5, tab5 => {
 	const eTipoGasto = formIrse.getInput("#tipo-gasto"); //select tipo
 	if (!eTipoGasto)
-		return true; // modo solo consulta
+		return; // modo solo consulta
 
 	const grupos = tab5.querySelectorAll(".grupo-gasto");
 	const isDoc = () => ["201", "202", "204", "205", "206"].includes(eTipoGasto.value);
@@ -79,7 +79,7 @@ tabs.setShowEvent(5, tab5 => {
 
 	tab5.querySelector("[href='#open-file-gasto']").onclick = () => {
 		tab5.querySelector(".ui-fileupload-choose").click();
-		fnChange();
+		setTimeout(fnChange, 400); // wait to open dialog
 	}
 
 	document.querySelector("a#gasto-rutas").onclick = () => { // button in tab12
@@ -108,9 +108,8 @@ tabs.setShowEvent(5, tab5 => {
 			if (!formIrse.valueOf("#fAloMin") || !formIrse.valueOf("#fAloMax"))
 				return !dom.addError("fAloMin", "errFechasAloja");
 		}
-		return true;
+		return loading();
 	}
-	return true;
 });
 
 /*********** Tablas de resumen ***********/

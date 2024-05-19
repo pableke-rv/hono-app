@@ -117,7 +117,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { margin-left
 }
 :is(.dark .autocomplete .results) { background-color: #ccc; }
 .autocomplete .results.active {
-    border: solid 1px #ccc; /*box-shadow: 2px 2px 4px #ccc;*/ animation: none;
+    border: solid 1px silver; /*box-shadow: 2px 2px 4px #ccc;*/ animation: none;
 }
 .autocomplete li { padding: 3px; list-style: none; cursor: pointer; }
 .autocomplete li:hover, .autocomplete li.active {
