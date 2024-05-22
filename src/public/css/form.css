@@ -169,8 +169,8 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { margin-left
 :is(.dark .btn-warn) { background-color: rgb(133 77 14)/* yellow-800 */; }
 :is(.dark .btn-warn:hover) { background-color: rgb(161 98 7)/* yellow-700 */; }
 
-.btn-error { background-color: rgb(185 28 28)/* red-700 */; border-color: rgb(185 28 28)/* red-700 */; }
-.btn-error:hover { background-color: rgb(153 27 27)/* red-800 */; }
+.btn-error { color: white; background-color: rgb(185 28 28)/* red-700 */; border-color: rgb(185 28 28)/* red-700 */; }
+.btn-error:hover { color: white; background-color: rgb(153 27 27)/* red-800 */; }
 :is(.dark .btn-error) { background-color: rgb(220 38 38)/* red-600 */; }
 :is(.dark .btn-error:hover) { background-color: rgb(185 28 28)/* red-700 */; }
 

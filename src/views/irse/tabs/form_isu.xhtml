@@ -14,17 +14,32 @@
 			<div class="notice notice-info">#{listIsu.jg.descJg}</div>
 			<div class="ui-blocks">
 				<label class="ui-block-xl autocomplete">
-					<div class="label">Solicitud IRSE</div>
+					<div class="label">Solicitud IRSE:</div>
 					<div>
 						<p:remoteCommand name="rcSolicitudesIrse" action="#{listIsu.findSolicitudesIrse()}" oncomplete="loadItems(xhr, status, args)" />
+						<p:remoteCommand name="rcLinkIrse" action="#{listIsu.link()}" update="xeco-isu" oncomplete="viewIsu(xhr, status, args)" />
 						<h:inputText id="acIrse" value="#{listIsu.acIrse}" styleClass="ui-input ui-autocomplete" tabindex="1" />
 						<h:inputHidden id="id-irse" value="#{listIsu.idIrse}" />
 						<ul role="list" class="results"></ul>
 						<div class="ui-errtip"></div> 
 					</div>
 				</label>
+				<div class="ui-block-row"></div>
+				<label class="ui-block">
+					<div class="label">Interesado:</div>
+					<input type="text" value="#{listIsu.jg.nifInteresado}" class="ui-input ui-text readonly" readonly="readonly"/>
+				</label>
+				<label class="ui-block-main">
+					<div class="label">Nombre Interesado:</div>
+					<input type="text" value="#{listIsu.jg.interesado}" class="ui-input ui-text readonly" readonly="readonly"/>
+				</label>
+				<div class="ui-block-row"></div>
+				<label class="ui-block-main">
+					<div class="label">Itinerario:</div>
+					<textarea class="ui-input ui-ta-2r readonly" readonly="readonly">#{listIsu.jg.itinerario}</textarea>
+				</label>
 			</div>
-			<div class="notice notice-warn">TODO: campo de enlace + campos de consulta del iris asociado + guardar</div>
+			<div class="notice notice-warn">TODO: campos informativos de la solicitud seleccionada...</div>
 		</div>
 	</h:form>
 

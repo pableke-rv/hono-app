@@ -11,12 +11,14 @@ document.addEventListener("DOMContentLoaded", () => { // on load view
 	function updateBuzonOrganica() {
 		const isIsu = buzon.setTipoPago(+elTipo.value).isIsu(table.getCurrentItem());
 		buzon.setJustPagoRequired(buzon.isPagoCesionario() && isIsu);
-		formBuzon.setVisible("#file-jp", buzon.isJustPagoRequired()).setVisible("#check-jp", buzon.isPagoCesionario() && !isIsu);
+		formBuzon.setVisible("#file-jp", buzon.isJustPagoRequired()).text(".filename", "")
+				.setVisible("#check-jp", buzon.isPagoCesionario() && !isIsu);
 	}
 	function updateBuzonOtros() {
 		buzon.setTipoPago(+elTipo.value);
 		buzon.setJustPagoRequired(buzon.isPagoCesionario());
-		formBuzon.setVisible("#file-jp", buzon.isJustPagoRequired()).hide("#check-jp");
+		formBuzon.hide("#check-jp").text(".filename", "")
+				.setVisible("#file-jp", buzon.isJustPagoRequired());
 	}
 	function fnSend(action, data) {
 		pf.fetch(action, { org: data.org, cod: data.oCod, ut: data.grp, m: data.mask });
@@ -56,14 +58,7 @@ document.addEventListener("DOMContentLoaded", () => { // on load view
 						item => window.setUnidadesTramit(pf.param("org", item.value)));
 	window.isOrganica = () => formOrganicas.isValid(buzon.isValidOrganica);
 
-	formBuzon.querySelectorAll("[href='#open-upload']").setClick(ev => {
-		const parent = ev.target.parentNode;
-		parent.querySelector("[type='file']").onchange = ev => {
-			parent.querySelector(".filename").innerHTML = ev.target.files[0]?.name || "";
-		};
-		parent.querySelector(".ui-fileupload-choose").click();
-	});
-
+	pf.uploads(formBuzon.querySelectorAll("[href='#open-upload']"));
 	tabs.setShowEvent(2, tab => {
 		const files = formBuzon.querySelectorAll(".filename").filter(el => el.innerHTML);
 		const fileNames = files.map(el => el.innerHTML).join(", ");
@@ -75,8 +70,10 @@ document.addEventListener("DOMContentLoaded", () => { // on load view
 	});
 
 	window.loadUnidadesTramit = (xhr, status, args) => {
-		const utSelect = formOrganicas.getInput("#tramit");
-		formOrganicas.setVisible("#unidades-tramit", JSON.size(utSelect.children) > 1);
+		if (pf.showAlerts(xhr, status, args)) {
+			const utSelect = formOrganicas.getInput("#tramit");
+			formOrganicas.setVisible("#unidades-tramit", JSON.size(utSelect.children) > 1);
+		}
 	}
 	window.loadBuzon = (xhr, status, args) => {
 		if (pf.showAlerts(xhr, status, args)) {

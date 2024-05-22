@@ -93,7 +93,7 @@ tabs.setViewEvent(5, tab5 => {
 	}
 
 	window.fnPaso5 = function() {
-		formIrse.closeAlerts();
+		dom.closeAlerts();
 		if (isDoc())
 			return dom.required("#txtGasto", "errDoc").isOk();
 		dom.gt0("#impGasto", "errGt0", "errRequired")
@@ -113,9 +113,12 @@ tabs.setViewEvent(5, tab5 => {
 });
 
 /*********** Tablas de resumen ***********/
+tabs.setInitEvent(6, dietas.init);
 tabs.setViewEvent(6, tab6 => {
 	dietas.render(); // Init dietas
-	tab6.querySelector("#imp-gasolina-km").innerHTML = i18n.isoFloat(IRSE.gasolina);
+	const gasolina = tab6.querySelector("#imp-gasolina-km");
+	if (gasolina)
+		gasolina.innerHTML = i18n.isoFloat(IRSE.gasolina);
 	tab6.querySelector("#imp-km").innerHTML = i18n.isoFloat(rutas.getImpKm()) + " €";
 	tab6.querySelector("#imp-bruto").innerHTML = i18n.isoFloat(organicas.getImpTotal()) + " €";
 	tab6.querySelectorAll(".rutas-vp").forEach(el => el.classList.toggle("hide", rutas.getNumRutasVp() < 1));
@@ -166,7 +169,7 @@ tabs.setShowEvent(9, tab9 => {
 		}
 		if (formIrse.valueOf("#urgente") == "2")
 			dom.required("#extra", "errExtra", "errRequired").geToday("#fMax", "errFechaMax", "errRequired");
-		return dom.isOk() && organicas.build();
+		return dom.isOk() && organicas.build() && loading();
 	}
 	window.fnSend = () => i18n.confirm("msgFirmarEnviar");
 	tab9.dataset.loaded = "1";

@@ -157,9 +157,6 @@ function DomBox(opts) {
 		return self;
 	}
 	this.val = (list, value) => self.each(list, el => fnSetVal(el, value));
-	//this.clearInput = el => { el = self.getInput(el); el.focus(); return fnSetVal(el); }
-	//this.clearInputs = list => self.val(list).autofocus(list);
-	//this.clearForm = form => self.clearInputs(form.elements);
 
 	// Elements attributes
 	this.attr = (list, name, value) => self.each(list, el => el.setAttribute(name, value));
@@ -329,7 +326,7 @@ function DomBox(opts) {
 	this.parse = (selector, formatter)  => self.each(selector, el => { el.outerHTML = formatter(el.outerHTML); });
 
 	// Styles
-	const isHide = el => el.classList.contains(CONFIG.classHide);
+	//const isHide = el => el.classList.contains(CONFIG.classHide);
 	const fnShow = el => el.classList.remove(CONFIG.classHide);
 	const fnHide = el => el.classList.add(CONFIG.classHide);
 
@@ -359,7 +356,7 @@ function DomBox(opts) {
 	}
 
 	// Animatios
-	function fnAnimateClass(el, name, opts) {
+	/*function fnAnimateClass(el, name, opts) {
 		opts.once = true; // fired once
 		opts.onstart(el); // before animation
 		el.addEventListener("animationend", ev => {
@@ -394,7 +391,7 @@ function DomBox(opts) {
 	this.fadeToggle = list => self.animateToggle(list, "fadeIn", "fadeOut");
 	this.slideIn = list => self.animateIn(list, "slideIn");
 	this.slideOut = list => self.animateOut(list, "slideOut");
-	this.slideToggle = list => self.animateToggle(list, "slideIn", "slideOut");
+	this.slideToggle = list => self.animateToggle(list, "slideIn", "slideOut");*/
 
 	// Events
 	const ON_CHANGE = "change";
@@ -441,8 +438,8 @@ function DomBox(opts) {
 		// Alerts handlers
 		const alerts = self.get("." + CONFIG.classAlerts);
 		const texts = self.getAll("." + CONFIG.classAlertText, alerts);
-		const showAlert = el => self.fadeIn(el.parentNode);
-		const closeAlert = el => self.fadeOut(el.parentNode);
+		const showAlert = el => { el.parentNode.classList.remove("hide", "fadeOut"); el.parentNode.classList.add("fadeIn"); return self; }
+		const closeAlert = el => { el.parentNode.classList.add("fadeOut"); return self; }
 		const setAlert = (el, txt) => txt ? showAlert(el).setHtml(el, txt).scroll() : self;
 
 		self.showOk = msg => setAlert(texts[0], msg); //green

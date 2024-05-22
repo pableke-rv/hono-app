@@ -53,22 +53,21 @@ function datalist(form, select, input, opts) {
     return form.setDatalist(select, opts);
 }
 
-function multiNameInput(form, main, inputs) {
-    main = form.getInput(main);
-    inputs = form.getInputs(inputs);
-
-    inputs.forEach(el => {
-        el.addEventListener("change", () => {
-            main.value = el.value;
-        });
-        el.value = main.value;
-    });
-    return this;
+function uploads(list) {
+	list.setClick(ev => {
+		const parent = ev.target.parentNode;
+		parent.querySelector("[type='file']").onchange = ev => {
+			const el = parent.querySelector(".filename");
+            if (el) // Element to show file name
+                el.innerHTML = ev.target.files[0]?.name || "";
+		}
+		parent.querySelector(".ui-fileupload-choose").click();
+	});
 }
 
 export default {
     param, params, 
     send, sendId, sendTerm, sendIndex, fetch,
     ready: coll.ready, isLoaded, showAlerts, 
-    datalist, multiNameInput
+    datalist, uploads
 }

@@ -10,18 +10,18 @@ function Otri() {
 	const self = this; //self instance
 
     this.colaboracion = (form, tab3) => {
-        window.fnPaso3 = () => dom.closeAlerts().required("#justifi", "errJustifiSubv", "errRequired").isOk();
+        window.fnPaso3 = () => dom.closeAlerts().required("#justifi", "errJustifiSubv", "errRequired").isOk() && dom.loading();
         return self;
     }
     this.congreso = (form, tab3) => {
         rutas.update(); // Actualizo los tipos de rutas
         tab3.querySelectorAll(".rutas-vp").forEach(el => el.classList.toggle("hide", rutas.getNumRutasVp() < 1));
-    
+
         const eCong = form.getInput("#congreso"); //congreso si/no
         const eIniCong = form.getInput("#fIniCong"); //fecha inicio del congreso
         const eFinCong = form.getInput("#fFinCong"); //fecha fin del congreso
         const eJustifiCong = form.querySelector(".justifi-congreso"); //justificacion del congreso
-    
+
         function validCong() {
             let fIniCong = dt.toDate(eIniCong.value);
             let fFinCong = dt.toDate(eFinCong.value);
@@ -42,7 +42,7 @@ function Otri() {
             .onBlurInput(eFinCong, fechasCong)
             .onChangeInput(eCong, updateCong);
         updateCong();
-    
+
         window.fnPaso3 = function() {
             dom.closeAlerts()
                 .required("#justifi", "errJustifiSubv", "errRequired")
@@ -53,13 +53,22 @@ function Otri() {
                 dom.required("#justifiCong", "errCongreso", "errRequired");
             if (eCong.value == "4")
                 dom.required("#impInsc", "errNumber", "errRequired");
-            return dom.isOk();
+            return dom.isOk() && dom.loading();
         }
         return self;
     }
 }
 
 /*********** Listado / FORM ISU ***********/
+function fnViewIsu() {
+    const formIsu = new Form("#xeco-isu");
+    const fnSource = term => pf.sendTerm("rcSolicitudesIrse", term);
+    const fnSelect = item => pf.sendId("rcLinkIrse", item.value);
+    formIsu.setAcItems("#acIrse", fnSource, fnSelect);
+}
+window.viewIsu = (xhr, status, args) => {
+    showAlerts(xhr, status, args) && fnViewIsu();
+}
 tabs.setInitEvent(16, tab16 => {
     const formListIsu = new Form("#xeco-filtro-isu");
     formListIsu.setAutocomplete("#organica-isu", {
@@ -69,12 +78,7 @@ tabs.setInitEvent(16, tab16 => {
         select: item => item.id
     });
 });
-tabs.setViewEvent(17, tab17 => {
-    const formIsu = new Form("#xeco-isu");
-    const fnSource = term => pf.sendTerm("rcSolicitudesIrse", term);
-    const fnSelect = () => {}
-    formIsu.setAcItems("#acIrse", fnSource, fnSelect);
-});
+tabs.setViewEvent(17, fnViewIsu);
 
 window.xlsx = (xhr, status, args) => {
     if (!showAlerts(xhr, status, args))

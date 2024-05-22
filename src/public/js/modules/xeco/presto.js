@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         onReset: () => formPresto.setval("#impDec").setval("#cd")
     });
 	const ecoInc = pf.datalist(formPresto, "#idEcoInc", "#idEcoIncPF", { emptyOption });
+    pf.uploads(formPresto.querySelectorAll("[href='#open-upload']"));
     const lineas = formPresto.setTable("#partidas-inc", {
         msgEmptyTable: "No existen partidas asociadas a la solicitud",
         beforeRender: resume => { resume.imp = 0; },
@@ -61,13 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
             tabs.showTab(3);
         }
     });
-	formPresto.querySelectorAll("[href='#open-upload']").setClick(ev => {
-		const parent = ev.target.parentNode;
-		parent.querySelector("[type='file']").onchange = ev => {
-			parent.querySelector(".filename").innerHTML = ev.target.files[0]?.name || "";
-		};
-		parent.querySelector(".ui-fileupload-choose").click();
-	});
 
     //****** partida a decrementar ******//
     const fnSelectOrgDec = item => {
@@ -176,7 +170,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     .setVisible(".firmable-only", presto.isFirmable()).setVisible(".rechazable-only", presto.isRechazable())
                     .setVisible(".show-partida-dec", presto.isPartidaDec()).setVisible(".show-partida-inc", presto.showPartidasInc())
                     .setVisible(".show-imp-cd", presto.isImpCd()).setVisible(".show-memoria", !presto.isL83()).setVisible(".grp-urgente", presto.isUrgente())
-                    .setVisible(".show-subtipo", uxxiec.isUae() && presto.isGcr()).setVisible(".is-fce", presto.isFce()).setVisible(".link-adjunto", presto.getAdjunto());
+                    .setVisible(".show-subtipo", uxxiec.isUae() && presto.isGcr()).setVisible(".is-fce", presto.isFce()).setVisible(".link-adjunto", presto.getAdjunto())
+                    .text(".filename", "");
         fnLoadEcoDec(args); // cargo las econonomicas a decrementar
         lineas.render(JSON.read(args.data)); // Load table partidas
         acOrgDec.setValue(data.idOrgDec, data.orgDec + " - " + data.dOrgDec);
@@ -187,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (formPresto.isValid(presto.validate)) { //todas las validaciones estan ok?
             partidas.setPrincipal(); //marco la primera como principal
             formPresto.saveTable("#partidas-json", lineas); // save data to send to server
-			return i18n.confirm("msgSend");
+			return i18n.confirm("msgSend") && formPresto.loading();
         }
         return false;
     }

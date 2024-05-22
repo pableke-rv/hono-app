@@ -175,9 +175,9 @@ function IrseRutas() {
 		return self;
 	}
 
-	this.paso1 = () => dom.closeAlerts().required("#objeto", "errObjeto", "errRequired").isOk();
+	this.paso1 = () => dom.closeAlerts().required("#objeto", "errObjeto", "errRequired").isOk() && dom.loading();
 	this.paso1Col = () => self.paso1() && dom.past("#fAct", "errDateLe", "errRequired").gt0("#impAc", "errGt0", "errRequired").isOk();
-	this.paso2 = () => self.validItinerario() && ((self.size() > 1) || !dom.addError("#destino", "errMinRutas"));
+	this.paso2 = () => self.validItinerario() && ((self.size() > 1) || !dom.addError("#destino", "errMinRutas")) && dom.loading();
 	this.paso6 = function() {
 		dom.closeAlerts();
 		if (resume.justifi)
