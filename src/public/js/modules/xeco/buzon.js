@@ -1,6 +1,7 @@
 
 import Form from "../../components/Form.js";
 import tabs from "../../components/Tabs.js";
+import modals from "../../components/Modals.js";
 import pf from "../../components/Primefaces.js";
 import buzon from "../../model/xeco/Buzon.js";
 
@@ -35,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => { // on load view
 
 	table.set("#anclar", data => fnSend("anclar", data));
 	table.set("#desanclar", data => fnSend("desanclar", data));
+	table.set("#modal", data => modals.open("#modal-ut"));
 	table.set("#report", data => fnSend("report", data));
 	table.set("#buzon", data => {
 		formBuzon.setval("#buzon-id-org", data.org).setval("#buzon-cod-org", data.oCod)

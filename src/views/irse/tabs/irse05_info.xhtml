@@ -57,8 +57,8 @@
 					<td>@km2;</td>
 				</tr>
 			</tbody>
-			<tbody class="hide no-data">
-				<tr><td colspan="9"><p class="textc"><h:outputText value="#{msg['msg.no.etapas']}" escape="false" /></p></td></tr>
+			<tbody class="hide">
+				<tr><td class="no-data" colspan="9"><h:outputText value="#{msg['msg.no.etapas']}" escape="false" /></td></tr>
 			</tbody>
 			<tfoot>
 				<tr><td colspan="8"><h:outputText value="#{msg['lbl.etapas']}" escape="false" />: @size;</td><td class="tb-data-tc">@totKmCalc;</td></tr>

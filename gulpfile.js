@@ -56,7 +56,7 @@ gulp.task("minify-css", done => {
 	const CSS_DEST = "dist/public/css";
 	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/resources/css";
 	fs.rmSync(CSS_DEST, { recursive: true, force: true }); // Remove previous unused files
-	gulp.src(CSS_FILES).pipe(cssnano()).pipe(gulp.dest(CSS_DEST)).on("end", () => { // Minify single files
+	gulp.src(CSS_FILES).pipe(cssnano({ reduceIdents: false })).pipe(gulp.dest(CSS_DEST)).on("end", () => { // Minify single files
 		gulp.src("dist/public/css/**/*.css").pipe(concat("styles-min.css")).pipe(gulp.dest(CSS_DEST)).on("end", () => {
 			gulp.src("dist/public/css/styles-min.css").pipe(gulp.dest(CV)).on("end", done); // deploy JS in Campus Virtual
 		});

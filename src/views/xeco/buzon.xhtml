@@ -62,7 +62,7 @@
 						<h:selectOneMenu id="tramit" value="#{buzon.idUnidadTramit}" styleClass="ui-input ui-select ui-number" tabindex="2">
 							<f:selectItems value="#{buzon.unidadesTramit}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
 						</h:selectOneMenu>
-						<div id="tip-tramit" class="ui-errtip"></div>
+						<div class="ui-errtip"></div>
 					</div>
 					<div class="ui-block-btn">
 						<p:commandLink action="#{buzon.addOrganica()}" update="tramit" styleClass="btn btn-green" tabindex="3" title="Añadir nueva Orgánica"
@@ -87,64 +87,13 @@
 
 		<h:form id="xeco-buzon" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
 		<div id="tab-1" class="tab-content">
-			<div class="card-xeco">
-				<h2>Buzón de Facturas</h2>
-				<div class="ui-blocks">
-				<div class="ui-block">
-					<label for="tipo" class="required"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</label>
-					<h:selectOneMenu id="tipo" value="#{buzon.tipo}" styleClass="ui-input ui-select" tabindex="1">
-						<f:selectItem itemValue="1" itemLabel="Pagar al Proveedor" />
-						<f:selectItem itemValue="2" itemLabel="Pagar a #{uae.nombre}" />
-					</h:selectOneMenu>
-				</div>
-				<div class="ui-block-row">
-					<p:fileUpload id="factura" label="" value="#{buzon.factura}" fileUploadListener="#{buzon.uploadFactura}" mode="advanced" auto="true" styleClass="hide" />
-					<a href="#open-upload" class="btn btn-info"><i class="fas fa-search icon"></i>Seleccionar 1 Factura</a>
-					<span class="filename"></span>
-				</div>
-				<div id="file-jp" class="ui-block-row">
-					<p:fileUpload id="justPago" label="" value="#{buzon.justPago}" fileUploadListener="#{buzon.uploadJustPago}" mode="advanced" auto="true" styleClass="hide" />
-					<a href="#open-upload" class="btn btn-info"><i class="fas fa-search icon"></i>Seleccionar 1 Justificante de Pago</a>
-					<span class="filename"></span>
-				</div>
-				<div id="check-jp" class="ui-block-row">
-					<input type="checkbox" checked="checked" disabled="disabled" />
-					<b>Declaro responsablemente que he pagado en nombre de la Universidad la factura remitida y que conservo a disposición de ésta el justificante del pago.</b>
-				</div>
-				<div class="ui-block">
-					<h:inputHidden id="buzon-id-org" value="#{buzon.idOrganica}" />
-					<h:inputHidden id="buzon-cod-org" value="#{buzon.acOrganica}" />
-					<label for="tramit-all" class="required"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</label>
-					<h:selectOneMenu id="tramit-all" value="#{buzon.idUnidadTramit}" styleClass="ui-input ui-select" tabindex="1">
-						<f:selectItems value="#{buzon.allUnidadesTramit}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
-					</h:selectOneMenu>
-					<div class="ui-errtip"></div>
-				</div>
-				<div class="ui-block-row">
-					<label for="desc">Observaciones para el gestor (si son necesarias):</label>
-					<h:inputTextarea id="desc" value="#{buzon.desc}" styleClass="ui-input ui-ta" />
-				</div>
-				</div>
-			</div>
-			<div>
-				<a href="#tab-0" class="btn btn-info"><i class="fas fa-caret-left"></i></a>
-				<a href="#next-tab" class="btn btn-info">Siguiente<i class="fas fa-caret-right btn-icon-right"></i></a>
-			</div>
+			<ui:include src="tabs/buzon/facturas.xhtml"></ui:include>
 		</div>
 
 		<div id="tab-2" class="tab-content">
-			<div id="resumen" class="card-xeco">
-				<h2>Resumen de la Solicitud</h2>
-				<p><b>Archivos que se van a enviar:</b> <span id="file-name">NAME-XXX</span></p>
-				<p><b>Partida presupuestaria para la factura:</b> <span id="org-desc">ORG-XXX</span></p>
-				<p><b>Unidad que va a tramitar la factura:</b> <span id="ut-desc">UT-XXX</span></p>
-			</div>
-			<div>
-				<a href="#prev-tab" class="btn btn-info" tabindex="20"><i class="fas fa-caret-left"></i></a>
-				<p:commandLink action="#{buzon.upload()}" onclick="loading();" oncomplete="showTab(xhr, status, args, 0)" 
-					styleClass="btn btn-green">Enviar <i class="fas fa-paper-plane btn-icon-right"></i></p:commandLink>
-			</div>
+			<ui:include src="tabs/buzon/resumen.xhtml"></ui:include>
 		</div>
+		<ui:include src="tabs/buzon/modal_ut.xhtml"></ui:include>
 		</h:form>
 	</ui:define>
 </ui:composition>

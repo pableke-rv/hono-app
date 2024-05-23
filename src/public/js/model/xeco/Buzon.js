@@ -27,6 +27,7 @@ function Buzon() {
         const desanclar = '<a href="#desanclar" class="action text-red row-action" title="Marca la orgánica como normal"><i class="fas fa-thumbtack action text-green"></i></a>';
         //const remove = (data.mask & 1) ? '<a href="#remove" class="action text-red row-action" title="Desvincular orgánica"><i class="fas fa-times"></i></a>' : "";
         const last = (status.count == status.size) ? self.lastRow(status.count + 1) : "";
+        //<a href="#modal" class="row-action">modal</a>
         return `<tr class="tb-data">
             <td class="text-center">${status.count}</td>
             <td>${data.oCod}</td><td>${data.oDesc}</td>

@@ -31,6 +31,7 @@ tfoot { font-weight: bold; border-top: 1px dashed black; }
 :is(.dark tfoot) { border: white; }
 
 .tb-xeco thead { color: white; background-color: #2196F3; border-bottom: 1px solid #1976d2; }
+.tb-xeco tbody.active { animation: fadeIn .8s forwards; }
 .tb-xeco .tb-data-tc { text-align: center; }
 .tb-xeco tfoot { font-weight: bold; border-top: 1px dashed #1976d2; }
 

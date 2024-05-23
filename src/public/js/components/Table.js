@@ -11,6 +11,8 @@ export default function(table, opts) {
     opts.sortAscClass = opts.sortAscClass || "sort-asc";
     opts.sortDescClass = opts.sortDescClass || "sort-desc";
     opts.sortNoneClass = opts.sortNoneClass || "sort-none";
+
+    opts.activeClass = opts.activeClass || "active";
     opts.rowActionClass = opts.rowActionClass || "row-action";
     opts.tableActionClass = opts.tableActionClass || "table-action";
     opts.msgConfirmRemove = opts.msgConfirmRemove || "remove";
@@ -62,12 +64,14 @@ export default function(table, opts) {
         _rows = data || []; // data to render on table
         RESUME.size = _rows.length;
 
-        opts.beforeRender(RESUME); // Fired init. event
+        tBody.classList.remove(opts.activeClass); // Remove animation
+        opts.beforeRender(RESUME); // Fired init. event before render
         table.tHead.innerHTML = opts.onHeader(RESUME); // Render formatted header
         RESUME.columns = coll.size(table.tHead.rows[0]?.cells); // Number of columns <th>
         tBody.innerHTML = RESUME.size ? coll.render(_rows, opts.onRender, RESUME) : opts.rowEmptyTable; // body
         table.tFoot.innerHTML = opts.onFooter(RESUME); // render formatted footer
         opts.afterRender(RESUME); // After body and footer is rendered
+        tBody.classList.add(opts.activeClass); // Add styles (animation)
 
         // Row listeners for change, find and remove items
         tBody.rows.forEach((tr, i) => {

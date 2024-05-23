@@ -81,8 +81,8 @@
 				<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 					<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 			</c:if>
-			<p:commandLink action="#{presto.list()}" onclick="loading();" oncomplete="loadFiltro(xhr, status, args);" styleClass="btn btn-info" tabindex="13">
-				<i class="far fa-search btn-icon-left"></i>Buscar</p:commandLink>
+			<p:commandButton action="#{presto.list()}" onclick="loading();" oncomplete="loadFiltro(xhr, status, args);" 
+				value="Buscar" icon="far fa-search" styleClass="btn btn-info" tabindex="13"/>
 			<p:commandLink action="#{presto.relist()}" onclick="onList();" oncomplete="loadFiltro(xhr, status, args);" styleClass="btn btn-warn" tabindex="14">
 				<i class="far fa-times-circle btn-icon-left"></i>Limpiar</p:commandLink>
 		</div>

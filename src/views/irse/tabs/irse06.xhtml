@@ -54,8 +54,8 @@
 					</tr>
 				</c:forEach>
 				</tbody>
-				<tbody class="hide no-data">
-					<tr><td colspan="5"><p class="textc"><h:outputText value="#{msg['msg.no.fac.tickets']}" escape="false" /></p></td></tr>
+				<tbody class="hide">
+					<tr><td class="no-data" colspan="5"><h:outputText value="#{msg['msg.no.fac.tickets']}" escape="false" /></td></tr>
 				</tbody>
 				<tfoot>
 					<tr><td colspan="4"><h:outputText value="#{msg['lbl.fac.tickets']}" escape="false" />: #{gasto.numTransporte}</td><td class="tb-data-tc">#{gasto.impTransporteI18n} €</td></tr>
@@ -92,8 +92,8 @@
 					</tr>
 					</c:forEach>
 				</tbody>
-				<tbody class="hide no-data">
-					<tr><td colspan="9"><p class="textc"><h:outputText value="#{msg['msg.no.pernoctas']}" escape="false" /></p></td></tr>
+				<tbody class="hide">
+					<tr><td class="no-data" colspan="9"><h:outputText value="#{msg['msg.no.pernoctas']}" escape="false" /></td></tr>
 				</tbody>
 				<tfoot>
 					<tr>
