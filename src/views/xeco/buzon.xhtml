@@ -90,10 +90,15 @@
 			<ui:include src="tabs/buzon/facturas.xhtml"></ui:include>
 		</div>
 
+		<!-- resumen de la factura -->
 		<div id="tab-2" class="tab-content">
 			<ui:include src="tabs/buzon/resumen.xhtml"></ui:include>
 		</div>
-		<ui:include src="tabs/buzon/modal_ut.xhtml"></ui:include>
+
+		<!-- modals dialog -->
+		<div class="modal">
+			<ui:include src="tabs/buzon/modal_ut.xhtml"></ui:include>
+		</div>
 		</h:form>
 	</ui:define>
 </ui:composition>

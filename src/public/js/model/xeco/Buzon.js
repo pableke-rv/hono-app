@@ -23,11 +23,11 @@ function Buzon() {
         </tr>`;
     }
 	this.row = (data, status) => {
+        const report = (data.mask & 4) ? "#modal" : "#report"; // organica multigrupo / monogrupo
         const anclar = '<a href="#anclar" class="action text-red row-action" title="Marca la orgánica como favorita"><i class="fas fa-thumbtack action text-blue"></i></a>';
         const desanclar = '<a href="#desanclar" class="action text-red row-action" title="Marca la orgánica como normal"><i class="fas fa-thumbtack action text-green"></i></a>';
         //const remove = (data.mask & 1) ? '<a href="#remove" class="action text-red row-action" title="Desvincular orgánica"><i class="fas fa-times"></i></a>' : "";
         const last = (status.count == status.size) ? self.lastRow(status.count + 1) : "";
-        //<a href="#modal" class="row-action">modal</a>
         return `<tr class="tb-data">
             <td class="text-center">${status.count}</td>
             <td>${data.oCod}</td><td>${data.oDesc}</td>
@@ -35,7 +35,7 @@ function Buzon() {
             <td class="text-right">${i18n.isoFloat(data.cd)} €</td>
             <td class="text-right">
                 ${(data.mask & 2) ? desanclar : anclar}
-                <a href="#report" class="action text-blue row-action" title="Informe al Proveedor"><i class="fal fa-file-pdf"></i></a>
+                <a href="${report}" class="action text-blue row-action" title="Informe al Proveedor"><i class="fal fa-file-pdf"></i></a>
                 <a href="#buzon" class="action text-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
             </td>
         </tr>` + last;

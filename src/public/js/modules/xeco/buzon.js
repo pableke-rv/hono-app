@@ -5,7 +5,7 @@ import modals from "../../components/Modals.js";
 import pf from "../../components/Primefaces.js";
 import buzon from "../../model/xeco/Buzon.js";
 
-document.addEventListener("DOMContentLoaded", () => { // on load view
+pf.ready(() => { // on load view
 	const formBuzon = new Form("#xeco-buzon");
 	const elTipo = formBuzon.getInput("#tipo");
 

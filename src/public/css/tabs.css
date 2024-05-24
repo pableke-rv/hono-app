@@ -78,7 +78,7 @@ details.icon-right[open] summary:after { content: " ▼"; }
   border: 1px solid #ccc;
   border-radius: 0.5rem;
 }
-.modal.active > .modal-content {
+.modal-content.active {
   animation: slideInTop .8s forwards;
 }
 .modal-header {

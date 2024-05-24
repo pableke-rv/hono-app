@@ -1,32 +1,35 @@
 
-// Classes Configuration
-const MODAL_CLASS = "modal";
-//const BTN_OPEN = "btn-open-modal";
-const BTN_CLOSE = "btn-close-modal";
-const ACTIVE_CLASS = "active";
-
 function Modals() {
 	const self = this; //self instance
-    var modals; // All modals array
+    const modal = document.querySelector(".modal"); // overlay
 
-    const fnClose = modal => {
-        modal.classList.remove(ACTIVE_CLASS);
+    const opts = {};  // default options
+    opts.closeClass = "modal-close";
+    opts.actionClass = "modal-action";
+    opts.activeClass = "active";
+
+    const fnClose = window => {
+        modal.classList.remove(opts.activeClass);
+        window.classList.remove(opts.activeClass);
         return self;
     }
 
-    this.getModals = () => modals;
-    this.close = selector => fnClose(modals.findOne(selector)); //find modal by selector
+    this.set = (name, fn) => { opts[name] = fn; return self; } // set options and actions
+    this.close = selector => fnClose(modal.children.findOne(selector)); //find modal by selector
     this.open = selector => { //find modal by selector
-        const modal = modals.findOne(selector);
-        modal.classList.add(ACTIVE_CLASS);
+        const window = modal.children.findOne(selector);
+        modal.classList.add(opts.activeClass);
+        window.classList.add(opts.activeClass);
         return self;
     }
 
-    this.load = el => {
-        modals = el.getElementsByClassName(MODAL_CLASS);
-        modals.forEach(modal => { // Iterate over all modals
-            modal.getElementsByClassName(BTN_CLOSE).setClick(ev => {
-                fnClose(modal);
+    this.load = () => {
+        modal.children.forEach(window => { // Iterate over all modals
+            window.getElementsByClassName(opts.closeClass).setClick(ev => {
+                ev.preventDefault(); fnClose(window);
+            });
+            window.getElementsByClassName(opts.actionClass).setClick((ev, link) => {
+                opts[link.getAttribute("href")](link, window);
                 ev.preventDefault();
             });
         });
@@ -38,7 +41,7 @@ function Modals() {
     }
 
     // Init. modals
-    self.load(document);
+    self.load();
 }
 
 export default new Modals();

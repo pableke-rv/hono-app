@@ -50,6 +50,10 @@ tfoot { font-weight: bold; border-top: 1px dashed black; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
 
+.text-gray { color: silver; fill: silver; }
+.action.text-gray:hover { color: #666; fill: #666; }
+:is(.dark .text-gray:hover) { color: #ccc; fill: #ccc; }
+
 .text-blue { color: rgb(59 130 246); fill: rgb(59 130 246)/*blue-500*/; }
 .action.text-blue:hover { color: rgb(30 64 175); fill: rgb(30 64 175)/*blue-800*/; }
 :is(.dark .text-blue:hover) { color: rgb(147 197 253); fill: rgb(147 197 253)/*blue-300*/; }
