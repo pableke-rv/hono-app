@@ -89,11 +89,11 @@ function fnAnimate(el, addName, removeName) {
     return el;
 }
 HTMLElement.prototype.fadeIn = function() { return fnAnimate(this, FADE_IN, FADE_OUT); }
-HTMLElement.prototype.fadeOut = function() { return fnVisible(this) ? fnAnimate(this, FADE_OUT, FADE_IN) : this; }
+HTMLElement.prototype.fadeOut = function() { return fnAnimate(this, FADE_OUT, FADE_IN); }
 HTMLElement.prototype.slideIn = function() { return fnAnimate(this, SLIDE_IN, SLIDE_OUT); }
-HTMLElement.prototype.slideOut = function() { return fnVisible(this) ? fnAnimate(this, SLIDE_OUT, SLIDE_IN) : this; }
+HTMLElement.prototype.slideOut = function() { return fnAnimate(this, SLIDE_OUT, SLIDE_IN); }
 //HTMLElement.prototype.slideInRight = function() { return fnAnimate(this, SLIDE_IN_RIGHT, SLIDE_OUT_RIGHT); }
-//HTMLElement.prototype.slideOutRight = function() { return fnVisible(this) ? fnAnimate(this, SLIDE_OUT_RIGHT, SLIDE_IN_RIGHT) : this; }
+//HTMLElement.prototype.slideOutRight = function() { return fnAnimate(this, SLIDE_OUT_RIGHT, SLIDE_IN_RIGHT); }
 
 // Commons initializations in the HTML client
 coll.ready = fn => document.addEventListener("DOMContentLoaded", fn);

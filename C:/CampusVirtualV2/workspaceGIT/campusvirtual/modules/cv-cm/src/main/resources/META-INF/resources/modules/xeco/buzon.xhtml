@@ -1,0 +1,104 @@
+<ui:composition
+		template="/templates/layout/private-embed-layout.xhtml"
+		xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:o="http://omnifaces.org/ui"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="metadata">
+		<f:metadata>
+            <f:viewParam name="lang" value="#{uae.lang}" />
+            <f:viewAction action="#{uae.initLang()}" />
+		</f:metadata>
+	</ui:define>
+	<ui:define name="header">
+		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
+	</ui:define>
+	<ui:define name="outputScript">
+		<script type="module" src="/uae/resources/js/modules/xeco/buzon.js"></script>
+	</ui:define>
+
+	<ui:define name="title">UAE</ui:define>
+	<ui:define name="description">Tablero Económico</ui:define>
+	<ui:define name="semilla"><li class="active">UAE</li></ui:define>
+
+	<ui:define name="body">
+		<ui:include src="parts/msgs.xhtml"></ui:include>
+
+		<div id="tab-0" class="tab-content active">
+			<h:form id="xeco-organicas" prependId="false" method="post">
+			<div class="card-xeco">
+				<h2>Orgánicas Recientes</h2>
+				<div id="organcias-json" class="hide">#{buzon.serializeOrganicas()}</div>
+				<table id="organcias" class="tb-xeco">
+					<thead>
+						<tr>
+							<th>Nº</th>
+							<th>Orgánica</th><th>Descripción</th>
+							<th>Código UT</th><th>Unidad Tramitadora</th>
+							<th>Crédito Disponible</th><th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+					<tfoot></tfoot>
+				</table>
+			</div>
+
+			<div class="card-xeco">
+				<h2>Nueva Orgánica</h2>
+				<div class="ui-blocks">
+					<label class="ui-block-xl autocomplete">
+						<div class="label">Orgánica:</div>
+						<h:inputText id="organica" value="#{buzon.acOrganica}" tabindex="1" styleClass="ui-input ui-autocomplete" />
+						<h:inputText id="idOrg" value="#{buzon.idOrganica}" styleClass="hide ui-number" />
+						<ul role="list" class="results"></ul>
+						<div class="ui-errtip"></div>
+					</label>
+					<div id="unidades-tramit" class="ui-block hide">
+						<label for="tramit"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</label>
+						<h:selectOneMenu id="tramit" value="#{buzon.idUnidadTramit}" styleClass="ui-input ui-select ui-number" tabindex="2">
+							<f:selectItems value="#{buzon.unidadesTramit}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
+						</h:selectOneMenu>
+						<div class="ui-errtip"></div>
+					</div>
+					<div class="ui-block-btn">
+						<p:commandLink action="#{buzon.addOrganica()}" update="tramit" styleClass="btn btn-green" tabindex="3" title="Añadir nueva Orgánica"
+							onclick="if (!window.isOrganica()) return false;" oncomplete="loadBuzon(xhr, status, args)">
+							<i class="fas fa-plus btn-icon-left"></i>Añadir
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+
+			<p:remoteCommand name="anclar" action="#{buzon.anclar()}" oncomplete="loadBuzon(xhr, status, args)" />
+			<p:remoteCommand name="desanclar" action="#{buzon.desanclar()}" oncomplete="loadBuzon(xhr, status, args)" />
+			<p:remoteCommand name="findOrganica" action="#{buzon.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
+			<p:remoteCommand name="setUnidadesTramit" action="#{buzon.setUnidadesTramit()}" update="tramit" oncomplete="loadUnidadesTramit(xhr, status, args)" />
+			<p:remoteCommand name="report" action="#{buzon.report()}" oncomplete="showAlerts(xhr, status, args);"/>
+			<p:remoteCommand name="remove" action="#{buzon.remove()}" oncomplete="showAlerts(xhr, status, args);"/>
+			</h:form>
+
+			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+		</div>
+
+		<h:form id="xeco-buzon" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
+		<div id="tab-1" class="tab-content">
+			<ui:include src="tabs/buzon/facturas.xhtml"></ui:include>
+		</div>
+
+		<!-- resumen de la factura -->
+		<div id="tab-2" class="tab-content">
+			<ui:include src="tabs/buzon/resumen.xhtml"></ui:include>
+		</div>
+
+		<!-- modals dialog -->
+		<div class="modal">
+			<ui:include src="tabs/buzon/modal_ut.xhtml"></ui:include>
+		</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

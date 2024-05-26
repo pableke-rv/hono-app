@@ -1,0 +1,159 @@
+<ui:composition
+		template="/templates/layout/private-embed-layout.xhtml"
+		xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:o="http://omnifaces.org/ui"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="metadata">
+		<f:metadata>
+            <f:viewParam name="lang" value="#{uae.lang}" />
+            <f:viewAction action="#{uae.initLang()}" />
+        </f:metadata>
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="parts/head-css.xhtml"></ui:include>
+	</ui:define>
+	<ui:define name="outputScript">
+		<ui:include src="parts/head-js.xhtml"></ui:include>
+	</ui:define>
+
+	<ui:define name="title">UAE</ui:define>
+	<ui:define name="description">Gestión de usuarios</ui:define>
+	<ui:define name="semilla">
+		<li class="active">UAE</li>
+	</ui:define>
+
+	<ui:define name="body">
+		<ui:include src="parts/msgs.xhtml"></ui:include>
+
+		<h:form id="xeco" prependId="false" onsubmit="MostrarProgreso();">
+			<div class="busqueda navbar">
+				<div class="navbar info-usuarios">
+					<div class="grupo">
+						<label for="filtro">Nombre / UT:</label>
+						<h:inputText id="filtro" value="#{uaeUsuarios.filtro}" styleClass="input-item input-control ui-text" tabindex="1" title="Búsqueda por nombre del grupo o unidad tramitadora" />
+					</div>
+					<div class="grupo">
+						<label for="estado"><h:outputText value="#{msg['lbl.estado']}" escape="false" />:</label>
+						<h:selectOneMenu id="estado" value="#{uaeUsuarios.estado}" styleClass="input-item input-control ui-select" tabindex="2" title="Estado del grupo">
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItem itemValue="1" itemLabel="Activado" itemEscaped="false"/>
+							<f:selectItem itemValue="0" itemLabel="Cancelado" itemEscaped="false"/>
+						</h:selectOneMenu>
+					</div>
+					<div class="grupo mt10">
+						<p:commandButton action="#{uaeUsuarios.list()}" ajax="false" icon="far fa-search" value="Buscar" tabindex="3"></p:commandButton>
+						<p:commandLink action="#{uaeUsuarios.relist()}" ajax="false" styleClass="ui-button ui-state-default ui-corner-all ui-button-text-icon-left warning-btn" tabindex="4">
+							<i class="ui-button-icon-left ui-icon ui-c far fa-times-circle"></i><span class="ui-button-text ui-c">Limpiar</span></p:commandLink>
+					</div>
+				</div>
+
+				<div class="navbar info-usuarios">
+				<a href="/uae/modules/xeco/inicio.xhtml" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" title="Volver" tabindex="5">
+					<i class="ui-button-icon-left ui-icon ui-c fas fa-caret-left"></i><span class="ui-button-text ui-c">Volver</span></a>
+				<p:commandButton action="#{uaeUsuarios.reactivarPerfiles()}" ajax="false" icon="fa fa-solid fa-check" value="Restaurar Perfil" tabindex="6" styleClass="success-btn"
+					title="Restaura el perfil anterior de todos los usuarios puestos anteriormente en modo de solo consulta"></p:commandButton>
+				<p:commandLink action="#{uaeUsuarios.soloconsulta()}" ajax="false" styleClass="ui-button ui-state-default ui-corner-all ui-button-text-icon-left danger-btn" tabindex="7"
+						onclick="if (!confirm('¿Desea pasar a modo de solo consulta a todos los usuarios?')) return false;" 
+						title="pasa a modo de solo consulta a todos los usuarios de uxxi-ec">
+					<i class="ui-button-icon-left ui-icon ui-c fa fa-solid fa-ban"></i><span class="ui-button-text ui-c">Solo Consulta</span>
+				</p:commandLink>
+				</div>
+
+				<div class="navbar info-usuarios">
+				<a href="/uae/modules/xeco/inicio.xhtml" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" title="Volver" tabindex="8">
+					<i class="ui-button-icon-left ui-icon ui-c fas fa-caret-left"></i><span class="ui-button-text ui-c">Volver</span></a>
+				<p:commandButton action="#{uaeUsuarios.reactivar()}" ajax="false" icon="fa fa-solid fa-check" value="Reactivar" tabindex="9" styleClass="success-btn"
+					title="Reactiva a todos los usuarios previamente cancelados"></p:commandButton>
+				<p:commandLink action="#{uaeUsuarios.cancelar()}" ajax="false" styleClass="ui-button ui-state-default ui-corner-all ui-button-text-icon-left danger-btn" tabindex="10"
+						onclick="if (!confirm('¿Desea cancelar todos los usuarios, menos los que pertenecen a los grupos UAE y solo consulta?')) return false;" 
+						title="Cancela automáticamente, todos los usuarios, menos los que pertenecen a los grupos UAE y solo consulta">
+					<i class="ui-button-icon-left ui-icon ui-c fa fa-solid fa-ban"></i><span class="ui-button-text ui-c">Cancelar</span>
+				</p:commandLink>
+				<c:if test="#{uae.admin}">
+					<p:commandButton action="#{uaeUsuarios.sync()}" ajax="false" icon="fa fa-solid fa-copy" value="Sincronizar caches" tabindex="11" styleClass="success-btn"
+						title="Sincroniza las tabals de usuarios / grupos y las caches de gastos"></p:commandButton>
+				</c:if>
+				</div>
+
+				<div class="navbar info-usuarios hide">
+					<div class="input-group input-group-content">
+						<label for="usuarios">Usuarios:</label>
+						<h:inputTextarea id="usuarios" value="#{uaeUsuarios.usuarios}" styleClass="input-item input-control ui-ta" tabindex="20" maxlength="600" title="Listado de usuarios separados por comas" />
+					</div>
+					<div class="grupo">
+						<a href="/uae/modules/xeco/inicio.xhtml" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" title="Volver" tabindex="21">
+							<i class="ui-button-icon-left ui-icon ui-c fas fa-caret-left"></i><span class="ui-button-text ui-c">Volver</span></a>
+						<p:commandButton action="#{uaeUsuarios.reactivarPerfilesUsuarios()}" ajax="false" icon="fa fa-solid fa-check" value="Restaurar Perfiles" tabindex="22" styleClass="success-btn" title="Restaura todos los perfiles de los usuarios seleccionados"></p:commandButton>
+					</div>
+				</div>
+				<div class="navbar">
+					<a id="usuarios" href="#toggle" data-toggle="fa-angle-double-down fa-angle-double-up">Usuarios / Grupos <i class="fas fa-angle-double-down icon"></i></a>
+				</div>
+			</div>
+
+			<br class="clear"/><br/>
+			<table id="grupos" class="tb-xeco">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Código UT</th>
+						<th class="hide-phone">Unidad Tramitadora</th>
+						<th>E-Mail UT</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="#{uaeUsuarios.grupos}" var="grp">
+					<tr id="#{grp.idGrupo}" class="tb-data">
+						<td>#{grp.nombre}</td>
+						<td>#{grp.utCodigo}</td>
+						<td class="hide-phone">#{grp.utDesc}</td>
+						<td>#{grp.utEmail}</td>
+						<td>
+							<c:choose>
+								<c:when test="#{grp.numPerfiles gt 0}">
+									<p:commandLink action="#{uaeUsuarios.reactivarPerfiles(grp.idGrupo)}" ajax="false" title="Restaura los perfiles previos de los usuarios del grupo">
+										<i class="fas fa-user action text-green resize"></i></p:commandLink>
+								</c:when>
+								<c:otherwise>
+									<p:commandLink action="#{uaeUsuarios.soloconsulta(grp.idGrupo)}" ajax="false" title="Asigna a los usuarios del grupo el perfil de solo consulta"
+											onclick="if (!confirm('¿Desea poner en modo de solo consulta a todos los usuarios de este grupo?')) return false;">
+										<i class="fas fa-user-slash action text-red resize"></i></p:commandLink>
+								</c:otherwise>
+							</c:choose>
+							<c:choose>
+								<c:when test="#{grp.numCancelados gt 0}">
+									<p:commandLink action="#{uaeUsuarios.reactivar(grp.idGrupo)}" ajax="false" title="Reactiva a los usuarios previamente cancelados del grupo">
+										<i class="fa fa-solid fa-check action text-green resize"></i></p:commandLink>
+								</c:when>
+								<c:otherwise>
+									<p:commandLink action="#{uaeUsuarios.cancelar(grp.idGrupo)}" ajax="false" title="Cancela a los usuarios activos de este grupo"
+											onclick="if (!confirm('¿Desea cancelar todos los usuarios de este grupo?')) return false;">
+										<i class="fa fa-solid fa-ban action text-red resize"></i></p:commandLink>
+								</c:otherwise>
+							</c:choose>
+						</td>
+					</tr>
+					</c:forEach>
+				</tbody>
+				<tbody class="hide no-data">
+					<tr><td colspan="5"><p class="textc">No se han encontrado grupos asociados a la consulta en UXXI-EC</p></td></tr>
+				</tbody>
+				<tfoot>
+					<tr><td colspan="5">Grupos: #{uaeUsuarios.numGrupos}</td></tr>
+				</tfoot>
+			</table>
+		</h:form>
+
+		<div class="navbar">
+		<a href="/uae/modules/xeco/inicio.xhtml" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" title="Volver" tabindex="20">
+			<i class="ui-button-icon-left ui-icon ui-c fas fa-caret-left"></i><span class="ui-button-text ui-c">Volver</span></a>
+		</div>
+	</ui:define>
+</ui:composition>

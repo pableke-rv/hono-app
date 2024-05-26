@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h3>
+	<a id="p6-km" href="#toggle" data-toggle="fa-caret-right fa-caret-down">
+		<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />: <b id="imp-km" class="text-green">#{gasto.kmCalcI18n} €</b>
+	</a>
+	</h3>
+	<div class="info-p6-km hide">
+		<c:if test="#{irse.editableP6}"><div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab6.msg.km']}" escape="false" /></div></c:if>
+
+		<table id="vp" class="tb-xeco">
+			<thead>
+				<tr>
+					<th><h:outputText value="#{msg['lbl.origen.etapa']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.fecha.salida']}" escape="false" /></th><th><h:outputText value="#{msg['lbl.hora.salida']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.destino.etapa']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.fecha.llegada']}" escape="false" /></th><th><h:outputText value="#{msg['lbl.hora.llegada']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></th>
+					<th>Google km</th>
+					<th><h:outputText value="#{msg['lbl.tus.km']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.importe']}" escape="false" /> (<span id="imp-gasolina-km"></span> €/km)</th><th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="@id;" class="tb-data tb-data-tc">
+					<td>@origen;</td><td>@f1;</td><td>@h1;</td>
+					<td>@destino;</td><td>@f2;</td><td>@h2;</td>
+					<td>@desp;</td>
+					<td>@km2;</td>
+					<td class="tc">
+					<c:choose>
+						<c:when test="#{irse.editableP6}"><input type="text" value="@km1;" tabindex="100" class="ui-float tc"/></c:when>
+						<c:otherwise>@km1;</c:otherwise>
+					</c:choose>
+					</td>
+					<td>@impKm; €</td>
+					<td>
+						<!-- <c:if test="#{irse.editableP6}"><a id="@id;" href="#find"><i class="fas fa-undo-alt action text-blue resize"></i></a></c:if> -->
+					</td>
+				</tr>
+			</tbody>
+			<tbody class="hide">
+				<tr><td class="no-data" colspan="11"><h:outputText value="#{msg['msg.no.etapas']}" escape="false" /></td></tr>
+			</tbody>
+			<tfoot id="footer-vp">
+				<tr>
+					<td colspan="7"><h:outputText value="#{msg['lbl.etapas']}" escape="false" />: @sizeVp;</td>
+					<td class="tb-data-tc">@totKmCalc;</td>
+					<td class="tb-data-tc">@totKm;</td>
+					<td class="tb-data-tc">@impKm; €</td>
+					<td></td>
+				</tr>
+			</tfoot>
+		</table>
+
+		<label class="ui-blocks justifi-km #{gasto.cssJustifiKm}">
+			<div class="label required"><h:outputText value="#{msg['lbl.justifi.km']}" escape="false" />:</div>
+			<div class="ui-block-main">
+				<h:inputTextarea id="justifiKm" value="#{gasto.justifiKm}" styleClass="ui-input ui-ta-2r #{irse.cssDisabled}" tabindex="108"/>
+				<div class="ui-errtip"></div>
+			</div>
+		</label>
+	</div>
+</html>

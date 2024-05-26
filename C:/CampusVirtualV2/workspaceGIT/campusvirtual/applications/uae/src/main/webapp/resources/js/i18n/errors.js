@@ -1,0 +1,1 @@
+class ValidationError extends Error{constructor(r,o,t,...s){super(r,s),this.field=o,this.tiperr=t}}class LoginError extends ValidationError{constructor(r,o,...t){super("userNotFound",r,o,t)}}export{ValidationError,LoginError};
