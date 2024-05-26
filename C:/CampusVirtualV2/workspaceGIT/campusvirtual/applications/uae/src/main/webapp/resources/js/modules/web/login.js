@@ -1,0 +1,1 @@
+import Form from"../../components/Form.js";import nav from"../../components/Navigation.js";import user from"../../model/web/User.js";function fnLogin(){const o=new Form("#signin");o.submit(n=>{o.isValid(user.validateLogin)&&o.send().then(nav.redirect),n.preventDefault()}),nav.setScript("login-js",fnLogin)}nav.ready(fnLogin);export default fnLogin;

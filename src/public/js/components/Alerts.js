@@ -39,7 +39,6 @@ HTMLElement.prototype.sibling = function(selector) {
 }
 
 // Classes Configuration
-const ALERTS_CLASS = "alerts";
 const TYPE_OK = "alert-success";
 const TYPE_INFO = "alert-info";
 const TYPE_WARN = "alert-warn";
@@ -50,7 +49,7 @@ const ALERT_ACTIVE = "active";
 
 function Alerts() {
 	const self = this; //self instance
-    const alerts = document.querySelector("." + ALERTS_CLASS);
+    const alerts = document.querySelector(".alerts");
     const texts = alerts.getElementsByClassName(ALERT_TEXT);
     const close = alerts.getElementsByClassName(ALERT_CLOSE);
 

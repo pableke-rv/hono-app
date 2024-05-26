@@ -1,0 +1,1 @@
+import en from"./en.js";import Validators from"./validators.js";en.validators=new Validators(en),en.createValidators=()=>new Validators(en);export default en;

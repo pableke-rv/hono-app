@@ -1,0 +1,1 @@
+function User(){this.validateLogin=(i,e)=>(e.isLogin("login",i.login,"errLogin"),e),this.validateProfile=(i,e)=>(e.size200("nombre",i.nombre),e.isEmail("email",i.email),e)}export default new User;
