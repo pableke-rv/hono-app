@@ -46,6 +46,7 @@ const TYPE_WARN = "alert-warn";
 const TYPE_ERROR = "alert-error";
 const ALERT_TEXT = "alert-text";
 const ALERT_CLOSE = "alert-close";
+const ALERT_ACTIVE = "active";
 
 function Alerts() {
 	const self = this; //self instance
@@ -55,7 +56,7 @@ function Alerts() {
 
 	// Handle loading div
     const _loading = alerts.nextElementSibling; // loading animation = none
-	this.loading = () => { _loading.fadeIn(); return self.closeAlerts(); }
+	this.loading = () => { _loading.classList.add("fade60"); return self.closeAlerts(); }
 	this.working = () => { _loading.fadeOut(); return self; } // working animation = fadeOut
 
     // Scroll body to top on click and toggle back-to-top arrow
@@ -66,11 +67,11 @@ function Alerts() {
 	window.onscroll = function() { _top.setVisible(this.scrollY > 80); }
 
     const fnShow = (el, txt) => {
-        el.parentNode.fadeIn();
+        el.parentNode.classList.add(ALERT_ACTIVE);
         el.setMsg(txt);
         return self;
     }
-    const fnClose = el => el.fadeOut();
+    const fnClose = el => el.classList.remove(ALERT_ACTIVE);
     const fnCloseParent = el => fnClose(el.parentNode);
     const setAlert = (el, txt) => {
         if (txt) { // Message exists

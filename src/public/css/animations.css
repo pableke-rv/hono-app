@@ -1,8 +1,10 @@
 
 /* resource = https://animation.ibelick.com/ */
 .fadeIn { animation: fadeIn .8s forwards; }
+.fade60 { animation: fade60 .8s forwards; }
 .fadeOut { animation: fadeOut .5s forwards; }
 @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes fade60 { 0% { opacity: 0; } 100% { opacity: .6; } }
 @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; display: none; } }
 
 .fadeInUp { animation: fadeInUp 1s forwards; }

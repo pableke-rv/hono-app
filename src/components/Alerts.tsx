@@ -14,7 +14,7 @@ export const Notice = (props: AlertType) => {
 }
 
 export const Alert = (props: AlertType) => {
-    const type = `hide alert alert-${props.type}`;
+    const type = `alert alert-${props.type}`;
     return (
         <div class={type}>
             <div class="alert-icon"><i class={props.icon}></i></div>
