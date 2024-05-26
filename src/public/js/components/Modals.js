@@ -14,6 +14,7 @@ function Modals() {
         return self;
     }
 
+    this.getModal = () => modal;
     this.set = (name, fn) => { opts[name] = fn; return self; } // set options and actions
     this.close = selector => fnClose(modal.children.findOne(selector)); //find modal by selector
     this.open = selector => { //find modal by selector

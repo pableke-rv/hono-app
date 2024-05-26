@@ -139,20 +139,20 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { margin-left
 :is(.dark .btn-primary) { background-color: rgb(37 99 235)/* blue-600 */; }
 :is(.dark .btn-primary:hover) { background-color: rgb(29 78 216)/* blue-700 */; }
 
-.btn-secondary { color: black !important; }
-/*.btn-secondary:hover {  }
-:is(.dark .btn-secondary) { }
+.btn-secondary { background-color: #6c757d; border-color: #6c757d; }
+.btn-secondary:hover { background-color: #5a6268; border-color: #545b62; }
+/*:is(.dark .btn-secondary) { }
 :is(.dark .btn-secondary:hover) { }*/
+
+.btn-light { color: black; background-color: #f8f9fa; border-color: #f8f9fa; }
+.btn-light:hover { color: black; background-color: #e2e6ea; border-color: #dae0e5; }
+/*:is(.dark .btn-light) { }
+:is(.dark .btn-light:hover) { }*/
 
 .btn-info { background-color: #2196F3; border-color: #2196F3; }
 .btn-info:hover { background-color: #1976d2; }
 :is(.dark .btn-info) { background-color: rgb(2 132 199)/* sky-600 */; }
 :is(.dark .btn-info:hover) { background-color: rgb(3 105 161)/* sky-700 */; }
-
-.btn-light { color: black !important; }
-/*.btn-light:hover {  }
-:is(.dark .btn-light) { }
-:is(.dark .btn-light:hover) { }*/
 
 .btn-green { color: white; background-color: rgb(22 163 74)/* green-600 */; border-color: rgb(22 163 74)/* green-600 */; }
 .btn-green:hover { color: white; background-color: rgb(21 128 61)/* green-700 */; }
@@ -190,13 +190,16 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { margin-left
 
 /* Extra small devices (portrait phones, less than 576px) */
 @media screen and (max-width: 575.98px) {
+    .label.inline { width: 100%; }
 	.ui-block-md, .ui-block-lg, .ui-block-xl { min-width: 100%; }
 }
 /* Small devices (landscape phones, 576px and up) */
 @media screen and (min-width: 576px) and (max-width: 767.98px) {
+    .label.inline { width: 100%; }
 }
 /* Medium devices (tablets, 768px and up) */
 @media screen and (min-width: 768px) and (max-width: 991.98px) {
+    .label.inline { width: 100%; }
 }
 /* Large devices (desktops, 992px and up) */
 @media screen and (min-width: 992px) and (max-width: 1199.98px) {

@@ -31,6 +31,9 @@ const fnCountry = place => {
 
 //initialize google maps
 window.initMap = () => {
+	const elAddRuta = document.getElementById("add-ruta");
+	if (!elAddRuta) return true; // readonly mode
+
 	const origen = new google.maps.places.Autocomplete(document.getElementById("origen"), OPTIONS); //Get the autocomplete input
 	const destino = new google.maps.places.Autocomplete(document.getElementById("destino"), OPTIONS); //Get the autocomplete input
 	const distance = new google.maps.DistanceMatrixService(); //Instantiate a distance matrix
@@ -40,7 +43,7 @@ window.initMap = () => {
 	destino.addListener("place_changed", function() { p2 = destino.getPlace(); }); //Get the place details from autocomplete
 
 	//*************** rutas / trayectos - maps ***************//
-	document.getElementById("add-ruta").onclick = ev => {
+	elAddRuta.onclick = ev => {
 		ev.preventDefault(); // stop event
 		let loc1 = null; //source location
 

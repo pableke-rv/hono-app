@@ -16,7 +16,7 @@
 		<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 	<c:choose>
 		<c:when test="#{irse.editableP0}">
-			<button type="reset" class="btn btn-light btn-light" title="#{msg['tit.btn.limpiar']}" tabindex="13">
+			<button type="reset" class="btn btn-light" title="#{msg['tit.btn.limpiar']}" tabindex="13">
 				<i class="far fa-broom btn-icon-left"></i>#{msg['lbl.btn.limpiar']}</button>
 			<p:commandButton action="#{irse.paso0()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)" icon="fas fa-caret-right" iconPos="right" 
 				value="#{msg['lbl.btn.empezar']}" styleClass="btn btn-green success-btn" onclick="if (!ip.valid()) return false;" title="#{msg['tit.btn.empezar']}" tabindex="13"/>
