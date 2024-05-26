@@ -39,10 +39,6 @@ HTMLElement.prototype.sibling = function(selector) {
 }
 
 // Classes Configuration
-const TYPE_OK = "alert-success";
-const TYPE_INFO = "alert-info";
-const TYPE_WARN = "alert-warn";
-const TYPE_ERROR = "alert-error";
 const ALERT_TEXT = "alert-text";
 const ALERT_CLOSE = "alert-close";
 const ALERT_ACTIVE = "active";
@@ -80,17 +76,16 @@ function Alerts() {
         return self;
     }
 
-    const fnGetType = type => texts.find(el => el.parentNode.classList.contains(type));
-    this.showOk = msg => setAlert(fnGetType(TYPE_OK), msg); //green
-    this.showInfo = msg => setAlert(fnGetType(TYPE_INFO), msg); //blue
-    this.showWarn = msg => setAlert(fnGetType(TYPE_WARN), msg); //yellow
-    this.showError = msg => setAlert(fnGetType(TYPE_ERROR), msg); //red
+    this.showOk = msg => setAlert(alerts[0], msg); //green
+    this.showInfo = msg => setAlert(alerts[1], msg); //blue
+    this.showWarn = msg => setAlert(alerts[2], msg); //yellow
+    this.showError = msg => setAlert(alerts[3], msg); //red
     this.showAlerts = function(msgs) { //show posible multiple messages types
         if (msgs) {
-            msgs.msgOk && fnShow(fnGetType(TYPE_OK), msgs.msgOk);
-            msgs.msgInfo && fnShow(fnGetType(TYPE_INFO), msgs.msgInfo);
-            msgs.msgWarn && fnShow(fnGetType(TYPE_WARN), msgs.msgWarn);
-            msgs.msgError && fnShow(fnGetType(TYPE_ERROR), msgs.msgError);
+            msgs.msgOk && fnShow(alerts[0], msgs.msgOk);
+            msgs.msgInfo && fnShow(alerts[1], msgs.msgInfo);
+            msgs.msgWarn && fnShow(alerts[2], msgs.msgWarn);
+            msgs.msgError && fnShow(alerts[3], msgs.msgError);
         }
         return self.working();
     }
