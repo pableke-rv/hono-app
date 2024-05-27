@@ -355,44 +355,6 @@ function DomBox(opts) {
 		return self.each(list, el => { el.style[camelProp] = value; });
 	}
 
-	// Animatios
-	/*function fnAnimateClass(el, name, opts) {
-		opts.once = true; // fired once
-		opts.onstart(el); // before animation
-		el.addEventListener("animationend", ev => {
-			el.classList.remove(name);
-			opts.onfinish(el, ev);
-		}, opts);
-		el.classList.add(name);
-	}
-	this.animate = function(list, keyframes, opts) {
-		opts = Object.assign({ duration: 1000, onfinish: fnSelf }, opts);
-		return self.each(list, el => el.animate(keyframes, opts).onfinish(opts.onfinish));
-	}
-	this.animateClass = function(list, name, opts) {
-		opts = Object.assign({ onstart: fnSelf, onfinish: fnSelf }, opts);
-		return self.each(list, el => fnAnimateClass(el, name, opts));
-	}
-	this.animateIn = function(list, name) {
-		const opts = { onstart: fnShow, onfinish: fnSelf };
-		return self.each(list, el => fnAnimateClass(el, name, opts));
-	}
-	this.animateOut = function(list, name) {
-		const opts = { onstart: fnSelf, onfinish: fnHide };
-		return self.each(list, el => { isHide(el) || fnAnimateClass(el, name, opts); });
-	}
-	this.animateToggle = function(list, nameIn, nameOut) {
-		const optsIn = { onstart: fnShow, onfinish: fnSelf };
-		const optsOut = { onstart: fnSelf, onfinish: fnHide };
-		return self.each(list, el => (isHide(el) ? fnAnimateClass(el, nameIn, optsIn) : fnAnimateClass(el, nameOut, optsOut)));
-	}
-	this.fadeIn = list => self.animateIn(list, "fadeIn");
-	this.fadeOut = list => self.animateOut(list, "fadeOut");
-	this.fadeToggle = list => self.animateToggle(list, "fadeIn", "fadeOut");
-	this.slideIn = list => self.animateIn(list, "slideIn");
-	this.slideOut = list => self.animateOut(list, "slideOut");
-	this.slideToggle = list => self.animateToggle(list, "slideIn", "slideOut");*/
-
 	// Events
 	const ON_CHANGE = "change";
 	const fnEvent = (el, name, i, fn, opts) => fnSelf(el.addEventListener(name, ev => fn(el, ev, i) || ev.preventDefault(), opts));
@@ -438,8 +400,8 @@ function DomBox(opts) {
 		// Alerts handlers
 		const alerts = self.get("." + CONFIG.classAlerts);
 		const texts = self.getAll("." + CONFIG.classAlertText, alerts);
-		const showAlert = el => { el.parentNode.classList.remove("hide", "fadeOut"); el.parentNode.classList.add("fadeIn"); return self; }
-		const closeAlert = el => { el.parentNode.classList.add("fadeOut"); return self; }
+		const showAlert = el => { el.parentNode.classList.add("active"); return self; }
+		const closeAlert = el => { el.parentNode.classList.remove("active"); return self; }
 		const setAlert = (el, txt) => txt ? showAlert(el).setHtml(el, txt).scroll() : self;
 
 		self.showOk = msg => setAlert(texts[0], msg); //green

@@ -114,7 +114,46 @@ tfoot { font-weight: bold; border-top: 1px dashed black; }
 
 @media print {
     @page { size: A4 landscape; margin: 2mm }
+	@page {
+		@top-left {
+			background: #fbc847;
+			content: counter(page);
+			height: 1cm;
+			text-align: center;
+			width: 1cm;
+		}
+		@top-center {
+			background: #fbc847;
+			content: '';
+			display: block;
+			height: .05cm;
+			opacity: .5;
+			width: 100%;
+		}
+		@top-right {
+			content: string(heading);
+			font-size: 9pt;
+			height: 1cm;
+			vertical-align: middle;
+			width: 100%;
+		}
 
+		@bottom-left {
+			/*counter-increment: page;*/
+			content: "Page " counter(page);
+		}
+	}
+	@page:first {
+		counter-increment: page;
+		margin-top: 8cm;
+	}
+	@page:blank {
+		@top-left { background: none; content: '' }
+		@top-center { content: none }
+		@top-right { content: none }
+	}
+
+	* { color: #000; background-color: #fff; box-shadow: none; text-shadow: none; }
 	h1 { page-break-before: always; }
     h1, h2, h3, h4, h5 { page-break-after: avoid; }
 

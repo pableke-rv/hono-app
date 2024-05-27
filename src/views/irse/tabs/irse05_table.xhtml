@@ -29,7 +29,7 @@
 				<td>#{g.nombre}</td>
 				<td>#{gasto.getGastoImporte(g)} €</td>
 				<td>
-					<a href="#{g.fref}" target="_blank" class="far fa-paperclip action" title="Ver adjunto"></a>
+					<a href="#{g.fref}" target="_blank" class="far fa-paperclip action resize" title="Ver adjunto"></a>
 					<c:if test="#{irse.editable}">
 						<p:commandLink action="#{irse.unloadGasto(g)}" 
 								onclick="if (!fnUnlink()) return false;" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 5);"

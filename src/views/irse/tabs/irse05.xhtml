@@ -16,6 +16,7 @@
 					<a href="#open-file-gasto" class="btn btn-green success-btn" tabindex="100"><i class="fas fa-share btn-icon-left"></i>¡Por Aquí!</a>
 					<p:fileUpload id="fileGasto" value="#{gasto.fileGasto}" fileUploadListener="#{gasto.uploadFileGasto}" mode="advanced" auto="true" styleClass="hide" />
 					<h:inputHidden id="tipoGasto" value="#{gasto.tipoGasto}" />
+					<div class="filename" style="position: absolute; margin: 0 4px;"></div>
 				</div>
 				<label class="ui-block grupo-gasto hide">
 					<div class="label required"><h:outputText value="#{msg['lbl.tipo.fac.doc']}" escape="false" />:</div>
@@ -81,12 +82,12 @@
 					<div class="ui-errtip"></div>
 				</label>
 				<label class="ui-block grupo-gasto hide">
-					<div for="impGasto" class="required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
+					<div for="impGasto" class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
 					<h:inputText id="impGasto" value="#{gasto.impGasto}" maxlength="12" tabindex="101" styleClass="ui-input ui-float" title="Importe de la factura que corresponde a la comisión" /><span class="icon">€</span>
 					<div class="ui-errtip"></div>
 				</label>
 				<label class="ui-block grupo-gasto hide">
-					<div class="label required"><h:outputText value="#{msg['lbl.desc.obsev']}" escape="false" />:</div>
+					<div class="label required label-text-gasto"><h:outputText value="#{msg['lbl.desc.obsev']}" escape="false" />:</div>
 					<h:inputText id="txtGasto" value="#{gasto.txtGasto}" maxlength="300" tabindex="102" styleClass="ui-input ui-text"/>
 					<div class="ui-errtip"></div>
 				</label>
@@ -103,6 +104,7 @@
 						icon="fas fa-arrow-alt-down" iconPos="right" value="Añadir" styleClass="btn btn-green success-btn" tabindex="104" />
 				</div>
 			</div>
+			<br class="clear"/>
 		</c:if>
 
 		<div class="navbar">

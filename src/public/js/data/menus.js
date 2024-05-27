@@ -19,7 +19,7 @@ export default [
         "nombre":"Inicio",
         "nombre_en":"Home",
         "titulo":"Nav Link Inicio",
-        "enlace":"/es/index.html",
+        "enlace":"/web/es/index.html",
         "orden":1,
         "mask":1,
         "creado":"2023-06-02T10:46:12.000Z"

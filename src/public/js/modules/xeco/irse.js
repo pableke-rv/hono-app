@@ -45,7 +45,7 @@ tabs.setViewEvent(5, tab5 => {
 	const isPernocta = () => (eTipoGasto.value == "9");
 	const fnChange = () => {
 		formIrse.setval("#tipoGasto", eTipoGasto.value)
-				.text("[for=txtGasto]", i18n.get("lblDescObserv"));
+				.text(".label-text-gasto", i18n.get("lblDescObserv"));
 		if (isPernocta())
 			grupos.mask(0b11011);
 		else if (isDoc())
@@ -53,7 +53,7 @@ tabs.setViewEvent(5, tab5 => {
 		else if (isExtra())
 			grupos.mask(0b10111);
 		else if ("4" == eTipoGasto.value) { //ISU y taxi
-			formIrse.text("[for=txtGasto]", i18n.get("lblDescTaxi"));
+			formIrse.text(".label-text-gasto", i18n.get("lblDescTaxi"));
 			grupos.mask(0b10111);
 		}
 		else if (0 < +eTipoGasto.value)
@@ -75,12 +75,8 @@ tabs.setViewEvent(5, tab5 => {
 	eTipoGasto.onchange = fnChange; // Change event
 	formIrse.setval("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
 			.setval("#fAloMin", start).setAttr("#fAloMin", "min", start).setAttr("#fAloMin", "max", end)
-			.setval("#fAloMax", end).setAttr("#fAloMax", "min", start).setAttr("#fAloMax", "max", end);
-
-	tab5.querySelector("[href='#open-file-gasto']").onclick = () => {
-		tab5.querySelector(".ui-fileupload-choose").click();
-		setTimeout(fnChange, 400); // wait to open dialog
-	}
+			.setval("#fAloMax", end).setAttr("#fAloMax", "min", start).setAttr("#fAloMax", "max", end).text(".filename", "");
+	pf.uploads(tab5.querySelector("[href='#open-file-gasto']"), fnChange);
 
 	document.querySelector("a#gasto-rutas").onclick = () => { // button in tab12
 		const etapas = document.querySelectorAll(".link-ruta:checked").map(el => el.value).join(",");
@@ -185,7 +181,6 @@ window.fnClone = () => i18n.confirm("msgReactivar") && loading();
 window.saveTab = () => dom.showOk(i18n.get("saveOk")).working();
 
 // Handle errors or parse server messages
-window.showAlerts = pf.showAlerts;
 window.showNextTab = window.showTab;
 window.viewTab = tabs.showTab;
 window.viewIrse = (xhr, status, args, tab) => {

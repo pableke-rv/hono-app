@@ -39,20 +39,20 @@ HTMLElement.prototype.sibling = function(selector) {
 }
 
 // Classes Configuration
+const ALERT_ACTIVE = "active";
 const ALERT_TEXT = "alert-text";
 const ALERT_CLOSE = "alert-close";
-const ALERT_ACTIVE = "active";
 
 function Alerts() {
 	const self = this; //self instance
-    const alerts = document.querySelector(".alerts");
+    const alerts = document.querySelector(".alerts"); // container
     const texts = alerts.getElementsByClassName(ALERT_TEXT);
     const close = alerts.getElementsByClassName(ALERT_CLOSE);
 
 	// Handle loading div
     const _loading = alerts.nextElementSibling; // loading animation = none
-	this.loading = () => { _loading.classList.add("fade60"); return self.closeAlerts(); }
-	this.working = () => { _loading.fadeOut(); return self; } // working animation = fadeOut
+	this.loading = () => { _loading.classList.add(ALERT_ACTIVE); return self.closeAlerts(); }
+	this.working = () => { _loading.classList.remove(ALERT_ACTIVE); return self; } // working animation = fadeOut
 
     // Scroll body to top on click and toggle back-to-top arrow
 	const _top = _loading.nextElementSibling;
@@ -61,31 +61,31 @@ function Alerts() {
 	_top.addEventListener("click", ev => { self.top(); ev.preventDefault(); });
 	window.onscroll = function() { _top.setVisible(this.scrollY > 80); }
 
-    const fnShow = (el, txt) => {
-        el.parentNode.classList.add(ALERT_ACTIVE);
-        el.setMsg(txt);
+    const fnShow = (alert, txt) => {
+        alert.classList.add(ALERT_ACTIVE);
+        alert.children[1].setMsg(txt); // text
         return self;
     }
-    const fnClose = el => el.classList.remove(ALERT_ACTIVE);
+    const fnClose = alert => alert.classList.remove(ALERT_ACTIVE);
     const fnCloseParent = el => fnClose(el.parentNode);
-    const setAlert = (el, txt) => {
+    const setAlert = (alert, txt) => {
         if (txt) { // Message exists
-            el.parentNode.eachSibling(fnClose); // close previous alerts
-            return fnShow(el, txt); // show specific alert typw
+            alert.eachSibling(fnClose); // close previous alerts
+            return fnShow(alert, txt); // show specific alert typw
         }
         return self;
     }
 
-    this.showOk = msg => setAlert(alerts[0], msg); //green
-    this.showInfo = msg => setAlert(alerts[1], msg); //blue
-    this.showWarn = msg => setAlert(alerts[2], msg); //yellow
-    this.showError = msg => setAlert(alerts[3], msg); //red
-    this.showAlerts = function(msgs) { //show posible multiple messages types
-        if (msgs) {
-            msgs.msgOk && fnShow(alerts[0], msgs.msgOk);
-            msgs.msgInfo && fnShow(alerts[1], msgs.msgInfo);
-            msgs.msgWarn && fnShow(alerts[2], msgs.msgWarn);
-            msgs.msgError && fnShow(alerts[3], msgs.msgError);
+    this.showOk = msg => setAlert(alerts.children[0], msg); //green
+    this.showInfo = msg => setAlert(alerts.children[1], msg); //blue
+    this.showWarn = msg => setAlert(alerts.children[2], msg); //yellow
+    this.showError = msg => setAlert(alerts.children[3], msg); //red
+    this.showAlerts = function(msgs) {
+        if (msgs) { //show posible multiple messages types
+            msgs.msgOk && fnShow(alerts.children[0], msgs.msgOk);
+            msgs.msgInfo && fnShow(alerts.children[1], msgs.msgInfo);
+            msgs.msgWarn && fnShow(alerts.children[2], msgs.msgWarn);
+            msgs.msgError && fnShow(alerts.children[3], msgs.msgError);
         }
         return self.working();
     }
@@ -96,13 +96,23 @@ function Alerts() {
     }
 
     close.forEach(el => el.addEventListener("click", ev => fnCloseParent(el))); // Add close click event
-    const fnAlerts = () => texts.forEach(el => { el.innerHTML && fnShow(el, el.innerHTML); }); // Alerts with contents
+    const fnAlerts = () => texts.forEach(el => { el.innerHTML && fnShow(el.parentNode, el.innerHTML); }); // Alerts with contents
     coll.ready(() => setTimeout(fnAlerts, 1)); // Show posible server messages after DOMContentLoaded event
 
-    // Global singleton instance
+    // Global handlers
     window.loading = self.loading;
     window.working = self.working;
-    window.showAlerts = (xhr, status, args) => self.showAlerts(coll.parse(args?.msgs)); // Hack PF (only for CV-UAE)
+
+    this.isLoaded = function(xhr, status, args) { // PF server error
+        return (xhr && (status == "success")) || !self.showError(xhr || "Error 500: Internal server error.").working();
+    }
+    window.showAlerts = (xhr, status, args) => {
+        if (!self.isLoaded(xhr, status, args))
+            return false; // Server error
+        const msgs = coll.parse(args?.msgs);
+        self.showAlerts(msgs); // show all messages
+        return !msgs?.msgError; // has error message
+    }
 }
 
 export default new Alerts();
