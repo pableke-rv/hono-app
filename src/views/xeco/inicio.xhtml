@@ -16,7 +16,8 @@
 		</f:metadata>
 	</ui:define>
 	<ui:define name="header">
-		<ui:include src="parts/head-css.xhtml"></ui:include>
+		<link rel="stylesheet" type="text/css" href="/uae/resources/css/jquery-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="/uae/resources/css/uae.css" />
 	</ui:define>
 	<ui:define name="outputScript">
 		<script type="text/javascript" src="/uae/resources/js/jquery-ui.min.js"></script>
@@ -31,8 +32,35 @@
 	</ui:define>
 
 	<ui:define name="body">
-		<ui:include src="parts/msgs.xhtml"></ui:include>
-
+		<div class="alerts">
+			<div class="hide alert alert-success">
+				<div class="alert-icon"><i class="fas fa-check-circle fa-2x"></i></div>
+				<div class="alert-text">#{uae.msgOk}</div>
+				<div class="alert-close"><i class="fas fa-times"></i></div>
+			</div>
+			<div class="hide alert alert-info">
+				<div class="alert-icon"><i class="fas fa-info fa-3x"></i></div>
+				<div class="alert-text">#{uae.msgInfo}</div>
+				<div class="alert-close"><i class="fas fa-times"></i></div>
+			</div>
+			<div class="hide alert alert-warn">
+				<div class="alert-icon"><i class="fas fa-exclamation-triangle fa-2x"></i></div>
+				<div class="alert-text">#{uae.msgWarn}</div>
+				<div class="alert-close"><i class="fas fa-times"></i></div>
+			</div>
+			<div class="hide alert alert-error alert-danger">
+				<div class="alert-icon"><i class="fas fa-exclamation fa-3x"></i></div>
+				<div class="alert-text"><h:outputText value="#{uae.msgErr}" escape="false" /></div>
+				<div class="alert-close"><i class="fas fa-times"></i></div>
+			</div>
+		</div>
+		<div class="loading hide">
+			<b class="far fa-circle-notch fa-3x fa-spin loading-content"></b>
+		</div>
+		<a id="back-to-top" href="#top" class="hide back-to-top">
+			<i class="fas fa-arrow-alt-up"></i>
+		</a>
+	
 		<h:form id="xeco" prependId="false" class="cards" onsubmit="MostrarProgreso();">
 			<div class="card-xeco">
 			<h2>Aplicaciones Económicas</h2>

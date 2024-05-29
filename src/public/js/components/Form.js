@@ -1,12 +1,11 @@
 
 import api from "./Api.js";
 import alerts from "./Alerts.js";
+import coll from "./CollectionHTML.js";
 import Table from "./Table.js";
 import Datalist from "./Datalist.js";
 import Autocomplete from "./Autocomplete.js";
 import i18n from "../i18n/langs.js";
-
-const divNull = document.createElement("div");
 
 export default function(form, opts) {
 	form = isstr(form) ? document.forms.findOne(form) : form; // Find by name
@@ -209,7 +208,7 @@ export default function(form, opts) {
 
 	// Form Validator
 	const fnSetTip = (el, msg) => {
-		const block = el.closest(opts.groupSelector) || divNull; // label tag container
+		const block = el.closest(opts.groupSelector) || coll.getDivNull(); // label tag container
 		block.getElementsByClassName(opts.tipErrorClass).text(msg);
 		return self;
 	}

@@ -113,8 +113,10 @@ function IrseOrganicas() {
 		return self.validAll();
 	}
 
-	this.init = () => {
-		organicas = ab.parse(dom.getText("#gastos-org")) || [];
+	this.init = form => {
+		dietas.init(); // init dietas
+		const divGastos = form.querySelector("#gastos-org");
+		organicas = ab.parse(divGastos.innerText) || [];
 		dom.onRenderTable("#multiorganicas", table => {
 			resume.imp1 = 0;
 			resume.totManutenciones = resume.totPernoctas = 0;
@@ -127,7 +129,8 @@ function IrseOrganicas() {
 				resume.totAc += (gasto.subtipo == "4") ? gasto.imp1 : 0;
 			});
 
-			dom.setValue("#imp-org", JSON.stringify(organicas))
+			divGastos.innerText = JSON.stringify(organicas);
+			dom.setValue("#imp-org", divGastos.innerText)
 				.setValue("#imp1-org", "").setFocus("#tipo-org");
 		});
 		return self;

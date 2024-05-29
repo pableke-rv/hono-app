@@ -42,16 +42,16 @@ function datalist(form, select, input, opts) {
 }
 
 function uploads(list, fn) {
-	list.onclick = ev => {
+	list.setClick(ev => {
 		const parent = ev.target.parentNode;
 		parent.querySelector("[type='file']").onchange = ev => {
 			const el = parent.querySelector(".filename");
             if (el) // Element to show file name
-                el.innerHTML = Array.from(ev.target.files).map(file => file.name).join(", ") || "";
+                el.innerHTML = ev.target.files[0]?.name || "";
             fn && fn(ev.target); // callback onchange input file
         }
 		parent.querySelector(".ui-fileupload-choose").click();
-	}
+	});
 }
 
 export default {

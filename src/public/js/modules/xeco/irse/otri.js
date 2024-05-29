@@ -14,7 +14,6 @@ function Otri() {
         return self;
     }
     this.congreso = (form, tab3) => {
-        rutas.update(); // Actualizo los tipos de rutas
         tab3.querySelectorAll(".rutas-vp").forEach(el => el.classList.toggle("hide", rutas.getNumRutasVp() < 1));
 
         const eCong = form.getInput("#congreso"); //congreso si/no

@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         onReset: () => formPresto.setval("#impDec").setval("#cd")
     });
 	const ecoInc = pf.datalist(formPresto, "#idEcoInc", "#idEcoIncPF", { emptyOption });
-    pf.uploads(formPresto.querySelectorAll("[href='#open-upload']"));
+    pf.uploads(formPresto.querySelectorAll(".pf-upload"));
     const lineas = formPresto.setTable("#partidas-inc", {
         msgEmptyTable: "No existen partidas asociadas a la solicitud",
         beforeRender: resume => { resume.imp = 0; },

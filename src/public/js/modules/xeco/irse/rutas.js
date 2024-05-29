@@ -1,5 +1,5 @@
 
-import Form from "../../../components/Form.js";
+import coll from "../../../components/CollectionHTML.js";
 import perfil from "./perfil.js";
 
 function IrseRutas() {
@@ -40,7 +40,8 @@ function IrseRutas() {
 		}
 	};
 
-	let rutas;
+	var rutas = [];
+	var divData = coll.getDivNull();
 
 	function fmtImpKm(ruta) {
 		return i18n.isoFloat(ruta.km1 * IRSE.gasolina)
@@ -96,10 +97,6 @@ function IrseRutas() {
 		resume.km1 = resume.totKm; //synonym
 		resume.impKm = resume.totKm * IRSE.gasolina;
 		resume.justifi = (resume.totKmCalc + .01) < resume.totKm;
-		return self;
-	}
-	this.save = function() {
-		dom.setValue("#etapas", JSON.stringify(rutas));
 		return self;
 	}
 	this.valid = function(ruta) {
@@ -185,8 +182,8 @@ function IrseRutas() {
 		return dom.isOk() && dom.loading();
 	}
 
-	this.update = () => {
-		rutas = ab.parse(dom.getText("#rutas-data")) || [];
+	function fnUpdate() {
+		rutas.splice(0, rutas.length, ...ab.parse(divData.innerText) || []); // same container
 		resume.out = rutas.filter(ruta => (ruta.desp != 1) && (ruta.desp != 3) && !ruta.g); //rutas no asociadas a factura
 		resume.sizeOut = resume.out.length; // size table footer
 		resume.vp = rutas.filter(ruta => (ruta.desp == 1)); //rutas en vp
@@ -194,9 +191,16 @@ function IrseRutas() {
 		dom.table("#rutas-out", resume.out, resume, STYLES);
 		return self;
 	}
+	this.save = function() {
+		divData.innerText = JSON.stringify(rutas);
+		dom.setValue("#etapas", divData.innerText);
+		return fnUpdate();
+	}
 
 	this.init = form => {
-		self.update(); // Actualizo los tipos de rutas
+		divData = form.querySelector("#rutas-data");
+		fnUpdate(); // Actualizo las rutas
+
 		if (perfil.isAutA7j() || perfil.is1Dia()) {
 			const ruta = Object.assign({}, self.getLoc(), rutas[0]);
 			rutas[0] = ruta; // Save new data (routes.length = 1)

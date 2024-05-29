@@ -106,7 +106,7 @@ function IrsePerfil() {
 		dom.update();
 
 		form.afterReset(() => {
-			organicas = [];
+			ab.reset(organicas);
 			i18n.set("imp", "");
 			eCol.parentNode.hide();
 			dom.table("#organicas", organicas, resume, STYLES);

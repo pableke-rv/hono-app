@@ -60,7 +60,7 @@ pf.ready(() => { // on load view
 						item => window.setUnidadesTramit(pf.param("org", item.value)));
 	window.isOrganica = () => formOrganicas.isValid(buzon.isValidOrganica);
 
-	pf.uploads(formBuzon.querySelectorAll("[href='#open-upload']"));
+	pf.uploads(formBuzon.querySelectorAll(".pf-upload"));
 	tabs.setShowEvent(2, tab => {
 		const files = formBuzon.querySelectorAll(".filename").filter(el => el.innerHTML);
 		const fileNames = files.map(el => el.innerHTML).join(", ");

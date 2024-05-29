@@ -2,11 +2,13 @@
 import coll from "./Collection.js";
 import i18n from "../i18n/langs.js";
 
+const divNull = document.createElement("div");
+//const TEXT = document.createElement("textarea");
 const HIDE_CLASS = "hide";
-const FADE_IN = "fadeIn";
-const FADE_OUT = "fadeOut";
-const SLIDE_IN = "slideIn";
-const SLIDE_OUT = "slideOut";
+//const FADE_IN = "fadeIn";
+//const FADE_OUT = "fadeOut";
+//const SLIDE_IN = "slideIn";
+//const SLIDE_OUT = "slideOut";
 
 const fnHide = el => el.classList.add(HIDE_CLASS);
 const fnShow = el => el.classList.remove(HIDE_CLASS);
@@ -83,7 +85,7 @@ HTMLElement.prototype.setReadonly = function(force) { // Update attribute and st
     return this;
 }
 
-function fnAnimate(el, addName, removeName) {
+/*function fnAnimate(el, addName, removeName) {
     el.classList.remove(HIDE_CLASS, removeName);
     el.classList.add(addName);
     return el;
@@ -91,12 +93,19 @@ function fnAnimate(el, addName, removeName) {
 HTMLElement.prototype.fadeIn = function() { return fnAnimate(this, FADE_IN, FADE_OUT); }
 HTMLElement.prototype.fadeOut = function() { return fnAnimate(this, FADE_OUT, FADE_IN); }
 HTMLElement.prototype.slideIn = function() { return fnAnimate(this, SLIDE_IN, SLIDE_OUT); }
-HTMLElement.prototype.slideOut = function() { return fnAnimate(this, SLIDE_OUT, SLIDE_IN); }
+HTMLElement.prototype.slideOut = function() { return fnAnimate(this, SLIDE_OUT, SLIDE_IN); }*/
 //HTMLElement.prototype.slideInRight = function() { return fnAnimate(this, SLIDE_IN_RIGHT, SLIDE_OUT_RIGHT); }
 //HTMLElement.prototype.slideOutRight = function() { return fnAnimate(this, SLIDE_OUT_RIGHT, SLIDE_IN_RIGHT); }
 
 // Commons initializations in the HTML client
 coll.ready = fn => document.addEventListener("DOMContentLoaded", fn);
 coll.ready(i18n.setLanguage); // Load client language
+coll.getDivNull = () => divNull;
+/*coll.copyToClipboard = str => {
+    TEXT.value = str;
+    TEXT.select(); //select text
+    document.execCommand("copy");
+    return self;
+}*/
 
 export default coll;

@@ -62,7 +62,7 @@ tabs.setViewEvent(5, tab5 => {
 			grupos.mask(0b00001);			
 	}
 
-	rutas.update(); // Actualizo los tipos de rutas
+	//rutas.update(); // Actualizo los tipos de rutas
 	// trayectos de ida y vuelta => al menos 2
 	tab5.querySelectorAll(".rutas-gt-1").forEach(el => el.classList.toggle("hide", rutas.size() < 2));
 	dom.table("#rutas-read", rutas.getAll(), rutas.getResume(), rutas.getStyles());
@@ -76,7 +76,7 @@ tabs.setViewEvent(5, tab5 => {
 	formIrse.setval("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
 			.setval("#fAloMin", start).setAttr("#fAloMin", "min", start).setAttr("#fAloMin", "max", end)
 			.setval("#fAloMax", end).setAttr("#fAloMax", "min", start).setAttr("#fAloMax", "max", end).text(".filename", "");
-	pf.uploads(tab5.querySelector("[href='#open-file-gasto']"), fnChange);
+	pf.uploads(tab5.querySelectorAll(".pf-upload"), fnChange);
 
 	document.querySelector("a#gasto-rutas").onclick = () => { // button in tab12
 		const etapas = document.querySelectorAll(".link-ruta:checked").map(el => el.value).join(",");
@@ -109,14 +109,9 @@ tabs.setViewEvent(5, tab5 => {
 });
 
 /*********** Tablas de resumen ***********/
-tabs.setInitEvent(6, dietas.init);
 tabs.setViewEvent(6, tab6 => {
-	dietas.render(); // Init dietas
-	const gasolina = tab6.querySelector("#imp-gasolina-km");
-	if (gasolina)
-		gasolina.innerHTML = i18n.isoFloat(IRSE.gasolina);
+	dietas.render(tab6); // Init dietas
 	tab6.querySelector("#imp-km").innerHTML = i18n.isoFloat(rutas.getImpKm()) + " €";
-	tab6.querySelector("#imp-bruto").innerHTML = i18n.isoFloat(organicas.getImpTotal()) + " €";
 	tab6.querySelectorAll(".rutas-vp").forEach(el => el.classList.toggle("hide", rutas.getNumRutasVp() < 1));
 });
 
@@ -130,8 +125,7 @@ tabs.setShowEvent(9, tab9 => {
 		formIrse.setVisible("#entidades", !es).setVisible(".swift-block,#banco", es);
 	}
 
-	//dietas.render(); // Force dietas recalc
-	organicas.init().build(); // always auto build table organicas/gastos;
+	organicas.build(); // always auto build table organicas/gastos;
 	const cuentas = formIrse.getInput("#cuentas");
 	formIrse.setVisible("#grupo-iban", cuentas.options.length <= 1) // existen cuentas?
 			.onChangeInput("#urgente", ev => formIrse.setVisible(".grp-urgente", ev.target.value == "2"))
@@ -191,9 +185,10 @@ window.viewIrse = (xhr, status, args, tab) => {
 
 	// Init IRSE form
 	formIrse = new Form("#xeco-irse");
-	formIrse.disabled(true, ".ui-state-disabled");
+	formIrse.readonly(true, ".ui-state-disabled");
 	perfil.init(formIrse);
 	rutas.init(formIrse);
+	organicas.init(formIrse);
 
 	dom.tr(".i18n-tr-h1"); //local traductor
 	tab = tab ?? IRSE.tab; //Tab ID to show
