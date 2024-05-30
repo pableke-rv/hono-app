@@ -13,10 +13,9 @@ function Buzon() {
     this.setJustPagoRequired = required => { justPagoRequired = required; return self; }
     this.isJustPagoRequired = () => justPagoRequired;
 
-	this.lastRow = count => {
+	this.lastRow = () => {
         return `<tr class="tb-data">
-            <td class="text-center">${count}</td>
-            <td id="otras" colspan="5">OTRAS SITUACIONES (acciones provisionalmente sin orgánica u otras circunstancias)</td>
+            <td id="otras" colspan="3">OTRAS SITUACIONES (acciones provisionalmente sin orgánica u otras circunstancias)</td>
             <td class="text-right">
                 <a href="#buzon-otros" class="action text-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
             </td>
@@ -26,17 +25,16 @@ function Buzon() {
         const report = (data.mask & 4) ? "#modal" : "#report"; // organica multigrupo / monogrupo
         const anclar = '<a href="#anclar" class="action text-red row-action" title="Marca la orgánica como favorita"><i class="fas fa-thumbtack action text-blue"></i></a>';
         const desanclar = '<a href="#desanclar" class="action text-red row-action" title="Marca la orgánica como normal"><i class="fas fa-thumbtack action text-green"></i></a>';
-        //const remove = (data.mask & 1) ? '<a href="#remove" class="action text-red row-action" title="Desvincular orgánica"><i class="fas fa-times"></i></a>' : "";
-        const last = (status.count == status.size) ? self.lastRow(status.count + 1) : "";
+        const remove = (data.acc & 1) ? '<a href="#remove" class="action text-red row-action" title="Desvincular orgánica"><i class="fas fa-times"></i></a>' : "";
+        const last = (status.count == status.size) ? self.lastRow() : "";
         return `<tr class="tb-data">
-            <td class="text-center">${status.count}</td>
             <td>${data.oCod}</td><td>${data.oDesc}</td>
-            <td class="text-center">${data.utCod}</td><td>${data.utDesc}</td>
             <td class="text-right">${i18n.isoFloat(data.cd)} €</td>
             <td class="text-right">
                 ${(data.mask & 2) ? desanclar : anclar}
                 <a href="${report}" class="action text-blue row-action" title="Informe al Proveedor"><i class="fal fa-file-pdf"></i></a>
                 <a href="#buzon" class="action text-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
+                ${remove}
             </td>
         </tr>` + last;
     }

@@ -24,6 +24,7 @@ function tr(str) {
 
 function StringBox() {
 	const self = this; //self instance
+    const sysdate = (new Date()).toISOString(); //global sysdate
 
 	this.isstr = isstr;
     this.size = fnSize;
@@ -73,12 +74,12 @@ function StringBox() {
     }
 
     // String Datetime handlers
-	this.toDate = str => str ? new Date(str) : null;
-	this.inYear = (str1, str2) => str1.startsWith(self.substring(str2, 0, 4)); //yyyy
-	this.inMonth = (str1, str2) => str1.startsWith(self.substring(str2, 0, 7)); //yyyy-mm
-    this.inDay = (str1, str2) => str1.startsWith(self.substring(str2, 0, 10)); //yyyy-mm-dd
-	this.inHour = (str1, str2) => str1.startsWith(self.substring(str2, 0, 13)); //yyyy-mm-ddThh
-	this.diffDate = (str1, str2) => (Date.parse(str1) - Date.parse(str2));
+	this.toDate = str => str ? new Date(str) : null; // Build new Date instance
+	this.inYear = (str1, str2) => self.starts(str1, self.substring(str2 || sysdate, 0, 4)); //yyyy
+	this.inMonth = (str1, str2) => self.starts(str1, self.substring(str2 || sysdate, 0, 7)); //yyyy-mm
+    this.inDay = (str1, str2) => self.starts(str1, self.substring(str2 || sysdate, 0, 10)); //yyyy-mm-dd
+	this.inHour = (str1, str2) => self.starts(str1, self.substring(str2 || sysdate, 0, 13)); //yyyy-mm-ddThh
+	this.diffDate = (str1, str2) => (Date.parse(str1) - Date.parse(str2 || sysdate)); // get timestamp 
     this.isoDate = str => str && str.substring(0, 10); //yyyy-mm-dd
     this.isoTime = str => str && str.substring(11, 19); //hh:MM:ss
     this.isoTimeShort = str => str && str.substring(11, 16); //hh:MM

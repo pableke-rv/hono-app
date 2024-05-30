@@ -103,8 +103,8 @@ function Alerts() {
     window.loading = self.loading;
     window.working = self.working;
 
-    this.isLoaded = function(xhr, status, args) { // PF server error
-        return (xhr && (status == "success")) || !self.showError(xhr || "Error 500: Internal server error.").working();
+    this.isLoaded = function(xhr, status, args) { // PF server error xhr
+        return (xhr && (status == "success")) || !self.showError(xhr).working();
     }
     window.showAlerts = (xhr, status, args) => {
         if (!self.isLoaded(xhr, status, args))

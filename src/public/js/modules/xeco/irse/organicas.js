@@ -29,6 +29,7 @@ function IrseOrganicas() {
 	this.getTotDietas = function() { return dietas.getImpPercibir() + IRSE.impExtraDietas; }
 	this.getImpBruto = () => (self.getTotTransporte() + self.getTotPernoctas() + self.getTotDietas() + IRSE.totAc);
 	this.getImpTotal = () => self.getImpBruto() - IRSE.irpf;
+	this.getTotalFmt = () => i18n.isoFloat(self.getImpTotal()) + " €";
 
 	this.validAll = function() {
 		if (!nb.eq01(resume.totManutenciones, self.getTotDietas()))

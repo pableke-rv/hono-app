@@ -39,10 +39,11 @@ tabs.setViewEvent(5, tab5 => {
 	if (!eTipoGasto)
 		return; // modo solo consulta
 
-	const grupos = tab5.querySelectorAll(".grupo-gasto");
+	const isTaxi = () => (eTipoGasto.value == "4"); //ISU y taxi
+	const isPernocta = () => (eTipoGasto.value == "9"); //Tipo pernocta
 	const isDoc = () => ["201", "202", "204", "205", "206"].includes(eTipoGasto.value);
 	const isExtra = () => ["301", "302", "303", "304"].includes(eTipoGasto.value);
-	const isPernocta = () => (eTipoGasto.value == "9");
+	const grupos = tab5.querySelectorAll(".grupo-gasto");
 	const fnChange = () => {
 		formIrse.setval("#tipoGasto", eTipoGasto.value)
 				.text(".label-text-gasto", i18n.get("lblDescObserv"));
@@ -52,7 +53,7 @@ tabs.setViewEvent(5, tab5 => {
 			grupos.mask(0b10101);
 		else if (isExtra())
 			grupos.mask(0b10111);
-		else if ("4" == eTipoGasto.value) { //ISU y taxi
+		else if (isTaxi()) { //ISU y taxi
 			formIrse.text(".label-text-gasto", i18n.get("lblDescTaxi"));
 			grupos.mask(0b10111);
 		}
@@ -96,6 +97,8 @@ tabs.setViewEvent(5, tab5 => {
 			.required(eTipoGasto, "errTipoGasto", "errRequired")
 		if (dom.isError())
 			return false;
+		if (isTaxi()) //ISU y taxi
+			return dom.required("#txtGasto", "errRequired").isOk();
 		if (isExtra())
 			return dom.required("#txtExtra", "errJustifiExtra", "errRequired").isOk();
 		if ((eTipoGasto.value == "8") && !formIrse.valueOf("#trayectos")) //factura sin trayectos asociados => tab-12

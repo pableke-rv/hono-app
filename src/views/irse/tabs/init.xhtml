@@ -26,7 +26,7 @@
 						<a href="#" onclick="clickVinc();"><h:outputText value="#{msg['uae.irse.index.msg.vinc']}" escape="false" /></a>
 					</li>
 				</c:if>
-				<c:if test="#{inicio.tester}">
+				<c:if test="#{inicio.uae or inicio.otri}">
 					<li>
 						<a href="#" onclick="viewTab(16);">Informe ISU</a>
 					</li>

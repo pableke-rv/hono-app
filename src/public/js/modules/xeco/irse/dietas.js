@@ -29,16 +29,12 @@ function IrseDietas() {
 		const divData = tab6.querySelector("#dietas-data") || coll.getDivNull();
 		const gasolina = tab6.querySelector("#imp-gasolina-km") || coll.getDivNull();
 		gasolina.innerHTML = i18n.isoFloat(IRSE.gasolina);
-		bruto.innerHTML = i18n.isoFloat(organicas.getImpTotal()) + " €";
 
 		const manutenciones = ab.parse(divData.innerText) || [];
 		dom.onChangeTable("#manutenciones", table => {
 			const tr = resume.row;
 			const dieta = resume.data;
 			dieta.imp1 = +resume.element.value;
-
-			divData.innerText = JSON.stringify(manutenciones);
-			bruto.innerHTML = i18n.isoFloat(organicas.getImpTotal()) + " €";
 
 			dom.tfoot(table, resume, STYLES)
 				.setText(tr.cells[9], i18n.isoFloat(dieta.reducido) + " €")
@@ -96,10 +92,15 @@ function IrseDietas() {
 				resume.reducido += last.reducido;
 				resume.percibir += last.percibir;
 			}
+
+			divData.innerText = JSON.stringify(manutenciones);
+			bruto.innerHTML = organicas.getTotalFmt();
 		});
 
 		dom.table("#manutenciones", manutenciones, resume, STYLES)
 			.setHtml("#imp-dietas", i18n.isoFloat(resume.percibir) + " €");
+
+		bruto.innerHTML = organicas.getTotalFmt();
 		return self;
 	}
 }

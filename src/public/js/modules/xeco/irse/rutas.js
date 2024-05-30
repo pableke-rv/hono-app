@@ -1,5 +1,6 @@
 
 import coll from "../../../components/CollectionHTML.js";
+import util from "../../../components/StringBox.js";
 import perfil from "./perfil.js";
 
 function IrseRutas() {
@@ -105,10 +106,8 @@ function IrseRutas() {
 			dom.addError("#origen", "errOrigen", "errRequired");
 		if (ruta.desp == 1)
 			dom.required("#matricula", "errMatricula", "errRequired");
-		//if (!dt.isValid(ruta.dt1) || !dt.isValid(ruta.dt2))
-			//return !dom.addError("#f1", "errFechasRuta");
-		if (sb.future(ruta.dt1))
-			return !dom.addError("#f1", "errFechaFutura");
+		if (!util.inYear(ruta.dt1))
+			return !dom.addError("#f1", "errFechasRuta");
 		if (ruta.dt1 > ruta.dt2)
 			return !dom.addError("#f1", "errFechasOrden");
 		return dom.isOk();

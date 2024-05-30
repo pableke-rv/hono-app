@@ -28,7 +28,7 @@ pf.ready(() => { // on load view
 
 	const formOrganicas = new Form("#xeco-organicas");
 	const table = formOrganicas.setTable("#organcias", {
-		rowEmptyTable: buzon.lastRow(1),
+		rowEmptyTable: buzon.lastRow(),
 		onRender: buzon.row,
 		onFooter: buzon.tfoot,
 		onRemove: data => fnSend("remove", data)
