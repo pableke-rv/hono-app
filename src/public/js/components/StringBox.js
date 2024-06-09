@@ -74,6 +74,7 @@ function StringBox() {
     }
 
     // String Datetime handlers
+	this.sysdate = () => sysdate;
 	this.toDate = str => str ? new Date(str) : null; // Build new Date instance
 	this.inYear = (str1, str2) => self.starts(str1, self.substring(str2 || sysdate, 0, 4)); //yyyy
 	this.inMonth = (str1, str2) => self.starts(str1, self.substring(str2 || sysdate, 0, 7)); //yyyy-mm
@@ -83,7 +84,8 @@ function StringBox() {
     this.isoDate = str => str && str.substring(0, 10); //yyyy-mm-dd
     this.isoTime = str => str && str.substring(11, 19); //hh:MM:ss
     this.isoTimeShort = str => str && str.substring(11, 16); //hh:MM
-    this.getHours = str => str && +str.substring(11, 13); //hh int format
+    this.getYear = str => (str || sysdate).substring(0, 4); //yyyy string format
+    this.getHours = str => +(str || sysdate).substring(11, 13); //hh int format
 
     // Chunk string in multiple parts
 	this.test = (str, re) => re.test(str) ? str : null;

@@ -99,7 +99,6 @@ function IrseDietas() {
 
 		dom.table("#manutenciones", manutenciones, resume, STYLES)
 			.setHtml("#imp-dietas", i18n.isoFloat(resume.percibir) + " €");
-
 		bruto.innerHTML = organicas.getTotalFmt();
 		return self;
 	}

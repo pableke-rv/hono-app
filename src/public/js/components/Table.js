@@ -22,6 +22,7 @@ export default function(table, opts) {
     opts.beforeRender = opts.beforeRender || globalThis.void;
     opts.onHeader = opts.onHeader || (() => table.tHead.innerHTML);
     opts.onRender = opts.onRender || globalThis.void;
+    opts.onLastRow = opts.onLastRow || globalThis.none;
     opts.onFooter = opts.onFooter || (() => table.tFoot.innerHTML);
     opts.afterRender = opts.afterRender || globalThis.void;
     opts.onRemove = opts.onRemove || fnTrue;
@@ -40,16 +41,22 @@ export default function(table, opts) {
     this.getData = () => _rows;
     this.getIndex = () => _index;
     this.getResume = () => RESUME;
+
     this.getItem = i => _rows[i ?? _index];
     this.isItem = () => (_index > -1) && (_index < _rows.length);
     this.getCurrentItem = () => _rows[_index];
     this.getLastItem = () => _rows.at(-1);
-    this.getCurrentRow = () => tBody.children[_index];
     this.isEmpty = () => !_rows.length;
     this.size = () => _rows.length;
 
     this.getTable = () => table;
-	this.querySelector = selector => table.querySelector(selector); // Child element
+    this.getBody = () => tBody;
+    this.getRow = i => tBody.rows[i ?? _index];
+    this.getRows = () => tBody.rows;
+    this.getCurrentRow = () => tBody.rows[_index];
+    this.getLastRow = () => tBody.lastElementChild;
+
+    this.querySelector = selector => table.querySelector(selector); // Child element
 	this.querySelectorAll = selector => table.querySelectorAll(selector); // Children elements
     this.html = selector => table.querySelector(selector).innerHTML; // read text
 
@@ -68,7 +75,10 @@ export default function(table, opts) {
         opts.beforeRender(RESUME); // Fired init. event before render
         table.tHead.innerHTML = opts.onHeader(RESUME); // Render formatted header
         RESUME.columns = coll.size(table.tHead.rows[0]?.cells); // Number of columns <th>
-        tBody.innerHTML = RESUME.size ? coll.render(_rows, opts.onRender, RESUME) : opts.rowEmptyTable; // body
+        if (RESUME.size) // has data
+            tBody.innerHTML = coll.render(_rows, opts.onRender, RESUME) + opts.onLastRow(RESUME);
+        else
+            tBody.innerHTML = opts.rowEmptyTable; // specific empty row
         table.tFoot.innerHTML = opts.onFooter(RESUME); // render formatted footer
         opts.afterRender(RESUME); // After body and footer is rendered
         tBody.classList.add(opts.activeClass); // Add styles (animation)

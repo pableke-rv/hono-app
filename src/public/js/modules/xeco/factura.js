@@ -38,8 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		const data = fiscal[keyEco + factura.getSubtipo()] || fiscal.default;
-        formFact.setData(data, ".ui-fiscal").setval("#nifTercero", acTercero.getCode())
-				.setVisible("#ac-recibo", factura.isRecibo()).setVisible(".firma-gaca", factura.isFirmaGaca());
+        formFact.setData(data, ".ui-fiscal").setval("#nifTercero", acTercero.getCode()).setVisible("#ac-recibo", factura.isRecibo());
 		updateSujeto(data.sujeto);
 		fnCalcIva(data.iva);
 	}
@@ -59,11 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		minLength: 5, //reduce matches
 		source: term => pf.sendTerm("rcFindTercero", term),
 		render: item => item.label,
-		select: item => {
-			updateView(factura.getSubtipo());
-			pf.sendId("rcDelegaciones", item.value);
-			return item.value
-		},
+		select: item => { pf.sendId("rcDelegaciones", item.value); return item.value },
+		afterSelect: () => updateView(factura.getSubtipo()),
 		onReset: delegaciones.reset
 	});
 	const acOrganica = formFact.setAcItems("#acOrganica", term => pf.sendTerm("rcFindOrganica", term));
@@ -107,8 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				.setVisible(".firmable-only", factura.isFirmable()).setVisible(".rechazable-only", factura.isRechazable())
 				.setVisible(".show-recibo", factura.isRecibo()).setVisible(".show-factura", factura.isFactura()).setVisible(".show-cp", factura.isCartaPago())
 				.setVisible(".show-factura-uae", uxxiec.isUae() && factura.isFactura()).setVisible(".show-uae", uxxiec.isUae())
-				.setVisible(".show-gestor", factura.isFace() || factura.isPlataforma()).setVisible(".show-face", factura.isFace())
-				.setVisible(".firma-gaca", factura.isFirmaGaca());
+				.setVisible(".show-gestor", factura.isFace() || factura.isPlataforma()).setVisible(".show-face", factura.isFace());
 		delegaciones.setItems(JSON.read(args.delegaciones)); // cargo las delegaciones
 		lineas.render(JSON.read(args.data)); // Load conceptos and iva input
 		formFact.readonly(!factura.isEditableUae(), ".editable-uae"); // disable iva input
@@ -123,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		factura.setLineas(lineas);
 		if (formFact.isValid(factura.validate)) {
 			formFact.saveTable("#lineas-json", lineas);
-			return i18n.confirm("msgSend");
+			return i18n.confirm("msgSend") && loading();
 		}
 		return false;
 	}

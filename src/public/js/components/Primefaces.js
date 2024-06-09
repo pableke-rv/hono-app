@@ -2,16 +2,14 @@
 import alerts from "./Alerts.js";
 import coll from "./CollectionHTML.js";
 
-const PARAMS = []; // params container
 function param(name, value) {
-    PARAMS.splice(0, PARAMS.length, { name, value }); // reset array
-    return PARAMS;
+    return [{ name, value }];
 }
 function params(data) {
-    PARAMS.splice(0, PARAMS.length); // reset array
+    const params = []; // container
     for (const name in data) // Object to params
-        PARAMS.push({ name, value: data[name] });
-    return PARAMS;
+        params.push({ name, value: data[name] });
+    return params;
 }
 // p:remoteCommand server call
 function send(action, params) {

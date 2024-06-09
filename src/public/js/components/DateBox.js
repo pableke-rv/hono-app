@@ -7,11 +7,21 @@ function DateBox() {
 
 	//const lpad = val => (val < 10) ? ("0" + val) : val; //always 2 digits
 	const isDate = date => date && date.getTime && !isNaN(date.getTime()); // full date validator
+	const isLeapYear = year => ((year & 3) == 0) && (((year % 25) != 0) || ((year & 15) == 0)); //año bisiesto?
 	const daysInMonth = (y, m) => daysInMonths[m] + ((m == 1) && isLeapYear(y));
 
 	this.isValid = isDate;
+	this.sysdate = () => sysdate;
 	this.toDate = str => str ? new Date(str) : null;
-	this.isLeap = date => date && isLeapYear(date.getFullYear());
+	this.getTime = date => date ? date.getTime() : Date.now();
+	// Changes the Date object, and returns its new timestamp. If timeValue is NaN => Invalid Date
+	this.setTime = (date, time) => {
+		date = date || sysdate;
+		return date.setTime(time || Date.now());
+	}
+
+	this.clone = date => new Date(self.getTime(date));
+	this.isLeap = date => isLeapYear((date || sysdate).getFullYear());
 	this.getDays = (d1, d2) => Math.round(Math.abs((d1 - d2) / ONE_DAY));
 	this.daysInMonth = date => date ? daysInMonth(date.getFullYear(), date.getMonth()) : 0;
 
@@ -26,6 +36,7 @@ function DateBox() {
 	this.eq = (d1, d2) => isDate(d1) && isDate(d2) && (d1.getTime() == d2.getTime());
 	this.ge = (d1, d2) => isDate(d1) && isDate(d2) && (d1.getTime() >= d2.getTime());
 	this.gt = (d1, d2) => isDate(d1) && isDate(d2) && (d1.getTime() > d2.getTime());
+	this.inRange = (d, min, max) => ((min.getTime() <= d.getTime()) && (d.getTime() <= max.getTime()));
 	this.diffDate = (d1, d2) => (d1.getTime() - d2.getTime());
 	this.cmp = function(d1, d2) {
 		if (d1 && d2)
@@ -45,6 +56,10 @@ function DateBox() {
 // Extends Date prototype
 Date.prototype.addHours = function(hours) {
     this.setHours(this.getHours() + hours);
+    return this;
+}
+Date.prototype.addDays = function(days) {
+    this.setDate(this.getDate() + days);
     return this;
 }
 Date.prototype.diffDays = function(date) { // Days between to dates

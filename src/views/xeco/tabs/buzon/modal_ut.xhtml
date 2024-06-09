@@ -12,8 +12,14 @@
             <h2>Unidades Tramitadoras</h2>
             <a href="#close" class="modal-close action text-gray"><i class="fas fa-times"></i></a>
         </div>
-        <div class="modal-body">
-            <p>One modal example here! :D</p>
+        <div class="modal-body ui-blocks">
+            <label id="unidades-tramit" class="ui-block-xl">
+                <div class="label required"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</div>
+                <h:selectOneMenu id="utProv" value="#{buzon.idUnidadTramit}" styleClass="ui-input ui-select ui-number" tabindex="2">
+                    <f:selectItems value="#{buzon.unidadesTramit}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
+                </h:selectOneMenu>
+                <div class="ui-errtip"></div>
+            </label>
         </div>
         <div class="modal-footer">
             <a href="#close" class="btn btn-info modal-close"><i class="fas fa-times btn-icon-left"></i>Cerrar</a>

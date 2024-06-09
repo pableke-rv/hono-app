@@ -63,7 +63,6 @@ tabs.setViewEvent(5, tab5 => {
 			grupos.mask(0b00001);			
 	}
 
-	//rutas.update(); // Actualizo los tipos de rutas
 	// trayectos de ida y vuelta => al menos 2
 	tab5.querySelectorAll(".rutas-gt-1").forEach(el => el.classList.toggle("hide", rutas.size() < 2));
 	dom.table("#rutas-read", rutas.getAll(), rutas.getResume(), rutas.getStyles());
@@ -114,7 +113,6 @@ tabs.setViewEvent(5, tab5 => {
 /*********** Tablas de resumen ***********/
 tabs.setViewEvent(6, tab6 => {
 	dietas.render(tab6); // Init dietas
-	tab6.querySelector("#imp-km").innerHTML = i18n.isoFloat(rutas.getImpKm()) + " €";
 	tab6.querySelectorAll(".rutas-vp").forEach(el => el.classList.toggle("hide", rutas.getNumRutasVp() < 1));
 });
 

@@ -149,7 +149,7 @@
 				</div>
 
 				<div class="ui-blocks show-uae">
-					<label class="ui-block">
+					<label class="ui-block-xl">
 						<div class="label">Económica:</div>
 						<h:selectOneMenu id="economica" value="#{fact.solicitud.economica}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
 							<f:selectItem itemValue="" itemLabel="Seleccione una económica" itemEscaped="false" />
@@ -157,7 +157,7 @@
 						</h:selectOneMenu>
 						<div class="ui-errtip"></div> 
 					</label>
-					<label class="ui-block">
+					<label class="ui-block-xl">
 						<div class="label">IBAN:</div>
 						<h:selectOneMenu id="iban" value="#{fact.solicitud.iban}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
 							<f:selectItem itemValue="" itemLabel="Seleccione un IBAN" itemEscaped="false" />
@@ -197,14 +197,11 @@
 					</label>
 				</div>
 
-				<div class="ui-blocks">
-				<label class="ui-block-row hide">
+				<div class="ui-blocks hide">
+				<label class="ui-block-row">
 					<div class="label required"><h:outputText value="#{msg['lbl.observaciones']}" escape="false" />:</div>
 					<h:inputTextarea id="memo" value="#{fact.solicitud.memoriaView}" styleClass="ui-input ui-ta" tabindex="13" maxlength="600" title="Observaciones de la factura" />
 					<div class="ui-errtip"></div>
-				</label>
-				<label class="ui-block firma-gaca">
-					<h:selectBooleanCheckbox value="#{fact.solicitud.gaca}" styleClass="editable-uae" tabindex="14"/> Requiere firma GACA
 				</label>
 				</div>
 			</div>

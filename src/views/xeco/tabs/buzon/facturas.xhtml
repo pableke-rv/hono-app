@@ -10,13 +10,13 @@
     <div class="card-xeco">
         <h2>Buzón de Facturas</h2>
         <div class="ui-blocks">
-        <div class="ui-block">
-            <label for="tipo" class="required"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</label>
+        <label class="ui-block">
+            <div class="label required"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</div>
             <h:selectOneMenu id="tipo" value="#{buzon.tipo}" styleClass="ui-input ui-select" tabindex="1">
                 <f:selectItem itemValue="1" itemLabel="Pagar al Proveedor" />
                 <f:selectItem itemValue="2" itemLabel="Pagar a #{uae.nombre}" />
             </h:selectOneMenu>
-        </div>
+        </label>
         <div class="ui-block-row">
             <p:fileUpload id="factura" label="" value="#{buzon.factura}" fileUploadListener="#{buzon.uploadFactura}" mode="advanced" auto="true" styleClass="hide" />
             <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Seleccionar 1 Factura</a>
@@ -31,19 +31,18 @@
             <input type="checkbox" checked="checked" disabled="disabled" />
             <b>Declaro responsablemente que he pagado en nombre de la Universidad la factura remitida y que conservo a disposición de ésta el justificante del pago.</b>
         </div>
-        <div class="ui-block">
-            <h:inputHidden id="buzon-id-org" value="#{buzon.idOrganica}" />
-            <h:inputHidden id="buzon-cod-org" value="#{buzon.acOrganica}" />
-            <label for="tramit-all" class="required"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</label>
-            <h:selectOneMenu id="tramit-all" value="#{buzon.idUnidadTramit}" styleClass="ui-input ui-select" tabindex="1">
-                <f:selectItems value="#{buzon.allUnidadesTramit}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
+        <label class="ui-block">
+            <h:inputHidden id="buzon-cod-org" value="#{buzon.codOrganica}" />
+            <div class="label required"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</div>
+            <h:selectOneMenu id="utFact" value="#{buzon.idUnidadTramit}" styleClass="ui-input ui-select" tabindex="1">
+                <f:selectItems value="#{buzon.unidadesTramit}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
             </h:selectOneMenu>
             <div class="ui-errtip"></div>
-        </div>
-        <div class="ui-block-row">
-            <label for="desc">Observaciones para el gestor (si son necesarias):</label>
+        </label>
+        <label class="ui-block-row">
+            <div class="label">Observaciones para el gestor (si son necesarias):</div>
             <h:inputTextarea id="desc" value="#{buzon.desc}" styleClass="ui-input ui-ta" />
-        </div>
+        </label>
         </div>
     </div>
     <div>

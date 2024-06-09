@@ -1,12 +1,15 @@
 
 import coll from "../../../components/CollectionHTML.js";
-import util from "../../../components/StringBox.js";
+import dt from "../../../components/DateBox.js";
 import perfil from "./perfil.js";
+import organicas from "./organicas.js";
 
 function IrseRutas() {
 	const self = this; //self instance
 	const CT_LAT = 37.62568269999999;
 	const CT_LNG = -0.9965839000000187;
+	const MIN_DATE = dt.clone().addDays(-365); //1 año antes
+	const MAX_DATE = dt.clone().addDays(180); //6 meses despues
 
 	const MUN = { //default ruta MUN
 		desp: 1, mask: 1, // VP y principal 
@@ -41,8 +44,7 @@ function IrseRutas() {
 		}
 	};
 
-	var rutas = [];
-	var divData = coll.getDivNull();
+	var rutas, divData, bruto, elImpKm, justifiKm;
 
 	function fmtImpKm(ruta) {
 		return i18n.isoFloat(ruta.km1 * IRSE.gasolina)
@@ -89,24 +91,13 @@ function IrseRutas() {
 		return ruta;
 	}*/
 
-	this.resume = function() {
-		resume.totKm = resume.totKmCalc = 0;
-		rutas.forEach(ruta => {
-			resume.totKm += nb.round(ruta.km1 || 0);
-			resume.totKmCalc += nb.round(ruta.km2 || 0);
-		});
-		resume.km1 = resume.totKm; //synonym
-		resume.impKm = resume.totKm * IRSE.gasolina;
-		resume.justifi = (resume.totKmCalc + .01) < resume.totKm;
-		return self;
-	}
 	this.valid = function(ruta) {
 		dom.closeAlerts();
 		if (!ruta.origen)
 			dom.addError("#origen", "errOrigen", "errRequired");
 		if (ruta.desp == 1)
 			dom.required("#matricula", "errMatricula", "errRequired");
-		if (!util.inYear(ruta.dt1))
+		if (!dt.inRange(new Date(ruta.dt1), MIN_DATE, MAX_DATE))
 			return !dom.addError("#f1", "errFechasRuta");
 		if (ruta.dt1 > ruta.dt2)
 			return !dom.addError("#f1", "errFechasOrden");
@@ -181,31 +172,51 @@ function IrseRutas() {
 		return dom.isOk() && dom.loading();
 	}
 
-	function fnUpdate() {
-		rutas.splice(0, rutas.length, ...ab.parse(divData.innerText) || []); // same container
+	function fnRecalc() {
+		resume.totKm = resume.totKmCalc = 0;
+		resume.vp.forEach(ruta => {
+			resume.totKm += nb.round(ruta.km1);
+			resume.totKmCalc += nb.round(ruta.km2);
+		});
+		resume.km1 = resume.totKm; //synonym
+		resume.impKm = resume.totKm * IRSE.gasolina;
+		resume.justifi = (resume.totKmCalc + .01) < resume.totKm;
+
+		elImpKm.innerHTML = i18n.isoFloat(self.getImpKm()) + " €";
+		bruto.innerHTML = organicas.getTotalFmt();
+		justifiKm.setVisible(resume.justifi);
+		return self;
+	}
+	function fnResume() {
 		resume.out = rutas.filter(ruta => (ruta.desp != 1) && (ruta.desp != 3) && !ruta.g); //rutas no asociadas a factura
 		resume.sizeOut = resume.out.length; // size table footer
 		resume.vp = rutas.filter(ruta => (ruta.desp == 1)); //rutas en vp
 		resume.sizeVp = resume.vp.length; // size table footer
-		dom.table("#rutas-out", resume.out, resume, STYLES);
-		return self;
+
+		// Actualizo las tablas relacionadas
+		dom.table("#rutas-out", resume.out, resume, STYLES)
+			.table("#vp", resume.vp, resume, STYLES);
+		resume.size = rutas.length; // save global size
+		return fnRecalc();
 	}
-	this.save = function() {
+	function fnSave() {
 		divData.innerText = JSON.stringify(rutas);
 		dom.setValue("#etapas", divData.innerText);
-		return fnUpdate();
 	}
 
 	this.init = form => {
+		bruto = form.querySelector("#imp-bruto");
 		divData = form.querySelector("#rutas-data");
-		fnUpdate(); // Actualizo las rutas
+		elImpKm = form.querySelector("#imp-km") || coll.getDivNull();
+		justifiKm = form.querySelector(".justifi-km") || coll.getDivNull();
+		rutas = ab.parse(divData.innerText) || []; // container
+		fnResume(); // Actualizo rutas e importes
 
 		if (perfil.isAutA7j() || perfil.is1Dia()) {
 			const ruta = Object.assign({}, self.getLoc(), rutas[0]);
 			rutas[0] = ruta; // Save new data (routes.length = 1)
 
-			self.resume(); // actualizo importes
-			form.change(ev => { self.resume().save(); }) // Any input change => save all rutas
+			form.change(ev => { fnResume(); fnSave(); }) // Any input change => save all rutas
 				.setField("#origen", ruta.origen, ev => { ruta.origen = ruta.destino = ev.target.value; })
 				.setField("#desp", ruta.desp, ev => { ruta.desp = +ev.target.value; })
 				.setField("#dist", ruta.km1, ev => { ruta.km1 = ruta.km2 = i18n.toFloat(ev.target.value); })
@@ -223,7 +234,7 @@ function IrseRutas() {
 				fnSetMain(ev.detail.data);
 				dom.table("#rutas", rutas, resume, STYLES);
 			}).onRenderTable("#rutas", table => {
-				let last = self.resume().last(rutas) || CT;
+				let last = fnResume().last(rutas) || CT;
 				dom.setValue("#origen", last.destino).setValue("#f1", sb.enDate(last.dt2)).setValue("#h1", sb.minTime(last.dt2))
 					.setValue("#destino", "").copyVal("#f2", "#f1").setValue("#h2", "").setValue("#principal", "0").setValue("#desp", "")
 					.delAttrInput("#f1", "max").delAttrInput("#f2", "min").hide(".grupo-matricula");
@@ -237,25 +248,20 @@ function IrseRutas() {
 
 			// tabla resumen de vehiculo propio del paso 6
 			dom.onChangeTable("#vp", table => {
-				const tr = resume.row;
 				const ruta = resume.data;
 				resume.element.value = i18n.fmtFloat(resume.element.value);
 				ruta.km1 = i18n.toFloat(resume.element.value);
 
-				self.resume();
+				fnRecalc(); fnSave();
 				dom.tfoot(table, resume, STYLES)
-					.toggleHide(".justifi-km", !resume.justifi)
-					.setText(tr.cells[9], fmtImpKm(ruta) + " €");
+					.setText(resume.row.cells[9], fmtImpKm(ruta) + " €");
 				resume.justifi && dom.setFocus("#justifiKm");
-				self.save();
 			});
 		}
 
 		//load rutas vp/out and autoload fechas del itinerario (paso 5 y 6)
 		dom.table("#rutas", rutas, resume, STYLES) // render rutas
-			.onRenderTable("#rutas", self.save) // save after first render
-			.table("#vp", resume.vp, resume, STYLES)
-			.toggleHide(".justifi-km", !resume.justifi)
+			.onRenderTable("#rutas", fnSave) // save after first render
 			.onChangeInput("#f1", el => dom.setValue("#f2", el.value)).setRangeDate("#f1", "#f2")
 			.onChangeInput("#desp", el => dom.toggleHide(".grupo-matricula", el.value!="1"))
 			.onChangeInput("#matricula", el => { el.value = sb.toUpperWord(el.value); });

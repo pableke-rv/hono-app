@@ -25,6 +25,7 @@ export default function(autocomplete, opts) {
     opts.source = opts.source || fnEmpty; //empty source by default
     opts.render = opts.render || fnParam; //render label on autocomplete
     opts.select = opts.select || fnParam; //set value in id input
+    opts.afterSelect = opts.afterSelect || globalThis.void; //fired after load inputs
     opts.onReset = opts.onReset || globalThis.void; //fired when no value selected
 
 	const self = this; //self instance
@@ -75,6 +76,7 @@ export default function(autocomplete, opts) {
         if (li && isChildren(i)) {
             _index = i; // Update current index
             self.setValue(opts.select(_results[i], self), li.innerText);
+            opts.afterSelect(_results[i], self); // fired after update inputs
             removeList();
         }
     }

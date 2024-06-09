@@ -121,10 +121,10 @@ function Tabs() {
     }
 
     // Init. view and PF navigation (only for CV-UAE)
-    self.load(document);
+    self.load(document); // Load all tabs
     window.showTab = (xhr, status, args, tab) => {
-        if (!xhr || (status != "success"))
-            return !alerts.showError(xhr || "Error 500: Internal server error.").working();
+        if (!alerts.isLoaded(xhr, status, args))
+            return false; // Server error
         const msgs = coll.parse(args.msgs); // Parse server messages
         const ok = !msgs?.msgError; // has error message
         if (ok) // If no error => Show next tab

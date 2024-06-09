@@ -39,6 +39,10 @@
     color: rgb(17 24 39)/* text-gray-900 */;
     background-color: white; cursor: auto;
 }
+.ui-input.inline {
+    width: auto; height: auto;
+    margin: 0 4px; padding: .2em;
+}
 .ui-input:focus { border-color: rgb(147 197 253)/* blue-300 */; }
 :is(.dark .ui-input) { color: white; background-color: rgb(55 65 81)/* gray-700 */; border-color: rgb(75 85 99)/* gray-600 */; }
 :is(.dark .ui-input):focus { border-color: rgb(147 197 253)/* blue-300 */; }

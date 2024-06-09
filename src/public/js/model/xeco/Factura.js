@@ -97,7 +97,7 @@ function Factura() {
 	this.isEditableUae = solicitud.isEditableUae;
 	this.isEjecutable = solicitud.isEjecutable;
 	this.isIntegrable = solicitud.isIntegrable;
-    this.isFirmaGaca = () => solicitud.isUae() && self.isTtpp();
+    //this.isFirmaGaca = () => solicitud.isUae() && self.isTtpp();
 
     this.getSubtipo = solicitud.getSubtipo;
     this.setSubtipo = solicitud.setSubtipo;

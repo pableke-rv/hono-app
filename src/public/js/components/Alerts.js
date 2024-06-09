@@ -104,7 +104,12 @@ function Alerts() {
     window.working = self.working;
 
     this.isLoaded = function(xhr, status, args) { // PF server error xhr
-        return (xhr && (status == "success")) || !self.showError(xhr).working();
+        if (xhr && (status == "success"))
+            return true; // status 200
+        var msg = "Error 500: Internal server error."; // default
+        msg = (globalThis.isstr(xhr) && (xhr.length < 100)) ? xhr : msg;
+        msg = (xhr && xhr.statusText) ? xhr.statusText : msg;
+        return !self.showError(msg).working(); // show error
     }
     window.showAlerts = (xhr, status, args) => {
         if (!self.isLoaded(xhr, status, args))

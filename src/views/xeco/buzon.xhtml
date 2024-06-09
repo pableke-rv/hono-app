@@ -30,14 +30,27 @@
 
 		<div id="tab-0" class="tab-content active">
 			<h:form id="xeco-organicas" prependId="false" method="post">
-			<div class="card-xeco">
-				<h2>Orgánicas Recientes</h2>
-				<div id="organcias-json" class="hide">#{buzon.serializeOrganicas()}</div>
-				<table id="organcias" class="tb-xeco">
+			<div id="organcias-json" class="hide">#{buzon.serializeOrganicas()}</div>
+			<div id="card-ancladas" class="card-xeco hide">
+				<h2>Orgánicas Ancladas</h2>
+				<table id="ancladas" class="tb-xeco">
 					<thead>
 						<tr>
-							<th>Orgánica</th><th>Descripción</th>
-							<th>Crédito Disponible</th><th>Acciones</th>
+							<th>Orgánica</th><th>Descripción</th><th>Crédito Disponible</th>
+							<th>Rol</th><th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+					<tfoot></tfoot>
+				</table>
+			</div>
+			<div class="card-xeco">
+				<h2>Orgánicas Recientes / Mostrar:<select id="pagina" class="ui-input inline"><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="50">50</option></select></h2>
+				<table id="recientes" class="tb-xeco">
+					<thead>
+						<tr>
+							<th>Orgánica</th><th>Descripción</th><th>Crédito Disponible</th>
+							<th>Rol</th><th>Acciones</th>
 						</tr>
 					</thead>
 					<tbody></tbody>
@@ -45,38 +58,18 @@
 				</table>
 			</div>
 
-			<div class="hide">
-				<h2>Nueva Orgánica</h2>
-				<div class="ui-blocks">
-					<label class="ui-block-xl autocomplete">
-						<div class="label">Orgánica:</div>
-						<h:inputText id="organica" value="#{buzon.acOrganica}" tabindex="1" styleClass="ui-input ui-autocomplete" />
-						<h:inputText id="idOrg" value="#{buzon.idOrganica}" styleClass="hide ui-number" />
-						<ul role="list" class="results"></ul>
-						<div class="ui-errtip"></div>
-					</label>
-					<div id="unidades-tramit" class="ui-block hide">
-						<label for="tramit"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</label>
-						<h:selectOneMenu id="tramit" value="#{buzon.idUnidadTramit}" styleClass="ui-input ui-select ui-number" tabindex="2">
-							<f:selectItems value="#{buzon.unidadesTramit}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
-						</h:selectOneMenu>
-						<div class="ui-errtip"></div>
-					</div>
-					<div class="ui-block-btn">
-						<p:commandLink action="#{buzon.addOrganica()}" update="tramit" styleClass="btn btn-green" tabindex="3" title="Añadir nueva Orgánica"
-							onclick="if (!window.isOrganica()) return false;" oncomplete="loadBuzon(xhr, status, args)">
-							<i class="fas fa-plus btn-icon-left"></i>Añadir
-						</p:commandLink>
-					</div>
-				</div>
-			</div>
-
 			<p:remoteCommand name="anclar" action="#{buzon.anclar()}" oncomplete="loadBuzon(xhr, status, args)" />
 			<p:remoteCommand name="desanclar" action="#{buzon.desanclar()}" oncomplete="loadBuzon(xhr, status, args)" />
 			<p:remoteCommand name="findOrganica" action="#{buzon.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
-			<p:remoteCommand name="setUnidadesTramit" action="#{buzon.setUnidadesTramit()}" update="tramit" oncomplete="loadUnidadesTramit(xhr, status, args)" />
-			<p:remoteCommand name="report" action="#{buzon.report()}" oncomplete="showAlerts(xhr, status, args);"/>
+			<p:remoteCommand name="utProv" action="#{buzon.setUnidadesTramit()}" update="utProv" oncomplete="openModal(xhr, status, args, '#modal-ut')" />
+			<p:remoteCommand name="utFact" action="#{buzon.setUnidadesTramit()}" update="utFact" oncomplete="showTab(xhr, status, args, 1)" />
+			<p:remoteCommand name="report" action="#{buzon.report()}" oncomplete="closeModal(xhr, status, args);"/>
 			<p:remoteCommand name="remove" action="#{buzon.remove()}" oncomplete="showAlerts(xhr, status, args);"/>
+
+			<!-- modals dialog -->
+			<div class="modal">
+				<ui:include src="tabs/buzon/modal_ut.xhtml"></ui:include>
+			</div>
 			</h:form>
 
 			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
@@ -91,11 +84,6 @@
 		<!-- resumen de la factura -->
 		<div id="tab-2" class="tab-content">
 			<ui:include src="tabs/buzon/resumen.xhtml"></ui:include>
-		</div>
-
-		<!-- modals dialog -->
-		<div class="modal">
-			<ui:include src="tabs/buzon/modal_ut.xhtml"></ui:include>
 		</div>
 		</h:form>
 	</ui:define>

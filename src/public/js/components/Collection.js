@@ -88,6 +88,7 @@ function Collection() {
 // Client / Server global functions
 globalThis.void = fnVoid;
 globalThis.isset = isset;
+globalThis.none = () => "";
 
 // Mute JSON
 JSON.size = sb.size;
