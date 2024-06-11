@@ -17,7 +17,9 @@ export default function(table, opts) {
     opts.tableActionClass = opts.tableActionClass || "table-action";
     opts.msgConfirmRemove = opts.msgConfirmRemove || "remove";
     opts.msgConfirmReset = opts.msgConfirmReset || "removeAll";
-    opts.rowEmptyTable = opts.rowEmptyTable || ('<tr><td class="no-data" colspan="99">' + i18n.get(opts.msgEmptyTable) + '</td></tr>');
+
+    opts.msgEmptyTable = opts.msgEmptyTable || "noResults"; // default empty table message
+    opts.rowEmptyTable = opts.rowEmptyTable || `<tr><td class="no-data" colspan="99">${i18n.get(opts.msgEmptyTable)}</td></tr>`;
 
     opts.beforeRender = opts.beforeRender || globalThis.void;
     opts.onHeader = opts.onHeader || (() => table.tHead.innerHTML);

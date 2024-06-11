@@ -6,8 +6,8 @@ const fnParam = param => param
 
 export default function(select, opts) {
     opts = opts || {}; // Init. options
-    opts.onChange = opts.onChange || fnParam; // fired on load event
-    opts.onReset = opts.onReset || fnParam; // fired on reset event
+    opts.onChange = opts.onChange || fnParam; // fired on change select
+    opts.onReset = opts.onReset || fnParam; // fired on reset select
 
     const self = this; //self instance
     let _data = EMPTY; // default = empty array
