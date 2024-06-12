@@ -41,11 +41,15 @@ details.icon-right[open] summary:after { content: " ▼"; }
   flex-basis: fit-content; padding: 15px; margin: 10px 0;
   background: #f7f7f7; border: 1px solid #999; border-left: 6px solid #1976D2; border-radius: 3px;
 }
+:is(.dark .card-xeco) {
+  background: rgb(31 41 55); border-left: 6px solid white;
+}
 .card-xeco h2, .card-xeco h3 {
   display: flex; align-items: center; gap: 4px; 
   margin: .4em .2em; padding-bottom: 4px;
   color: #1976D2; border-bottom: 1px solid #1976D2;
 }
+:is(.dark .card-xeco h2, .card-xeco h3) { color: rgb(96 165 250); }
 
 .card-filter {
   padding: 8px;
@@ -53,47 +57,38 @@ details.icon-right[open] summary:after { content: " ▼"; }
   border-bottom: 1px solid #527da7;
   border-top: 1px solid #527da7;
 }
+:is(.dark .card-filter) {
+  background-color: #888;
+  border-bottom: 1px solid white;
+  border-top: 1px solid white;
+}
 /* Cards */
 
 /* Modal / Dialog Box */
 .modal {
-  display: none;
-  position: fixed; 
-  padding-top: 10%;
-  left: 0; 
-  top: 0;
-  width: 100%;
-  height: 100%; 
-  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed; top: 0; left: 0; display: none;
+  width: 100%; height: 100%; padding-top: 10%;
+  background-color: rgba(255, 255, 255, .6); z-index: 6;
 }
 .modal.active {
   display: block;
 }
 .modal-content {
-  position: relative;
+  width: 75%; margin: auto; padding: 20px;
+  border: 1px solid #ccc; border-radius: 0.5rem;
   background-color: white;
-  padding: 20px;
-  margin: auto;
-  width: 75%;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
 }
-.modal-content.active {
-  animation: slideInTop .8s forwards;
-}
+.modal-content.active { animation: slideInTop .8s forwards; }
+
 .modal-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  display: flex; align-items: flex-start; justify-content: space-between;
   border-bottom: 1px solid #ccc;
 }
 .modal-body {
   padding: 1rem;
 }
 .modal-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  display: flex; align-items: center; justify-content: flex-end;
   border-top: 1px solid #ccc;
 }
 /* Modal / Dialog Box */

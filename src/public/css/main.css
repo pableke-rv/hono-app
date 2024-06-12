@@ -1,7 +1,10 @@
 
 html { color-scheme: dark light; font-family: system-ui, sans-serif; color: #13151A; background-color: rgb(249 250 251); }
-html.dark { color: rgb(249 250 251)/* gray-50 */; background-color: #13151A; }
+html.dark { color: rgb(249 250 251); background-color: #13151A; }
 body { margin: 0; }
+/* Override bootstrap styles in CV */
+:is(.dark body) { color: rgb(249 250 251); background-color: #13151A; }
+:is(.dark .route-bar) { background-color: #13151A; }
 
 main {
     margin: auto; padding: 1rem;
@@ -52,26 +55,26 @@ tfoot { font-weight: bold; border-top: 1px dashed black; }
 
 .text-gray { color: silver; fill: silver; }
 .action.text-gray:hover { color: #666; fill: #666; }
-:is(.dark .text-gray:hover) { color: #ccc; fill: #ccc; }
+:is(.dark .action.text-gray:hover) { color: #ccc; fill: #ccc; }
 
 .text-blue { color: rgb(59 130 246); fill: rgb(59 130 246)/*blue-500*/; }
 .action.text-blue:hover { color: rgb(30 64 175); fill: rgb(30 64 175)/*blue-800*/; }
-:is(.dark .text-blue:hover) { color: rgb(147 197 253); fill: rgb(147 197 253)/*blue-300*/; }
+:is(.dark .action.text-blue:hover) { color: rgb(147 197 253); fill: rgb(147 197 253)/*blue-300*/; }
 
 .text-green { color: rgb(34 197 94)/*green-500*/; }
 .action.text-green:hover { color: rgb(22 101 52)/*green-800*/; }
-:is(.dark .text-green:hover) { color: rgb(187 247 208)/*green-300*/; }
+:is(.dark .action.text-green:hover) { color: rgb(187 247 208)/*green-300*/; }
 
 .text-warn { color: rgb(234 179 8)/*yellow-500*/; }
 .action.text-warn:hover { color: rgb(133 77 14)/*yellow-800*/; }
-:is(.dark .text-warn:hover) { color: rgb(253 224 71)/*yellow-300*/; }
+:is(.dark .action.text-warn:hover) { color: rgb(253 224 71)/*yellow-300*/; }
 
 .text-red { color: rgb(239 68 68)/*red-500*/; }
 .action.text-red:hover { color: rgb(153 27 27)/*red-800*/; }
-:is(.dark .text-red:hover) { color: rgb(248 113 113)/*red-400*/; }
+:is(.dark .action.text-red:hover) { color: rgb(248 113 113)/*red-400*/; }
 .text-error { color: red; }
 .action.text-error:hover { color: rgb(153 27 27)/*red-800*/; }
-:is(.dark .text-error:hover) { color: rgb(248 113 113)/*red-400*/; }
+:is(.dark .action.text-error:hover) { color: rgb(248 113 113)/*red-400*/; }
 /* Actions */
 
 /* Specific styles */
@@ -80,7 +83,8 @@ tfoot { font-weight: bold; border-top: 1px dashed black; }
 
 .link { color: rgb(37 99 235); text-decoration-line: underline; }
 .link:hover { text-decoration-line: none; }
-:is(.dark .link) { color: rgb(147 197 253); }
+:is(.dark .link) { color: #1976d2; }
+:is(.dark .link:hover) { color: #bbdefb; }
 /* Specific styles */
 
 /* Icons */

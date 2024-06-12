@@ -40,8 +40,8 @@
 
 .btn-warn { color: black; background-color: #FFC107; border-color: #FFC107; }
 .btn-warn:hover { color: black; background-color: #ffc107b3; }
-:is(.dark .btn-warn) { background-color: rgb(133 77 14)/* yellow-800 */; }
-:is(.dark .btn-warn:hover) { background-color: rgb(161 98 7)/* yellow-700 */; }
+/*:is(.dark .btn-warn) { background-color: rgb(133 77 14); }
+:is(.dark .btn-warn:hover) { background-color: rgb(161 98 7); }*/
 
 .btn-error { color: white; background-color: rgb(185 28 28)/* red-700 */; border-color: rgb(185 28 28)/* red-700 */; }
 .btn-error:hover { color: white; background-color: rgb(153 27 27)/* red-800 */; }

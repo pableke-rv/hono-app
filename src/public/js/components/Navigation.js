@@ -14,6 +14,21 @@ function Navigation() {
     this.isDynamic = pathname => !self.isStatic(pathname);
     this.redirect = pathname => { window.location.href = pathname; }
 
+    this.setTheme = () => self.isDarkMode() ? self.setDarkMode() : self.setLightMode();
+    this.toggleMode = () => self.isDarkMode() ? self.setLightMode() : self.setDarkMode();
+    this.isDarkMode = () => ((localStorage.getItem("color-theme") === "dark") || (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches));
+    this.setDarkMode = () => {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("color-theme", "dark");
+        return self;
+    }
+    this.isLightMode = () => !self.isDarkMode();
+    this.setLightMode = () => {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("color-theme", "light");
+        return self;
+    }
+
     this.getScript = name => SCRIPTS[name];
     this.setScript = (name, fn) => { SCRIPTS[name] = fn; return self; } // save script
     this.runScript = (name, fn) => { fn(); return self.setScript(name, fn); } // Execute and save handler
@@ -76,6 +91,9 @@ function Navigation() {
             }
         });
     }
+
+    // Init. theme mode light / dark
+    //coll.ready(self.setTheme); // no usar en CV => todo: restilado de boostrap
 }
 
 export default new Navigation();

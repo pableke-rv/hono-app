@@ -7,6 +7,7 @@
 .ui-block-lg { min-width: 200px; max-width: 400px; flex-grow: 1; }
 .ui-block-xl { min-width: 300px; max-width: 600px; flex-grow: 1; }
 .ui-block-box { min-width: 250px; padding: 6px; border: 1px solid black; }
+:is(.dark .ui-block-box) { border: 1px solid #ccc; }
 .ui-block-row { width: 100%; }
 .ui-block-btn { margin-top: 14px; }
 .ui-block-info { margin-top: 8px; }
@@ -45,7 +46,7 @@
     margin: 0 4px; padding: .2em;
 }
 .ui-input:focus { border-color: rgb(147 197 253)/* blue-300 */; }
-:is(.dark .ui-input) { color: white; background-color: rgb(55 65 81)/* gray-700 */; border-color: rgb(75 85 99)/* gray-600 */; }
+:is(.dark .ui-input) { color: white; background-color: #434a4e; border-color: #434a4e; }
 :is(.dark .ui-input):focus { border-color: rgb(147 197 253)/* blue-300 */; }
 
 .ui-check { margin: 0 1px; }
@@ -78,7 +79,7 @@
 }
 .ui-toggle:checked { background: green; }
 .ui-toggle:checked::before { transform: translateX(1rem); }
-  
+
 .ui-bool, .ui-xs { width: 50px; }
 /*.ui-time, .ui-sm { width: 90px; }*/
 .ui-date, .ui-md { width: 140px; }
@@ -87,10 +88,7 @@
 input::-webkit-calendar-picker-indicator { filter: invert(0); } /* black color */
 input[type="time"]::-webkit-calendar-picker-indicator { display: none; } /*remove icon from timer*/
 input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: pointer; }
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-    input::-webkit-calendar-picker-indicator { filter: invert(1); } /* black color */
-}
+:is(.dark input::-webkit-calendar-picker-indicator) { filter: invert(1); /* white color */ }
 
 .ui-integer, .ui-float { width: 130px; text-align: right; }
 .ui-ta { min-height: 36px; height: 76px; max-height: 100px; resize: vertical; form-sizing: content; } /*height: 76px = 3 rows aprox.*/
@@ -133,6 +131,9 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 .autocomplete li:hover, .autocomplete li.active {
     color: white; background-color: #2196f3; animation: none;
 }
+
+:is(.dark input[type="search"]::-webkit-search-cancel-button) { filter: invert(1); }
+input[type="search"]::-webkit-search-cancel-button:hover { cursor: pointer; }
 /* Autocomplete */
 
 /* Multiselect */
@@ -141,15 +142,16 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 .multiselect > button span.checked {
     margin: 0 2px; padding: 0 3px;
     border: solid 1px gold; border-radius: 5px;
-    background-color: yellow;
+    color: black; background-color: yellow;
 }
 .multiselect > button [data-index] { cursor: pointer; }
 
 .multiselect > .options {
     position: absolute; top: calc(100%); display: none; margin: 0; padding: 0;
-    border: solid 1px gray; background-color: white;
+    color: black; border: solid 1px gray; background-color: white;
     text-wrap: nowrap; list-style: none; cursor: pointer;
 }
+:is(.dark .multiselect .options) { background-color: #ccc; }
 .options.active { display: block; min-width: 100%; z-index: 3; }
 .options li:hover { color: white; background-color: #2196f3; animation: none; }
 .multiselect .icon { margin: 0 6px; }
@@ -178,4 +180,10 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 @media print {
 	input, select, textarea { border: 0; border-style: none; } /* remove inputs borders */
     .btn { display: none; }
+}
+
+/* Dark mode CV */
+@media (prefers-color-scheme: dark) {
+    input::-webkit-calendar-picker-indicator { filter: invert(1); } /* white color */
+    input[type="search"]::-webkit-search-cancel-button { filter: invert(1); }
 }

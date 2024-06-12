@@ -74,12 +74,13 @@ function Lineas(factura) {
 function Factura() {
 	const self = this; //self instance
     const lineas = new Lineas(self);
+    const titulos = [ "-", "Factura", "Abono", "Carta de Pago", "Recibo Alumno" ];
 
     let _data; // Current instance
     this.setData = data => {
         _data = data; // Update instance
         solicitud.setData(data);
-        data.titulo = (data.tipo == 1) ? "Factura" : "Carta de pago";
+        data.titulo = titulos[data.tipo] || titulos[1]; // default factura
         return self.setIva(data.iva);
     }
 
@@ -88,7 +89,9 @@ function Factura() {
     this.getLinea = lineas.getLinea;
 
     this.isFactura = () => (solicitud.getTipo() == 1);
+    //this.isAbono = () => (solicitud.getTipo() == 2);
     this.isCartaPago = () => (solicitud.getTipo() == 3);
+    this.isReciboCV = () => (solicitud.getTipo() == 4);
 
     this.isDisabled = solicitud.isDisabled;
     this.isEditable = solicitud.isEditable;
@@ -97,7 +100,7 @@ function Factura() {
 	this.isEditableUae = solicitud.isEditableUae;
 	this.isEjecutable = solicitud.isEjecutable;
 	this.isIntegrable = solicitud.isIntegrable;
-    //this.isFirmaGaca = () => solicitud.isUae() && self.isTtpp();
+    this.isFirmaGaca = () => self.isReciboCV() && self.isTtpp() && (_data.mask & 2);
 
     this.getSubtipo = solicitud.getSubtipo;
     this.setSubtipo = solicitud.setSubtipo;

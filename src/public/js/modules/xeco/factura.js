@@ -103,7 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
 				.setVisible(".firmable-only", factura.isFirmable()).setVisible(".rechazable-only", factura.isRechazable())
 				.setVisible(".show-recibo", factura.isRecibo()).setVisible(".show-factura", factura.isFactura()).setVisible(".show-cp", factura.isCartaPago())
 				.setVisible(".show-factura-uae", uxxiec.isUae() && factura.isFactura()).setVisible(".show-uae", uxxiec.isUae())
-				.setVisible(".show-gestor", factura.isFace() || factura.isPlataforma()).setVisible(".show-face", factura.isFace());
+				.setVisible(".show-gestor", factura.isFace() || factura.isPlataforma()).setVisible(".show-face", factura.isFace())
+				.setVisible(".show-gaca", factura.isFirmaGaca());
 		delegaciones.setItems(JSON.read(args.delegaciones)); // cargo las delegaciones
 		lineas.render(JSON.read(args.data)); // Load conceptos and iva input
 		formFact.readonly(!factura.isEditableUae(), ".editable-uae"); // disable iva input

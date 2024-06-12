@@ -3,7 +3,7 @@ import alerts from "./Alerts.js";
 
 function Modals() {
 	const self = this; //self instance
-    const modals = document.querySelectorAll(".modal"); // overlays
+    const modals = document.querySelectorAll(".modal"); // all overlays
     let current; // current window
 
     const opts = {};  // default options
@@ -12,7 +12,12 @@ function Modals() {
     opts.activeClass = "active";
 
     const fnWindow = selector => {
-        return modals.find(modal => modal.children.findOne(selector));
+        let window = null;
+        for (let i = 0; (i < modals.length) && !window; i++) {
+            const modal = modals[i]; // current overlay
+            window = modal.children.findOne(selector);
+        }
+        return window;
     }
     const fnClose = window => {
         if (window) { // has modal
