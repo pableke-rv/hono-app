@@ -5,6 +5,7 @@ import coll from "./CollectionHTML.js";
 import Table from "./Table.js";
 import Datalist from "./Datalist.js";
 import Autocomplete from "./Autocomplete.js";
+import MultiSelectCheckbox from "./MultiSelectCheckbox.js";
 import i18n from "../i18n/langs.js";
 
 export default function(form, opts) {
@@ -144,6 +145,7 @@ export default function(form, opts) {
 	this.stringify = (selector, data) => self.setval(selector, JSON.stringify(data));
 	this.saveTable = (selector, table) => self.stringify(selector, table.getData());
 	this.setDatalist = (selector, opts) => new Datalist(form.querySelector(selector), opts); // select / optgroup
+	this.setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox(form.querySelector(selector), opts); // multi select checkbox
 	this.setAutocomplete = (selector, opts) => new Autocomplete(self.getInput(selector), opts); // Input type text / search
 	this.setAcItems = (selector, fnSource, fnSelect, fnReset) => {
 		fnSelect = fnSelect || globalThis.void;

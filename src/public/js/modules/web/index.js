@@ -40,6 +40,11 @@ function fnIndex() {
         onReset: () => info.hide()
     });
 
+    /* Multi select options */
+    const options = formPokemon.setMultiSelectCheckbox(".multi-options", { name: "animales" });
+    const animales = [ { value: 1, label: "Perro" }, { value: 2, label: "Gato" }, { value: 3, label: "Girafa" }, { value: 4, label: "Leon" }, { value: 5, label: "Tiburón" } ];
+    options.setItems(animales);
+
     /********************* EXCEL *********************/
     document.getElementById("xlsx").addEventListener("click", ev => {
         excel.json(menus, {

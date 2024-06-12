@@ -29,7 +29,7 @@
         <div class="menu-group">
             <div id="user" class="dropdown">
                 <button><i class="fas fa-user"></i></button>
-                <div>
+                <div class="options">
                     <a href="mailto:#">email@google.com</a>
                     <a href="/">Home</a>
                     <hr class="slim"/>
@@ -41,15 +41,17 @@
                     <img src="/public/img/flags/spain.png">
                     <i class="fas fa-chevron-down"></i>
                 </button>
-                <div>
-                    <a id="es" href="/es/index.html?nav=1"><img src="/public/img/flags/spain.png"> ES</a>
-                    <a id="en" href="/en/index.html?nav=1"><img src="/public/img/flags/great_britain.png"> EN</a>
+                <div class="options">
+                    <a id="es" href="/web/es/index.html?nav=1"><img src="/public/img/flags/spain.png"> ES</a>
+                    <a id="en" href="/web/en/index.html?nav=1"><img src="/public/img/flags/great_britain.png"> EN</a>
                 </div>
             </div>
-            <button id="theme-toggle">
-                <i class="fas fa-moon hide"></i>
-                <i class="fas fa-sun hide"></i>
-            </button>
+            <div class="dropdown">
+                <button id="theme-toggle">
+                    <i class="fas fa-moon hide"></i>
+                    <i class="fas fa-sun hide"></i>
+                </button>
+            </div>
         </div>
     </nav>
     <!-- Menu component -->
@@ -151,18 +153,36 @@
             <h2>Actions<hr class="underline"/></h2>
 
             <form id="form-pokemon" action="#">
-            <div class="ui-blocks">
-                <label class="ui-block-xl autocomplete">
-                    <div class="label required">Pokemon finder:</div>
-                    <i class="fas fa-search ui-icon-left"></i>
-                    <input type="search" id="ac-pokemon" class="ui-input ui-autocomplete" tabindex="1" placeholder="Search a pokemon" />
-                    <input type="hidden" name="id"/>
-                    <ul class="results"></ul>
-                    <div class="ui-errtip"></div>
-                </label>
-            </div>
-            </form>
-
+                <div class="ui-blocks">
+                    <label class="ui-block">
+                        <div class="label">Multiselect:</div>
+                        <select class="ui-input ui-select">
+                            <option value="1">&#x2611; Opción 1</option>
+                            <option value="2">&#x2611; Opción 2</option>
+                            <option value="3">&#x2611; Opción 3</option>
+                            <option value="4">&#x2611; Opción 4</option>
+                            <option value="5">&#x2611; Opción 5</option>
+                        </select>
+                    </label>
+                    <div class="ui-block multiselect multi-options">
+                        <div class="label">Multiselect:</div>
+                        <button class="ui-input ui-select">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <ul class="options"></ul>
+                    </div>
+                    <div class="ui-block-row"></div>
+                    <label class="ui-block-xl autocomplete">
+                        <div class="label required">Pokemon finder:</div>
+                        <i class="fas fa-search ui-icon-left"></i>
+                        <input type="search" id="ac-pokemon" class="ui-input ui-autocomplete" tabindex="1" placeholder="Search a pokemon" />
+                        <input type="hidden" name="id"/>
+                        <ul class="results"></ul>
+                        <div class="ui-errtip"></div>
+                    </label>
+                </div>
+                </form>
+    
             <div id="info-pokemon" class="hide ui-blocks" style="align-items: end;"></div>
 
             <div class="navbar">
