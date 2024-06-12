@@ -33,8 +33,12 @@ export default function(container, opts) {
     const fnRender = item => item.checked ? fnChecked(item) : fnUnchecked(item);
     let _data; // items container
 
+    // Handlers
 	this.isset = () => container;
-    this.getItems = () => _data.filter(item => item.checked);
+    this.getData = () => _data;
+    this.getItems = () => _data;
+    this.getChecked = () => _data.filter(item => item.checked);
+    this.getSelected = self.getChecked;
 
     this.reset = () => {
         _data = []; // clear items
