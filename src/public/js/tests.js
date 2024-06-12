@@ -30,7 +30,7 @@ nav.ready(() => {
 
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
     const themeToggleBtn = document.querySelector("#theme-toggle");
-    if (nav.setTheme().isDarkMode()) // check current mode
+    if (nav/*.setTheme()*/.isDarkMode()) // check current mode
         themeToggleBtn.lastElementChild.show(); // light icon
     else
         themeToggleBtn.firstElementChild.show(); // dark icon

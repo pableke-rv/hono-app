@@ -93,7 +93,7 @@ function Navigation() {
     }
 
     // Init. theme mode light / dark
-    //coll.ready(self.setTheme); // no usar en CV => todo: restilado de boostrap
+    coll.ready(self.setTheme); // no usar en CV => todo: restilado de boostrap
 }
 
 export default new Navigation();

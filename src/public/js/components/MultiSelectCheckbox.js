@@ -20,6 +20,7 @@ export default function(container, opts) {
     opts.onReset = opts.onReset || globalThis.void; // fired on reset list
 
     const self = this; //self instance
+    const label = container.querySelector(".label");
     const options = container.lastElementChild;
     const button = options.previousElementSibling;
 
@@ -66,6 +67,7 @@ export default function(container, opts) {
 
     // Events and handlers
     document.onclick = () => options.classList.remove(opts.activeClassName);
+    label && label.setClick(ev => { ev.stopPropagation(); button.focus(); });
     button.onclick = ev => {
         options.classList.toggle(opts.activeClassName);
         ev.stopPropagation();

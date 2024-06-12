@@ -81,7 +81,7 @@
 .ui-toggle:checked::before { transform: translateX(1rem); }
 
 .ui-bool, .ui-xs { width: 50px; }
-/*.ui-time, .ui-sm { width: 90px; }*/
+.ui-time-sec, .ui-sm { width: 84px; }
 .ui-date, .ui-md { width: 140px; }
 
 /*input[type="date"]::-webkit-calendar-picker-indicator{ margin: 0px; }*/ /*remove datepiker icon*/
@@ -138,6 +138,7 @@ input[type="search"]::-webkit-search-cancel-button:hover { cursor: pointer; }
 
 /* Multiselect */
 .multiselect { position: relative; }
+.multiselect > .label { cursor: default; }
 .multiselect > button { display: flex; align-items: center; }
 .multiselect > button span.checked {
     margin: 0 2px; padding: 0 3px;
