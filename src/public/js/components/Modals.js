@@ -13,10 +13,8 @@ function Modals() {
 
     const fnWindow = selector => {
         let window = null;
-        for (let i = 0; (i < modals.length) && !window; i++) {
-            const modal = modals[i]; // current overlay
-            window = modal.children.findOne(selector);
-        }
+        for (let i = 0; (i < modals.length) && !window; i++)
+            window = modals[i].children.findOne(selector);
         return window;
     }
     const fnClose = window => {

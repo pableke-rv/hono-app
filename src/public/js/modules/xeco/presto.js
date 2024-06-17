@@ -9,7 +9,7 @@ import presto from "../../model/xeco/Presto.js";
 import uxxiec from "../../model/xeco/Solicitud.js";
 import solicitudes from "./xeco.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+pf.ready(() => {
     const partida = presto.getPartida();
     const partidas = presto.getPartidas();
 

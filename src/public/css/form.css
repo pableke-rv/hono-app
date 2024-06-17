@@ -97,14 +97,14 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 
 .ui-icon-block { position: relative; }
 .ui-icon-left {
-    position: absolute; top: 30px; left: 0; height: 40px; /* same height than ui-input */
-    padding-left: 0.7rem/* 12px */; color: rgb(107 114 128)/* gray-500 */;
+    position: absolute; top: 31px; left: 0; height: 40px; /* same height than ui-input */
+    padding-left: 0.5rem; color: rgb(107 114 128); z-index: 1;
 }
 .ui-icon-left + input { padding-left: 30px; }
 :is(.dark .ui-icon-left) { color: rgb(243 244 246)/* gray-100 */; }
 .ui-icon-right {
-    position: absolute; top: 30px; right: 0; height: 40px; /* same height than ui-input */
-    padding-right: 0.7rem/* 12px */; color: rgb(107 114 128)/* gray-500 */;
+    position: absolute; top: 31px; right: 0; height: 40px; /* same height than ui-input */
+    padding-right: 0.5rem; color: rgb(107 114 128); z-index: 1;
 }
 .ui-icon-right + input { padding-right: 30px; }
 :is(.dark .ui-icon-right) { color: rgb(243 244 246)/* gray-100 */; }

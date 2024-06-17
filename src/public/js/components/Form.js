@@ -148,12 +148,12 @@ export default function(form, opts) {
 	this.setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox(form.querySelector(selector), opts); // multi select checkbox
 	this.setAutocomplete = (selector, opts) => new Autocomplete(self.getInput(selector), opts); // Input type text / search
 	this.setAcItems = (selector, fnSource, fnSelect, fnReset) => {
-		fnSelect = fnSelect || globalThis.void;
 		return self.setAutocomplete(selector, {
 			minLength: 4,
 			source: fnSource,
 			render: item => item.label,
-			select: item => { fnSelect(item); return item.value; },
+			select: item => item.value,
+			afterSelect: fnSelect,
 			onReset: fnReset
 		});
 	}

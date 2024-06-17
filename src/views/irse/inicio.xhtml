@@ -42,7 +42,7 @@
 		</div>
 
 		<!-- Form IRSE -->
-		<h:form id="xeco-irse" prependId="false" method="post" styleClass="update-irse" enctype="multipart/form-data" onsubmit="MostrarProgreso();">
+		<h:form id="xeco-irse" prependId="false" method="post" styleClass="update-irse" enctype="multipart/form-data" onsubmit="loading();">
 		<div id="tab-0" class="tab-content">
 			<p:remoteCommand name="rcFindInteresado" action="#{ac.findUsuarios()}" oncomplete="loadItems(xhr, status, args)" />
 			<p:remoteCommand name="rcFindOrg" action="#{ac.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />

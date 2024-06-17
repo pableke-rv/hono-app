@@ -11,7 +11,7 @@
 		<h2>Consulta de Formación de Expediente #{irse.codigo}<hr class="underline"/></h2>
 		<p class="notice notice-info">#{irse.solicitud.codigoDesc}</p>
 	</p:outputPanel>
-	<h:form id="xeco-uxxi" prependId="false" onsubmit="MostrarProgreso();">
+	<h:form id="xeco-uxxi" prependId="false" onsubmit="loading();">
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label required">Ejercicio:</div>
@@ -21,12 +21,12 @@
 			</label>
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Operación UXXI-EC:</div>
-				<div>
-					<h:inputText id="uxxi" value="#{list.acUxxi}" size="60" tabindex="2" styleClass="ui-input ui-autocomplete" title="Introduzca código ó descripción" />
-					<p:remoteCommand name="rcFindUxxi" action="#{list.findUxxi()}" oncomplete="loadItems(xhr, status, args)" />
-					<ul role="list" class="results"></ul>
-					<div class="ui-errtip"></div> 
-				</div>
+				<i class="fas fa-search ui-icon-left"></i>
+				<h:inputText id="uxxi" value="#{list.acUxxi}" size="60" tabindex="2" styleClass="ui-input ui-autocomplete" title="Introduzca código ó descripción" />
+				<input type="hidden" name="id"/>
+				<ul role="list" class="results"></ul>
+				<div class="ui-errtip"></div> 
+				<p:remoteCommand name="rcFindUxxi" action="#{list.findUxxi()}" oncomplete="loadItems(xhr, status, args)" />
 			</label>
 			<div class="ui-block-btn">
 				<a id="add-uxxi" href="#" class="btn btn-green success-btn" tabindex="5" title="Asocia la operación a la solicitud">

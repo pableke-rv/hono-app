@@ -11,7 +11,7 @@
         <h2>Buzón de Facturas</h2>
         <div class="ui-blocks">
         <label class="ui-block">
-            <div class="label required"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</div>
+            <div class="label required">¿A quién se va a pagar la factura?:</div>
             <h:selectOneMenu id="tipo" value="#{buzon.tipo}" styleClass="ui-input ui-select" tabindex="1">
                 <f:selectItem itemValue="1" itemLabel="Pagar al Proveedor" />
                 <f:selectItem itemValue="2" itemLabel="Pagar a #{uae.nombre}" />

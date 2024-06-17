@@ -9,7 +9,7 @@ import uxxiec from "../../model/xeco/Solicitud.js";
 import solicitudes from "./xeco.js";
 import fiscal from "../../data/fiscal.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+pf.ready(() => {
 	const linea = factura.getLinea();
 
 	const fnCalcIva = iva => {

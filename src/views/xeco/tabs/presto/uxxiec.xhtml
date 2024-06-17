@@ -12,18 +12,19 @@
 		<p class="notice notice-info load-data">@codigo;: @memo;</p>
 		<div class="ui-blocks">
 			<label class="ui-block">
-				<div class="label">Ejercicio:</div>
+				<div class="label required">Ejercicio:</div>
 				<h:selectOneMenu id="ej-uxxi" value="#{presto.ejUxxi}" styleClass="ui-input ui-select" tabindex="1">
 					<f:selectItems value="#{uae.ejercicios}" />
 				</h:selectOneMenu>
 			</label>
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Operación UXXI-EC:</div>
-				<p:remoteCommand name="rcFindUxxi" action="#{presto.findUxxi()}" oncomplete="loadItems(xhr, status, args)" />
+				<i class="fas fa-search ui-icon-left"></i>
 				<input type="search" id="uxxi" name="uxxi" class="ui-input ui-autocomplete" tabindex="2" />
 				<input type="text" id="idUxxi" name="idUxxi" class="ui-number hide" />
 				<ul role="list" class="results"></ul>
 				<div class="errtip"></div>
+				<p:remoteCommand name="rcFindUxxi" action="#{presto.findUxxi()}" oncomplete="loadItems(xhr, status, args)" />
 			</label>
 			<div class="ui-block-btn">
 				<a id="add-uxxi" href="#" class="btn btn-green" tabindex="5" title="Asocia la operación a la solicitud"><i class="far fa-plus btn-icon-left"></i> Añadir</a>

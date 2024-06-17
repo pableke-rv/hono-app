@@ -19,8 +19,6 @@ export default function(autocomplete, opts) {
 	opts.maxResults = opts.maxResults || 10; //max showed rows (default = 10)
     opts.optionClass = opts.optionClass || "option"; // child name class
     opts.activeClass = opts.activeClass || "active"; // active option class
-	opts.blockSelector = opts.blockSelector || ".autocomplete"; // Parent node selector
-    opts.resultsSelector = opts.resultsSelector || ".results"; // results list selector
 
     opts.source = opts.source || fnEmpty; //empty source by default
     opts.render = opts.render || fnParam; //render label on autocomplete
@@ -29,9 +27,8 @@ export default function(autocomplete, opts) {
     opts.onReset = opts.onReset || globalThis.void; //fired when no value selected
 
 	const self = this; //self instance
-    const block = autocomplete.closest(opts.blockSelector);
-    const resultsHTML = block.querySelector(opts.resultsSelector);
     const inputValue = autocomplete.nextElementSibling;
+    const resultsHTML = inputValue.nextElementSibling;
 
     // Force default props/attr
     autocomplete.type = "search";
@@ -92,7 +89,7 @@ export default function(autocomplete, opts) {
     }
 
     this.reset = () => {
-        if (inputValue.value)
+        if (inputValue.value) // is selected data
             opts.onReset(self); // Fire event onFinish
         return fnClear(); // Reset previous values
     }
