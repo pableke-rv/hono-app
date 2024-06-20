@@ -180,7 +180,7 @@ export default function(form, opts) {
 	this.submit = fn => fnEvent(form, "submit", fn);
 	this.beforeReset = fn => fnEvent(form, "reset", fn);
 	this.afterReset = fn => fnEvent(form, "reset", ev => setTimeout(() => fn(ev), 1));
-	this.setClick = (selector, fn) => fnEach(selector, el => el.setClick(fn));
+	this.addClick = (selector, fn) => fnEach(selector, el => el.addClick(fn));
 	this.click = selector => { form.querySelector(selector).click(); return self; } // Fire event only for PF
 
 	this.onChange = (el, fn) => el ? fnEvent(el, "change", fn) : self;

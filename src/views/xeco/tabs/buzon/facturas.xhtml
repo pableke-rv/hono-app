@@ -7,46 +7,77 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
+    <div id="tab-1" class="tab-content">
     <div class="card-xeco">
         <h2>Buzón de Facturas</h2>
+        <div class="notice notice-info">
+            <p><b>Bandeja de facturas.</b> Sube aquí las facturas de tus compras que no deban ir por FACe, <b>una a una y en formato PDF, indicando si deben pagarse al proveedor, a ti como cesionario porque has adelantado el pago o si están pagadas por la Universidad</b> mediante algún procedimiento de pago anticipado.</p>
+            <p><b>No podrás indicar cesionarios distintos de ti mismo. Para determinadas partidas</b> (principalmente de investigación subvencionada), <b>se puede requerir, además de la factura, el justificante del pago.</b> <a id="factura" href="#toggle" data-toggle="fa-angle-double-down fa-angle-double-up">Más explicación<i class="fas fa-angle-double-down icon"></i></a></p>
+            <p class="info-factura hide">Cuando recibamos tu factura procederemos a su tramitación, y durante la misma se recabará tu firma como "proponente" (o como "autorizado" si eres el responsable del gasto). Si algo no se ha gestionado bien o cambias de idea respecto de la partida, <b>siempre podrás "rechazar"</b> la firma electrónica como "proponente" en su momento y, en el mismo rechazo indicar otra partida. Y si eres el responsable del gasto siempre podrás rechazar como "autorizado" lo que provenga de otros "proponentes" y quiera cargarse a tus partidas presupuestarias.</p>
+        </div>
+
         <div class="ui-blocks">
-        <label class="ui-block">
-            <div class="label required">¿A quién se va a pagar la factura?:</div>
-            <h:selectOneMenu id="tipo" value="#{buzon.tipo}" styleClass="ui-input ui-select" tabindex="1">
-                <f:selectItem itemValue="1" itemLabel="Pagar al Proveedor" />
-                <f:selectItem itemValue="2" itemLabel="Pagar a #{uae.nombre}" />
-            </h:selectOneMenu>
-        </label>
         <div class="ui-block-row">
             <p:fileUpload id="factura" label="" value="#{buzon.factura}" fileUploadListener="#{buzon.uploadFactura}" mode="advanced" auto="true" styleClass="hide" />
             <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Seleccionar 1 Factura</a>
             <span class="filename"></span>
         </div>
-        <div id="file-jp" class="ui-block-row">
-            <p:fileUpload id="justPago" label="" value="#{buzon.justPago}" fileUploadListener="#{buzon.uploadJustPago}" mode="advanced" auto="true" styleClass="hide" />
-            <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Seleccionar 1 Justificante de Pago</a>
-            <span class="filename"></span>
-        </div>
-        <div id="check-jp" class="ui-block-row">
-            <input type="checkbox" checked="checked" disabled="disabled" />
-            <b>Declaro responsablemente que he pagado en nombre de la Universidad la factura remitida y que conservo a disposición de ésta el justificante del pago.</b>
-        </div>
-        <label class="ui-block">
-            <h:inputHidden id="buzon-cod-org" value="#{buzon.codOrganica}" />
-            <div class="label required"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</div>
-            <h:selectOneMenu id="utFact" value="#{buzon.idUnidadTramit}" styleClass="ui-input ui-select" tabindex="1">
-                <f:selectItems value="#{buzon.unidadesTramit}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
-            </h:selectOneMenu>
-            <div class="ui-errtip"></div>
-        </label>
-        <label class="ui-block-row">
-            <div class="label">Observaciones para el gestor (si son necesarias):</div>
-            <h:inputTextarea id="desc" value="#{buzon.desc}" styleClass="ui-input ui-ta" />
-        </label>
         </div>
     </div>
+
     <div>
         <a href="#tab-0" class="btn btn-info"><i class="fas fa-caret-left"></i></a>
         <a href="#next-tab" class="btn btn-info">Siguiente<i class="fas fa-caret-right btn-icon-right"></i></a>
+    </div>
+    </div>
+
+    <div id="tab-2" class="tab-content">
+        <div class="card-xeco">
+            <h2>Buzón de Facturas</h2>
+            <div class="notice notice-info">La partida presupuestaria corresponde a un proyecto de investigación subvencionada o no se ha indicado partida, por lo que debes adjuntar el justificante de pago de la factura.</div>
+        </div>
+
+        <div class="ui-blocks">
+            <div id="file-jp" class="ui-block-row">
+                <p:fileUpload id="justPago" label="" value="#{buzon.justPago}" fileUploadListener="#{buzon.uploadJustPago}" mode="advanced" auto="true" styleClass="hide" />
+                <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Seleccionar 1 Justificante de Pago</a>
+                <span class="filename"></span>
+            </div>
+
+            <label class="ui-block">
+                <div class="label required">¿A quién se va a pagar la factura?:</div>
+                <h:selectOneMenu id="tipo" value="#{buzon.tipo}" styleClass="ui-input ui-select" tabindex="1">
+                    <f:selectItem itemValue="1" itemLabel="Pagar al Proveedor" />
+                    <f:selectItem itemValue="2" itemLabel="Pagar a #{uae.nombre}" />
+                    <f:selectItem itemValue="3" itemLabel="Ya pagado por UPCT" />
+                </h:selectOneMenu>
+            </label>
+            <div id="check-jp" class="ui-block-row">
+                <input type="checkbox" checked="checked" disabled="disabled" />
+                <b>Declaro responsablemente que he pagado en nombre de la Universidad la factura remitida y que conservo a disposición de ésta el justificante del pago.</b>
+            </div>
+            <label class="ui-block">
+                <h:inputHidden id="buzon-cod-org" value="#{buzon.codOrganica}" />
+                <div class="label required"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</div>
+                <h:selectOneMenu id="utFact" value="#{buzon.idUnidadTramit}" styleClass="ui-input ui-select" tabindex="1">
+                    <f:selectItems value="#{buzon.unidadesTramit}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
+                </h:selectOneMenu>
+                <div class="ui-errtip"></div>
+            </label>
+            <label class="ui-block-row">
+                <div class="label">Observaciones para el gestor (si son necesarias):</div>
+                <h:inputTextarea id="desc" value="#{buzon.desc}" styleClass="ui-input ui-ta" />
+            </label>
+        </div>
+
+        <div>
+            <a href="#prev-tab" class="btn btn-info"><i class="fas fa-caret-left"></i></a>
+            <a href="#next-tab" class="btn btn-info">Siguiente<i class="fas fa-caret-right btn-icon-right"></i></a>
+        </div>
+    </div>
+
+    <!-- resumen de la factura -->
+    <div id="tab-5" class="tab-content">
+        <ui:include src="resumen.xhtml"></ui:include>
     </div>
 </html>

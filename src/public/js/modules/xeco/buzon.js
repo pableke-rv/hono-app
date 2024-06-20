@@ -50,7 +50,7 @@ function fnAddActions(form, table) {
 }
 
 pf.ready(() => { // on load view
-	const formBuzon = new Form("#xeco-buzon");
+	const formFactura = new Form("#xeco-factura");
 	const formOrganicas = new Form("#xeco-organicas");
 	const tableAncladas = formOrganicas.setTable("#ancladas", {
 		onRender: buzon.row,
@@ -65,8 +65,8 @@ pf.ready(() => { // on load view
 		onRemove: data => pf.sendId("remove", data.org)
 	});
 
-	fnAddActions(formBuzon, tableAncladas);
-	fnAddActions(formBuzon, tableRecientes);
+	fnAddActions(formFactura, tableAncladas);
+	fnAddActions(formFactura, tableRecientes);
 	const organicas = JSON.read(formOrganicas.html("#organcias-json"));
 	fnLoadTables(formOrganicas, tableAncladas, tableRecientes, organicas);
 	modals.set("#report", () => {
@@ -77,15 +77,15 @@ pf.ready(() => { // on load view
 	const page = formOrganicas.getInput("#pagina");
 	page.onchange = () => fnPaginate(tableRecientes, +page.value);
 
-	pf.uploads(formBuzon.querySelectorAll(".pf-upload"));
+	pf.uploads(formFactura.querySelectorAll(".pf-upload"));
 	tabs.setShowEvent(2, tab => {
-		const files = formBuzon.querySelectorAll(".filename").filter(el => el.innerHTML);
+		const files = formFactura.querySelectorAll(".filename").filter(el => el.innerHTML);
 		const fileNames = files.map(el => el.innerHTML).join(", ");
 		if (!fileNames)
-			return !formBuzon.showError("Debe seleccionar una factura.");
+			return !formFactura.showError("Debe seleccionar una factura.");
 		if (buzon.isJustPagoRequired() && (files.length < 2))
-			return !formBuzon.showError("Debe seleccionar Justificante de pago.");
-		return formBuzon.text("#ut-desc", formBuzon.getOptionText("#utFact")).text("#file-name", fileNames);
+			return !formFactura.showError("Debe seleccionar Justificante de pago.");
+		return formFactura.text("#ut-desc", formFactura.getOptionText("#utFact")).text("#file-name", fileNames);
 	});
 
 	window.loadBuzon = (xhr, status, args) => {

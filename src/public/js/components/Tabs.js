@@ -3,13 +3,11 @@ import alerts from "./Alerts.js";
 import coll from "./CollectionHTML.js";
 
 const fnTrue = () => true; // always true
-//const mask = (val, i) => ((val >> i) & 1); // check bit at i position
 const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
 
 // Classes Configuration
 const TAB_CLASS = "tab-content";
 const ACTIVE_CLASS = "active";
-//const ACTION_CLASS = "tab-action";
 //const PROGRESS_BAR = "progress-bar";
 
 function Tabs() {
@@ -17,7 +15,7 @@ function Tabs() {
     const EVENTS = {}; //events tab container
 
 	let tabs/*, progressbar*/;
-    let _tabIndex, _tabSize;
+    let _tabIndex, _lastTab;
 
     const fnSet = (name, fn) => { EVENTS[name] = fn; return self; }
     const fnActive = el => el.classList.contains(ACTIVE_CLASS);
@@ -66,7 +64,7 @@ function Tabs() {
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
 
     function fnShowTab(i) { //show tab by index
-        i = (i < 0) ? 0 : Math.min(i, _tabSize);
+        i = (i < 0) ? 0 : Math.min(i, _lastTab);
         const tab = tabs[i]; // get next tab
         if (fnCallEvent("show", tab)) { // Validate change tab
             if (_tabIndex < i) // calculate the source tab index
@@ -82,7 +80,7 @@ function Tabs() {
     }
 
     this.showTab = id => fnShowTab(fnFindIndex(id)); //find by id selector
-    this.lastTab = () => fnShowTab(_tabSize);
+    this.lastTab = () => fnShowTab(_lastTab);
     this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +(tabs[_tabIndex].dataset.back ?? (_tabIndex - 1)));
     this.prevTab = () => self.backTab; // Synonym for back to previous tab
     this.nextTab = () => fnShowTab(_tabIndex + 1); // next tab by position
@@ -116,9 +114,16 @@ function Tabs() {
         tabs = el.getElementsByClassName(TAB_CLASS);
         //progressbar = el.getElementsByClassName(PROGRESS_BAR);
         _tabIndex = fnCurrentIndex(); // current index tab
-        _tabSize = tabs.length - 1; // max tabs size
-        return self.setActions(el); // all 11111... + actions
+        _lastTab = tabs.length - 1; // max tabs size
+        return self.setActions(el); // update actions
     }
+    /*this.remove = () => {
+        for (let i = 0; i < arguments.length; i++)
+            delete tabs[fnFindIndex(arguments[i])];
+        tabs = tabs.filter(globalThis.isset); // sanitize tabs
+        _lastTab = tabs.length - 1; // max tabs size
+        return self;
+    }*/
 
     // Init. view and PF navigation (only for CV-UAE)
     self.load(document); // Load all tabs

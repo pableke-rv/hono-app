@@ -24,7 +24,7 @@ export default (model, formModel) => {
 		render: uxxiec.autocomplete,
 		select: item => item.id
 	});
-	formUxxi.setClick("a#add-uxxi", () => {
+	formUxxi.addClick("a#add-uxxi", () => {
         const doc = acUxxi.getCurrentItem();
 		doc && tableUxxi.add(doc); // Add and remove PK autocalculated in v_*_uxxiec
         acUxxi.reload(); // Reload autocomplete

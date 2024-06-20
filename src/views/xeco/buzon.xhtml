@@ -29,7 +29,7 @@
 		<ui:include src="parts/msgs.xhtml"></ui:include>
 
 		<div id="tab-0" class="tab-content active">
-			<h:form id="xeco-organicas" prependId="false" method="post">
+		<h:form id="xeco-organicas" prependId="false" method="post">
 			<div id="organcias-json" class="hide">#{buzon.serializeOrganicas()}</div>
 			<div id="card-ancladas" class="card-xeco hide">
 				<h2>Orgánicas Ancladas</h2>
@@ -70,21 +70,14 @@
 			<div class="modal">
 				<ui:include src="tabs/buzon/modal_ut.xhtml"></ui:include>
 			</div>
-			</h:form>
+		</h:form>
 
-			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
-				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+		<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 		</div>
 
-		<h:form id="xeco-buzon" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
-		<div id="tab-1" class="tab-content">
+		<h:form id="xeco-factura" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
 			<ui:include src="tabs/buzon/facturas.xhtml"></ui:include>
-		</div>
-
-		<!-- resumen de la factura -->
-		<div id="tab-2" class="tab-content">
-			<ui:include src="tabs/buzon/resumen.xhtml"></ui:include>
-		</div>
 		</h:form>
 	</ui:define>
 </ui:composition>

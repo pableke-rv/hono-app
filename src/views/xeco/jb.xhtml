@@ -81,7 +81,7 @@
 								</c:if>
 								<c:choose>
 								<c:when test="#{jb.adjunto}">
-									<li><b>(ZIP) Adjunto:</b> <a href="#{jb.getUrlAdjunto()}" target="_blank">Ver adjunto<i class="fas fa-arrow-alt-down icon"></i></a></li>
+									<li><b>(ZIP) Adjunto:</b> <a href="#{jb.getUrlAdjunto()}" target="_blank">Ver documentación del pago<i class="fas fa-arrow-alt-down icon"></i></a></li>
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="#{jb.adjuntos}" var="adjunto" varStatus="loop">

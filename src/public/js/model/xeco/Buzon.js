@@ -27,26 +27,26 @@ function Buzon() {
         return `<tr class="tb-data">
             <td id="otras" colspan="4">OTRAS SITUACIONES (acciones provisionalmente sin orgánica u otras circunstancias)</td>
             <td class="text-right">
-                <a href="#buzon-otros" class="action text-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
+                <a href="#buzon-otros" class="action resize text-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
             </td>
         </tr>`;
     }
 	this.row = data => {
         const report = self.setData(data).isMultigrupo() ? "#modal" : "#report"; // organica multigrupo / monogrupo
-        const anclar = '<a href="#anclar" class="action text-red row-action" title="Marca la orgánica como favorita"><i class="fas fa-thumbtack action text-blue"></i></a>';
-        const desanclar = '<a href="#desanclar" class="action text-red row-action" title="Marca la orgánica como normal"><i class="fas fa-thumbtack action text-green"></i></a>';
-        const remove = self.isRemovable() ? '<a href="#remove" class="action text-red row-action" title="Desvincular orgánica"><i class="fas fa-times"></i></a>' : "";
+        const anclar = '<a href="#anclar" class="action resize text-red row-action" title="Marca la orgánica como favorita"><i class="fas fa-thumbtack action resize text-blue"></i></a>';
+        const desanclar = '<a href="#desanclar" class="action resize text-red row-action" title="Marca la orgánica como normal"><i class="fas fa-thumbtack action resize text-green"></i></a>';
+        const remove = self.isRemovable() ? '<a href="#remove" class="action resize text-red row-action" title="Desvincular orgánica"><i class="fas fa-times"></i></a>' : "";
         return `<tr class="tb-data">
             <td>${data.oCod}</td><td>${data.oDesc}</td>
             <td class="text-right">${i18n.isoFloat(data.cd)} €</td>
             <td class="text-center">${self.getRol()}</td>
             <td class="text-right">
                 ${(data.mask & 2) ? desanclar : anclar}
-                <a href="#buzon" class="action text-gray row-action" title="Gestión de permisos"><i class="fas fa-user"></i></a>
-                <a href="#buzon" class="action text-warn row-action" title="Avance de Gastos"><i class="fab fa-google"></i></a>
-                <a href="#buzon" class="action text-green row-action" title="Avance de Ingresos"><i class="fas fa-info"></i></a>
-                <a href="${report}" class="action text-blue row-action" title="Informe al Proveedor"><i class="fal fa-file-pdf"></i></a>
-                <a href="#buzon" class="action text-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
+                <a href="#buzon" class="action resize text-gray row-action" title="Gestión de permisos"><i class="fas fa-user"></i></a>
+                <a href="#buzon" class="action resize text-warn row-action" title="Avance de Gastos"><i class="fab fa-google"></i></a>
+                <a href="#buzon" class="action resize text-green row-action" title="Avance de Ingresos"><i class="fas fa-info"></i></a>
+                <a href="${report}" class="action resize text-blue row-action" title="Informe al Proveedor"><i class="fal fa-file-pdf"></i></a>
+                <a href="#buzon" class="action resize text-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
                 ${remove}
             </td>
         </tr>`;

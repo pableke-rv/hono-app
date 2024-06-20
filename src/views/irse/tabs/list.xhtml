@@ -127,7 +127,7 @@
 			</c:if>
 			<c:forEach items="#{filter.solicitudes}" var="sol">
 			<tr id="#{sol.idIrse}" class="tb-data">
-				<td class="textc">
+				<td class="text-center text-red text-xl">
 					<c:if test="#{sol.urgente}">
 						<c:choose>
 							<c:when test="#{inicio.uae}">
@@ -171,7 +171,7 @@
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td class="textc">
+				<td class="text-center">
 					<c:choose>
 						<c:when test="#{sol.firmaAceptada}">
 							<i class="fas fa-flag fa-lg text-green" title="Solicitud firmada"></i>

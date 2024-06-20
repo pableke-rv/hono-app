@@ -41,10 +41,10 @@ function Modals() {
     this.load = () => {
         modals.forEach(modal => {
             modal.children.forEach(window => { // Iterate over all modals
-                window.getElementsByClassName(opts.closeClass).setClick(ev => {
+                window.getElementsByClassName(opts.closeClass).addClick(ev => {
                     ev.preventDefault(); fnClose(window);
                 });
-                window.getElementsByClassName(opts.actionClass).setClick((ev, link) => {
+                window.getElementsByClassName(opts.actionClass).addClick((ev, link) => {
                     opts[link.getAttribute("href")](link, window);
                     ev.preventDefault();
                 });

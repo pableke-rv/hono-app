@@ -79,7 +79,7 @@ pf.ready(() => {
 		}
 		//ivaChange: el => fnCalcIva(+el.value)
     });
-	formFact.setClick("a#add-linea", ev => {
+	formFact.addClick("a#add-linea", ev => {
 		const data = formFact.isValid(linea.validate, ".ui-linea");
 		if (data) {
 			lineas.push(data); // save container

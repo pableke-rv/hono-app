@@ -121,12 +121,10 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 .autocomplete .results {
 	width: 100%; /* same width than ui-input */
 	position: absolute; margin: 0; padding: 0; z-index: 3;
-	font-weight: normal; color: black; background-color: #f7f7f7;
+	font-weight: normal !important; color: black; background-color: #f7f7f7;
 }
 :is(.dark .autocomplete .results) { background-color: #ccc; }
-.autocomplete .results.active {
-    border: solid 1px silver; /*box-shadow: 2px 2px 4px #ccc;*/ animation: none;
-}
+.autocomplete .results.active { border: solid 1px silver; animation: none; }
 .autocomplete li { padding: 3px; list-style: none; cursor: pointer; }
 .autocomplete li:hover, .autocomplete li.active {
     color: white; background-color: #2196f3; animation: none;

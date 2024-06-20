@@ -17,7 +17,7 @@ function Uxxiec() {
             render: item => (item.num + " - " + item.uxxi + "<br>" + item.desc),
             select: item => { op = item; return item.num + " - " + item.desc; }
         });
-        formUxxi.setClick("a#add-uxxi", el => {
+        formUxxi.addClick("a#add-uxxi", el => {
             if (op) {
                 delete op.id; //force insert
                 operaciones.push(op); // save container

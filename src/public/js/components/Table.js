@@ -92,7 +92,7 @@ export default function(table, opts) {
                 const fnChange = opts[ev.target.name + "Change"] || globalThis.void;
                 fnChange(_rows[i], ev.target, i);
             };
-            tr.getElementsByClassName(opts.rowActionClass).setClick((ev, link) => {
+            tr.getElementsByClassName(opts.rowActionClass).addClick((ev, link) => {
                 const href = link.getAttribute("href");
                 fnCallAction(href, link, i); // Call action
                 ev.preventDefault(); // avoid navigation
@@ -129,7 +129,7 @@ export default function(table, opts) {
 
     // Orderable columns system
     const links = table.tHead.getElementsByClassName(opts.sortClass);
-    links.setClick((ev, link) => {
+    links.addClick((ev, link) => {
         const dir = link.classList.contains(opts.sortAscClass) ? opts.sortDescClass : opts.sortAscClass; // Toggle sort direction
         const column = link.getAttribute("href").substring(1); // Column name
 
@@ -150,7 +150,7 @@ export default function(table, opts) {
 
     this.setActions = el => { // Table acctions over data
         const fnMove = i => (i < 0) ? 0 : Math.min(i, _rows.length - 1);
-        el.getElementsByClassName(opts.tableActionClass).setClick((ev, link) => {
+        el.getElementsByClassName(opts.tableActionClass).addClick((ev, link) => {
             const href = link.getAttribute("href");
             // Navigate pre actions
             if (href == "#first")

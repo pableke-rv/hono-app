@@ -5,10 +5,6 @@ import i18n from "../i18n/langs.js";
 const divNull = document.createElement("div");
 //const TEXT = document.createElement("textarea");
 const HIDE_CLASS = "hide";
-//const FADE_IN = "fadeIn";
-//const FADE_OUT = "fadeOut";
-//const SLIDE_IN = "slideIn";
-//const SLIDE_OUT = "slideOut";
 
 const fnHide = el => el.classList.add(HIDE_CLASS);
 const fnShow = el => el.classList.remove(HIDE_CLASS);
@@ -25,6 +21,7 @@ HTMLCollection.prototype.findOne = function(selector) { return this.find(el => e
 HTMLCollection.prototype.query = function(selector) { return this.filter(el => el.matches(selector)); }
 HTMLCollection.prototype.render = function(data) { this.forEach((el, i) => el.render(data, i, this.length)); }
 HTMLCollection.prototype.text = function(text) { this.forEach(el => { el.innerHTML = text; }); }
+HTMLCollection.prototype.addClick = function(fn) { this.forEach(el => el.addClick(fn)); };
 HTMLCollection.prototype.setClick = function(fn) { this.forEach(el => el.setClick(fn)); };
 HTMLCollection.prototype.hide = function() { this.forEach(fnHide); }
 HTMLCollection.prototype.show = function() { this.forEach(fnShow); }
@@ -49,6 +46,7 @@ NodeList.prototype.findOne = HTMLCollection.prototype.findOne;
 NodeList.prototype.query = HTMLCollection.prototype.query;
 NodeList.prototype.render = HTMLCollection.prototype.render;
 NodeList.prototype.text = HTMLCollection.prototype.text;
+NodeList.prototype.addClick = HTMLCollection.prototype.addClick;
 NodeList.prototype.setClick = HTMLCollection.prototype.setClick;
 NodeList.prototype.hide = HTMLCollection.prototype.hide;
 NodeList.prototype.show = HTMLCollection.prototype.show;
@@ -61,7 +59,8 @@ HTMLElement.prototype.show = function() { fnShow(this); return this }
 HTMLElement.prototype.hide = function() { fnHide(this); return this }
 HTMLElement.prototype.toggle = function(name, force) { this.classList.toggle(name || HIDE_CLASS, force); return this; }
 //HTMLElement.prototype.trigger = function(name, detail) { this.dispatchEvent(detail ? new CustomEvent(name, { detail }) : new Event(name)); } //ev.detail
-HTMLElement.prototype.setClick = function(fn) { this.addEventListener("click", ev => fn(ev, this)); return this; }
+HTMLElement.prototype.addClick = function(fn) { this.addEventListener("click", ev => fn(ev, this)); return this; }
+HTMLElement.prototype.setClick = function(fn) { this.onclick = ev => fn(ev, this); return this; }
 HTMLElement.prototype.setVisible = function(force) { return force ? this.show() : this.hide(); }
 HTMLElement.prototype.isHidden = function() { return this.classList.contains(HIDE_CLASS); } // has class hide
 HTMLElement.prototype.isVisible = function(selector) {
@@ -84,18 +83,6 @@ HTMLElement.prototype.setReadonly = function(force) { // Update attribute and st
     this.classList.toggle("readonly", this.toggleAttribute("readonly", force));
     return this;
 }
-
-/*function fnAnimate(el, addName, removeName) {
-    el.classList.remove(HIDE_CLASS, removeName);
-    el.classList.add(addName);
-    return el;
-}
-HTMLElement.prototype.fadeIn = function() { return fnAnimate(this, FADE_IN, FADE_OUT); }
-HTMLElement.prototype.fadeOut = function() { return fnAnimate(this, FADE_OUT, FADE_IN); }
-HTMLElement.prototype.slideIn = function() { return fnAnimate(this, SLIDE_IN, SLIDE_OUT); }
-HTMLElement.prototype.slideOut = function() { return fnAnimate(this, SLIDE_OUT, SLIDE_IN); }*/
-//HTMLElement.prototype.slideInRight = function() { return fnAnimate(this, SLIDE_IN_RIGHT, SLIDE_OUT_RIGHT); }
-//HTMLElement.prototype.slideOutRight = function() { return fnAnimate(this, SLIDE_OUT_RIGHT, SLIDE_IN_RIGHT); }
 
 // Commons initializations in the HTML client
 coll.ready = fn => document.addEventListener("DOMContentLoaded", fn);

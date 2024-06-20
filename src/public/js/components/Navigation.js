@@ -36,7 +36,7 @@ function Navigation() {
     // Capture clicks events to load main via AJAX
     this.setClick = (el, selector) => {
         selector = selector || "a.load-main";
-        el.querySelectorAll(selector).setClick((ev, link) => {
+        el.querySelectorAll(selector).addClick((ev, link) => {
             api.init().text(link.href).then(self.setMain); // Load main via AJAX on click
             ev.preventDefault();
         });
@@ -61,7 +61,7 @@ function Navigation() {
 
         alerts.top(); // Show top view
         tabs.load(main); // reload tabs events
-        return self.setClick(main); // Listen new clicks
+        return self.addClick(main); // Listen new clicks
     }
 
     // Check to see if API is supported

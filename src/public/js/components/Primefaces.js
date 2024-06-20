@@ -41,14 +41,15 @@ function datalist(form, select, input, opts) {
 
 function uploads(list, fn) {
 	list.setClick(ev => {
-		const parent = ev.target.parentNode;
-		parent.querySelector("[type='file']").onchange = ev => {
+        const parent = ev.target.parentNode;
+        const file = parent.querySelector("[type='file']");
+		file.onchange = ev => {
 			const el = parent.querySelector(".filename");
             if (el) // Element to show file name
                 el.innerHTML = ev.target.files[0]?.name || "";
             fn && fn(ev.target); // callback onchange input file
         }
-		parent.querySelector(".ui-fileupload-choose").click();
+		file.click();
 	});
 }
 

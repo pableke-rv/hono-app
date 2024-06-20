@@ -12,7 +12,7 @@ export default function(autocomplete, opts) {
     if (!autocomplete)
         return; // Input not found
 
-    opts = opts || {};
+    opts = opts || {}; // Config. container
 	opts.delay = opts.delay || 400; //milliseconds between keystroke occurs and when a search is performed
 	opts.minLength = opts.minLength || 3; //length to start
 	opts.maxLength = opts.maxLength || 16; //max length for searching

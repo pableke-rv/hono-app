@@ -18,7 +18,7 @@ pf.ready(() => {
     const acOrg030 = form030.setAcItems("#acOrg030", //selector
                                         term => window.rcFindOrg030(pf.param("term", term)), //source
                                         item => form030.setval("#idEco030", item.imp)); //select
-    form030.setClick("#save-030", ev => {
+    form030.addClick("#save-030", ev => {
         partida.setData(lineas.getCurrentItem());
         if (form030.isValid(partida.validate030)) {
             formPresto.saveTable("#partidas-json", lineas); // save data to send to server
@@ -92,7 +92,9 @@ pf.ready(() => {
     formPresto.onChangeInput("#impDec", ev => {
         const partidas = lineas.getData();
         if (presto.isAutoLoadImp() && partidas.length) {
-            partidas[0].imp = formPresto.getValue(ev.target); //importe obligatorio
+            const partida = partidas[0]; // unique row
+            partida.imp = formPresto.getValue(ev.target); //importe obligatorio
+            partida.imp030 = partida.imp; // update imp 030
             lineas.render(partidas);
         }
     });

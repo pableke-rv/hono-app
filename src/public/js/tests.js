@@ -33,5 +33,5 @@ nav.ready(() => {
         themeToggleBtn.children.toggle();  // toggle icons inside button
     });
 
-    nav.setClick(document);
+    nav.addClick(document);
 });
