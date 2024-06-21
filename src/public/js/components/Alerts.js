@@ -118,6 +118,9 @@ function Alerts() {
         self.showAlerts(msgs); // show all messages
         return !msgs?.msgError; // has error message
     }
+    window.handleReport = (xhr, status, args) => {
+        window.showAlerts(xhr, status, args) && self.redir(args?.url);
+    }
 }
 
 export default new Alerts();

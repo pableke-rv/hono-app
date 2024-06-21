@@ -16,42 +16,9 @@ function fnLoadTables(form, ancladas, recientes, data) {
 	fnPaginate(recientes, form.getval("#pagina")); // current page size
 }
 
-function fnFacturaOrganica(form, elTipo, data) {
-	const isIsu = buzon.setTipoPago(+elTipo.value).isIsu(data);
-	buzon.setJustPagoRequired(buzon.isPagoCesionario() && isIsu);
-	form.setVisible("#file-jp", buzon.isJustPagoRequired()).text(".filename", "")
-		.setVisible("#check-jp", buzon.isPagoCesionario() && !isIsu);
-}
-function fnFacturaOtros(form, elTipo) {
-	buzon.setTipoPago(+elTipo.value);
-	buzon.setJustPagoRequired(buzon.isPagoCesionario());
-	form.hide("#check-jp").text(".filename", "").setVisible("#file-jp", buzon.isJustPagoRequired());
-}
-
-function fnAddActions(form, table) {
-	const elTipo = form.getInput("#tipo");
-	table.set("#anclar", data => pf.sendId("anclar", data.org));
-	table.set("#desanclar", data => pf.sendId("desanclar", data.org));
-	table.set("#modal", data => { modals.set("data", data); pf.sendId("utProv", data.org); });
-	table.set("#report", data => pf.fetch("report", { id: data.org, ut: data.ut }));
-
-	table.set("#buzon", data => {
-		form.setval("#buzon-cod-org", data.oCod).text("#org-desc", data.oCod + " / " + data.oDesc);
-		elTipo.onchange = () => fnFacturaOrganica(form, elTipo, data);
-		fnFacturaOrganica(form, elTipo, data);
-		pf.sendId("utFact", data.org);
-	});
-	table.set("#buzon-otros", () => {
-		form.setval("#buzon-cod-org").text("#org-desc", table.html("#otras"));
-		elTipo.onchange = () => fnFacturaOtros(form, elTipo);
-		fnFacturaOtros(form, elTipo);
-		window.utFact(); // id = null
-	});
-}
-
 pf.ready(() => { // on load view
-	const formFactura = new Form("#xeco-factura");
 	const formOrganicas = new Form("#xeco-organicas");
+	const organicas = JSON.read(formOrganicas.html("#organcias-json"));
 	const tableAncladas = formOrganicas.setTable("#ancladas", {
 		onRender: buzon.row,
 		onFooter: buzon.tfoot,
@@ -65,27 +32,72 @@ pf.ready(() => { // on load view
 		onRemove: data => pf.sendId("remove", data.org)
 	});
 
-	fnAddActions(formFactura, tableAncladas);
-	fnAddActions(formFactura, tableRecientes);
-	const organicas = JSON.read(formOrganicas.html("#organcias-json"));
-	fnLoadTables(formOrganicas, tableAncladas, tableRecientes, organicas);
-	modals.set("#report", () => {
-		const data = modals.get("data");
-		pf.fetch("report", { id: data.org, ut: formOrganicas.getval("#utProv") });
-	});
-
 	const page = formOrganicas.getInput("#pagina");
 	page.onchange = () => fnPaginate(tableRecientes, +page.value);
+	fnLoadTables(formOrganicas, tableAncladas, tableRecientes, organicas);
+	modals.set("#report", () => {
+		const data = buzon.getData(); // current row
+		pf.fetch("report", { id: data.org, ut: formOrganicas.getval("#utProv") });
+		modals.close(); // always close modal
+	});
+
+	const formFactura = new Form("#xeco-factura");
+	const elTipo = formFactura.getInput("#tipo");
+	const fileNames = formFactura.querySelectorAll(".filename");
+
+	function fnFacturaOrganica(data) {
+		const isIsu = buzon.setData(data).setTipoPago(+elTipo.value).isIsu();
+		buzon.setJustPagoRequired(buzon.isPagoCesionario() && isIsu);
+		formFactura.setVisible("#msg-isu", isIsu).setVisible("#file-jp", buzon.isJustPagoRequired());
+		tabs.exclude();
+		buzon.isPagoCesionario() || tabs.exclude(3);
+		buzon.isMonogrupo() && tabs.exclude(4)
+	}
+	function fnFacturaOtros() {
+		buzon.setTipoPago(+elTipo.value);
+		buzon.setJustPagoRequired(buzon.isPagoCesionario());
+		formFactura.hide("#msg-isu").setVisible("#file-jp", buzon.isJustPagoRequired());
+		tabs.exclude();
+		buzon.isPagoCesionario() || tabs.exclude(3);
+	}
+	function fnAddActions(table) {
+		table.set("#anclar", data => pf.sendId("anclar", data.org));
+		table.set("#desanclar", data => pf.sendId("desanclar", data.org));
+		table.set("#users", data => { buzon.setData(data); pf.sendTerm("users", data.oCod); });
+		table.set("#modal", data => { buzon.setData(data); pf.sendId("utProv", data.org); });
+		table.set("#report", data => pf.fetch("report", { id: data.org, ut: data.ut }));
+
+		table.set("#buzon", data => {
+			formFactura.setval("#buzon-cod-org", data.oCod).text("#org-desc", data.oCod + " / " + data.oDesc);
+			elTipo.onchange = () => fnFacturaOrganica(data); // update event
+			fnFacturaOrganica(data);
+			pf.sendId("utFact", data.org);
+		});
+		table.set("#buzon-otros", () => {
+			formFactura.setval("#buzon-cod-org").text("#org-desc", table.html("#otras"));
+			elTipo.onchange = fnFacturaOtros; // update event
+			fnFacturaOtros();
+			window.utFact(); // id = null
+		});
+	}
+
+	fnAddActions(tableAncladas);
+	fnAddActions(tableRecientes);
 
 	pf.uploads(formFactura.querySelectorAll(".pf-upload"));
 	tabs.setShowEvent(2, tab => {
-		const files = formFactura.querySelectorAll(".filename").filter(el => el.innerHTML);
-		const fileNames = files.map(el => el.innerHTML).join(", ");
-		if (!fileNames)
-			return !formFactura.showError("Debe seleccionar una factura.");
+		const fileName = formFactura.querySelector(".filename").innerHTML;
+		return fileName || !formFactura.showError("Debe seleccionar una factura.");
+	});
+	tabs.setShowEvent(4, tab => {
+		const files = fileNames.filter(el => el.innerHTML);
 		if (buzon.isJustPagoRequired() && (files.length < 2))
 			return !formFactura.showError("Debe seleccionar Justificante de pago.");
-		return formFactura.text("#ut-desc", formFactura.getOptionText("#utFact")).text("#file-name", fileNames);
+		return true;
+	});
+	tabs.setViewEvent(6, tab => {
+		const names = fileNames.filter(el => el.innerHTML).map(el => el.innerHTML);
+		formFactura.text("#ut-desc", formFactura.getOptionText("#utFact")).text("#file-name", names.join(","));
 	});
 
 	window.loadBuzon = (xhr, status, args) => {
@@ -93,5 +105,12 @@ pf.ready(() => { // on load view
 			fnLoadTables(formOrganicas, tableAncladas, tableRecientes, JSON.read(args.data));
 			formOrganicas.showOk("saveOk"); // clear inputs, autofocus and message
 		}
+	}
+	window.loadUsuarios = (xhr, status, args) => {
+		if (!pf.showAlerts(xhr, status, args))
+			return; // server error message
+		const formUsers = new Form("#xeco-users");
+		formUsers.querySelector("#msg-org").render(buzon.getData());
+		tabs.showTab(10);
 	}
 });

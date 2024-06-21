@@ -6,8 +6,10 @@ function Buzon() {
 	const self = this; //self instance
     var _data, tipoPago, justPagoRequired;
 
+    this.getData = () => _data;
     this.setData = data => { _data = data; return self; }
-	this.isIsu = data => sb.starts(data.oCod, "300518") && ((data.omask & 8) == 8);
+
+    this.isIsu = () => sb.starts(_data.oCod, "300518") && ((_data.omask & 8) == 8);
     this.setTipoPago = tipo => { tipoPago = tipo; return self; }
     this.isPagoProveedor = () => (tipoPago == 1);
     this.isPagoCesionario = () => (tipoPago == 2);
@@ -42,7 +44,7 @@ function Buzon() {
             <td class="text-center">${self.getRol()}</td>
             <td class="text-right">
                 ${(data.mask & 2) ? desanclar : anclar}
-                <a href="#buzon" class="action resize text-gray row-action" title="Gestión de permisos"><i class="fas fa-user"></i></a>
+                <a href="#users" class="action resize text-gray row-action" title="Gestión de permisos"><i class="fas fa-user"></i></a>
                 <a href="#buzon" class="action resize text-warn row-action" title="Avance de Gastos"><i class="fab fa-google"></i></a>
                 <a href="#buzon" class="action resize text-green row-action" title="Avance de Ingresos"><i class="fas fa-info"></i></a>
                 <a href="${report}" class="action resize text-blue row-action" title="Informe al Proveedor"><i class="fal fa-file-pdf"></i></a>

@@ -86,7 +86,6 @@ export default (model, formModel) => {
     window.onList = () => formFilter.setData({ fMiFirma: "5" }).loading();
     window.fnFirmar = () => i18n.confirm("msgFirmar") && window.loading();
     window.fnRechazar = () => formReject.isValid(solicitud.validateReject) && i18n.confirm("msgRechazar") && window.loading();
-    window.handleReport = (xhr, status, args) => window.showAlerts(xhr, status, args).redir(args?.url);
 
     window.loadFiltro = (xhr, status, args) => {
         window.showTab(xhr, status, args, 2) && solicitudes.render(JSON.read(args.data));

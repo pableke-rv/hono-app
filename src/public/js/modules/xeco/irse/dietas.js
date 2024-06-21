@@ -36,6 +36,7 @@ function IrseDietas() {
 			const dieta = resume.data;
 			dieta.imp1 = +resume.element.value;
 
+			divData.innerText = JSON.stringify(manutenciones);
 			dom.tfoot(table, resume, STYLES)
 				.setText(tr.cells[9], i18n.isoFloat(dieta.reducido) + " €")
 				.setText(tr.cells[10], i18n.isoFloat(dieta.percibir) + " €")

@@ -7,6 +7,7 @@ const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
 
 // Classes Configuration
 const TAB_CLASS = "tab-content";
+const TAB_NONE = "tab-excluded";
 const ACTIVE_CLASS = "active";
 //const PROGRESS_BAR = "progress-bar";
 
@@ -83,7 +84,7 @@ function Tabs() {
     this.lastTab = () => fnShowTab(_lastTab);
     this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +(tabs[_tabIndex].dataset.back ?? (_tabIndex - 1)));
     this.prevTab = () => self.backTab; // Synonym for back to previous tab
-    this.nextTab = () => fnShowTab(_tabIndex + 1); // next tab by position
+    this.nextTab = () => fnShowTab(tabs.findIndex((tab, i) => ((i > _tabIndex) && !tab.classList.contains(TAB_NONE)))); // next tab by position
     this.toggle = el => {
         const icon = el.querySelector(el.dataset.icon || "i"); // icon indicator
         document.querySelectorAll(el.dataset.target || (".info-" + el.id)).toggle(); // toggle info
@@ -117,13 +118,13 @@ function Tabs() {
         _lastTab = tabs.length - 1; // max tabs size
         return self.setActions(el); // update actions
     }
-    /*this.remove = () => {
-        for (let i = 0; i < arguments.length; i++)
-            delete tabs[fnFindIndex(arguments[i])];
-        tabs = tabs.filter(globalThis.isset); // sanitize tabs
-        _lastTab = tabs.length - 1; // max tabs size
+    this.exclude = id => {
+        if (globalThis.isset(id)) // 0 is valid
+            tabs[fnFindIndex(id)].classList.add(TAB_NONE);
+        else
+            tabs.forEach(tab => tab.classList.remove(TAB_NONE));
         return self;
-    }*/
+    }
 
     // Init. view and PF navigation (only for CV-UAE)
     self.load(document); // Load all tabs

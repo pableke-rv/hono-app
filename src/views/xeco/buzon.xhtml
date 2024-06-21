@@ -60,10 +60,10 @@
 
 			<p:remoteCommand name="anclar" action="#{buzon.anclar()}" oncomplete="loadBuzon(xhr, status, args)" />
 			<p:remoteCommand name="desanclar" action="#{buzon.desanclar()}" oncomplete="loadBuzon(xhr, status, args)" />
-			<p:remoteCommand name="findOrganica" action="#{buzon.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
+			<p:remoteCommand name="users" action="#{buzon.usuarios()}" update="xeco-users" oncomplete="loadUsuarios(xhr, status, args)" />
 			<p:remoteCommand name="utProv" action="#{buzon.setUnidadesTramit()}" update="utProv" oncomplete="openModal(xhr, status, args, '#modal-ut')" />
 			<p:remoteCommand name="utFact" action="#{buzon.setUnidadesTramit()}" update="utFact" oncomplete="showTab(xhr, status, args, 1)" />
-			<p:remoteCommand name="report" action="#{buzon.report()}" oncomplete="closeModal(xhr, status, args);"/>
+			<p:remoteCommand name="report" action="#{buzon.report()}" oncomplete="handleReport(xhr, status, args);"/>
 			<p:remoteCommand name="remove" action="#{buzon.remove()}" oncomplete="showAlerts(xhr, status, args);"/>
 
 			<!-- modals dialog -->
@@ -72,12 +72,18 @@
 			</div>
 		</h:form>
 
-		<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
-			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+		<div class="navbar">
+			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+			</div>
 		</div>
 
+		<!-- Subida de facturas del tab1 al tab6 -->
 		<h:form id="xeco-factura" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
 			<ui:include src="tabs/buzon/facturas.xhtml"></ui:include>
 		</h:form>
+
+		<!-- gastion de permisos tab10 -->
+		<ui:include src="tabs/buzon/usuarios.xhtml"></ui:include>
 	</ui:define>
 </ui:composition>
