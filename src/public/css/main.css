@@ -50,6 +50,7 @@ tfoot { font-weight: bold; border-top: 1px dashed black; }
 /* Actions */
 .action { display: inline-block; margin-right: 6px; text-decoration: none; font-size: 24px; }
 .text-xl { font-size: x-large; font-weight: bold; text-transform: uppercase; }
+.text-disabled { opacity: .5; color: gray !important; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
 
@@ -64,6 +65,10 @@ tfoot { font-weight: bold; border-top: 1px dashed black; }
 .text-green { color: rgb(34 197 94)/*green-500*/; }
 .action.text-green:hover { color: rgb(22 101 52)/*green-800*/; }
 :is(.dark .action.text-green:hover) { color: rgb(187 247 208)/*green-300*/; }
+
+.text-purple { color: purple; fill: purple; }
+.action.text-purple:hover { color: palevioletred; fill: palevioletred; }
+:is(.dark .action.text-purple:hover) { color: pink; fill: pink; }
 
 .text-warn { color: rgb(234 179 8)/*yellow-500*/; }
 .action.text-warn:hover { color: rgb(133 77 14)/*yellow-800*/; }

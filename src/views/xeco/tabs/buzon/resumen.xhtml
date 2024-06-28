@@ -9,13 +9,15 @@
 
     <div id="resumen" class="card-xeco">
         <h2>Resumen de la Solicitud</h2>
+        <p><b>¿A quién se va a pagar la factura?:</b> <span id="type-name">TYPE-NAME</span></p>
         <p><b>Archivos que se van a enviar:</b> <span id="file-name">NAME-XXX</span></p>
         <p><b>Partida presupuestaria para la factura:</b> <span id="org-desc">ORG-XXX</span></p>
         <p><b>Unidad que va a tramitar la factura:</b> <span id="ut-desc">UT-XXX</span></p>
+        <p id="msg-gestor"><b>Observaciones para el gestor:</b> <span id="desc-gestor">DESC</span></p>
     </div>
     <div>
         <a href="#prev-tab" class="btn btn-info" tabindex="20"><i class="fas fa-caret-left"></i></a>
-        <p:commandLink action="#{buzon.upload()}" onclick="loading();" oncomplete="showTab(xhr, status, args, 0)" 
+        <p:commandLink action="#{buzon.upload()}" onclick="loading();" oncomplete="factUpload(xhr, status, args)" 
             styleClass="btn btn-green">Enviar <i class="fas fa-paper-plane btn-icon-right"></i></p:commandLink>
     </div>
 </html>

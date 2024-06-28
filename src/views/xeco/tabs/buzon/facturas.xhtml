@@ -9,7 +9,7 @@
 
     <div id="tab-1" class="tab-content">
     <div class="card-xeco">
-        <h2>Buzón de Facturas</h2>
+        <h2>Bandeja de Facturas</h2>
         <div class="notice notice-info">
             <p><b>Bandeja de facturas.</b> Sube aquí las facturas de tus compras que no deban ir por FACe, <b>una a una y en formato PDF, indicando si deben pagarse al proveedor, a ti como cesionario porque has adelantado el pago o si están pagadas por la Universidad</b> mediante algún procedimiento de pago anticipado.</p>
             <p><b>No podrás indicar cesionarios distintos de ti mismo. Para determinadas partidas</b> (principalmente de investigación subvencionada), <b>se puede requerir, además de la factura, el justificante del pago.</b> <a id="factura" href="#toggle" data-toggle="fa-angle-double-down fa-angle-double-up">Más explicación<i class="fas fa-angle-double-down icon"></i></a></p>
@@ -18,8 +18,8 @@
 
         <div class="ui-blocks">
         <div class="ui-block-row">
-            <p:fileUpload id="fileFactura" value="#{buzon.factura}" fileUploadListener="#{buzon.uploadFactura}" mode="advanced" auto="true" styleClass="hide" />
-            <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Seleccionar 1 Factura</a>
+            <p:fileUpload id="fileFactura" value="#{buzon.factura}" fileUploadListener="#{buzon.uploadFactura}" mode="advanced" auto="true" allowTypes="/(\.|\/)(pdf)$/" styleClass="hide" />
+            <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Seleccionar 1 Factura (PDF)</a>
             <span class="filename"></span>
         </div>
         </div>
@@ -33,15 +33,15 @@
 
     <div id="tab-2" class="tab-content">
         <div class="card-xeco">
-            <h2>Buzón de Facturas</h2>
+            <h2>Bandeja de Facturas</h2>
 
             <div class="ui-blocks">
             <label class="ui-block">
                 <div class="label required">¿A quién se va a pagar la factura?:</div>
                 <h:selectOneMenu id="tipo" value="#{buzon.tipo}" styleClass="ui-input ui-select" tabindex="1">
-                    <f:selectItem itemValue="1" itemLabel="Pagar al Proveedor" />
-                    <f:selectItem itemValue="2" itemLabel="Pagar a #{uae.nombre}" />
-                    <f:selectItem itemValue="3" itemLabel="Ya pagado por UPCT" />
+                    <f:selectItem itemValue="1" itemLabel="Al proveedor; está pendiente de pago." />
+                    <f:selectItem itemValue="2" itemLabel="A #{uae.nombre}; he adelantado su pago." />
+                    <f:selectItem itemValue="3" itemLabel="Está pagada por la UPCT por un procedimiento de pago antes de recibir la factura." />
                 </h:selectOneMenu>
             </label>
             </div>
@@ -55,18 +55,19 @@
 
     <div id="tab-3" class="tab-content">
         <div class="card-xeco">
-            <h2>Buzón de Facturas</h2>
-            <div id="msg-isu" class="notice notice-info">La partida presupuestaria corresponde a un proyecto de investigación subvencionada o no se ha indicado partida, por lo que debes adjuntar el justificante de pago de la factura.</div>
+            <h2>Bandeja de Facturas</h2>
+            <div class="notice notice-info show-isu">La partida presupuestaria corresponde a un proyecto de investigación subvencionada o no se ha indicado partida, por lo que debes adjuntar el justificante de pago de la factura.</div>
 
             <div class="ui-blocks">
             <div id="file-jp" class="ui-block-row">
                 <p:fileUpload id="fileJustPago" value="#{buzon.justPago}" fileUploadListener="#{buzon.uploadJustPago}" mode="advanced" auto="true" styleClass="hide" />
-                <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Seleccionar 1 Justificante de Pago</a>
+                <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Adjuntar justificante de pago (Formato de fichero libre, sólo un archivo)</a>
                 <span class="filename"></span>
             </div>
             <div class="ui-block-row">
                 <input type="checkbox" checked="checked" disabled="disabled" />
-                <b>Declaro responsablemente que he pagado en nombre de la Universidad la factura remitida y que conservo a disposición de ésta el justificante del pago.</b>
+                <b class="show-isu">Declaro responsablemente que he pagado en nombre de la Universidad la factura remitida y que adjunto el justificante del pago.</b>
+                <b class="show-no-isu">Declaro responsablemente que he pagado en nombre de la Universidad la factura remitida y que conservo a disposición de ésta el justificante del pago.</b>
             </div>
             </div>
         </div>
@@ -79,7 +80,7 @@
 
     <div id="tab-4" class="tab-content">
         <div class="card-xeco">
-            <h2>Buzón de Facturas</h2>
+            <h2>Bandeja de Facturas</h2>
 
             <div class="ui-blocks">
             <label class="ui-block">
@@ -101,13 +102,19 @@
 
     <div id="tab-5" class="tab-content">
         <div class="card-xeco">
-            <h2>Buzón de Facturas</h2>
+            <h2>Bandeja de Facturas</h2>
+            <div class="notice notice-info">En todo caso indicar, la/s partida/s presupuestaria/s a la/s que imputar el gasto, además de otra información que consideres necesaria.</div>
 
             <div class="ui-blocks">
             <label class="ui-block-row">
                 <div class="label">Observaciones para el gestor (si son necesarias):</div>
                 <h:inputTextarea id="desc" value="#{buzon.desc}" styleClass="ui-input ui-ta" />
             </label>
+            <div class="ui-block-row">
+                <p:fileUpload id="fileDatosExtra" value="#{buzon.datosExtra}" fileUploadListener="#{buzon.uploadDatosExtra}" mode="advanced" auto="true" styleClass="hide" />
+                <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Documentación complementaria (no obligatorio)</a>
+                <span class="filename"></span>
+            </div>
             </div>
         </div>
 

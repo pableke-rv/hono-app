@@ -16,7 +16,7 @@ function Linea(factura) {
     }
     this.tfoot = resume => {
         const iva = factura.getIva();
-        const show = factura.isFactura() ? "" : "hide";
+        const show = factura.isFacturable() ? "" : "hide";
         return `<tr>
             <td colspan="2">Conceptos: ${resume.size}</td>
             <td class="text-right">${i18n.isoFloat(resume.imp)} €</td>
@@ -74,7 +74,7 @@ function Lineas(factura) {
 function Factura() {
 	const self = this; //self instance
     const lineas = new Lineas(self);
-    const titulos = [ "-", "Factura", "Abono", "Carta de Pago", "Recibo Alumno" ];
+    const titulos = [ "-", "Factura", "Abono", "Carta de Pago", "Recibo de Alumno" ];
 
     let _data; // Current instance
     this.setData = data => {
@@ -92,6 +92,7 @@ function Factura() {
     //this.isAbono = () => (solicitud.getTipo() == 2);
     this.isCartaPago = () => (solicitud.getTipo() == 3);
     this.isReciboCV = () => (solicitud.getTipo() == 4);
+    this.isFacturable = () => (self.isFactura() || self.isReciboCV());
 
     this.isDisabled = solicitud.isDisabled;
     this.isEditable = solicitud.isEditable;

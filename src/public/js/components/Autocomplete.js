@@ -10,7 +10,7 @@ window.loadItems = globalThis.void; // Hack PF (only for CV-UAE)
 
 export default function(autocomplete, opts) {
     if (!autocomplete)
-        return; // Input not found
+        return; // Input element not found
 
     opts = opts || {}; // Config. container
 	opts.delay = opts.delay || 400; //milliseconds between keystroke occurs and when a search is performed
@@ -48,9 +48,9 @@ export default function(autocomplete, opts) {
 	this.isset = () => autocomplete;
     this.isItem = () => (_index > -1);
     this.isLoaded = () => inputValue.value;
-
     this.getInputValue = () => inputValue;
     this.getAutocomplete = () => autocomplete;
+    this.getValue = () => inputValue.value;
     this.setValue = (value, label) => {
         if (value) {
             inputValue.value = value;

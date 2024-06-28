@@ -6,6 +6,10 @@ const EMPTY = [];
 const fnTrue = () => true;
 
 export default function(table, opts) {
+	table = globalThis.isstr(table) ? document.querySelector(table) : table;
+    if (!table)
+        return; // Table element not found
+
     opts = opts || {}; // default options
     opts.sortClass = opts.sortClass || "sort";
     opts.sortAscClass = opts.sortAscClass || "sort-asc";
@@ -14,7 +18,7 @@ export default function(table, opts) {
 
     opts.activeClass = opts.activeClass || "active";
     opts.rowActionClass = opts.rowActionClass || "row-action";
-    opts.tableActionClass = opts.tableActionClass || "table-action";
+    opts.tableActionClass = opts.tableActionClass || (table.id + "-action");
     opts.msgConfirmRemove = opts.msgConfirmRemove || "remove";
     opts.msgConfirmReset = opts.msgConfirmReset || "removeAll";
 
@@ -26,6 +30,7 @@ export default function(table, opts) {
     opts.onRender = opts.onRender || globalThis.void;
     opts.onLastRow = opts.onLastRow || globalThis.none;
     opts.onFooter = opts.onFooter || (() => table.tFoot.innerHTML);
+    opts.renderFooter = opts.renderFooter ?? true;
     opts.afterRender = opts.afterRender || globalThis.void;
     opts.onRemove = opts.onRemove || fnTrue;
     opts.onReset = opts.onReset || fnTrue;
@@ -68,6 +73,7 @@ export default function(table, opts) {
             opts[name](_rows[i], link, i); // Action call
         }
     }
+
     function fnRender(data) {
         _index = -1; // clear previous selects
         _rows = data || []; // data to render on table
@@ -81,16 +87,18 @@ export default function(table, opts) {
             tBody.innerHTML = coll.render(_rows, opts.onRender, RESUME) + opts.onLastRow(RESUME);
         else
             tBody.innerHTML = opts.rowEmptyTable; // specific empty row
-        table.tFoot.innerHTML = opts.onFooter(RESUME); // render formatted footer
+        if (opts.renderFooter) // render formatted footer
+            table.tFoot.innerHTML = opts.onFooter(RESUME);
         opts.afterRender(RESUME); // After body and footer is rendered
         tBody.classList.add(opts.activeClass); // Add styles (animation)
 
-        // Row listeners for change, find and remove items
+        // Row listeners for change, find and remove items in body
         tBody.rows.forEach((tr, i) => {
             tr.onchange = ev => {
                 _index = i; // current item
-                const fnChange = opts[ev.target.name + "Change"] || globalThis.void;
-                fnChange(_rows[i], ev.target, i);
+                const el = ev.target; // change event element
+                const fnChange = opts[el.name + "Change"] || globalThis.void;
+                fnChange(_rows[i], el, tr, i); // call handler
             };
             tr.getElementsByClassName(opts.rowActionClass).addClick((ev, link) => {
                 const href = link.getAttribute("href");
@@ -98,16 +106,20 @@ export default function(table, opts) {
                 ev.preventDefault(); // avoid navigation
             });
         });
+
+        // Row listeners for change, and other actions in footer
+        table.tFoot.rows.forEach((tr, i) => {
+            tr.onchange = ev => {
+                const el = ev.target; // change event element
+                const fnChange = opts[el.name + "Change"] || globalThis.void;
+                fnChange(RESUME, el, tr, i); // call handler
+            }
+        });
         return self;
     }
 
-    table.tFoot.onchange = ev => {
-        const input = ev.target; // element changed
-        const fnChange = opts[input.name + "Change"] || globalThis.void;
-        fnChange(input, self);
-    }
-
     this.render = fnRender;
+    this.reload = () => fnRender(_rows);
     this.push = row => { _rows.push(row); return fnRender(_rows); }  // Push data
     this.add = row => { delete row.id; return self.push(row); } // Force insert => remove PK
     this.insert = (row, id) => { row.id = id; return self.push(row); } // New row with PK
@@ -152,7 +164,6 @@ export default function(table, opts) {
         const fnMove = i => (i < 0) ? 0 : Math.min(i, _rows.length - 1);
         el.getElementsByClassName(opts.tableActionClass).addClick((ev, link) => {
             const href = link.getAttribute("href");
-            // Navigate pre actions
             if (href == "#first")
                 fnCallAction(href, link, fnMove(0));
             else if (href == "#prev")

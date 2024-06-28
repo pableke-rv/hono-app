@@ -10,30 +10,30 @@
 	<div class="card-xeco">
 		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><h:outputText value="#{msg['uae.irse.tab0.msg.tit.p']}" escape="false" /></h2>
 		<div class="autocomplete hide">
-			<h:inputHidden id="rol" value="#{ac.rol}" />
-			<h:inputText id="interesado" value="#{ac.acInteresado}" tabindex="2" styleClass="ui-input ui-autocomplete ui-state-disabled" />
-			<h:inputHidden id="nif-interesado" value="#{ac.nifInteresado}" />
-			<span>[<span id="colectivo">#{ac.colectivo}</span>]</span>
+			<h:inputHidden id="rol" value="#{perfil.rol}" />
+			<h:inputText id="interesado" value="#{perfil.acInteresado}" tabindex="2" styleClass="ui-input ui-autocomplete ui-state-disabled" />
+			<h:inputHidden id="nif-interesado" value="#{perfil.nifInteresado}" />
+			<span>[<span id="colectivo">#{perfil.colectivo}</span>]</span>
 			<div class="ui-errtip"></div>
 		</div>
 
 		<label class="ui-blocks">
 			<div class="label required ui-block-info"><h:outputText value="#{msg['uae.irse.tab0.lbl.ppto']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
-				<h:inputText id="organica" value="#{ac.acOrganica}" tabindex="4" styleClass="ui-input ui-autocomplete #{irse.cssEditableP0}" title="#{msg['uae.irse.index.msg.cd']}" />
-				<h:inputHidden id="id-organica" value="#{ac.idOrganica}" />
+				<h:inputText id="organica" value="#{perfil.acOrganica}" tabindex="4" styleClass="ui-input ui-autocomplete #{irse.cssEditableP0}" title="#{msg['uae.irse.index.msg.cd']}" />
+				<h:inputHidden id="id-organica" value="#{perfil.idOrganica}" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</div>
 			<div class="msg-cd hide ui-block-info"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /> @lblA; @fCache.d;: $imp; €</div>
 		</label>
 
-		<div id="org-data" class="hide">#{ac.organicasJson}</div>
-		<h:inputHidden id="presupuesto" value="#{ac.presupuesto}" />
+		<div id="org-data" class="hide">#{perfil.organicasJson}</div>
+		<h:inputHidden id="presupuesto" value="#{perfil.presupuesto}" />
 
 		<div class="hide">
 			<label for="financiacion" class="required"><h:outputText value="#{msg['uae.irse.tab0.lbl.fin']}" escape="false" />:</label>
-			<h:inputHidden id="financiacion" value="#{ac.financiacion}" />
+			<h:inputHidden id="financiacion" value="#{perfil.financiacion}" />
 		</div>
 		<div class="fin-info fin-xSU notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
 		<div class="fin-info fin-ISU notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
@@ -43,7 +43,7 @@
 
 		<label class="ui-blocks">
 			<div class="label required ui-block-info"><h:outputText value="#{msg['uae.irse.tab0.lbl.act.p']}" escape="false" />:</div>
-			<h:selectOneMenu id="actividad" value="#{ac.actividad}" styleClass="ui-input ui-select ui-xs #{irse.cssEditableP0}" tabindex="7">
+			<h:selectOneMenu id="actividad" value="#{perfil.actividad}" styleClass="ui-input ui-select ui-xs #{irse.cssEditableP0}" tabindex="7">
 				<f:selectItem itemValue="COM" itemLabel="Sí" itemEscaped="false"/>
 				<f:selectItem itemValue="MUN" itemLabel="No" itemEscaped="false"/>
 			</h:selectOneMenu>
@@ -51,7 +51,7 @@
 
 		<div class="hide">
 			<label for="tramite" class="required"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" />:</label>
-			<h:selectOneMenu id="tramite" value="#{ac.tramite}" styleClass="ui-widget #{irse.cssEditableP0} ui-corner-all" tabindex="8">
+			<h:selectOneMenu id="tramite" value="#{perfil.tramite}" styleClass="ui-widget #{irse.cssEditableP0} ui-corner-all" tabindex="8">
 				<f:selectItem itemValue="AyL" itemLabel="#{msg['uae.irse.tab0.tramit.ayl']}" itemEscaped="false"/>
 				<f:selectItem itemValue="AUT" itemLabel="#{msg['uae.irse.tab0.tramit.aut']}" itemEscaped="false"/>
 				<f:selectItem itemValue="LIQ" itemLabel="#{msg['uae.irse.tab0.tramit.liq']}" itemEscaped="false"/>

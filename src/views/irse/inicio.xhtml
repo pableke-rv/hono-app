@@ -44,8 +44,8 @@
 		<!-- Form IRSE -->
 		<h:form id="xeco-irse" prependId="false" method="post" styleClass="update-irse" enctype="multipart/form-data" onsubmit="loading();">
 		<div id="tab-0" class="tab-content">
-			<p:remoteCommand name="rcFindInteresado" action="#{ac.findUsuarios()}" oncomplete="loadItems(xhr, status, args)" />
-			<p:remoteCommand name="rcFindOrg" action="#{ac.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
+			<p:remoteCommand name="rcFindInteresado" action="#{perfil.findUsuarios()}" oncomplete="loadItems(xhr, status, args)" />
+			<p:remoteCommand name="rcFindOrg" action="#{perfil.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
 
 			<h2>#{irse.nombre} <i>#{irse.codigo}</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse00.xhtml"></ui:include>
@@ -53,7 +53,7 @@
 		</div>
 
 		<!-- Itinerarios rutas de tab1 y tab2 -->
-		<p:remoteCommand name="rcFindPersonal" action="#{ac.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
+		<p:remoteCommand name="rcFindPersonal" action="#{irse.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
 		<h:inputHidden id="etapas" value="#{ruta.etapas}" />
 		<div id="rutas-data" class="hide">#{ruta.rutasJson}</div>
 

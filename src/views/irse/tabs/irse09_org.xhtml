@@ -34,7 +34,7 @@
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.organicas']}" escape="false" />:</div>
 				<select id="organicas" name="num" class="ui-input ui-select" tabindex="186">
-					<c:forEach items="#{ac.organicas}" var="org">
+					<c:forEach items="#{perfil.organicas}" var="org">
 						<option value="#{org.idOrganica}">#{org.organica}</option>
 					</c:forEach>
 				</select>

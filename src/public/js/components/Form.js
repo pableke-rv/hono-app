@@ -9,7 +9,8 @@ import MultiSelectCheckbox from "./MultiSelectCheckbox.js";
 import i18n from "../i18n/langs.js";
 
 export default function(form, opts) {
-	form = isstr(form) ? document.forms.findOne(form) : form; // Find by name
+	form = globalThis.isstr(form) ? document.forms.findOne(form) : form; // Find by name
+
 	opts = opts || {}; // default options
 	opts.defaultMsgOk = opts.defaultMsgOk || "saveOk"; // default key for message ok
 	opts.defaultMsgError = opts.defaultMsgError || "errForm"; // default key error
@@ -178,6 +179,7 @@ export default function(form, opts) {
 	}
 	this.change = fn => fnEvent(form, "change", fn);
 	this.submit = fn => fnEvent(form, "submit", fn);
+	this.fireReset = () => { form.reset(); return self; }
 	this.beforeReset = fn => fnEvent(form, "reset", fn);
 	this.afterReset = fn => fnEvent(form, "reset", ev => setTimeout(() => fn(ev), 1));
 	this.addClick = (selector, fn) => fnEach(selector, el => el.addClick(fn));

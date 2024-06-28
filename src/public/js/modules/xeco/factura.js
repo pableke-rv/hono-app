@@ -29,7 +29,7 @@ pf.ready(() => {
 		if (!item) return; // primer acceso
 
 		let keyEco = "cp"; // por defecto = carta de pago
-		if (factura.isFactura()) { // tipo de solicitud = factura
+		if (factura.isFacturable()) { // tipo de solicitud
 			keyEco = "c" + item.imp; //caracter => persona fisica=1, persona juridica=2, est. publico=3
 			keyEco += (item.int & 256) ? "ep" : "no"; // Establecimiento permanente
 			const ep_es = (item.int & 128) || (item.int & 256); //Establecimiento permanente o Residente
@@ -101,8 +101,8 @@ pf.ready(() => {
 		formFact.setData(data).setval("#nifTercero", data.nif).readonly(factura.isDisabled())
 				.setVisible(".insert-only", factura.isEditable()).setVisible(".update-only", factura.isDisabled())
 				.setVisible(".firmable-only", factura.isFirmable()).setVisible(".rechazable-only", factura.isRechazable())
-				.setVisible(".show-recibo", factura.isRecibo()).setVisible(".show-factura", factura.isFactura()).setVisible(".show-cp", factura.isCartaPago())
-				.setVisible(".show-factura-uae", uxxiec.isUae() && factura.isFactura()).setVisible(".show-uae", uxxiec.isUae())
+				.setVisible(".show-recibo", factura.isRecibo()).setVisible(".show-factura", factura.isFacturable()).setVisible(".show-cp", factura.isCartaPago())
+				.setVisible(".show-factura-uae", uxxiec.isUae() && factura.isFacturable()).setVisible(".show-uae", uxxiec.isUae())
 				.setVisible(".show-gestor", factura.isFace() || factura.isPlataforma()).setVisible(".show-face", factura.isFace())
 				.setVisible(".show-gaca", factura.isFirmaGaca());
 		delegaciones.setItems(JSON.read(args.delegaciones)); // cargo las delegaciones

@@ -1,37 +1,41 @@
 
-/*** MAPA DE LOS VALORES PARA LOS CAMPOS DEL FORMULARIO ***/
-const NP_010  = { economica: "323003", sujeto: 0, exento: 1, m349: 0, iban:  0, iva:  0 };
-const NP_206  = { economica: "323003", sujeto: 2, exento: 0, m349: 6, iban:  0, iva:  0 };
-const C2T14   = { economica: "131004", sujeto: 0, exento: 1, m349: 0, iban: 10, iva:  0 };
-const C2UET14 = { economica: "131004", sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
-const C2ZZT14 = { economica: "131004", sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
-const C2T15   = { economica: "131200", sujeto: 0, exento: 1, m349: 0, iban: 10, iva:  0 };
-const C2TUE15 = { economica: "131200", sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
-const C2T16   = { economica: "139000", sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
-const C2UET16 = { economica: "139000", sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
-const C2T17   = { economica: "139001", sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
-const C2UET17 = { economica: "139001", sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
-const C2T18   = { economica: "139002", sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
-const C2UET18 = { economica: "139002", sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
-const C1T5    = { economica: "131600", sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
-const C1UET5  = { economica: "131600", sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
-const C1ZZT5  = { economica: "131600", sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
-const C2T19   = { economica: "131600", sujeto: 0, exento: 5, m349: 2, iban: 10, iva:  0 };
-const C2ZZT19 = { economica: "131600", sujeto: 0, exento: 2, m349: 0, iban: 10, iva:  0 };
-const C1T1    = { economica: "132500", sujeto: 0, exento: 0, m349: 0, iban:  4, iva: 21 };
-const C2T1    = { economica: "132500", sujeto: 2, exento: 0, m349: 6, iban:  4, iva: 21 };
-const C1T20   = { economica: "132700", sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
-const C1UET20 = { economica: "132700", sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
-const C1ZZT20 = { economica: "132700", sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
-const C1T21   = { economica: "132600", sujeto: 0, exento: 1, m349: 0, iban: 10, iva:  0 };
-const F133001 = { economica: "133001", sujeto: 0, exento: 0, m349: 0, iban: 10, iva:  4 };
-const C2UET22 = { economica: "133001", sujeto: 0, exento: 5, m349: 2, iban: 10, iva:  0 };
-const C2ZZT22 = { economica: "133001", sujeto: 0, exento: 2, m349: 0, iban: 10, iva:  0 };
-const C2UET23 = { economica: "133001", sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
-const C2ZZT23 = { economica: "133001", sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
-const C1T6    = { economica: "154000", sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
-const C2T2    = { economica: "155100", sujeto: 0, exento: 0, m349: 0, iban:  4, iva: 21 };
-const C2UET2  = { economica: "155100", sujeto: 2, exento: 0, m349: 6, iban:  4, iva:  0 };
+/*** MAPEO DE VALORES PARA LOS CAMPOS DEL FORMULARIO ***/
+const ECO_323003 = "323003";
+const ECO_131600 = "131600";
+const ECO_133001 = "133001";
+
+const NP_010  = { economica: ECO_323003, sujeto: 0, exento: 1, m349: 0, iban:  0, iva:  0 };
+const NP_206  = { economica: ECO_323003, sujeto: 2, exento: 0, m349: 6, iban:  0, iva:  0 };
+const C2T14   = { economica: "131004",   sujeto: 0, exento: 1, m349: 0, iban: 10, iva:  0 };
+const C2UET14 = { economica: "131004",   sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
+const C2ZZT14 = { economica: "131004",   sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
+const C2T15   = { economica: "131200",   sujeto: 0, exento: 1, m349: 0, iban: 10, iva:  0 };
+const C2TUE15 = { economica: "131200",   sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
+const C2T16   = { economica: "139000",   sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
+const C2UET16 = { economica: "139000",   sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
+const C2T17   = { economica: "139001",   sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
+const C2UET17 = { economica: "139001",   sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
+const C2T18   = { economica: "139002",   sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
+const C2UET18 = { economica: "139002",   sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
+const C1T5    = { economica: ECO_131600, sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
+const C1UET5  = { economica: ECO_131600, sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
+const C1ZZT5  = { economica: ECO_131600, sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
+const C2T19   = { economica: ECO_131600, sujeto: 0, exento: 5, m349: 2, iban: 10, iva:  0 };
+const C2ZZT19 = { economica: ECO_131600, sujeto: 0, exento: 2, m349: 0, iban: 10, iva:  0 };
+const C1T1    = { economica: "132500",   sujeto: 0, exento: 0, m349: 0, iban:  4, iva: 21 };
+const C2T1    = { economica: "132500",   sujeto: 2, exento: 0, m349: 6, iban:  4, iva: 21 };
+const C1T20   = { economica: "132700",   sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
+const C1UET20 = { economica: "132700",   sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
+const C1ZZT20 = { economica: "132700",   sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
+const C1T21   = { economica: "132600",   sujeto: 0, exento: 1, m349: 0, iban: 10, iva:  0 };
+const F133001 = { economica: ECO_133001, sujeto: 0, exento: 0, m349: 0, iban: 10, iva:  4 };
+const C2UET22 = { economica: ECO_133001, sujeto: 0, exento: 5, m349: 2, iban: 10, iva:  0 };
+const C2ZZT22 = { economica: ECO_133001, sujeto: 0, exento: 2, m349: 0, iban: 10, iva:  0 };
+const C2UET23 = { economica: ECO_133001, sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
+const C2ZZT23 = { economica: ECO_133001, sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
+const C1T6    = { economica: "154000",   sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
+const C2T2    = { economica: "155100",   sujeto: 0, exento: 0, m349: 0, iban:  4, iva: 21 };
+const C2UET2  = { economica: "155100",   sujeto: 2, exento: 0, m349: 6, iban:  4, iva:  0 };
 
 export default {
     c1epes4: NP_010, c1noes4: NP_010, c1noue4: NP_010, c1nozz4: NP_010,

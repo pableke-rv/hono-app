@@ -122,8 +122,8 @@ tabs.setShowEvent(9, tab9 => {
 		return organicas.build(); // always auto build table organicas/gastos
 
 	function fnPais(pais) {
-		let es = (pais == "ES");
-		formIrse.setVisible("#entidades", !es).setVisible(".swift-block,#banco", es);
+		const es = (pais == "ES");
+		formIrse.setVisible("#entidades", es).setVisible(".swift-block,#banco", !es);
 	}
 
 	organicas.build(); // always auto build table organicas/gastos;

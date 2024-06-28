@@ -16,7 +16,7 @@
 		</div>
 	</label>
 
-	<c:if test="#{ac.equipoGob}">
+	<c:if test="#{perfil.equipoGob}">
 	<label class="ui-blocks">
 		<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.dieta']}" escape="false" />:</div>
 		<div class="ui-block-main">
@@ -29,13 +29,13 @@
 	</c:if>
 
 	<div class="notice notice-info">
-		<h:outputText value="#{msg['uae.irse.tab2.msg.resp1']}" escape="false" />#{ac.joinResponsables()}<h:outputText value="#{msg['uae.irse.tab2.msg.resp2']}" escape="false" />
+		<h:outputText value="#{msg['uae.irse.tab2.msg.resp1']}" escape="false" />#{perfil.joinResponsables()}<h:outputText value="#{msg['uae.irse.tab2.msg.resp2']}" escape="false" />
 	</div>
 	<label class="ui-blocks">
 		<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.resp']}" escape="false" />:</div>
 		<div class="ui-block-xl autocomplete">
-			<h:inputText id="promotor" value="#{ac.acPromotor}" tabindex="43" styleClass="ui-input ui-autocomplete #{irse.cssDisabled}" />
-			<h:inputHidden id="nif-promotor" value="#{ac.nifPromotor}" />
+			<h:inputText id="promotor" value="#{perfil.acPromotor}" tabindex="43" styleClass="ui-input ui-autocomplete #{irse.cssDisabled}" />
+			<h:inputHidden id="nif-promotor" value="#{perfil.nifPromotor}" />
 			<ul role="list" class="results"></ul>
 		</div>
 	</label>
@@ -43,8 +43,8 @@
 	<label class="ui-blocks">
 		<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.tribunal']}" escape="false" />:</div>
 		<div class="ui-block-xl autocomplete">
-			<h:inputText id="tribunal" value="#{ac.acTribunal}" tabindex="44" styleClass="ui-input ui-autocomplete #{irse.cssDisabled}" />
-			<h:inputHidden id="nif-tribunal" value="#{ac.nifTribunal}" />
+			<h:inputText id="tribunal" value="#{perfil.acTribunal}" tabindex="44" styleClass="ui-input ui-autocomplete #{irse.cssDisabled}" />
+			<h:inputHidden id="nif-tribunal" value="#{perfil.nifTribunal}" />
 			<ul role="list" class="results"></ul>
 		</div>
 	</label>
@@ -53,8 +53,8 @@
 	<label class="ui-blocks">
 		<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.mesa']}" escape="false" />:</div>
 		<div class="ui-block-xl autocomplete">
-			<h:inputText id="mesa" value="#{ac.acMesa}" tabindex="45" styleClass="ui-input ui-autocomplete #{irse.cssDisabled}" />
-			<h:inputHidden id="nif-mesa" value="#{ac.nifMesa}" />
+			<h:inputText id="mesa" value="#{perfil.acMesa}" tabindex="45" styleClass="ui-input ui-autocomplete #{irse.cssDisabled}" />
+			<h:inputHidden id="nif-mesa" value="#{perfil.nifMesa}" />
 			<ul role="list" class="results"></ul>
 		</div>
 	</label>
