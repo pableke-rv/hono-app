@@ -27,7 +27,7 @@ export const LoginTab = (props: any) => {
         <Tab id="tab-0" active={props.active} title="Login Form">
         <form id="signin" action="/signin" method="post">
             <div class="ui-blocks">
-                <InputText name="login" required={true} label={i18n.lblLogin} icon="fas fa-user ui-icon-right" tabindex="1" placeholder="DNI, NIF or Email"/>
+                <InputText name="login" required={true} label={i18n.lblLogin} icon="fas fa-user ui-input-icon right" tabindex="1" placeholder="DNI, NIF or Email"/>
                 <div class="ui-block-break"></div>
                 <InputPass name="pass" label={i18n.lblPass} tabindex="2" />
             </div>

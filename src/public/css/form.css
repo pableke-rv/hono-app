@@ -91,28 +91,34 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 :is(.dark input::-webkit-calendar-picker-indicator) { filter: invert(1); /* white color */ }
 
 .ui-integer, .ui-float { width: 130px; text-align: right; }
-.ui-ta { min-height: 36px; height: 76px; max-height: 100px; resize: vertical; form-sizing: content; } /*height: 76px = 3 rows aprox.*/
-.ui-ta-2r { min-height: 36px; height: 54px; resize: vertical; form-sizing: content; } /*height: 45px = 2 rows aprox.*/
+.ui-ta { min-height: 36px; height: 76px/*3 rows aprox.*/; max-height: 100px; resize: vertical; form-sizing: content; }
+.ui-ta.rows-2 { height: 54px/*2 rows aprox.*/; }
 .disabled, .readonly { opacity: 0.5; pointer-events: none; text-decoration: none; }
+/* Inputs */
 
-.ui-icon-block { position: relative; }
-.ui-icon-left {
-    position: absolute; top: 31px; left: 0; height: 40px; /* same height than ui-input */
-    padding-left: 0.5rem; color: rgb(107 114 128); z-index: 1;
+/* Inputs icon styles */
+.ui-input-icon {
+    position: absolute; height: 40px; /* same height than ui-input */
+    color: rgb(107 114 128); z-index: 1;
 }
-.ui-icon-left + input { padding-left: 30px; }
-:is(.dark .ui-icon-left) { color: rgb(243 244 246)/* gray-100 */; }
-.ui-icon-right {
-    position: absolute; top: 31px; right: 0; height: 40px; /* same height than ui-input */
-    padding-right: 0.5rem; color: rgb(107 114 128); z-index: 1;
+:is(.dark .ui-input-icon) {
+    color: rgb(243 244 246)/* gray-100 */;
 }
-.ui-icon-right + input { padding-right: 30px; }
-:is(.dark .ui-icon-right) { color: rgb(243 244 246)/* gray-100 */; }
 
+.ui-input-icon.left { top: 31px; left: 0.5rem; }
+.ui-input-icon.left.inline { top: 11px; }
+.ui-input-icon.left + input { padding-left: 30px; }
+
+.ui-input-icon.right { top: 31px; right: 0.5rem; }
+.ui-input-icon.right.inline { top: 11px; }
+.ui-input-icon.right + input { padding-right: 30px; }
+/* Inputs icon styles */
+
+/* Inputs error styles */
 .ui-error { border: 2px solid #dc3545 !important; }
 .ui-error:focus { border: 2px solid tomato !important; --tw-ring-opacity: 0 !important; }
 .ui-errtip { margin-top: 0; font-size: 0.75rem/* 12px */; line-height: 1rem/* 16px */; font-style: italic; color: rgb(239 68 68)/* red-500 */; }
-/* Inputs */
+/* Inputs error styles */
 
 /* Autocomplete */
 .autocomplete { position: relative; }

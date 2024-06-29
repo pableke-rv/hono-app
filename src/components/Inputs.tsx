@@ -18,14 +18,14 @@ export const InputText = (props: InputType) => {
     );
 }
 export const InputEmail = (props: InputType) => {
-    props.icon = "far fa-envelope ui-icon-right";
+    props.icon = "far fa-envelope ui-input-icon right";
     return (<InputText {...props} />);
 }
 export const InputPass = (props: InputType) => {
     props.required = true;
     props.type = "password";
     props.placeholder = "**********";
-    props.icon = "fas fa-lock ui-icon-right";
+    props.icon = "fas fa-lock ui-input-icon right";
     return (<InputText {...props} />);
 }
 export const InputFile = (props: FileType) => {
@@ -59,7 +59,7 @@ export const Autocomplete = (props: AutocompleteType) => {
     return (
         <label class="ui-block-xl autocomplete">
             <div class={cssLabel}>{props.label}:</div>
-            <i class={props.icon || "fas fa-search ui-icon-left"}></i>
+            <i class={props.icon || "fas fa-search ui-input-icon left"}></i>
             <input type="search" id={acId} value={props.acValue} class="ui-input ui-autocomplete" 
                 readonly={props.readonly} disabled={props.disabled} 
                 tabindex={props.tabindex} placeholder={props.placeholder} title={props.title} />
@@ -111,7 +111,7 @@ export const InputFloat = (props: InputType) => {
     );
 }
 export const InputCurrency = (props: InputType) => {
-    props.icon = props.icon || "fas fa-euro-sign ui-icon-right";
+    props.icon = props.icon || "fas fa-euro-sign ui-input-icon right";
     return (<InputFloat {...props} />);
 }
 export const InputFloatRange = (props: InputType) => {

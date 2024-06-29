@@ -15,6 +15,7 @@
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
+				<i class="fas fa-search ui-input-icon left inline"></i>
 				<h:inputText id="interesado" value="#{perfil.acInteresado}" tabindex="1" styleClass="ui-input ui-autocomplete #{irse.cssEditableP0}" />
 				<h:inputHidden id="nif-interesado" value="#{perfil.nifInteresado}" />
 				<ul role="list" class="results"></ul>
@@ -26,6 +27,7 @@
 		<label id="add-org" class="ui-blocks #{irse.cssVisibleP0}">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.ppto']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
+				<i class="fas fa-search ui-input-icon left inline"></i>
 				<h:inputText id="organica" value="#{perfil.acOrganica}" tabindex="4" styleClass="ui-input ui-autocomplete" title="#{msg['uae.irse.index.msg.cd']}" />
 				<h:inputHidden id="id-organica" value="#{perfil.idOrganica}" />
 				<ul role="list" class="results"></ul>
