@@ -23,29 +23,22 @@ pf.ready(() => {
 		factura.setSujeto(sujeto);
 		formFact.setVisible(".grupo-exento", factura.isExento());
 	}
-	const updateView = subtipo => {
-		factura.setSubtipo(subtipo); // actualizo el nuevo subtipo
-		const item = acTercero.getCurrentItem(); // tercero seleccionado
-		if (!item) return; // primer acceso
-
-		let keyEco = "cp"; // por defecto = carta de pago
-		if (factura.isFacturable()) { // tipo de solicitud
-			keyEco = "c" + item.imp; //caracter => persona fisica=1, persona juridica=2, est. publico=3
-			keyEco += (item.int & 256) ? "ep" : "no"; // Establecimiento permanente
-			const ep_es = (item.int & 128) || (item.int & 256); //Establecimiento permanente o Residente
-			// Residente en la peninsula=es, ceuta-melillacanarias=np, comunitario=ue, resto del mundo=zz
-			keyEco += ep_es ? ((item.int & 2048) ? "es" : "np") : ((item.int & 2) ? "ue" : "zz");
-		}
-
-		const data = fiscal[keyEco + factura.getSubtipo()] || fiscal.default;
-        formFact.setData(data, ".ui-fiscal").setval("#nifTercero", acTercero.getCode()).setVisible("#ac-recibo", factura.isRecibo());
-		updateSujeto(data.sujeto);
-		fnCalcIva(data.iva);
-	}
 	const updateFace = face => {
 		factura.setFace(face);
 		formFact.text(".grupo-gestor > .label", factura.isPlataforma() ? "Nombre de la plataforma:" : "Órgano Gestor:")
 				.setVisible(".grupo-face", factura.isFace()).setVisible(".grupo-gestor", factura.isFace() || factura.isPlataforma());
+	}
+	const updateFiscalidad = tercero => {
+		if (!tercero) return; // nada que modificar
+		const data = fiscal.getFiscalidad(tercero, factura); // new data
+        formFact.setData(data, ".ui-fiscal"); // update fields
+		updateSujeto(data.sujeto); // update sujeto inputs group
+		fnCalcIva(data.iva); // update iva group
+	}
+	const updateView = (subtipo, tercero) => {
+		factura.setSubtipo(subtipo); // actualizo el nuevo subtipo
+        formFact.setval("#nifTercero", acTercero.getCode()).setVisible(".show-recibo", factura.isRecibo());
+		updateFiscalidad(tercero || acTercero.getCurrentItem());
 	}
 
 	/*** FORMULARIO PRINCIPAL ***/
@@ -59,7 +52,7 @@ pf.ready(() => {
 		source: term => pf.sendTerm("rcFindTercero", term),
 		render: item => item.label,
 		select: item => { pf.sendId("rcDelegaciones", item.value); return item.value },
-		afterSelect: () => updateView(factura.getSubtipo()),
+		afterSelect: data => updateView(factura.getSubtipo(), data),
 		onReset: delegaciones.reset
 	});
 	const acOrganica = formFact.setAcItems("#acOrganica", term => pf.sendTerm("rcFindOrganica", term));
@@ -96,6 +89,7 @@ pf.ready(() => {
 	window.viewFactura = (xhr, status, args) => {
         if (!pf.showAlerts(xhr, status, args))
             return false; // Server error
+
 		const data = JSON.read(args.fact);
         factura.setData(data); // Load data-model before view
 		formFact.setData(data).setval("#nifTercero", data.nif).readonly(factura.isDisabled())
@@ -111,9 +105,11 @@ pf.ready(() => {
 		acTercero.setValue(data.idTer, data.nif + " - " + data.tercero);
         acOrganica.setValue(data.idOrg, data.org + " - " + data.descOrg);
         acRecibo.setValue(data.idRecibo, data.acRecibo);
-		updateSujeto(data.sujeto); // update sujeto inputs group
+
 		updateFace(data.face); // update face inputs group
-        tabs.render(".load-data", data).showTab(1);
+		updateSujeto(data.sujeto); // update sujeto inputs group
+		updateFiscalidad(JSON.read(args.tercero)); // datos fiscales
+        tabs.render(".load-data", data).showTab(1); // show form tab
 	}
 	window.fnSend = () => {
 		factura.setLineas(lineas);

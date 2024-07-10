@@ -86,6 +86,7 @@ function StringBox() {
     this.isoTimeShort = str => str && str.substring(11, 16); //hh:MM
     this.getYear = str => (str || sysdate).substring(0, 4); //yyyy string format
     this.getHours = str => +(str || sysdate).substring(11, 13); //hh int format
+    this.getMonth = str => +(str || sysdate).substring(5, 7); //mm int format
 
     // Chunk string in multiple parts
 	this.test = (str, re) => re.test(str) ? str : null;
@@ -93,6 +94,7 @@ function StringBox() {
 	this.match = (str, re) => str ? str.trim().match(re) : null;
 	this.lastId = str => +self.match(str, /\d+$/).pop();
 	this.chunk = (str, size) => str ? str.trim().match(str, new RegExp(".{1," + size + "}", "g")) : null;
+	this.lpad = (str, size, pad) => str ? str.padStart(size, pad) : null;
 
     // Modificators
     this.getCode = (str, sep) => str && str.substring(0, str.indexOf(sep || " "));

@@ -41,6 +41,7 @@ export default function(table, opts) {
 
     let _rows = EMPTY; // default = empty array
     let _index = -1; // current item position in data
+    let _actions; // external actions elements
 
     this.clear = () => { _index = -1; return self; }
     this.set = (name, fn) => { opts[name] = fn; return self; }
@@ -120,23 +121,21 @@ export default function(table, opts) {
 
     this.render = fnRender;
     this.reload = () => fnRender(_rows);
-    this.push = row => { _rows.push(row); return fnRender(_rows); }  // Push data
-    this.add = row => { delete row.id; return self.push(row); } // Force insert => remove PK
+    this.push = row => { _rows.push(row); return fnRender(_rows); }  // Push data and render
+    //this.add = row => { delete row.id; return self.push(row); } // Force insert => remove PK
     this.insert = (row, id) => { row.id = id; return self.push(row); } // New row with PK
-    this.update = row => { Object.assign(_rows[_index], row); return fnRender(_rows); }
-    this.save = (row, id) => (id ? opts.insert(row, id) : opts.update(row)); // Insert or update
+    this.update = data => { Object.assign(_rows[_index], data); return fnRender(_rows); }
+    this.save = (row, id) => (id ? self.insert(row, id) : self.update(row)); // Insert or update
+    this.remove = index => { _rows.splice(index, 1); return fnRender(_rows); } // remove a row and reload table
 
-    // Define default table/row actions
+    // Define default table / row actions
     self.set("#remove", (data, link) => {
         const ok = link.dataset.confirm || i18n.confirm(opts.msgConfirmRemove); // force confirm
-        if (ok && opts.onRemove(data)) { // Remove data row and rebuild table
-            _rows.splice(_index, 1);
-            fnRender(_rows);
-        }
+        ok && opts.onRemove(data) && self.remove(_index); // Remove data row and rebuild table
     });
     self.set("#reset", (data, link) => {
         const ok = link.dataset.confirm || i18n.confirm(opts.msgConfirmReset); // force confirm
-        ok && opts.onReset(self) && fnRender(EMPTY);
+        ok && opts.onReset(self) && fnRender(EMPTY); // Reset data and rebuild empty table
     });
 
     // Orderable columns system
@@ -160,12 +159,14 @@ export default function(table, opts) {
         fnRender(_rows.sort(fnSort)); // render sorted table
     });
 
+    this.getActions = () => _actions;
     this.setActions = el => { // Table acctions over data
         const fnMove = i => (i < 0) ? 0 : Math.min(i, _rows.length - 1);
-        el.getElementsByClassName(opts.tableActionClass).addClick((ev, link) => {
+        _actions = el.getElementsByClassName(opts.tableActionClass);
+        _actions.addClick((ev, link) => { // add click event listener
             const href = link.getAttribute("href");
             if (href == "#first")
-                fnCallAction(href, link, fnMove(0));
+                fnCallAction(href, link, 0);
             else if (href == "#prev")
                 fnCallAction(href, link, fnMove(_index - 1));
             else if (href == "#next")

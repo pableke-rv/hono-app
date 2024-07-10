@@ -51,13 +51,5 @@
 		</c:choose>
 	</div>
 	</h:form>
-	<div class="notice notice-warn">
-		<b>Novedades de la última versión de IRIS:</b>
-		<ul>
-			<li>Mejoras en la navegación.</li>
-			<li>Posibilidad de registrar etapas y subir documentación durante el viaje, aunque la comunicación no se podrá finalizar y enviar hasta fechas posteriores a la de la vuelta.</li>
-			<c:if test="#{inicio.uae}"><li>Corrección de errores.</li></c:if><!-- aviso mio: solo para nosotros -->
-		</ul>
-	</div>
 	<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.index.msg.info']}" escape="false" /></div>
 </html>

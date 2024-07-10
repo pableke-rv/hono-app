@@ -45,7 +45,7 @@ pf.ready(() => { // on load view
 	const fileNames = formFactura.querySelectorAll(".filename");
 
 	function fnFacturaOrganica(data) {
-		const isIsu = buzon.setData(data).setTipoPago(+elTipo.value).isIsu();
+		const isIsu = buzon.setData(data).setFacturaOtros().setTipoPago(+elTipo.value).isIsu();
 		buzon.setJustPagoRequired(buzon.isPagoCesionario() && isIsu);
 		formFactura.setVisible(".show-isu", isIsu).setVisible(".show-no-isu", !isIsu)
 					.setVisible("#file-jp", buzon.isJustPagoRequired())
@@ -56,12 +56,10 @@ pf.ready(() => { // on load view
 		tabs.exclude(5); // always hide otros
 	}
 	function fnFacturaOtros() {
-		buzon.setTipoPago(+elTipo.value);
+		buzon.setFacturaOtros(true).setTipoPago(+elTipo.value);
 		buzon.setJustPagoRequired(buzon.isPagoCesionario());
-		const first = tableAncladas.getItem(0) || tableRecientes.getItem(0);
 		formFactura.show(".show-isu").hide(".show-no-isu")
 					.setVisible("#file-jp", buzon.isJustPagoRequired())
-					.setval("#utFact", first.ut) // default ut
 					.text("#type-name", formFactura.getOptionText("#tipo"));
 		tabs.exclude();
 		buzon.isPagoCesionario() || tabs.exclude(3);
@@ -76,14 +74,14 @@ pf.ready(() => { // on load view
 		table.set("#buzon", data => {
 			formFactura.setval("#buzon-cod-org", data.oCod).text("#org-desc", data.oCod + " / " + data.oDesc);
 			elTipo.onchange = () => fnFacturaOrganica(data); // update event
-			fnFacturaOrganica(data);
 			pf.sendId("utFact", data.org);
+			fnFacturaOrganica(data);
 		});
 		table.set("#buzon-otros", () => {
 			formFactura.setval("#buzon-cod-org").text("#org-desc", table.html("#otras"));
 			elTipo.onchange = fnFacturaOtros; // update event
-			fnFacturaOtros();
 			window.utFact(); // id = null
+			fnFacturaOtros();
 		});
 	}
 
@@ -96,6 +94,10 @@ pf.ready(() => { // on load view
 		const files = fileNames.filter(el => el.innerHTML);
 		if (buzon.isJustPagoRequired() && (files.length < 2))
 			return !formFactura.showError("Debe seleccionar Justificante de pago.");
+		if (buzon.isFacturaOtros()) {
+			const first = tableAncladas.getItem(0) || tableRecientes.getItem(0);
+			return formFactura.setval("#utFact", first.ut) // default ut
+		}
 		return true;
 	}
 
@@ -127,7 +129,7 @@ pf.ready(() => { // on load view
 	const tUsuarios = new Table("#usuarios", {
 		onRender: buzon.rowUsuarios,
 		onFooter: buzon.tfootUsuarios,
-		onRemove: data => pf.fetch("rcRemoveUser", { org: data.oCod, nif: data.nif })
+		onRemove: data => !pf.fetch("rcRemoveUser", { org: data.oCod, nif: data.nif })
 	});
 	const fnToggle = data => pf.fetch("rcToggle", { id: data.org, nif: data.nif, acc: data.acc });
 	tUsuarios.set("#toggleUsers", data => { buzon.setData(data).togglePermisoUser(); fnToggle(data); });
@@ -145,10 +147,9 @@ pf.ready(() => { // on load view
 		formUsers.querySelector("#msg-org").render(data);
 		const acUser = formUsers.setAcItems("#ac-usuarios", term => pf.sendTerm("rcFindUsers", term)); //selector, source
 		formUsers.addClick("#add-user", ev => {
-			if (acUser.isLoaded()) {
-				pf.fetch("rcAddUser", { org: data.org, ut: data.ut, nif: acUser.getValue() });
-				acUser.reload(); // clear data and autofocus
-			}
+			if (acUser.isLoaded())
+				pf.fetch("rcAddUser", { org: data.oCod, ut: data.ut, nif: acUser.getValue() });
+			acUser.reload(); // clear data and autofocus
 			ev.preventDefault();
 		});
 		tUsuarios.render(JSON.read(args.data));
@@ -157,7 +158,10 @@ pf.ready(() => { // on load view
 	window.updateUsuarios = (xhr, status, args) => {
 		if (!pf.showAlerts(xhr, status, args))
 			return; // server error message
-		args.data && tUsuarios.render(JSON.read(args.data));
+		if (args.data)
+			tUsuarios.render(JSON.read(args.data));
+		else
+			tUsuarios.reload();
 		tabs.showOk("saveOk");
 	}
 	window.reloadAll = (xhr, status, args) => {

@@ -99,7 +99,7 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 /* Inputs icon styles */
 .ui-input-icon {
     position: absolute; height: 40px; /* same height than ui-input */
-    color: rgb(107 114 128); z-index: 1;
+    color: rgb(107 114 128); opacity: .8; z-index: 1;
 }
 :is(.dark .ui-input-icon) {
     color: rgb(243 244 246)/* gray-100 */;

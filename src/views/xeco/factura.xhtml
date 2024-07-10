@@ -102,7 +102,7 @@
 							<f:selectItem itemValue="13" itemLabel="Otros" itemEscaped="false" styleClass="show-cp" />
 						</h:selectOneMenu>
 					</label>
-					<label id="ac-recibo" class="autocomplete ui-block-md show-recibo">
+					<label class="autocomplete ui-block-md show-recibo">
 						<div class="label required">Recibo asociado a la factura:</div>
 						<p:remoteCommand name="rcFindRecibo" action="#{fact.findRecibo()}" oncomplete="loadItems(xhr, status, args)" />
 						<input type="search" id="acRecibo" name="acRecibo" class="ui-input ui-autocomplete" tabindex="4" />

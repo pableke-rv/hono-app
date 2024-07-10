@@ -4,17 +4,20 @@ import i18n from "../../i18n/langs.js";
 
 function Buzon() {
 	const self = this; //self instance
-    var _data, tipoPago, justPagoRequired;
+    var _data, _isFacturaOtros, _tipoPago, _justPagoRequired;
 
     this.getData = () => _data;
     this.setData = data => { _data = data; return self; }
 
+    this.isFacturaOtros = () => _isFacturaOtros;
+    this.setFacturaOtros = val => { _isFacturaOtros = val; return self; }
     this.isIsu = () => sb.starts(_data.oCod, "300518") && ((_data.omask & 8) == 8);
-    this.setTipoPago = tipo => { tipoPago = tipo; return self; }
-    this.isPagoProveedor = () => (tipoPago == 1);
-    this.isPagoCesionario = () => (tipoPago == 2);
-    this.setJustPagoRequired = required => { justPagoRequired = required; return self; }
-    this.isJustPagoRequired = () => justPagoRequired;
+    this.setTipoPago = tipo => { _tipoPago = tipo; return self; }
+    this.isPagoProveedor = () => (_tipoPago == 1);
+    this.isPagoCesionario = () => (_tipoPago == 2);
+    this.isPagoUpct = () => (_tipoPago == 3);
+    this.setJustPagoRequired = required => { _justPagoRequired = required; return self; }
+    this.isJustPagoRequired = () => _justPagoRequired;
 
     this.isMonogrupo = () => !(_data.mask & 4);
     this.isMultigrupo = () => (_data.mask & 4);
