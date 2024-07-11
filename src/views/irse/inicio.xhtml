@@ -136,7 +136,8 @@
 		<script>
 			IRSE = {};
 			IRSE.lang = "#{inicio.lang}" || "es";
-			IRSE.uxxiec = #{inicio.uxxiec};
+			IRSE.grupo = "#{inicio.idGrupo}" || "0";
+			IRSE.uxxiec = ("true" == "#{inicio.uxxiec}");
 		</script>
 	</ui:define>
 </ui:composition>

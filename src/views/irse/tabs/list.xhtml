@@ -48,8 +48,8 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" />:</div>
-				<h:inputText value="#{filter.FMin}" size="10" maxlength="10" tabindex="6" styleClass="ui-input ui-date ui-filter"/> ...
-				<h:inputText value="#{filter.FMax}" size="10" maxlength="10" tabindex="7" styleClass="ui-input ui-date ui-filter"/>
+				<h:inputText id="f-min" value="#{filter.FMin}" tabindex="6" styleClass="ui-input ui-date ui-filter"/> ...
+				<h:inputText id="f-max" value="#{filter.FMax}" tabindex="7" styleClass="ui-input ui-date ui-filter"/>
 			</label>
 		</div>
 

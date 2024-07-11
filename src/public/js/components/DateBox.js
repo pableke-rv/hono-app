@@ -25,6 +25,15 @@ function DateBox() {
 	this.getDays = (d1, d2) => Math.round(Math.abs((d1 - d2) / ONE_DAY));
 	this.daysInMonth = date => date ? daysInMonth(date.getFullYear(), date.getMonth()) : 0;
 
+	// Date to String
+	this.isoDate = date => date.toISOString().substring(0, 10); //yyyy-mm-dd
+    this.isoTime = date => date.toISOString().substring(11, 19); //hh:MM:ss
+    this.isoTimeShort = date => date.toISOString().substring(11, 16); //hh:MM
+
+	// Date transformations
+	this.addHours = (date, hours) => { date && date.addHours(hours); return self; }
+	this.addDays = (date, days) => { date && date.addDays(days); return self; }
+
 	// Randoms
 	this.randTime = (d1, d2) => Math.floor(Math.random() * self.diffDate(d2, d1) + d1.getTime());
 	this.randDate = (d1, d2) => new Date(self.randTime(d1, d2));

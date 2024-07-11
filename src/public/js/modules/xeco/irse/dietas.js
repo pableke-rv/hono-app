@@ -42,6 +42,7 @@ function IrseDietas() {
 				.setText(tr.cells[10], i18n.isoFloat(dieta.percibir) + " €")
 				.setHtml("#imp-dietas", i18n.isoFloat(resume.percibir) + " €")
 				.setValue("#gastos-dietas", divData.innerText);
+			bruto.innerHTML = organicas.getTotalFmt();
 		}).onRenderTable("#manutenciones", table => {
 			let size = ab.size(manutenciones);
 			if (size == 0) //hay dietas?
