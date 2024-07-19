@@ -49,9 +49,9 @@ pf.ready(() => { // on load view
 		buzon.setJustPagoRequired(buzon.isPagoCesionario() && isIsu);
 		formFactura.setVisible(".show-isu", isIsu).setVisible(".show-no-isu", !isIsu)
 					.setVisible("#file-jp", buzon.isJustPagoRequired())
+					.setVisible(".show-cesionario", buzon.isPagoCesionario())
 					.text("#type-name", formFactura.getOptionText("#tipo")).setval("#desc");
 		tabs.exclude();
-		buzon.isPagoCesionario() || tabs.exclude(3);
 		buzon.isMonogrupo() && tabs.exclude(4);
 		tabs.exclude(5); // always hide otros
 	}
@@ -60,9 +60,9 @@ pf.ready(() => { // on load view
 		buzon.setJustPagoRequired(buzon.isPagoCesionario());
 		formFactura.show(".show-isu").hide(".show-no-isu")
 					.setVisible("#file-jp", buzon.isJustPagoRequired())
+					.setVisible(".show-cesionario", buzon.isPagoCesionario())
 					.text("#type-name", formFactura.getOptionText("#tipo"));
 		tabs.exclude();
-		buzon.isPagoCesionario() || tabs.exclude(3);
 	}
 	function fnAddActions(table) {
 		table.set("#anclar", data => pf.sendId("anclar", data.org));
@@ -72,12 +72,14 @@ pf.ready(() => { // on load view
 		table.set("#report", data => pf.fetch("report", { id: data.org, ut: data.ut }));
 
 		table.set("#buzon", data => {
+			fileNames.forEach(el => { el.innerHTML = ""; });
 			formFactura.setval("#buzon-cod-org", data.oCod).text("#org-desc", data.oCod + " / " + data.oDesc);
 			elTipo.onchange = () => fnFacturaOrganica(data); // update event
 			pf.sendId("utFact", data.org);
 			fnFacturaOrganica(data);
 		});
 		table.set("#buzon-otros", () => {
+			fileNames.forEach(el => { el.innerHTML = ""; });
 			formFactura.setval("#buzon-cod-org").text("#org-desc", table.html("#otras"));
 			elTipo.onchange = fnFacturaOtros; // update event
 			window.utFact(); // id = null
@@ -109,7 +111,7 @@ pf.ready(() => { // on load view
 	tabs.setViewEvent(6, tab => {
 		const desc = formFactura.getval("#desc");
 		const names = fileNames.filter(el => el.innerHTML).map(el => el.innerHTML);
-		formFactura.text("#ut-desc", formFactura.getOptionText("#utFact")).text("#file-name", names.join(","))
+		formFactura.text("#ut-desc", formFactura.getOptionText("#utFact")).text("#file-name", names.join(", "))
 					.text("#desc-gestor", desc).setVisible("#msg-gestor", desc);
 	});
 	window.factUpload = (xhr, status, args) => {

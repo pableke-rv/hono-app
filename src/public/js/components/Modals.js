@@ -61,6 +61,10 @@ function Modals() {
     window.closeModal = (xhr, status, args) => {
         window.showAlerts(xhr, status, args) && self.close();
     }
+    document.onkeydown = ev => {
+        if (ev.keyCode === 27) // Escape key is pressed
+            fnClose(current); // close current modal
+    }
 }
 
 export default new Modals();

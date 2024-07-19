@@ -112,7 +112,7 @@
 				<th><h:outputText value="#{msg['lbl.codigo']}" escape="false" /></th>
 				<th><h:outputText value="#{msg['lbl.estado']}" escape="false" /></th>
 				<th><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" /></th>
-				<th><span class="hide-phone"><h:outputText value="#{msg['lbl.sig.firma']}" escape="false" /></span></th>
+				<th><span class="hide-sm"><h:outputText value="#{msg['lbl.sig.firma']}" escape="false" /></span></th>
 				<th><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" /></th>
 				<th><h:outputText value="#{msg['lbl.presupuesto']}" escape="false" /></th>
 				<th><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" /></th>
@@ -184,9 +184,9 @@
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td><span class="hide-phone">#{sol.sigFirma}</span></td>
+				<td><span class="hide-sm">#{sol.sigFirma}</span></td>
 				<td>#{list.getFCreacion(sol)}</td>
-				<td>#{sol.organica}<span class="hide-phone"> #{sol.descOrganica}</span><c:if test="#{sol.multipartida}"><span> (y otras)</span></c:if></td>
+				<td>#{sol.organica}<span class="hide-sm"> #{sol.descOrganica}</span><c:if test="#{sol.multipartida}"><span> (y otras)</span></c:if></td>
 				<td>#{sol.fullNameInteresado}</td>
 				<td><span class="hide-sm">#{sol.memoria}</span></td>
 				<td class="text-right">#{list.getImporte(sol)} €</td>

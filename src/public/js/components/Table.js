@@ -122,7 +122,7 @@ export default function(table, opts) {
     this.render = fnRender;
     this.reload = () => fnRender(_rows);
     this.push = row => { _rows.push(row); return fnRender(_rows); }  // Push data and render
-    //this.add = row => { delete row.id; return self.push(row); } // Force insert => remove PK
+    this.add = row => { delete row.id; return self.push(row); } // Force insert => remove PK
     this.insert = (row, id) => { row.id = id; return self.push(row); } // New row with PK
     this.update = data => { Object.assign(_rows[_index], data); return fnRender(_rows); }
     this.save = (row, id) => (id ? self.insert(row, id) : self.update(row)); // Insert or update
