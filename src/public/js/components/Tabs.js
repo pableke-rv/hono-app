@@ -52,6 +52,7 @@ function Tabs() {
         return fn(tab, self);
     }
 
+    this.setAction = (name, fn) => fnSet(name, fn);
     this.setShowEvent = (tab, fn) => fnSet("show-tab-" + tab, fn);
     this.setInitEvent = (tab, fn) => fnSet("init-tab-" + tab, fn);
     this.setViewEvent = (tab, fn) => fnSet("view-tab-" + tab, fn);
@@ -102,7 +103,11 @@ function Tabs() {
                 else if (href == "#tab-last")
                     self.lastTab();
                 else if (href == "#tab-toggle")
-                    self.toggle(link);
+                    self.toggle(link); // call toggle handler
+                else if (href == "#tab-action") { // specific action
+                    const fnAction = EVENTS[link.dataset.action];
+                    fnAction(link); // call handler
+                }
                 else
                     self.showTab(href.substring(href.lastIndexOf("-") + 1));
                 ev.preventDefault(); // no navigate

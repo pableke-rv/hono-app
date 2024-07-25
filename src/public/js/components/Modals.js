@@ -3,11 +3,10 @@ import alerts from "./Alerts.js";
 
 function Modals() {
 	const self = this; //self instance
+    const ACTIONS = {};  // default options and actions
     const dialogs = document.querySelectorAll("dialog"); // all dialogs
-    let current; // current window
-
-    const opts = {};  // default options
     const fnTrue = () => true; // always true
+    let current; // current window
 
     const fnDialog = selector => dialogs.findOne(selector);
     const fnClose = modal => {
@@ -22,21 +21,21 @@ function Modals() {
         return self;
     }
 
-    this.get = name => opts[name]; // get data
-    this.set = (name, fn) => { opts[name] = fn; return self; } // set options and actions
+    this.get = name => ACTIONS[name]; // get data
+    this.set = (name, fn) => { ACTIONS[name] = fn; return self; }
     this.setShowEvent = (id, fn) => self.set("show-modal-" + id, fn);
     this.setViewEvent = (id, fn) => self.set("view-modal-" + id, fn);
 
     this.close = selector => fnClose(selector ? fnDialog(selector) : current); //find modal by selector
     this.open = selector => { // find modal by selector
         const modal = fnDialog(selector); // find modal
-        const fnShow = opts["show-modal-" + modal.id] || fnTrue;
+        const fnShow = ACTIONS["show-modal-" + modal.id] || fnTrue;
 
         if (fnShow(modal)) { // open modal if true
             document.body.style.top = `-${window.scrollY}px`;
             document.body.style.position = "fixed";
 
-            const fnView = opts["view-modal-" + modal.id] || fnTrue;
+            const fnView = ACTIONS["view-modal-" + modal.id] || fnTrue;
             modal.showModal(); // show dialog
             current = modal; // update current modal
             alerts.working(); // hide loading frame
@@ -53,7 +52,7 @@ function Modals() {
                     if (href == "#modal-close")
                         fnClose(dialog);
                     else {
-                        const fnAction = opts[href.substring(href.lastIndexOf("-") + 1)];
+                        const fnAction = ACTIONS[href.substring(href.lastIndexOf("-") + 1)];
                         fnAction(link, dialog); // call handler
                     }
                     ev.preventDefault(); 

@@ -140,7 +140,7 @@ pf.ready(() => { // on load view
 	tUsuarios.set("#toggleIngresos", data => { buzon.setData(data).toggleIngresos(); fnToggle(data); });
 	tUsuarios.set("#toggleReportProv", data => { buzon.setData(data).toggleReportProv(); fnToggle(data); });
 	tUsuarios.set("#toggleFactura", data => { buzon.setData(data).toggleFactura(); fnToggle(data); });
-	document.querySelector("[href='#save-users']").addClick(ev => tabs.showTab(0).showOk("saveOk"));
+	tabs.setAction("save-users", () => tabs.showTab(0).showOk("saveOk"));
 
 	window.loadUsuarios = (xhr, status, args) => {
 		if (!pf.showAlerts(xhr, status, args))
