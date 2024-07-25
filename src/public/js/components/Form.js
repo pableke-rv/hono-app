@@ -32,6 +32,7 @@ export default function(form, opts) {
 	const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
 
 	this.isset = () => form;
+	this.getForm = () => form;
 	this.getId = () => form.id.value;
 	this.focus = el => { el && el.focus(); return self; }
 	this.setFocus = selector => self.focus(self.getInput(selector));

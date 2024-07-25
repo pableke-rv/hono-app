@@ -29,7 +29,7 @@
 
 		<div class="#{gasto.cssTransporte}">
 			<h3>
-			<a id="p6-trans" href="#toggle" data-toggle="fa-caret-right fa-caret-down">
+			<a id="p6-trans" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
 				<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.2']}" escape="false" />: <b class="text-green">#{gasto.impTransporteI18n} €</b>
 			</a>
 			</h3>
@@ -65,7 +65,7 @@
 
 		<div class="#{gasto.cssPernoctas}">
 			<h3>
-			<a id="p6-aloja" href="#toggle" data-toggle="fa-caret-right fa-caret-down">
+			<a id="p6-aloja" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
 				<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.3']}" escape="false" />: <b class="text-green">#{gasto.minPernoctasI18n} €</b>
 			</a>
 			</h3>
@@ -132,7 +132,7 @@
 			styleClass="btn btn-green success-btn" icon="far fa-save" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="132" />
 	</c:when>
 	<c:otherwise>
-		<a href="#next-tab" class="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="131">
+		<a href="#tab-next" class="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="131">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
 	</c:otherwise>
 	</c:choose>

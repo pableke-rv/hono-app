@@ -128,6 +128,7 @@ pf.ready(() => { // on load view
 		}
 	}
 
+	/************** Gestion de Perfiles **************/
 	const tUsuarios = new Table("#usuarios", {
 		onRender: buzon.rowUsuarios,
 		onFooter: buzon.tfootUsuarios,

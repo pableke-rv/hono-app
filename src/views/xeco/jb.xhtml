@@ -59,31 +59,30 @@
 				</div>
 
 				<!-- modals dialog -->
-				<div class="modal">
-					<div id="modal-cm" class="modal-content">
-						<div class="modal-header">
-							<h2>Justificantes de Gastos (JG)</h2>
-							<a href="#close" class="modal-close action text-gray"><i class="fas fa-times"></i></a>
-						</div>
-						<div class="modal-body">
-						<div class="ui-blocks">
-							<label class="ui-block-xl autocomplete">
-								<i class="fas fa-search ui-input-icon left inline"></i>
-								<input type="search" id="num-jg" name="numJg" class="ui-input ui-autocomplete" tabindex="1" />
-								<h:inputHidden id="jg" value="#{jb.numJg}" class="" />
-								<ul role="list" class="results"></ul>
-								<div class="ui-errtip"></div> 
-								<p:remoteCommand name="rcFindJgs" action="#{jb.findJgs()}" oncomplete="loadItems(xhr, status, args)" />
-								<p:remoteCommand name="rcReportCm" action="#{jb.reportCm()}" oncomplete="handleReport(xhr, status, args)" />
-							</label>
-						</div>
-						</div>
-						<div class="modal-footer">
-							<a href="#close" class="btn btn-info modal-close"><i class="fas fa-times btn-icon-left"></i>Cerrar</a>
-							<a href="#report" class="btn btn-warn modal-action"><i class="fal fa-file-pdf btn-icon-left"></i>Informe</a>
-						</div>
+				<dialog id="cm" class="dialog-modal">
+					<div class="dialog-header">
+						<h2>Justificantes de Gasto asociados al DC #{jb.doc.numDc}</h2>
+						<a href="#modal-close" class="action text-gray"><i class="fas fa-times"></i></a>
 					</div>
-				</div>
+					<div class="dialog-body">
+					<div class="ui-blocks">
+						<label class="ui-block-xl autocomplete">
+							<div class="label required">Seleccione un Justificante de Gasto:</div>
+							<i class="fas fa-search ui-input-icon left"></i>
+							<input type="search" id="num-jg" name="numJg" class="ui-input ui-autocomplete" tabindex="1" />
+							<h:inputHidden id="jg" value="#{jb.numJg}" class="" />
+							<ul role="list" class="results"></ul>
+							<div class="ui-errtip"></div> 
+							<p:remoteCommand name="rcFindJgs" action="#{jb.findJgs()}" oncomplete="loadItems(xhr, status, args)" />
+							<p:remoteCommand name="rcReportCm" action="#{jb.reportCm()}" oncomplete="handleReport(xhr, status, args)" />
+						</label>
+					</div>
+					</div>
+					<div class="dialog-footer">
+						<a href="#modal-close" class="btn btn-info"><i class="fas fa-times btn-icon-left"></i>Cerrar</a>
+						<a href="#modal-report" class="btn btn-warn"><i class="fal fa-file-pdf btn-icon-left"></i>Informe</a>
+					</div>
+				</dialog>
 			</h:form>
 
 			<h:form id="xeco-doc" prependId="false" class="navbar" onsubmit="loading();">
@@ -109,7 +108,7 @@
 										<li><b>(ICM) Informe:</b> <a href="#{jb.getUrlCm()}" target="_blank">Informe de Contrato Menor<i class="far fa-file-pdf icon"></i></a></li>
 									</c:when>
 									<c:otherwise>
-										<li><b>(ICM) Informe:</b> <a href="#jg">Informe de Contrato Menor<i class="far fa-file-pdf icon"></i></a></li>
+										<li><b>(ICM) Informe:</b> <a href="#modal-open" data-open="#cm">Informe de Contrato Menor<i class="far fa-file-pdf icon"></i></a></li>
 									</c:otherwise>
 									</c:choose>
 								</c:if>

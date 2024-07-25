@@ -10,7 +10,7 @@
 	<div class="notice notice-info"><h:outputText value="#{msg['lbl.domicilio']}" escape="false" />: #{perfil.usuFullDir}, #{perfil.usuCp}, #{perfil.usuMunloc}, #{perfil.usuProvincia} (#{perfil.usuCodResidencia})</div>
 	<div class="notice notice-info">
 		<h:outputText value="#{msg['uae.irse.tab2.msg.ruta']}" escape="false" />
-		<a id="msgs" href="#toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['lbl.mas.info']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
+		<a id="msgs" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['lbl.mas.info']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
 		<div class="info-msgs hide">
 		<ol>
 			<li><h:outputText value="#{msg['uae.irse.tab2.msg.ruta1.1']}" escape="false" /></li>
@@ -21,7 +21,7 @@
 			<c:if test="#{not irse.extAlu}">
 				<li><h:outputText value="#{msg['uae.irse.tab2.msg.ruta1.7']}" escape="false" /></li>
 			</c:if>
-			<li><a id="loc" href="#toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['lbl.mas.ej']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a></li>
+			<li><a id="loc" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['lbl.mas.ej']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a></li>
 		</ol>
 		<div class="info-loc hide">
 			<hr/>

@@ -55,7 +55,7 @@
 
 		<div class="ui-blocks">
 			<div class="ui-block-row">
-				<a id="filtro" href="#toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['uae.irse.filter.lbl.extra']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
+				<a id="filtro" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['uae.irse.filter.lbl.extra']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
 			</div>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" />:</div>
@@ -113,7 +113,7 @@
 				<th><h:outputText value="#{msg['lbl.estado']}" escape="false" /></th>
 				<th><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" /></th>
 				<th><span class="hide-sm"><h:outputText value="#{msg['lbl.sig.firma']}" escape="false" /></span></th>
-				<th><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" /></th>
+				<th class="hide-xs"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" /></th>
 				<th><h:outputText value="#{msg['lbl.presupuesto']}" escape="false" /></th>
 				<th><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" /></th>
 				<th><span class="hide-sm"><h:outputText value="#{msg['lbl.objeto.act']}" escape="false" /></span></th>
@@ -185,7 +185,7 @@
 					</c:choose>
 				</td>
 				<td><span class="hide-sm">#{sol.sigFirma}</span></td>
-				<td>#{list.getFCreacion(sol)}</td>
+				<td class="hide-xs">#{list.getFCreacion(sol)}</td>
 				<td>#{sol.organica}<span class="hide-sm"> #{sol.descOrganica}</span><c:if test="#{sol.multipartida}"><span> (y otras)</span></c:if></td>
 				<td>#{sol.fullNameInteresado}</td>
 				<td><span class="hide-sm">#{sol.memoria}</span></td>

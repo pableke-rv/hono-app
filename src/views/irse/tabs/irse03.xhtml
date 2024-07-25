@@ -12,7 +12,7 @@
 		<c:otherwise><ui:include src="./irse03_sub.xhtml"></ui:include></c:otherwise>
 	</c:choose>
 
-	<a href="#prev-tab" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="70">
+	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="70">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
 		<c:when test="#{irse.editable}">
@@ -24,7 +24,7 @@
 				styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="72" />
 		</c:when>
 		<c:otherwise>
-			<a href="#next-tab" class="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="71">
+			<a href="#tab-next" class="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="71">
 				<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
 		</c:otherwise>
 	</c:choose>

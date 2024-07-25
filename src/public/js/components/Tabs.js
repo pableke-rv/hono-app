@@ -2,14 +2,12 @@
 import alerts from "./Alerts.js";
 import coll from "./CollectionHTML.js";
 
-const fnTrue = () => true; // always true
-const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
-
 // Classes Configuration
 const TAB_CLASS = "tab-content";
 const TAB_NONE = "tab-excluded";
 const ACTIVE_CLASS = "active";
 //const PROGRESS_BAR = "progress-bar";
+const fnTrue = () => true; // always true
 
 function Tabs() {
 	const self = this; //self instance
@@ -23,6 +21,7 @@ function Tabs() {
     const fnFindIndex = id => tabs.findIndex(tab => (tab.id == ("tab-" + id))); //find index tab by id
     const fnCurrentIndex = () => tabs.findIndex(fnActive); //current index tab
     const autofocus = tab => {
+        const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
         const el = tab.querySelectorAll(FOCUSABLED).find(el => el.isVisible());
         el && el.focus();
         return self;
@@ -93,21 +92,21 @@ function Tabs() {
     }
 
     this.setActions = el => { // avoid navigation and go to tab x
-        el.querySelectorAll("[href='#back-tab'],[href='#prev-tab']").forEach(link => {
-            link.onclick = ev => { ev.preventDefault(); self.backTab(); }
-        });
-        el.querySelectorAll("[href='#next-tab']").forEach(link => {
-            link.onclick = ev => { ev.preventDefault(); self.nextTab(); }
-        });
         el.querySelectorAll("[href^='#tab-']").forEach(link => {
-            const id = link.href.substring(link.href.lastIndexOf("-") + 1);
-            link.onclick = ev => { ev.preventDefault(); self.showTab(id); }
-        });
-        el.querySelectorAll("[href='#last-tab']").forEach(link => {
-            link.onclick = ev => { ev.preventDefault(); self.lastTab(); }
-        });
-        el.querySelectorAll("[href='#toggle']").forEach(link => {
-            link.onclick = ev => { ev.preventDefault(); self.toggle(link); }
+            link.onclick = ev => {
+                const href = link.getAttribute("href");
+                if ((href == "#tab-back") || (href == "#tab-prev"))
+                    self.backTab();
+                else if (href == "#tab-next")
+                    self.nextTab();
+                else if (href == "#tab-last")
+                    self.lastTab();
+                else if (href == "#tab-toggle")
+                    self.toggle(link);
+                else
+                    self.showTab(href.substring(href.lastIndexOf("-") + 1));
+                ev.preventDefault(); // no navigate
+            }
         });
         return self;
     }

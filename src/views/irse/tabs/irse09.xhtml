@@ -84,7 +84,7 @@
 
 	<ui:include src="./irse09_org.xhtml"></ui:include>
 	<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.paso.0']}" tabindex="190"><i class="fas fa-arrow-to-left"></i></a>
-	<a href="#prev-tab" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="191">
+	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="191">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:if test="#{irse.editable}">
 		<p:commandButton action="#{irse.save9()}" onclick="if (!fnPaso9()) return false;" oncomplete="saveTab();" icon="far fa-save" 

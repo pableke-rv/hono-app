@@ -64,31 +64,43 @@ details.icon-right[open] summary:after { content: " ▼"; }
 }
 /* Cards */
 
-/* Modal / Dialog Box */
-.modal {
-  position: fixed; top: 0; left: 0; display: none;
-  width: 100%; height: 100%; padding-top: 10%;
-  background-color: rgba(255, 255, 255, .6); z-index: 6;
-}
-.modal.active {
-  display: block;
-}
-.modal-content {
-  width: 75%; margin: auto; padding: 20px;
-  border: 1px solid #ccc; border-radius: 0.5rem;
+/* Dialog Box / Modals */
+.dialog-modal {
+  width: 70vw; top: -40vh; padding: 2rem; overflow: visible;
+  border: 1px solid #999; border-radius: .6rem;
   background-color: white;
 }
-.modal-content.active { animation: slideInTop .8s forwards; }
-
-.modal-header {
+.dialog-modal[open] {
+  animation: slideInTop 1s ease normal;
+}
+.dialog-header {
   display: flex; align-items: flex-start; justify-content: space-between;
   border-bottom: 1px solid #ccc;
 }
-.modal-body {
+.dialog-body {
   padding: 1rem;
 }
-.modal-footer {
+.dialog-footer {
   display: flex; align-items: center; justify-content: flex-end;
+  padding-top: 1rem;
   border-top: 1px solid #ccc;
 }
-/* Modal / Dialog Box */
+/* Dialog Box / Modals */
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media screen and (max-width: 575.98px) {
+  .dialog-modal { width: 98vw; top: 0; padding: 1rem; }
+  .dialog-body { padding: 1rem 0; }
+}
+/* Small devices (landscape phones, 576px and up) */
+@media screen and (min-width: 576px) and (max-width: 767.98px) {
+}
+/* Medium devices (tablets, 768px and up) */
+@media screen and (min-width: 768px) and (max-width: 991.98px) {
+}
+/* Large devices (desktops, 992px and up) */
+@media screen and (min-width: 992px) and (max-width: 1199.98px) {
+}
+/* Extra large devices (large desktops, 1200px and up) */
+@media screen and (min-width: 1200px) {
+}

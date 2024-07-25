@@ -3,24 +3,20 @@ import alerts from "./Alerts.js";
 
 function Modals() {
 	const self = this; //self instance
-    const modals = document.querySelectorAll(".modal"); // all overlays
+    const dialogs = document.querySelectorAll("dialog"); // all dialogs
     let current; // current window
 
     const opts = {};  // default options
-    opts.closeClass = "modal-close";
-    opts.actionClass = "modal-action";
-    opts.activeClass = "active";
+    const fnTrue = () => true; // always true
 
-    const fnWindow = selector => {
-        let window = null;
-        for (let i = 0; (i < modals.length) && !window; i++)
-            window = modals[i].children.findOne(selector);
-        return window;
-    }
-    const fnClose = window => {
-        if (window) { // has modal
-            window.parentNode.classList.remove(opts.activeClass);
-            window.classList.remove(opts.activeClass);
+    const fnDialog = selector => dialogs.findOne(selector);
+    const fnClose = modal => {
+        if (modal) { // has modal
+            const scrollY = document.body.style.top;
+            document.body.style.position = "";
+            document.body.style.top = "";
+            window.scrollTo(0, parseInt(scrollY || "0") * -1);
+            modal.close();
         }
         alerts.working();
         return self;
@@ -28,33 +24,55 @@ function Modals() {
 
     this.get = name => opts[name]; // get data
     this.set = (name, fn) => { opts[name] = fn; return self; } // set options and actions
-    this.close = selector => fnClose(selector ? fnWindow(selector) : current); //find modal by selector
-    this.open = selector => { //find modal by selector
-        const window = fnWindow(selector);
-        window.parentNode.classList.add(opts.activeClass);
-        window.classList.add(opts.activeClass);
-        current = window;
-        alerts.working();
+    this.setShowEvent = (id, fn) => self.set("show-modal-" + id, fn);
+    this.setViewEvent = (id, fn) => self.set("view-modal-" + id, fn);
+
+    this.close = selector => fnClose(selector ? fnDialog(selector) : current); //find modal by selector
+    this.open = selector => { // find modal by selector
+        const modal = fnDialog(selector); // find modal
+        const fnShow = opts["show-modal-" + modal.id] || fnTrue;
+
+        if (fnShow(modal)) { // open modal if true
+            document.body.style.top = `-${window.scrollY}px`;
+            document.body.style.position = "fixed";
+
+            const fnView = opts["view-modal-" + modal.id] || fnTrue;
+            modal.showModal(); // show dialog
+            current = modal; // update current modal
+            alerts.working(); // hide loading frame
+            fnView(modal); // fire open handler
+        }
         return self;
     }
 
     this.load = () => {
-        modals.forEach(modal => {
-            modal.children.forEach(window => { // Iterate over all modals
-                window.getElementsByClassName(opts.closeClass).addClick(ev => {
-                    ev.preventDefault(); fnClose(window);
-                });
-                window.getElementsByClassName(opts.actionClass).addClick((ev, link) => {
-                    opts[link.getAttribute("href")](link, window);
-                    ev.preventDefault();
-                });
+        dialogs.forEach(dialog => {
+            dialog.querySelectorAll("[href^='#modal-']").forEach(link => {
+                link.onclick = ev => {
+                    const href = link.getAttribute("href");
+                    if (href == "#modal-close")
+                        fnClose(dialog);
+                    else {
+                        const fnAction = opts[href.substring(href.lastIndexOf("-") + 1)];
+                        fnAction(link, dialog); // call handler
+                    }
+                    ev.preventDefault(); 
+                }
             });
+        });
+        return self;
+    }
+    this.addOpenEvent = el => { // add listeners to open modal
+        el.querySelectorAll("[href='#modal-open']").addClick((ev, link) => {
+            self.open(link.dataset.open);
+            ev.preventDefault();
         });
         return self;
     }
 
     // Init. modals
     self.load(); // load modals
+    document.body.style.width = "100%"; // init. width css prop.
     window.openModal = (xhr, status, args, selector) => { // PF hack
         window.showAlerts(xhr, status, args) && self.open(selector);
     }

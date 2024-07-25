@@ -13,20 +13,17 @@ pf.ready(() => {
     const fnSourceJg = term => pf.sendTerm("rcFindJgs", term);
     const acJgCm = formJb.setAcItems("#num-jg", fnSourceJg);
 
-	modals.set("#report", () => {
+	modals.setViewEvent("cm", acJgCm.reload);
+	modals.set("report", () => {
 		pf.sendId("rcReportCm", acJgCm.getValue());
 		modals.close(); // always close modal
 	});
 
-    let formDoc;
+    let formDoc; // dinamyc form
     const fnBuildXecoDoc = () => {
         working(); // hide loading frame
         formDoc = new Form("#xeco-doc");
-        formDoc.addClick("a[href='#jg']", ev => {
-            modals.open("#modal-cm");
-            ev.preventDefault();
-            acJgCm.reload();
-        });
+        modals.addOpenEvent(formDoc.getForm());
     }
 
     window.jbSearch = () => formDoc.isCached(acDocContable.getValue()) ? false : loading();

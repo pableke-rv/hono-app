@@ -144,7 +144,7 @@ function Factura() {
             <td class="hide-sm">${data.sig || ""}</td>
             <td class="text-right">${i18n.isoFloat(data.imp)} €</td>
             <td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
-            <td>${data.nif}</td><td>${data.tercero}</td>
+            <td>${data.nif}</td><td class="hide-xs">${data.tercero}</td>
             <td>${data.org}</td><td class="hide-sm">${data.descOrg}</td>
             <td class="hide-sm">${data.name}</td>
             <td class="text-right">${acciones}</td>
