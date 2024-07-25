@@ -17,8 +17,8 @@ function Tabs() {
     let _tabIndex, _lastTab;
 
     const fnSet = (name, fn) => { EVENTS[name] = fn; return self; }
-    const fnActive = el => el.classList.contains(ACTIVE_CLASS);
-    const fnFindIndex = id => tabs.findIndex(tab => (tab.id == ("tab-" + id))); //find index tab by id
+    const fnActive = el => el.classList.contains(ACTIVE_CLASS); //active class
+    const fnFindIndex = id => tabs.findIndexBy("#tab-" + id); //find index tab by id
     const fnCurrentIndex = () => tabs.findIndex(fnActive); //current index tab
     const autofocus = tab => {
         const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
@@ -38,7 +38,7 @@ function Tabs() {
     }
 
     this.getCurrent = () => tabs[_tabIndex]; // current tab
-    this.getTab = id => tabs.find(tab => (tab.id == ("tab-" + id))); // Find by id selector
+    this.getTab = id => tabs.findBy("#tab-" + id); // Find by id selector
     this.setActive = id => fnSetTab(self.getTab(id)); // Force active class whithot events and alerts
     this.isActive = id => fnActive(self.getTab(id)); // is current tab active
 	this.render = (selector, data) => { // HTMLElement.prototype.render is implemented in Collection
@@ -131,7 +131,7 @@ function Tabs() {
     }
 
     // Init. view and PF navigation (only for CV-UAE)
-    self.load(document); // Load all tabs
+    self.load(document); // Load all tabs by default
     window.showTab = (xhr, status, args, tab) => {
         if (!alerts.isLoaded(xhr, status, args))
             return false; // Server error

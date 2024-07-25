@@ -7,7 +7,7 @@ import tabs from "./Tabs.js";
 function Navigation() {
 	const self = this; //self instance
     const SCRIPTS = {}; //function container
-    const main = document.body.children.findOne("main");
+    const main = document.body.children.findBy("main");
 
     this.ready = coll.ready; // synonym
     this.isStatic = pathname => pathname.endsWith(".html");

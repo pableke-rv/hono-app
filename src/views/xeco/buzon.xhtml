@@ -61,7 +61,7 @@
 			<p:remoteCommand name="anclar" action="#{buzon.anclar()}" oncomplete="loadBuzon(xhr, status, args)" />
 			<p:remoteCommand name="desanclar" action="#{buzon.desanclar()}" oncomplete="loadBuzon(xhr, status, args)" />
 			<p:remoteCommand name="users" action="#{buzon.usuarios()}" update="xeco-users" oncomplete="loadUsuarios(xhr, status, args)" />
-			<p:remoteCommand name="utProv" action="#{buzon.setUnidadesTramit()}" update="utProv" oncomplete="openModal(xhr, status, args, '#modal-ut')" />
+			<p:remoteCommand name="utProv" action="#{buzon.setUnidadesTramit()}" update="utProv" oncomplete="openModal(xhr, status, args, 'ut')" />
 			<p:remoteCommand name="utFact" action="#{buzon.setUnidadesTramit()}" update="utFact" oncomplete="showTab(xhr, status, args, 1)" />
 			<p:remoteCommand name="report" action="#{buzon.report()}" oncomplete="handleReport(xhr, status, args);"/>
 

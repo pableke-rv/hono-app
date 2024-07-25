@@ -9,7 +9,7 @@ import MultiSelectCheckbox from "./MultiSelectCheckbox.js";
 import i18n from "../i18n/langs.js";
 
 export default function(form, opts) {
-	form = globalThis.isstr(form) ? document.forms.findOne(form) : form; // Find by name
+	form = globalThis.isstr(form) ? document.forms.findBy(form) : form; // Find by name
 
 	opts = opts || {}; // default options
 	opts.defaultMsgOk = opts.defaultMsgOk || "saveOk"; // default key for message ok
@@ -37,7 +37,7 @@ export default function(form, opts) {
 	this.focus = el => { el && el.focus(); return self; }
 	this.setFocus = selector => self.focus(self.getInput(selector));
 	this.autofocus = () => self.focus(form.elements.find(el => el.isVisible(FOCUSABLED)));
-	this.getInput = selector => form.elements.findOne(selector); // find an element
+	this.getInput = selector => form.elements.findBy(selector); // find an element
 	this.getInputs = selector => form.elements.query(selector); // filter elements
 	this.querySelector = selector => form.querySelector(selector); // Child element
 	this.querySelectorAll = selector => form.querySelectorAll(selector); // Children elements

@@ -34,7 +34,7 @@ pf.ready(() => { // on load view
 	const page = formOrganicas.getInput("#pagina");
 	page.onchange = () => fnPaginate(tableRecientes, +page.value);
 	fnLoadTables(formOrganicas, tableAncladas, tableRecientes, organicas);
-	modals.set("#report", () => {
+	modals.set("report", () => {
 		const data = buzon.getData(); // current row
 		pf.fetch("report", { id: data.org, ut: formOrganicas.getval("#utProv") });
 		modals.close(); // always close modal

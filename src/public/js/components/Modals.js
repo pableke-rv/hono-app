@@ -8,7 +8,7 @@ function Modals() {
     const fnTrue = () => true; // always true
     let current; // current window
 
-    const fnDialog = selector => dialogs.findOne(selector);
+    const fnDialog = id => dialogs.findBy("#modal-" + id);
     const fnClose = modal => {
         if (modal) { // has modal
             const scrollY = document.body.style.top;
@@ -26,9 +26,9 @@ function Modals() {
     this.setShowEvent = (id, fn) => self.set("show-modal-" + id, fn);
     this.setViewEvent = (id, fn) => self.set("view-modal-" + id, fn);
 
-    this.close = selector => fnClose(selector ? fnDialog(selector) : current); //find modal by selector
-    this.open = selector => { // find modal by selector
-        const modal = fnDialog(selector); // find modal
+    this.close = id => fnClose(id ? fnDialog(id) : current);
+    this.open = id => { // open modal by id
+        const modal = fnDialog(id); // find modal by id
         const fnShow = ACTIONS["show-modal-" + modal.id] || fnTrue;
 
         if (fnShow(modal)) { // open modal if true
@@ -51,8 +51,8 @@ function Modals() {
                     const href = link.getAttribute("href");
                     if (href == "#modal-close")
                         fnClose(dialog);
-                    else {
-                        const fnAction = ACTIONS[href.substring(href.lastIndexOf("-") + 1)];
+                    else { // specific action
+                        const fnAction = ACTIONS[link.dataset.action];
                         fnAction(link, dialog); // call handler
                     }
                     ev.preventDefault(); 
@@ -76,7 +76,7 @@ function Modals() {
         window.showAlerts(xhr, status, args) && self.open(selector);
     }
     window.closeModal = (xhr, status, args) => {
-        window.showAlerts(xhr, status, args) && self.close();
+        window.showAlerts(xhr, status, args) && fnClose(current);
     }
     document.onkeydown = ev => {
         if (ev.keyCode === 27) // Escape key is pressed

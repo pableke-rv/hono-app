@@ -17,7 +17,8 @@ HTMLCollection.prototype.filter = Array.prototype.filter;
 HTMLCollection.prototype.forEach = Array.prototype.forEach;
 HTMLCollection.prototype.eachPrev = Array.prototype.eachPrev;
 HTMLCollection.prototype.findIndex = Array.prototype.findIndex;
-HTMLCollection.prototype.findOne = function(selector) { return this.find(el => el.matches(selector)); }
+HTMLCollection.prototype.findBy = function(selector) { return this.find(el => el.matches(selector)); }
+HTMLCollection.prototype.findIndexBy = function(selector) { return this.findIndex(el => el.matches(selector)); }
 HTMLCollection.prototype.query = function(selector) { return this.filter(el => el.matches(selector)); }
 HTMLCollection.prototype.render = function(data) { this.forEach((el, i) => el.render(data, i, this.length)); }
 HTMLCollection.prototype.text = function(text) { this.forEach(el => { el.innerHTML = text; }); }
@@ -42,7 +43,8 @@ NodeList.prototype.map = Array.prototype.map;
 NodeList.prototype.find = Array.prototype.find;
 NodeList.prototype.filter = Array.prototype.filter;
 NodeList.prototype.eachPrev = Array.prototype.eachPrev;
-NodeList.prototype.findOne = HTMLCollection.prototype.findOne;
+NodeList.prototype.findBy = HTMLCollection.prototype.findBy;
+NodeList.prototype.findIndexBy = HTMLCollection.prototype.findIndexBy;
 NodeList.prototype.query = HTMLCollection.prototype.query;
 NodeList.prototype.render = HTMLCollection.prototype.render;
 NodeList.prototype.text = HTMLCollection.prototype.text;
