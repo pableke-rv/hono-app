@@ -18,9 +18,7 @@ export default function(table, opts) {
 
     opts.activeClass = opts.activeClass || "active";
     opts.rowActionClass = opts.rowActionClass || "row-action";
-    opts.tableActionClass = opts.tableActionClass || (table.id + "-action");
     opts.msgConfirmRemove = opts.msgConfirmRemove || "remove";
-    opts.msgConfirmReset = opts.msgConfirmReset || "removeAll";
 
     opts.msgEmptyTable = opts.msgEmptyTable || "noResults"; // default empty table message
     opts.rowEmptyTable = opts.rowEmptyTable || `<tr><td class="no-data" colspan="99">${i18n.get(opts.msgEmptyTable)}</td></tr>`;
@@ -33,7 +31,6 @@ export default function(table, opts) {
     opts.renderFooter = opts.renderFooter ?? true;
     opts.afterRender = opts.afterRender || globalThis.void;
     opts.onRemove = opts.onRemove || fnTrue;
-    opts.onReset = opts.onReset || fnTrue;
 
 	const self = this; //self instance
     const RESUME = {}; //Table parameters
@@ -41,7 +38,6 @@ export default function(table, opts) {
 
     let _rows = EMPTY; // default = empty array
     let _index = -1; // current item position in data
-    let _actions; // external actions elements
 
     this.clear = () => { _index = -1; return self; }
     this.set = (name, fn) => { opts[name] = fn; return self; }
@@ -49,6 +45,12 @@ export default function(table, opts) {
     this.getData = () => _rows;
     this.getIndex = () => _index;
     this.getResume = () => RESUME;
+
+    const fnMove = i => (i < 0) ? 0 : Math.min(i, _rows.length - 1);
+    this.first = () => { _index = 0; return self; }
+    this.prev = () => { _index = fnMove(_index - 1); return self; }
+    this.next = () => { _index = fnMove(_index + 1); return self; }
+    this.last = () => { _index = fnMove(_rows.length); return self; }
 
     this.getItem = i => _rows[i ?? _index];
     this.isItem = () => (_index > -1) && (_index < _rows.length);
@@ -67,13 +69,6 @@ export default function(table, opts) {
     this.querySelector = selector => table.querySelector(selector); // Child element
 	this.querySelectorAll = selector => table.querySelectorAll(selector); // Children elements
     this.html = selector => table.querySelector(selector).innerHTML; // read text
-
-    function fnCallAction(name, link, i) {
-        if (i18n.confirm(link.dataset.confirm)) {
-            _index = i; // update current item
-            opts[name](_rows[i], link, i); // Action call
-        }
-    }
 
     function fnRender(data) {
         _index = -1; // clear previous selects
@@ -96,14 +91,18 @@ export default function(table, opts) {
         // Row listeners for change, find and remove items in body
         tBody.rows.forEach((tr, i) => {
             tr.onchange = ev => {
-                _index = i; // current item
+                _index = i; // update current item
                 const el = ev.target; // change event element
                 const fnChange = opts[el.name + "Change"] || globalThis.void;
                 fnChange(_rows[i], el, tr, i); // call handler
-            };
+            }
             tr.getElementsByClassName(opts.rowActionClass).addClick((ev, link) => {
+                _index = i; // update current item
                 const href = link.getAttribute("href");
-                fnCallAction(href, link, i); // Call action
+                if (href == "#remove") // Remove action
+                    self.removeRow(); // Remove selected item
+                else if (i18n.confirm(link.dataset.confirm)) // Action on selected item
+                    opts[href](_rows[i], link, tr, i); // Call action
                 ev.preventDefault(); // avoid navigation
             });
         });
@@ -120,23 +119,20 @@ export default function(table, opts) {
     }
 
     this.render = fnRender;
+    this.reset = () => fnRender(EMPTY);
     this.reload = () => fnRender(_rows);
-    this.push = row => { _rows.push(row); return fnRender(_rows); }  // Push data and render
+    this.push = row => { _rows.push(row); return fnRender(_rows); } // Push data and render
     this.add = row => { delete row.id; return self.push(row); } // Force insert => remove PK
     this.insert = (row, id) => { row.id = id; return self.push(row); } // New row with PK
     this.update = data => { Object.assign(_rows[_index], data); return fnRender(_rows); }
     this.save = (row, id) => (id ? self.insert(row, id) : self.update(row)); // Insert or update
     this.remove = index => { _rows.splice(index, 1); return fnRender(_rows); } // remove a row and reload table
-
-    // Define default table / row actions
-    self.set("#remove", (data, link) => {
-        const ok = link.dataset.confirm || i18n.confirm(opts.msgConfirmRemove); // force confirm
-        ok && opts.onRemove(data) && self.remove(_index); // Remove data row and rebuild table
-    });
-    self.set("#reset", (data, link) => {
-        const ok = link.dataset.confirm || i18n.confirm(opts.msgConfirmReset); // force confirm
-        ok && opts.onReset(self) && fnRender(EMPTY); // Reset data and rebuild empty table
-    });
+    this.removeRow = () => {
+        i18n.confirm(opts.msgConfirmRemove) // force confirm
+                && opts.onRemove(_rows[_index])  // call prev event
+                && self.remove(_index); // Remove data row and rebuild table
+        return self;
+    }
 
     // Orderable columns system
     const links = table.tHead.getElementsByClassName(opts.sortClass);
@@ -158,25 +154,4 @@ export default function(table, opts) {
         const fnSort = (dir == opts.sortDescClass) ? ((a, b) => fnAux(b, a)) : fnAux; // Set direction
         fnRender(_rows.sort(fnSort)); // render sorted table
     });
-
-    this.getActions = () => _actions;
-    this.setActions = el => { // Table acctions over data
-        const fnMove = i => (i < 0) ? 0 : Math.min(i, _rows.length - 1);
-        _actions = el.getElementsByClassName(opts.tableActionClass);
-        _actions.addClick((ev, link) => { // add click event listener
-            const href = link.getAttribute("href");
-            if (href == "#first")
-                fnCallAction(href, link, 0);
-            else if (href == "#prev")
-                fnCallAction(href, link, fnMove(_index - 1));
-            else if (href == "#next")
-                fnCallAction(href, link, fnMove(_index + 1));
-            else if (href == "#last")
-                fnCallAction(href, link, fnMove(_rows.length));
-            else // current item
-                fnCallAction(href, link, _index);
-            ev.preventDefault(); // avoid navigation
-        });
-        return self;
-    }
 }

@@ -10,14 +10,13 @@ function Api() {
         alerts.showError(err);
     }
 
+    this.get = name => OPTS[name];
+    this.set = (name, value) => { OPTS[name] = value; return self; }
     this.init = () => {
         Object.clear(OPTS); // remove previous options
         OPTS.headers = new Headers({ "x-requested-with": "XMLHttpRequest" }); // AJAX flag
         return self.set("cache", "default"); // Default options
     }
-
-    this.get = name => OPTS[name];
-    this.set = (name, value) => { OPTS[name] = value; return self; }
 
     this.getHeaders = () => OPTS.headers;
     this.getHeader = name => OPTS.headers.get(name);

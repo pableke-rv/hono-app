@@ -47,7 +47,6 @@ export default (model, formModel) => {
         onFooter: model.tfoot
     });
 
-    solicitudes.setActions(document); // table-action
     const fnSend = (action, data) => pf.sendId(action, data.id);
     solicitudes.set("#rcView", data => {
         if (formModel.isCached(data.id))

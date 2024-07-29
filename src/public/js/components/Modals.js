@@ -3,7 +3,7 @@ import alerts from "./Alerts.js";
 
 function Modals() {
 	const self = this; //self instance
-    const ACTIONS = {};  // default options and actions
+    const ACTIONS = {}; // default options and actions
     const dialogs = document.querySelectorAll("dialog"); // all dialogs
     const fnTrue = () => true; // always true
     let current; // current window
@@ -51,7 +51,7 @@ function Modals() {
                     const href = link.getAttribute("href");
                     if (href == "#modal-close")
                         fnClose(dialog);
-                    else { // specific action
+                    else { // if (href == "#modal-action") // specific action
                         const fnAction = ACTIONS[link.dataset.action];
                         fnAction(link, dialog); // call handler
                     }

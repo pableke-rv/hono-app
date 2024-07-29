@@ -81,10 +81,10 @@ function Tabs() {
     }
 
     this.showTab = id => fnShowTab(fnFindIndex(id)); //find by id selector
-    this.lastTab = () => fnShowTab(_lastTab);
     this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +(tabs[_tabIndex].dataset.back ?? (_tabIndex - 1)));
     this.prevTab = () => self.backTab; // Synonym for back to previous tab
     this.nextTab = () => fnShowTab(tabs.findIndex((tab, i) => ((i > _tabIndex) && !tab.classList.contains(TAB_NONE)))); // next tab by position
+    this.lastTab = () => fnShowTab(_lastTab);
     this.toggle = el => {
         const icon = el.querySelector(el.dataset.icon || "i"); // icon indicator
         document.querySelectorAll(el.dataset.target || (".info-" + el.id)).toggle(); // toggle info
@@ -124,7 +124,7 @@ function Tabs() {
     }
     this.exclude = id => {
         if (globalThis.isset(id)) // 0 is valid
-            tabs[fnFindIndex(id)].classList.add(TAB_NONE);
+            self.getTab(id).classList.add(TAB_NONE);
         else
             tabs.forEach(tab => tab.classList.remove(TAB_NONE));
         return self;
