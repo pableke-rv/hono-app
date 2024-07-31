@@ -66,20 +66,19 @@ details.icon-right[open] summary:after { content: " ▼"; }
 
 /* Dialog Box / Modals */
 .dialog-modal {
-  width: 70vw; top: -40vh; padding: 2rem; overflow: visible;
+  width: 70vw; top: -15vh; padding: 2rem; overflow: visible;
   border: 1px solid #999; border-radius: .6rem;
   background-color: white;
 }
-.dialog-modal[open] {
-  animation: slideInTop 1s ease normal;
-}
+:is(.dark .dialog-modal) { border: 1px solid white; background-color: #888; }
+.dialog-modal[open] { animation: slideInTop 1s ease normal; }
 .dialog-header {
   display: flex; align-items: flex-start; justify-content: space-between;
   border-bottom: 1px solid #ccc;
 }
-.dialog-body {
-  padding: 1rem;
-}
+.dialog-header h2 { color: black; }
+:is(.dark .dialog-header h2) { color: white; }
+.dialog-body { min-height: 20vh; padding: 1rem; }
 .dialog-footer {
   display: flex; align-items: center; justify-content: flex-end;
   padding-top: 1rem;

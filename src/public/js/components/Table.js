@@ -129,8 +129,8 @@ export default function(table, opts) {
     this.remove = index => { _rows.splice(index, 1); return fnRender(_rows); } // remove a row and reload table
     this.removeRow = () => {
         i18n.confirm(opts.msgConfirmRemove) // force confirm
-                && opts.onRemove(_rows[_index])  // call prev event
-                && self.remove(_index); // Remove data row and rebuild table
+                && opts.onRemove(_rows[_index]) // call event
+                && self.remove(_index); // remove data row and rebuild table
         return self;
     }
 

@@ -29,13 +29,13 @@ function Modals() {
     this.close = id => fnClose(id ? fnDialog(id) : current);
     this.open = id => { // open modal by id
         const modal = fnDialog(id); // find modal by id
-        const fnShow = ACTIONS["show-modal-" + modal.id] || fnTrue;
+        const fnShow = ACTIONS["show-modal-" + id] || fnTrue;
 
         if (fnShow(modal)) { // open modal if true
             document.body.style.top = `-${window.scrollY}px`;
             document.body.style.position = "fixed";
 
-            const fnView = ACTIONS["view-modal-" + modal.id] || fnTrue;
+            const fnView = ACTIONS["view-modal-" + id] || fnTrue;
             modal.showModal(); // show dialog
             current = modal; // update current modal
             alerts.working(); // hide loading frame

@@ -56,7 +56,8 @@ tfoot { font-weight: bold; border-top: 1px dashed black; }
 
 .text-gray { color: silver; fill: silver; }
 .action.text-gray:hover { color: #666; fill: #666; }
-:is(.dark .action.text-gray:hover) { color: #ccc; fill: #ccc; }
+:is(.dark .action.text-gray) { color: #ddd; fill: #ddd; }
+:is(.dark .action.text-gray:hover) { color: white; fill: white; }
 
 .text-blue { color: rgb(59 130 246); fill: rgb(59 130 246)/*blue-500*/; }
 .action.text-blue:hover { color: rgb(30 64 175); fill: rgb(30 64 175)/*blue-800*/; }
@@ -86,10 +87,11 @@ tfoot { font-weight: bold; border-top: 1px dashed black; }
 .hide { display: none !important; } /* force display none */
 .navbar { margin: 4px 0; padding: 0; display: inline-block; width: 100%; clear: both; }
 
-.link { color: rgb(37 99 235); text-decoration-line: underline; }
+.link { color: #2196F3; text-decoration-line: underline; }
 .link:hover { text-decoration-line: none; }
 :is(.dark .link) { color: #1976d2; }
-:is(.dark .link:hover) { color: #bbdefb; }
+:is(.dark .link:hover) { color: #5fb4f7; }
+:is(.dark a:hover):not(.btn) { color: #5fb4f7; }
 /* Specific styles */
 
 /* Icons */
