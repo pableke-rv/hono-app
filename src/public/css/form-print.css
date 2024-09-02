@@ -1,0 +1,5 @@
+
+@media print {
+	input, select, textarea { border: 0; border-style: none; } /* remove inputs borders */
+    .btn { display: none; }
+}

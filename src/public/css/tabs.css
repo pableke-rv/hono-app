@@ -41,26 +41,17 @@ details.icon-right[open] summary:after { content: " ▼"; }
   flex-basis: fit-content; padding: 15px; margin: 10px 0;
   background: #f7f7f7; border: 1px solid #999; border-left: 6px solid #1976D2; border-radius: 3px;
 }
-:is(.dark .card-xeco) {
-  background: rgb(31 41 55); border-left: 6px solid white;
-}
 .card-xeco h2, .card-xeco h3 {
   display: flex; align-items: center; gap: 4px; 
   margin: .4em .2em; padding-bottom: 4px;
   color: #1976D2; border-bottom: 1px solid #1976D2;
 }
-:is(.dark .card-xeco h2, .card-xeco h3) { color: rgb(96 165 250); }
 
 .card-filter {
   padding: 8px;
   background-color: #F4F5F5;
   border-bottom: 1px solid #527da7;
   border-top: 1px solid #527da7;
-}
-:is(.dark .card-filter) {
-  background-color: #888;
-  border-bottom: 1px solid white;
-  border-top: 1px solid white;
 }
 /* Cards */
 
@@ -69,20 +60,27 @@ details.icon-right[open] summary:after { content: " ▼"; }
   width: 70vw; top: -15vh; padding: 2rem; overflow: visible;
   border: 1px solid #999; border-radius: .6rem;
   background-color: white;
-}
-:is(.dark .dialog-modal) { border: 1px solid white; background-color: #888; }
-.dialog-modal[open] { animation: slideInTop 1s ease normal; }
-.dialog-header {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  border-bottom: 1px solid #ccc;
-}
-.dialog-header h2 { color: black; }
-:is(.dark .dialog-header h2) { color: white; }
-.dialog-body { min-height: 20vh; padding: 1rem; }
-.dialog-footer {
-  display: flex; align-items: center; justify-content: flex-end;
-  padding-top: 1rem;
-  border-top: 1px solid #ccc;
+
+  scale: 0;
+  transition: scale .4s ease, display .4s ease allow-discrete;
+
+  &[open] {
+    scale: 1;
+    transition: scale .4s ease-in-out, opacity ease;
+    @starting-style { scale: 0; }
+  }
+
+  .dialog-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+  }
+  .dialog-header h2 { color: black; }
+  .dialog-body { min-height: 20vh; padding: 1rem; }
+  .dialog-footer {
+    display: flex; align-items: center; justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid #ccc;
+  }
 }
 /* Dialog Box / Modals */
 
