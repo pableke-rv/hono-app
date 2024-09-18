@@ -22,7 +22,7 @@ export default function(container, opts) {
 
     const self = this; //self instance
     const label = container.firstElementChild; // first = label element
-    const button = label.nextElementSibling; // second = buton dropdown
+    const button = label.nextElementSibling; // second = button dropdown
     const options = button.nextElementSibling; // third = selectable options
 
     const fnItem = (item, i) => `<span class="${opts.checkedClassName}">${item.label}<i data-index="${i}" class="fas fa-times icon"></i></span>`;

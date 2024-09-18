@@ -6,7 +6,6 @@ import pf from "../../components/Primefaces.js";
 import i18n from "../../i18n/langs.js";
 
 import presto from "../../model/xeco/Presto.js";
-import uxxiec from "../../model/xeco/Solicitud.js";
 import solicitudes from "./xeco.js";
 
 pf.ready(() => {
@@ -22,7 +21,10 @@ pf.ready(() => {
         partida.setData(lineas.getCurrentItem());
         if (form030.isValid(partida.validate030)) {
             formPresto.saveTable("#partidas-json", lineas); // save data to send to server
-            tabs.backTab().showOk("Datos del documento 030 asociados correctamente."); // Back to presto view
+            if (presto.isFinalizada())
+                formPresto.click("#save030");
+            else
+                tabs.backTab().showOk("Datos del documento 030 asociados correctamente."); // Back to presto view
         }
     });
     /*** FORMULARIO PARA EL DC 030 DE LAS GCR ***/
@@ -30,7 +32,7 @@ pf.ready(() => {
     /*** FORMULARIO PRINCIPAL ***/
     const formPresto = new Form("#xeco-presto");
     solicitudes(presto, formPresto); // init. actions
-    tabs.setActive(uxxiec.isUxxiec() ? 0 : 2);
+    tabs.setActive(presto.isUxxiec() ? 0 : 2);
 
     const emptyOption = "Seleccione una económica";
 	const ecoDec = pf.datalist(formPresto, "#idEcoDec", "#idEcoDecPF", {
@@ -55,9 +57,8 @@ pf.ready(() => {
         "#doc030": row => { // load tab view 3
             row.ej030 = row.ej; // Ejercicio de la partida a añadir
             row.imp080 = i18n.isoFloat(row.imp); // formated float
-            const readonly = presto.isDisabled() && !presto.isFirmable();
             form030.render(".info-080", row).setData(row).setVisible("#memo-030", presto.getMemo())
-                    .readonly(readonly).setVisible("#save-030", !readonly).text("#memo-030", presto.getMemo());
+                    .setVisible("#save-030", !presto.isReadOnly()).text("#memo-030", presto.getMemo());
             acOrg030.setValue(row.idOrg030, row.o030 + " - " + row.dOrg030);
             tabs.showTab(3);
         }
@@ -172,7 +173,7 @@ pf.ready(() => {
                     .setVisible(".firmable-only", presto.isFirmable()).setVisible(".rechazable-only", presto.isRechazable())
                     .setVisible(".show-partida-dec", presto.isPartidaDec()).setVisible(".show-partida-inc", presto.showPartidasInc())
                     .setVisible(".show-imp-cd", presto.isImpCd()).setVisible(".show-memoria", !presto.isL83()).setVisible(".grp-urgente", presto.isUrgente())
-                    .setVisible(".show-subtipo", uxxiec.isUae() && presto.isGcr()).setVisible(".is-fce", presto.isFce()).setVisible(".link-adjunto", presto.getAdjunto())
+                    .setVisible(".show-subtipo", presto.isUae() && presto.isGcr()).setVisible(".is-fce", presto.isFce()).setVisible(".link-adjunto", presto.getAdjunto())
                     .text(".filename", "");
         fnLoadEcoDec(args); // cargo las econonomicas a decrementar
         lineas.render(JSON.read(args.data)); // Load table partidas

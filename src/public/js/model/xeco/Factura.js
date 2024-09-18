@@ -1,9 +1,9 @@
 
-import solicitud from "./Solicitud.js";
 import i18n from "../../i18n/langs.js";
+import Solicitud from "./Solicitud.js";
 
 function Linea(factura) {
-	const self = this; //self instance
+	//const self = this; //self instance
 
     this.row = (data, status, resume) => {
         resume.imp += data.imp; // sum
@@ -71,76 +71,61 @@ function Lineas(factura) {
     }
 }
 
-function Factura() {
-	const self = this; //self instance
-    const lineas = new Lineas(self);
-    const titulos = [ "-", "Factura", "Abono", "Carta de Pago", "Recibo de Alumno" ];
+const titulos = [ "-", "Factura", "Abono", "Carta de Pago", "Recibo de Alumno" ];
 
-    let _data; // Current instance
-    this.setData = data => {
-        _data = data; // Update instance
-        solicitud.setData(data);
+class Factura extends Solicitud {
+    #lineas = new Lineas(this);
+
+	setData(data) {
+        super.setData(data);
         data.titulo = titulos[data.tipo] || titulos[1]; // default factura
-        return self.setIva(data.iva);
+        return this.setIva(data.iva);
     }
 
-    this.getLineas = () => lineas;
-    this.setLineas = table => { lineas.setData(table.getData()); return self; }
-    this.getLinea = lineas.getLinea;
+	getLineas() { return this.#lineas; }
+	setLineas(table) { this.#lineas.setData(table.getData()); return this; }
+	getLinea() { return this.#lineas.getLinea(); }
 
-    this.isFactura = () => (solicitud.getTipo() == 1);
-    //this.isAbono = () => (solicitud.getTipo() == 2);
-    this.isCartaPago = () => (solicitud.getTipo() == 3);
-    this.isReciboCV = () => (solicitud.getTipo() == 4);
-    this.isFacturable = () => (self.isFactura() || self.isReciboCV());
+	isFactura() { return (super.getTipo() == 1); }
+    //isAbono() { return (super.getTipo() == 2); }
+	isCartaPago() { return (super.getTipo() == 3); }
+	isReciboCV() { return (super.getTipo() == 4); }
+	isFacturable() { return (this.isFactura() || this.isReciboCV()); }
+	isFirmaGaca() { return this.isReciboCV() && this.isTtpp() && (super.get("mask") & 2); }
 
-    this.isDisabled = solicitud.isDisabled;
-    this.isEditable = solicitud.isEditable;
-    this.isFirmable = solicitud.isFirmable;
-    this.isRechazable = solicitud.isRechazable;
-	this.isEditableUae = solicitud.isEditableUae;
-	this.isEjecutable = solicitud.isEjecutable;
-	this.isIntegrable = solicitud.isIntegrable;
-    this.isFirmaGaca = () => self.isReciboCV() && self.isTtpp() && (_data.mask & 2);
+	isTtpp() { return (super.getSubtipo() == 3); }
+	isTituloOficial() { return (super.getSubtipo() == 4); }
+	isExtension() { return (super.getSubtipo() == 9); }
+	isDeportes() { return (super.getSubtipo() == 10); }
+	isRecibo() { return (this.isTtpp() || this.isTituloOficial() || this.isExtension()); }
+	setSujeto(val) { return this.set("sujeto", val); }
+	isExento() { return !super.get("sujeto"); }
 
-    this.getSubtipo = solicitud.getSubtipo;
-    this.setSubtipo = solicitud.setSubtipo;
-    this.isTtpp = () => (solicitud.getSubtipo() == 3);
-    this.isTituloOficial = () => (solicitud.getSubtipo() == 4);
-    this.isExtension = () => (solicitud.getSubtipo() == 9);
-    this.isDeportes = () => (solicitud.getSubtipo() == 10);
-    this.isRecibo = () => (self.isTtpp() || self.isTituloOficial() || self.isExtension());
-    this.setSujeto = val => { _data.sujeto = val; return self; }
-    this.isExento = () => !_data.sujeto;
+	getIva() { return super.get("iva"); }
+	setIva(imp) { return this.set("iva", imp ?? 0); }
 
-    this.getIva = () => _data.iva;
-    this.setIva = imp => {
-        solicitud.set("iva", imp ?? 0);
-        return self;
-    }
+	isFace() { return (this.get("face") == 1); } //factura electronica FACe
+	isPlataforma() { return (this.get("face") == 2); } //factura electronica Otras
+	setFace(val) { return this.set("face", val); } // update plataforma
 
-    this.isFace = () => (_data.face == 1); //factura electronica FACe
-    this.isPlataforma = () => (_data.face == 2); //factura electronica Otras
-    this.setFace = val => { _data.face = val; return self; }
-
-    this.row = data => {
-        self.setData(data); // initialize 
+	row(data) {
+        this.setData(data); // initialize 
         let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
-        if (self.isFirmable())
+        if (this.isFirmable())
             acciones += `<a href="#rcFirmar" class="row-action resize firma-${data.id}" data-confirm="msgFirmar"><i class="fas fa-check action resize text-green"></i></a>
                          <a href="#tab-11" class="row-action resize firma-${data.id}"><i class="fas fa-times action resize text-red"></i></a>`;
-        if (self.isIntegrable())
+        if (this.isIntegrable())
             acciones += '<a href="#rcIntegrar" class="row-action" data-confirm="msgIntegrar"><i class="far fa-save action resize text-blue"></i></a>';
-        if (self.isEjecutable())
+        if (this.isEjecutable())
             acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
-        if (solicitud.isAdmin())
+        if (super.isAdmin())
             acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#rcRemove" class="row-action" data-confirm="msgRemove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 
         return `<tr class="tb-data">
             <td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
             <td class="hide-sm">${data.titulo}</td>
-            <td class="${solicitud.getStyleByEstado()} estado-${data.id}">${solicitud.getDescEstado()}</td>
-            <td class="text-center">${solicitud.getFirma().myFlag(data.fmask, data.info)}</td>
+            <td class="${super.getStyleByEstado()} estado-${data.id}">${super.getDescEstado()}</td>
+            <td class="text-center">${super.getFirma().myFlag(data.fmask, data.info)}</td>
             <td class="hide-sm">${data.sig || ""}</td>
             <td class="text-right">${i18n.isoFloat(data.imp)} €</td>
             <td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
@@ -150,24 +135,24 @@ function Factura() {
             <td class="text-right">${acciones}</td>
         </tr>`;
     }
-    this.tfoot = resume => `<tr><td colspan="99">Solicitudes: ${resume.size}</td></tr>`;
+	tfoot(resume) { return `<tr><td colspan="99">Solicitudes: ${resume.size}</td></tr>`; }
 
-    this.validate = function(data) {
+	validate(data) {
         const valid = i18n.getValidators();
         valid.isKey("acTercero", data.idTercero, "Debe seleccionar un tercero válido"); // autocomplete required key
         valid.isKey("acOrganica", data.idOrganica, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
-		if (self.isRecibo()) //subtipo = ttpp o extension
+		if (this.isRecibo()) //subtipo = ttpp o extension
             valid.size("acRecibo", data.acRecibo, "Debe indicar un número de recibo válido");
-		/*if (self.isDeportes()) {
+		/*if (this.isDeportes()) {
             valid.size("extra", data.extra, "errRequired").catch("Debe indicar un número de recibo válido"); // Required string
             valid.leToday("fMax", data.fMax).catch("Debe indicar la fecha del recibo asociado"); // Required date
         }*/
         valid.size("memo", data.memo).catch("Debe indicar las observaciones asociadas a la solicitud."); // Required string
-        if (self.isFace())
+        if (this.isFace())
             valid.size("og", data.og) && valid.size("oc", data.oc) && valid.size("ut", data.ut);
-        if (self.isPlataforma())
+        if (this.isPlataforma())
             valid.size("og", data.og);
-        return lineas.validate();
+        return this.#lineas.validate();
     }
 }
 

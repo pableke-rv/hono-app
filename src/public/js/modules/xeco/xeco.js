@@ -3,16 +3,16 @@ import Form from "../../components/Form.js";
 import tabs from "../../components/Tabs.js";
 import pf from "../../components/Primefaces.js";
 
-import solicitud from "../../model/xeco/Solicitud.js";
 import uxxiec from "../../model/xeco/Uxxiec.js";
 import i18n from "../../i18n/langs.js";
 
 export default (model, formModel) => {
     /*** FORMULARIO PARA LA CREACIÓN DEL EXPEDIENTE CON UXXI-EC ***/
     const tabUxxi = tabs.getTab(15);
-    solicitud.setUser(tabUxxi.dataset);
+    model.setUser(tabUxxi.dataset);
+
     const formUxxi = new Form("#xeco-uxxi");
-	const tableUxxi = formUxxi.setTable("#docs-uxxi", {
+	const tableUxxi = formUxxi.setTable("#docs-uxxi", { // tabla de documentos uxxiec asociados
         msgEmptyTable: "No se han encontrado documentos de UXXI-EC asociadas a la solicitud",
         onRender: uxxiec.row,
         onFooter: uxxiec.tfoot
@@ -43,8 +43,8 @@ export default (model, formModel) => {
     const formFilter = new Form("#xeco-filter");
     const solicitudes = formFilter.setTable("#solicitudes", {
         msgEmptyTable: "No se han encontrado solicitudes para a la búsqueda seleccionada",
-        onRender: model.row,
-        onFooter: model.tfoot
+        onRender: data => model.row(data),
+        onFooter: data => model.tfoot(data)
     });
 
     const fnSend = (action, data) => pf.sendId(action, data.id);
@@ -68,7 +68,7 @@ export default (model, formModel) => {
         if (formUxxi.isCached(data.id))
             return tabs.showTab(15);
         formUxxi.restart("#uxxi").setCache(data.id)
-                .setVisible(".show-ejecutable", solicitud.isEjecutable(data)); // Update view
+                .setVisible(".show-ejecutable", model.setData(data).isEjecutable()); // Update view
         tabs.render(".load-data", data);
         fnSend("rcUxxiec", data);
     });
@@ -84,7 +84,7 @@ export default (model, formModel) => {
 
     window.onList = () => formFilter.setData({ fMiFirma: "5" }).loading();
     window.fnFirmar = () => i18n.confirm("msgFirmar") && window.loading();
-    window.fnRechazar = () => formReject.isValid(solicitud.validateReject) && i18n.confirm("msgRechazar") && window.loading();
+    window.fnRechazar = () => formReject.isValid(model.validateReject) && i18n.confirm("msgRechazar") && window.loading();
 
     window.loadFiltro = (xhr, status, args) => {
         window.showTab(xhr, status, args, 2) && solicitudes.render(JSON.read(args.data));

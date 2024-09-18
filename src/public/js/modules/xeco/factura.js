@@ -5,7 +5,6 @@ import pf from "../../components/Primefaces.js";
 import i18n from "../../i18n/langs.js";
 
 import factura from "../../model/xeco/Factura.js";
-import uxxiec from "../../model/xeco/Solicitud.js";
 import solicitudes from "./xeco.js";
 import fiscal from "../../data/fiscal.js";
 
@@ -96,7 +95,7 @@ pf.ready(() => {
 				.setVisible(".insert-only", factura.isEditable()).setVisible(".update-only", factura.isDisabled())
 				.setVisible(".firmable-only", factura.isFirmable()).setVisible(".rechazable-only", factura.isRechazable())
 				.setVisible(".show-recibo", factura.isRecibo()).setVisible(".show-factura", factura.isFacturable()).setVisible(".show-cp", factura.isCartaPago())
-				.setVisible(".show-factura-uae", uxxiec.isUae() && factura.isFacturable()).setVisible(".show-uae", uxxiec.isUae())
+				.setVisible(".show-factura-uae", factura.isUae() && factura.isFacturable()).setVisible(".show-uae", factura.isUae())
 				.setVisible(".show-gestor", factura.isFace() || factura.isPlataforma()).setVisible(".show-face", factura.isFace())
 				.setVisible(".show-gaca", factura.isFirmaGaca());
 		delegaciones.setItems(JSON.read(args.delegaciones)); // cargo las delegaciones

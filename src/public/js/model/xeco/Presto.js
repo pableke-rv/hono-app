@@ -1,7 +1,7 @@
 
 import coll from "../../components/Collection.js";
-import solicitud from "./Solicitud.js";
 import i18n from "../../i18n/langs.js";
+import Solicitud from "./Solicitud.js";
 
 function Partida(presto) {
 	const self = this; //self instance
@@ -132,85 +132,73 @@ function Partidas(presto) {
     }
 }
 
-function Presto() {
-	const self = this; //self instance
-    const partidas = new Partidas(self);
+class Presto extends Solicitud {
+    #partidas = new Partidas(this);
 
-    let _data; // Current instance
-    this.setData = data => {
-        _data = data; // Update instance
-        solicitud.setData(data);
+    setData(data) {
+        super.setData(data); // Update data instance
         data.titulo = i18n.getItem("descTipos", data.tipo - 1);
-        return self;
+        return this;
     }
 
-    this.getPartidas = () => partidas;
-    this.getPartida = partidas.getPartida;
+    getPartidas() { return this.#partidas; }
+    getPartida = this.#partidas.getPartida;
 
-    this.isTcr = () => (solicitud.getTipo() == 1);
-    this.isFce = () => (solicitud.getTipo() == 6);
-    this.isL83 = () => (solicitud.getTipo() == 3);
-    this.isGcr = () => (solicitud.getTipo() == 4);
-    this.isAnt = () => (solicitud.getTipo() == 5);
-    this.isAfc = () => (solicitud.getTipo() == 8);
-    this.is030 = () => (solicitud.isUae() && (self.isGcr() || self.isAnt()));
+	isTcr() { return (super.getTipo() == 1); }
+	isFce() { return (super.getTipo() == 6); }
+	isL83() { return (super.getTipo() == 3); }
+	isGcr() { return (super.getTipo() == 4); }
+	isAnt() { return (super.getTipo() == 5); }
+	isAfc() { return (super.getTipo() == 8); }
+	is030() { return (super.isUae() && (this.isGcr() || this.isAnt())); }
 
-    this.isDisabled = solicitud.isDisabled;
-    this.isEditable = solicitud.isEditable;
-    this.isFirmable = solicitud.isFirmable;
-    this.isRechazable = solicitud.isRechazable;
-	this.isEditableUae = solicitud.isEditableUae;
-	this.isEjecutable = () => ((solicitud.isUae() && solicitud.isPendiente()) || solicitud.isEjecutable());
-	this.isIntegrable = () => (!self.isAfc() && solicitud.isIntegrable());
-	this.isUrgente = solicitud.isUrgente;
-	this.isImpCd = () => (self.isEditable() && !self.isAnt());
-	this.getAdjunto = () => _data.file;
+	isEjecutable() { return ((super.isUae() && super.isPendiente()) || super.isEjecutable()); }
+	isIntegrable() { return (!this.isAfc() && super.isIntegrable()); }
+	isImpCd() { return (this.isEditable() && !this.isAnt()); }
+	getAdjunto() { return super.get("file"); }
 
-    this.isPartidaDec = () => (self.isTcr() || self.isL83() || self.isAnt() || self.isAfc());
-	this.isMultipartida = () => (self.isTcr() || self.isFce() || self.isGcr());
-    this.showPartidasInc = () => (self.isMultipartida() && self.isEditable() && (partidas.size() < 20));
-    this.isPartidaExt = () => (self.isGcr() || self.isAnt());
-    this.isDisableEjInc = () => (self.isDisabled() || self.isTcr() || self.isFce());
-    this.isAutoLoadImp = () => (self.isL83() || self.isAnt() || self.isAfc());
-    this.isAutoLoadInc = () => (self.isL83() || self.isAnt());
-    this.isAnticipada = () => (_data.mask & 4);
-    this.isExcedida = () => (_data.mask & 8);
+    isPartidaDec() { return (this.isTcr() || this.isL83() || this.isAnt() || this.isAfc()); }
+	isMultipartida() { return (this.isTcr() || this.isFce() || this.isGcr()); }
+	showPartidasInc() { return (this.isMultipartida() && this.isEditable() && (this.#partidas.size() < 20)); }
+	isPartidaExt() { return (this.isGcr() || this.isAnt()); }
+	isDisableEjInc() { return (this.isDisabled() || this.isTcr() || this.isFce()); }
+	isAutoLoadImp() { return (this.isL83() || this.isAnt() || this.isAfc()); }
+	isAutoLoadInc() { return (this.isL83() || this.isAnt()); }
+	isAnticipada() { return (super.get("mask") & 4); }
+	isExcedida() { return (super.get("mask") & 8); }
+	getMemo() { return super.get("memo"); }
 
-    this.getSubtipo = solicitud.getSubtipo;
-    this.setSubtipo = solicitud.setSubtipo;
-    this.getMemo = () => _data.memo;
-
-    this.row = data => {
-        self.setData(data); // initialize 
+	row(data) {
+        this.setData(data); // initialize 
         const otras = (data.mask & 1) ? "<span> (y otras)</span>" : ""; // multipartida
 
         let info = '<td></td>';
-        if (self.isUrgente())
+        if (this.isUrgente())
             info = `<td class="text-center text-red text-xl" title="${data.name}: ${data.extra}">&#33;</td>`;
-        if ((solicitud.isUae() || solicitud.isOtri()) && self.isAnticipada())
+        if ((super.isUae() || super.isOtri()) && this.isAnticipada())
             info = '<td class="text-center text-xl" title="Este contrato ha gozado de anticipo en algún momento">&#65;</td>';
-        if ((solicitud.isUae() || solicitud.isOtri()) && self.isExcedida())
+        if ((super.isUae() || super.isOtri()) && this.isExcedida())
             info = '<td class="text-center text-warn text-xl" title="La cantidad solicitada excede el margen registrado por el Buzón de Ingresos">&#9888;</td>';
 
         let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
-        if (self.isFirmable())
+        if (this.isFirmable())
             acciones += `<a href="#rcFirmar" class="row-action resize firma-${data.id}" data-confirm="msgFirmar"><i class="fas fa-check action resize text-green"></i></a>
                          <a href="#tab-11" class="row-action resize firma-${data.id}"><i class="fas fa-times action resize text-red"></i></a>`;
-        if (!self.isEditable())
+        if (!this.isEditable())
             acciones += '<a href="#rcReport" class="row-action"><i class="fal fa-file-pdf action resize text-red"></i></a>';
-        if (self.isIntegrable())
+        if (this.isIntegrable())
             acciones += '<a href="#rcIntegrar" class="row-action" data-confirm="msgIntegrar"><i class="far fa-save action resize text-blue"></i></a>';
-        if (self.isEjecutable())
+        if (this.isEjecutable())
             acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
-        if (solicitud.isAdmin())
+        if (super.isAdmin())
             acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#rcRemove" class="row-action" data-confirm="msgRemove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 
         return `<tr class="tb-data">
             ${info}
             <td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
             <td class="hide-sm">${data.titulo}</td>
-            <td class="${solicitud.getStyleByEstado(data)} estado-${data.id}">${solicitud.getDescEstado()}</td>
-            <td class="text-center">${solicitud.getFirma().myFlag(data.fmask, data.info)}</td>
+            <td class="${super.getStyleByEstado(data)} estado-${data.id}">${super.getDescEstado()}</td>
+            <td class="text-center">${super.getFirma().myFlag(data.fmask, data.info)}</td>
             <td class="hide-sm">${data.sig || ""}</td>
             <td title="${data.oIncDesc}">${data.orgInc}${otras}</td>
             <td class="text-center" title="${data.eIncDesc}">${data.ecoInc}</td>
@@ -221,18 +209,18 @@ function Presto() {
             <td class="text-right">${acciones}</td>
         </tr>`;
     }
-    this.tfoot = resume => `<tr><td colspan="99">Solicitudes: ${resume.size}</td></tr>`;
+	tfoot(resume) { return `<tr><td colspan="99">Solicitudes: ${resume.size}</td></tr>`; }
 
-    this.validate = data => {
+	validate(data) {
         const valid = i18n.getValidators();
         valid.isKey("acOrgDec", data.idOrgDec, "Debe seleccionar la orgánica que disminuye"); // autocomplete required key
         valid.isKey("idEcoDec", data.idEcoDec, "Debe seleccionar la económica que disminuye"); // select required number
         valid.catch("No ha seleccionada correctamente la partida que disminuye."); // Main form message
 
         const imp = data.impDec ?? 0; // los importes pueden ser nulos segun el tipo de presto
-        if (self.isPartidaDec() && (partidas.getImporte() != imp)) // Valido los importes a decrementar e incrementar
+        if (this.isPartidaDec() && (this.#partidas.getImporte() != imp)) // Valido los importes a decrementar e incrementar
             valid.setInputError("impDec", "notValid", "¡Los importes a decrementar e incrementar no coinciden!");
-        const cd = self.isAnt() ? imp : (data.cd ?? 0); // los anticipos no validan el CD
+        const cd = this.isAnt() ? imp : (data.cd ?? 0); // los anticipos no validan el CD
         if (imp > cd)
             valid.setInputError("impDec", "errExceeded", "El importe de la partida que disminuye supera el crédito disponible");
         valid.size("memo", data.memo).catch("Debe asociar una memoria justificativa a la solicitud."); // Required string
@@ -240,7 +228,7 @@ function Presto() {
             valid.size("extra", data.extra).catch("Debe indicar un motivo para la urgencia de esta solicitud."); // Required string
             valid.geToday("fMax", data.fMax).catch("Debe indicar una fecha maxima de resolución para esta solicitud."); // Required date
         }
-        return partidas.validate();
+        return this.#partidas.validate();
     }
 }
 
