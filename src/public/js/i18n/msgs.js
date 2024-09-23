@@ -1,8 +1,9 @@
 
+const KEY_ERR = "msgError"; // Error key
+
 export default class Msgs {
     #lang; // private lang object (readonly)
     #MSGS = {}; // Messages container
-    #KEY_ERR = "msgError"; // Error key
     #errors = 0; // Errors counter
 
     constructor(lang) {
@@ -24,22 +25,36 @@ export default class Msgs {
 
     isOk() { return (this.#errors == 0); }
     isError() { return (this.#errors > 0); }
+    getError(name) { return this.#MSGS[name || KEY_ERR]; }
 
     setOk(msg) { return this.setMsg("msgOk", msg); }
     setInfo(msg) { return this.setMsg("msgInfo", msg); }
     setWarn(msg) { return this.setMsg("msgWarn", msg); }
-    getError(name) { return this.#MSGS[name || this.#KEY_ERR]; }
-    setMsgError(name, msg) { this.#errors++; return this.setMsg(name, msg); }
-    reject(msg) { return this.setMsgError(this.#KEY_ERR, msg); } // Error and finish
-    catch(err) { return (this.isOk() || this.#MSGS.msgError) ? this : this.reject(err); } // If error and empty message => set message
-    setInputError(name, tip, msg) { return this.setMsgError(name, tip).setMsg(this.#KEY_ERR, msg); }
-    setError(msg, name, tip) {
-        return tip ? this.setInputError(name, tip, msg) : this.setMsgError(name || this.#KEY_ERR, msg);
+    setError(msg) {
+        this.#errors++;
+        return this.setMsg(KEY_ERR, msg);
     }
+
+    addError(field, tip, msg) {
+        if (msg && !this.getMsg(KEY_ERR))
+            this.setError(msg); // set global message
+        else
+            this.#errors++;
+        return this.setMsg(field, tip); // set field message
+    }
+    addRequired(name, msg) { return this.addError(name, "errRequired", msg); }
+    addFormatError(name, msg) { return this.addError(name, "errFormat", msg); }
 
     setException(err) {
         console.error(err); // Show log error
         const msg = err.message || err; // Main message
-        return this.setError(msg, err.field, err.tiperr);
+        return this.addError(err.field, err.tiperr, msg);
+    }
+
+    close(msg) {
+        if (this.isOk())
+            return true; // NO errors
+        msg = this.getMsg(KEY_ERR) || msg || "errForm";
+        return !this.setMsg(KEY_ERR, msg); // default message
     }
 }

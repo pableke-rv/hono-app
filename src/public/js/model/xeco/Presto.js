@@ -74,26 +74,26 @@ function Partida(presto) {
         valid.isKey("acOrgInc", data.idOrgInc, ERR_ORGANICA); // autocomplete required key
         valid.isKey("idEcoInc", data.idEcoInc, "Debe seleccionar una económica"); // select required number
         valid.gt0("impInc", data.impInc); // float number > 0
-        return valid.catch("No ha seleccionada correctamente la partida a incrementar.");
+        return valid.close("No ha seleccionada correctamente la partida a incrementar.");
     }
     this.validate030 = data030 => {
         const valid = i18n.getValidators();
         if (!data) // Debo cargar previamente la partida seleccionada
-            return valid.reject("No se ha encontrado la partida asociada al documento 080.");
+            return !valid.setError("No se ha encontrado la partida asociada al documento 080.");
         valid.isKey("acOrg030", data030.idOrg030, ERR_ORGANICA); // autocomplete required key
         valid.isKey("idEco030", data030.idEco030, "Debe seleccionar una económica"); // select required number
         valid.gt0("imp030", data030.imp030); // float number > 0
         const label = data030.acOrg030?.split(" - ");
         if (!label) // Code separator
-            return valid.setError("No ha seleccionada correctamente la aplicación para el DC 030.", "acOrg030", ERR_ORGANICA);
+            return !valid.addError("acOrg030", ERR_ORGANICA, "No ha seleccionada correctamente la aplicación para el DC 030.");
         if (data.imp < data030.imp030)
-            return valid.setInputError("imp030", "errExceeded", "El importe del documento 030 excede al del 080.");
+            return !valid.addError("imp030", "errExceeded", "El importe del documento 030 excede al del 080.");
         // If ok => update partida a incrementar
         data.idOrg030 = +data030.idOrg030;
         [ data.o030, data.dOrg030 ] = label;
         data.idEco030 = data030.idEco030;
         data.imp030 = data030.imp030;
-        return valid;
+        return valid.isOk();
     }
 }
 
@@ -122,13 +122,18 @@ function Partidas(presto) {
         return self;
     }
 
+    const MSG_ERR_INC = "Debe seleccionar al menos una partida a incrementar";
     this.validate = () => { // Todas las solicitudes tienen partidas a incrementar
         const valid = i18n.getValidation(); // Continue with validation without reset
-        const msg = "Debe seleccionar al menos una partida a incrementar"; // main message
-        return data.length ? valid : valid.setInputError("acOrgInc", "errRequired", msg);
+        return data.length ? valid.isOk() : !valid.addRequired("acOrgInc", MSG_ERR_INC);
     }
     this.validatePartida = partida => { // compruebo si la partida existía previamente
-        return !data.find(row => ((row.o == partida.o) && (row.e == partida.e)));
+        const valid = i18n.getValidation(); // Continue with validation without reset
+        if (!partida)
+            return !valid.addRequired("acOrgInc", MSG_ERR_INC);
+        if (data.find(row => ((row.o == partida.o) && (row.e == partida.e))))
+            return !valid.addError("acOrgInc", "notAllowed", "¡Partida ya asociada a la solicitud!");
+        return true;
     }
 }
 
@@ -215,18 +220,17 @@ class Presto extends Solicitud {
         const valid = i18n.getValidators();
         valid.isKey("acOrgDec", data.idOrgDec, "Debe seleccionar la orgánica que disminuye"); // autocomplete required key
         valid.isKey("idEcoDec", data.idEcoDec, "Debe seleccionar la económica que disminuye"); // select required number
-        valid.catch("No ha seleccionada correctamente la partida que disminuye."); // Main form message
 
         const imp = data.impDec ?? 0; // los importes pueden ser nulos segun el tipo de presto
-        if (this.isPartidaDec() && (this.#partidas.getImporte() != imp)) // Valido los importes a decrementar e incrementar
-            valid.setInputError("impDec", "notValid", "¡Los importes a decrementar e incrementar no coinciden!");
         const cd = this.isAnt() ? imp : (data.cd ?? 0); // los anticipos no validan el CD
         if (imp > cd)
-            valid.setInputError("impDec", "errExceeded", "El importe de la partida que disminuye supera el crédito disponible");
-        valid.size("memo", data.memo).catch("Debe asociar una memoria justificativa a la solicitud."); // Required string
+            valid.addError("impDec", "errExceeded", "El importe de la partida que disminuye supera el crédito disponible");
+        if (this.isPartidaDec() && (this.#partidas.getImporte() != imp)) // Valido los importes a decrementar e incrementar
+            valid.addError("impDec", "notValid", "¡Los importes a decrementar e incrementar no coinciden!");
+        valid.size("memo", data.memo, "Debe asociar una memoria justificativa a la solicitud."); // Required string
         if (data.urgente == "2") { // Solicitud urgente
-            valid.size("extra", data.extra).catch("Debe indicar un motivo para la urgencia de esta solicitud."); // Required string
-            valid.geToday("fMax", data.fMax).catch("Debe indicar una fecha maxima de resolución para esta solicitud."); // Required date
+            valid.size("extra", data.extra, "Debe indicar un motivo para la urgencia de esta solicitud."); // Required string
+            valid.geToday("fMax", data.fMax, "Debe indicar una fecha maxima de resolución para esta solicitud."); // Required date
         }
         return this.#partidas.validate();
     }

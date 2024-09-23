@@ -18,14 +18,14 @@ pf.ready(() => {
                                         term => window.rcFindOrg030(pf.param("term", term)), //source
                                         item => form030.setval("#idEco030", item.imp)); //select
     form030.addClick("#save-030", ev => {
-        partida.setData(lineas.getCurrentItem());
-        if (form030.isValid(partida.validate030)) {
-            formPresto.saveTable("#partidas-json", lineas); // save data to send to server
-            if (presto.isFinalizada())
-                formPresto.click("#save030");
-            else
-                tabs.backTab().showOk("Datos del documento 030 asociados correctamente."); // Back to presto view
-        }
+        partida.setData(lineas.getCurrentItem())
+        if (!form030.validate(partida, "validate030"))
+            return false; // Errores al validar el 030
+        formPresto.saveTable("#partidas-json", lineas); // save data to send to server
+        if (presto.isFinalizada())
+            formPresto.click("#save030"); // actualizo los datos a integrar
+        else
+            tabs.backTab().showOk("Datos del documento 030 asociados correctamente."); // Back to presto view
     });
     /*** FORMULARIO PARA EL DC 030 DE LAS GCR ***/
 
@@ -150,14 +150,14 @@ pf.ready(() => {
     /****** partida a incrementar ******/
 
     //****** tabla de partidas a incrementar ******//
-    window.fnAddPartidaInc = () => formPresto.isValid(partida.validate);
+    window.fnAddPartidaInc = () => formPresto.validate(partida);
     window.loadPartidaInc = (xhr, status, args) => {
-        const partida = JSON.read(args.data);
-        if (!partidas.setData(lineas).validatePartida(partida)) // compruebo si la partida existía previamente
-            return formPresto.setError("#acOrgInc", "¡Partida ya asociada a la solicitud!", "notAllowed");
-        partida.imp030 = partida.imp = formPresto.valueOf("#impInc"); // Importe de la partida a añadir
-        lineas.add(partida); // Add and remove PK autocalculated in extraeco.v_presto_partidas_inc
-        formPresto.setVisible(".link-adjunto", presto.getAdjunto());
+        const partidaInc = JSON.read(args.data);
+        formPresto.closeAlerts().hide(".link-adjunto");
+        if (!partidas.setData(lineas).validatePartida(partidaInc))
+            return formPresto.setErrors(); // error en la partida a incrementar
+        partidaInc.imp030 = partidaInc.imp = formPresto.valueOf("#impInc"); // Importe de la partida a añadir
+        lineas.add(partidaInc); // Add and remove PK autocalculated in extraeco.v_presto_partidas_inc
         acOrgInc.reload();
     }
     //****** tabla de partidas a incrementar ******//
@@ -182,12 +182,11 @@ pf.ready(() => {
     }
     window.fnSend = () => {
         partidas.setData(lineas); // Cargo las partidas para su validación
-        if (formPresto.isValid(presto.validate)) { //todas las validaciones estan ok?
-            partidas.setPrincipal(); //marco la primera como principal
-            formPresto.saveTable("#partidas-json", lineas); // save data to send to server
-			return i18n.confirm("msgSend") && formPresto.loading();
-        }
-        return false;
+        if (!formPresto.validate(presto))
+            return false; //error en las validaciones
+        partidas.setPrincipal(); //marco la primera como principal
+        formPresto.saveTable("#partidas-json", lineas); // save data to send to server
+        return i18n.confirm("msgSend") && formPresto.loading();
     }
     /*** FORMULARIO PRINCIPAL ***/
 });

@@ -91,7 +91,7 @@ function Buzon() {
         const valid = i18n.getValidators();
         valid.isKey("organica", data.idOrg, "No ha seleccionado correctamente la orgánica"); // autocomplete required number
         valid.isKey("tramit", data.tramit, "Unidad tramitadora no encontrada"); // select required number
-        return valid.catch("Orgánica / Unidad Tramitadora no seleccionada correctamente.");
+        return valid.close("Orgánica / Unidad Tramitadora no seleccionada correctamente.");
     }
     this.validate = function(data) {
     	return self.isValidOrganica(data);

@@ -72,11 +72,9 @@ pf.ready(() => {
 		//ivaChange: el => fnCalcIva(+el.value)
     });
 	formFact.addClick("a#add-linea", ev => {
-		const data = formFact.isValid(linea.validate, ".ui-linea");
-		if (data) {
-			lineas.push(data); // save container
-			formFact.restart("#desc").setval("#imp").setval("#memo", lineas.getItem(0).desc);
-		}
+		const data = formFact.validate(linea);
+		if (data)
+			formFact.restart("#desc").setval("#imp").setval("#memo", lineas.push(data).getItem(0).desc);
 		ev.preventDefault();
 	});
 
@@ -112,11 +110,10 @@ pf.ready(() => {
 	}
 	window.fnSend = () => {
 		factura.setLineas(lineas);
-		if (formFact.isValid(factura.validate)) {
-			formFact.saveTable("#lineas-json", lineas);
-			return i18n.confirm("msgSend") && loading();
-		}
-		return false;
+		if (!formFact.validate(factura))
+			return false; // errores en la factura
+		formFact.saveTable("#lineas-json", lineas);
+		return i18n.confirm("msgSend") && loading();
 	}
 	/*** FORMULARIO PRINCIPAL ***/
 });

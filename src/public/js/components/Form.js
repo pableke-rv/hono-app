@@ -101,7 +101,7 @@ export default function(form, opts) {
 			el.checked = (el.value == value);
 		else
 			fnValue(el, value)
-		return fnSetInputOk(el);
+		return self;
 	}
 	this.setValue = (el, value) => el ? fnSetValue(el, value) : self;
 	this.setval = (selector, value) => self.setValue(self.getInput(selector), value);
@@ -212,47 +212,36 @@ export default function(form, opts) {
 	}
 
 	// Form Validator
-	const fnSetTip = (el, msg) => {
-		const block = el.closest(opts.groupSelector) || coll.getDivNull(); // label tag container
-		block.getElementsByClassName(opts.tipErrorClass).text(msg);
-		return self;
-	}
-	const fnSetInputOk = el => {
-		el.classList.remove(opts.inputErrorClass);
-		return fnSetTip(el, EMPTY);
-	}
 	const fnSetInputError = (el, tip) => {
+		if (!tip) return; // no message
 		el.focus(); // set focus on error
 		el.classList.add(opts.inputErrorClass);
-		return fnSetTip(el, i18n.get(tip));
+		const block = el.closest(opts.groupSelector) || coll.getDivNull(); // label tag container
+		block.getElementsByClassName(opts.tipErrorClass).text(i18n.get(tip)); // field message
 	}
 	this.closeAlerts = () => {
-		alerts.closeAlerts();
-		return fnFor(form.elements, fnSetInputOk);
+		alerts.closeAlerts(); // globbal message
+		form.elements.forEach(el => el.classList.remove(opts.inputErrorClass));
+		form.getElementsByClassName(opts.tipErrorClass).text(EMPTY);
+		return self;
 	}
-	this.setOk = msg => {
-		alerts.showOk(msg || opts.defaultMsgOk);
-		return fnFor(form.elements, fnSetInputOk);
-	}
-	this.setError = (el, msg, tip) => {
+	/*this.setError = (el, msg, tip) => {
 		el = isstr(el) ? self.getInput(el) : el;
 		fnSetInputError(el, tip); // Set input error
 		return self.showError(msg); // Show error message
-	}
-	this.setErrors = (messages, selector) => {
-		if (isstr(messages)) // simple message text
+	}*/
+	this.setErrors = messages => {
+		if (globalThis.isstr(messages)) // simple message text
 			return self.showError(messages);
 		// Style error inputs and set focus on first error
-		selector = selector || INPUTS; // Default = inputs type
-		//messages = messages || i18n.getMsgs(); // default messages
-		const fnToggleError = (el, tip) => tip ? fnSetInputError(el, tip) : fnSetInputOk(el);
-		form.elements.eachPrev(el => (el.isVisible(selector) && fnToggleError(el, messages[el.name])));
+		messages = messages || i18n.getValidation().getMsgs(); // default messages
+		form.elements.eachPrev(el => fnSetInputError(el, messages[el.name]));
 		return self.showError(messages.msgError || opts.defaultMsgError);
 	}
-	this.isValid = (fnValidate, selector) => {
-		const data = self.closeAlerts().getData(selector);
-		const valid = fnValidate(data, i18n.getValidators()); // Get validation results
-		return valid.isOk() ? data : !self.setErrors(valid.getMsgs(), selector);
+	this.validate = (model, validator) => {
+		validator = validator || "validate"; // default validation
+		const data = self.closeAlerts().getData(); // current form data
+		return model[validator](data) ? data : !self.setErrors(); // model preserve this
 	}
 
 	this.send = async url => {

@@ -1,26 +1,27 @@
 
 import Validators from "../../validators.js";
 
+function fnLetraDni(value) { // private function
+	const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+	const letra = letras.charAt(parseInt(value, 10) % 23);
+	return (letra == value.charAt(8));
+}
+
 export default class EnglishValidators extends Validators {
 	// Person ID's
-	#fnLetraDni(value) { // private function
-		const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-		const letra = letras.charAt(parseInt(value, 10) % 23);
-		return (letra == value.charAt(8));
-	}
 	isDni(name, value) {
 		if (!value)
-			return this.setError("errRequired", name);
-		if (!/^(\d{8})([A-Z])$/.test(value) || !this.#fnLetraDni(value)) // RE_DNI
-			return this.setError("errNif", name);
+			return this.addRequired(name);
+		if (!/^(\d{8})([A-Z])$/.test(value) || !fnLetraDni(value)) // RE_DNI
+			return this.addError(name, "errNif");
 		return this;
 	}
 	isCif(name, value) {
 		if (!value)
-			return this.setError("errRequired", name);
+			return this.addRequired(name);
 		const match = value.match(/^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/); // RE_CIF
 		if (!match || (match.length < 2))
-			return this.setError("errNif", name);
+			return this.addError(name, "errNif");
 
 		var letter = match[1];
 		var number  = match[2];
@@ -44,14 +45,14 @@ export default class EnglishValidators extends Validators {
 		var ok = letter.match(/[ABEH]/) ? (control == control_digit) //Control must be a digit
 								: letter.match(/[KPQS]/) ? (control == control_letter) //Control must be a letter
 								: ((control == control_digit) || (control == control_letter)); //Can be either
-		return ok ? this : this.setError("errNif", name);
+		return ok ? this : this.addError(name, "errNif");
 	}
 	isNie(name, value) {
 		if (!value) // RE_NIE = /^[XYZ]\d{7,8}[A-Z]$/;
-			return this.setError("errRequired", name);
+			return this.addRequired(name);
 		const prefix = value.charAt(0); //Change the initial letter for the corresponding number and validate as DNI
 		let p0 = (prefix == "X") ? 0 : ((prefix == "Y") ? 1 : ((prefix == "Z") ? 2 : prefix));
-		return this.#fnLetraDni(p0 + value.substr(1)) ? this : this.setError("errNif", name);
+		return fnLetraDni(p0 + value.substr(1)) ? this : this.addError(name, "errNif");
 	}
 	isPersonId(name, value) {
 		if (this.isDni(name, value).isOk())

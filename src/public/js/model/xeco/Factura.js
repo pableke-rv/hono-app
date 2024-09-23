@@ -45,7 +45,7 @@ function Linea(factura) {
         const valid = i18n.getValidators();
         valid.gt0("imp", data.imp); // float required
         valid.size("desc", data.desc); // string required
-        return valid.catch("El concepto indicado no es válido!"); // Main form message
+        return valid.close("El concepto indicado no es válido!"); // Main form message
     }
 }
 
@@ -67,7 +67,7 @@ function Lineas(factura) {
     this.validate = () => { // Todas las solicitudes tienen partidas a incrementar
         const valid = i18n.getValidation(); // Continue with validation without reset
         const msg = "Debe detallar los conceptos asociados a la solicitud.";
-        return data.length ? valid : valid.setInputError("desc", "errRequired", msg);
+        return data.length ? valid : !valid.addError("desc", "errRequired", msg);
     }
 }
 
@@ -144,10 +144,10 @@ class Factura extends Solicitud {
 		if (this.isRecibo()) //subtipo = ttpp o extension
             valid.size("acRecibo", data.acRecibo, "Debe indicar un número de recibo válido");
 		/*if (this.isDeportes()) {
-            valid.size("extra", data.extra, "errRequired").catch("Debe indicar un número de recibo válido"); // Required string
-            valid.leToday("fMax", data.fMax).catch("Debe indicar la fecha del recibo asociado"); // Required date
+            valid.size("extra", data.extra, "errRequired", "Debe indicar un número de recibo válido"); // Required string
+            valid.leToday("fMax", data.fMax, "Debe indicar la fecha del recibo asociado"); // Required date
         }*/
-        valid.size("memo", data.memo).catch("Debe indicar las observaciones asociadas a la solicitud."); // Required string
+        valid.size("memo", data.memo, "Debe indicar las observaciones asociadas a la solicitud."); // Required string
         if (this.isFace())
             valid.size("og", data.og) && valid.size("oc", data.oc) && valid.size("ut", data.ut);
         if (this.isPlataforma())

@@ -1,7 +1,7 @@
 
 import i18n from "../../i18n/langs.js";
 
-function Firma(solicitud) {
+function Firma() {
 	const self = this; //self instance
 
     this.isPrincipal = mask => (mask & 2);
@@ -18,15 +18,15 @@ function Firma(solicitud) {
     }
 }
 
-function Firmas(solicitud) {
+function Firmas() {
 	const self = this; //self instance
-    const firma = new Firma(solicitud);
+    const firma = new Firma();
 
-    let data; // Current presto data type
+    let data; // array
     this.getData = () => data;
     this.setData = firmas => { data = firmas; return self; }
-    this.getFirma = () => firma;
 
+    this.getFirma = () => firma;
     this.getPrincipales = () => data.filter(f => firma.isFirmable(f.mask));
 }
 
@@ -36,8 +36,7 @@ const CSS_ESTADOS = [
 ];
 
 export default class Solicitud {
-    #firmas = new Firmas(this);
-    // Current instance + User params
+    #firmas = new Firmas();
     #data; #nif; #grupo;
 
     getData() { return this.#data; }
@@ -98,6 +97,6 @@ export default class Solicitud {
     validateReject(data) {
         const valid = i18n.getValidators();
         const msg = "Debe indicar un motivo para el rechazo de la solicitud.";
-        return valid.size("rechazo", data.rechazo).catch(msg); // Required string
+        return valid.size("rechazo", data.rechazo, msg).isOk(); // Required string
     }
 }

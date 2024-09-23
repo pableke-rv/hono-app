@@ -88,13 +88,15 @@ window.xlsx = (xhr, status, args) => {
             "ej", "cod", "jg", "fact", "nif", "ter", "impJg", "fJg", "descJg", 
             "nifInt", "int", "vinc", "gasto", "act", "proy",
             "dest", "pais", "itinerario", "start", "end", "loc", "vp", "km", "impKm",
-            "fCong1", "fCong2", "impTrans", "noches", "impPern", "dias", "impDietas", "impTotal", "taxis"
+            "fCong1", "fCong2", "impLoc", "impTrans", "noches", "impNoche", "impPern", 
+            "dietas", "impDieta", "impDietas", "impTotal", "taxis", "fin"
         ],
         titles: [ // column names
             "Ej.", "ID", "Nº JG.", "Nº Factura", "NIF Tercero", "Nombre del Tercero", "Imp. Total", "F. Emisión", "Descripción", 
             "NIF Interesado", "Nombre del Interesado", "Vinculación", "Tipo de Gasto", "Actividad", "Relación con el Proyecto",
             "Destino Principal", "Pais", "Itinerario", "F. Inicio", "F. Fin", "Locomoción", "Vehiculo Propio", "Km.", "Imp./Km.",
-            "F. Inicio Congreso", "F. Fin Congreso", "Tot. Locomoción", "Nº Noches", "Tot. Alojamiento", "Nº Días", "Tot. Manutención", "Total", "Taxi"
+            "F. Inicio Congreso", "F. Fin Congreso", "Detalle Locomoción", "Tot. Locomoción", "Nº Noches", "Imp./Noche", "Tot. Alojamiento", 
+            "Nº Días", "Imp./Dieta", "Tot. Manutención", "Total", "Taxi", "Finalidad"
         ],
         columns: {
             km: cell => { cell.z = "#,##0.00"; }, // currency format
