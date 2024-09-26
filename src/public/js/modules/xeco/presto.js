@@ -19,7 +19,7 @@ pf.ready(() => {
                                         item => form030.setval("#idEco030", item.imp)); //select
     form030.addClick("#save-030", ev => {
         partida.setData(lineas.getCurrentItem())
-        if (!form030.validate(partida, "validate030"))
+        if (!form030.validate(partida.validate030))
             return false; // Errores al validar el 030
         formPresto.saveTable("#partidas-json", lineas); // save data to send to server
         if (presto.isFinalizada())
@@ -150,7 +150,7 @@ pf.ready(() => {
     /****** partida a incrementar ******/
 
     //****** tabla de partidas a incrementar ******//
-    window.fnAddPartidaInc = () => formPresto.validate(partida);
+    window.fnAddPartidaInc = () => formPresto.validate(partida.validate);
     window.loadPartidaInc = (xhr, status, args) => {
         const partidaInc = JSON.read(args.data);
         formPresto.closeAlerts().hide(".link-adjunto");
@@ -182,7 +182,7 @@ pf.ready(() => {
     }
     window.fnSend = () => {
         partidas.setData(lineas); // Cargo las partidas para su validación
-        if (!formPresto.validate(presto))
+        if (!formPresto.validate(presto.validate))
             return false; //error en las validaciones
         partidas.setPrincipal(); //marco la primera como principal
         formPresto.saveTable("#partidas-json", lineas); // save data to send to server

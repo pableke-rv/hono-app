@@ -13,7 +13,7 @@ function fnDate(valid, name, value, msg) {
 	if (!value) // iso date validation
 		return !valid.addRequired(name, msg); // required
 	const ok = /^\d{4}-[01]\d-[0-3]\d/.test(value); // RE_DATE format
-	return ok || !valid.addError(name, "errDate", msg);
+	return ok || !valid.addDateError(name, msg);
 }
 
 export default class Validators extends Msgs {
@@ -98,13 +98,13 @@ export default class Validators extends Msgs {
 		if (!value) // iso date validation
 			return this.addRequired(name, msg); // required
 		const ok = /[0-2]\d:[0-5]\d:[0-5]\d[\.\d{1,3}]?$/.test(value); // RE_TIME format
-		return ok ? this : this.addError(name, "errDate", msg);
+		return ok ? this : this.addDateError(name, msg);
 	}
 	isDateTime(name, value, msg) {
 		if (!value) // iso date validation
 			return this.addRequired(name, msg); // required
 		const ok = /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d{1,3}Z$/.test(value); // RE_DATE_TIME format
-		return ok ? this : this.addError(name, "errDate", msg);
+		return ok ? this : this.addDateError(name, msg);
 	}
 	leToday(name, value, msg) {
 		if (!fnDate(this, name, value, msg))

@@ -238,10 +238,9 @@ export default function(form, opts) {
 		form.elements.eachPrev(el => fnSetInputError(el, messages[el.name]));
 		return self.showError(messages.msgError || opts.defaultMsgError);
 	}
-	this.validate = (model, validator) => {
-		validator = validator || "validate"; // default validation
+	this.validate = fnValidator => {
 		const data = self.closeAlerts().getData(); // current form data
-		return model[validator](data) ? data : !self.setErrors(); // model preserve this
+		return fnValidator(data) ? data : !self.setErrors(); // model preserve this
 	}
 
 	this.send = async url => {

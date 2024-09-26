@@ -36,8 +36,16 @@ const CSS_ESTADOS = [
 ];
 
 export default class Solicitud {
+    static #instance; // singleton
     #firmas = new Firmas();
     #data; #nif; #grupo;
+
+    constructor() {
+        Solicitud.#instance = this;
+    }
+
+    static get instance() { return Solicitud.#instance; } // property access
+    static self() { return Solicitud.#instance; } // function getter access
 
     getData() { return this.#data; }
     get(name) { return this.#data[name]; }
@@ -51,15 +59,18 @@ export default class Solicitud {
     setGrupo(val) { this.#grupo = val; return this; }
     setUser(data) { return this.setNif(data.nif).setGrupo(data.grupo); }
     isUsuEc() { return !!this.#grupo; }
-    isUxxiec() { return this.isUsuEc(); }
+    isUxxiec = this.isUsuEc;
 
     getFirmas() { return this.#firmas; }
-    getFirma() { return this.#firmas.getFirma(); }
+    getFirma = this.#firmas.getFirma;
 
     getTipo() { return this.#data.tipo; }
+    get tipo() { return this.#data.tipo; }
     getSubtipo() { return this.#data.subtipo; }
     setSubtipo(value) { this.#data.subtipo = value; return this; }
     getEstado() { return this.#data.estado; }
+    getMask() { return this.#data.mask; }
+    get mask() { return this.#data.mask; }
 
     isPendiente() { return (this.#data.estado == 5); }
     isAceptada() { return (this.#data.estado == 1); } // Aceptada por todos los firmantes

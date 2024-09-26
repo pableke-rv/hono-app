@@ -44,6 +44,7 @@ export default class Msgs {
     }
     addRequired(name, msg) { return this.addError(name, "errRequired", msg); }
     addFormatError(name, msg) { return this.addError(name, "errFormat", msg); }
+    addDateError(name, msg) { return this.addError(name, "errDate", msg); }
 
     setException(err) {
         console.error(err); // Show log error

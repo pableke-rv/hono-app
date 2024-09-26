@@ -72,7 +72,7 @@ pf.ready(() => {
 		//ivaChange: el => fnCalcIva(+el.value)
     });
 	formFact.addClick("a#add-linea", ev => {
-		const data = formFact.validate(linea);
+		const data = formFact.validate(linea.validate);
 		if (data)
 			formFact.restart("#desc").setval("#imp").setval("#memo", lineas.push(data).getItem(0).desc);
 		ev.preventDefault();
@@ -110,7 +110,7 @@ pf.ready(() => {
 	}
 	window.fnSend = () => {
 		factura.setLineas(lineas);
-		if (!formFact.validate(factura))
+		if (!formFact.validate(factura.validate))
 			return false; // errores en la factura
 		formFact.saveTable("#lineas-json", lineas);
 		return i18n.confirm("msgSend") && loading();

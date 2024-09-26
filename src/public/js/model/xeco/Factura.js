@@ -86,12 +86,12 @@ class Factura extends Solicitud {
 	setLineas(table) { this.#lineas.setData(table.getData()); return this; }
 	getLinea() { return this.#lineas.getLinea(); }
 
-	isFactura() { return (super.getTipo() == 1); }
-    //isAbono() { return (super.getTipo() == 2); }
-	isCartaPago() { return (super.getTipo() == 3); }
-	isReciboCV() { return (super.getTipo() == 4); }
+	isFactura() { return (super.tipo == 1); }
+    //isAbono() { return (super.tipo == 2); }
+	isCartaPago() { return (super.tipo == 3); }
+	isReciboCV() { return (super.tipo == 4); }
 	isFacturable() { return (this.isFactura() || this.isReciboCV()); }
-	isFirmaGaca() { return this.isReciboCV() && this.isTtpp() && (super.get("mask") & 2); }
+	isFirmaGaca() { return this.isReciboCV() && this.isTtpp() && (super.mask & 2); }
 
 	isTtpp() { return (super.getSubtipo() == 3); }
 	isTituloOficial() { return (super.getSubtipo() == 4); }
@@ -109,23 +109,24 @@ class Factura extends Solicitud {
 	setFace(val) { return this.set("face", val); } // update plataforma
 
 	row(data) {
-        this.setData(data); // initialize 
+        const self = Factura.self();
+        self.setData(data); // initialize 
         let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
-        if (this.isFirmable())
+        if (self.isFirmable())
             acciones += `<a href="#rcFirmar" class="row-action resize firma-${data.id}" data-confirm="msgFirmar"><i class="fas fa-check action resize text-green"></i></a>
                          <a href="#tab-11" class="row-action resize firma-${data.id}"><i class="fas fa-times action resize text-red"></i></a>`;
-        if (this.isIntegrable())
+        if (self.isIntegrable())
             acciones += '<a href="#rcIntegrar" class="row-action" data-confirm="msgIntegrar"><i class="far fa-save action resize text-blue"></i></a>';
-        if (this.isEjecutable())
+        if (self.isEjecutable())
             acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
-        if (super.isAdmin())
+        if (self.isAdmin())
             acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#rcRemove" class="row-action" data-confirm="msgRemove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 
         return `<tr class="tb-data">
             <td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
             <td class="hide-sm">${data.titulo}</td>
-            <td class="${super.getStyleByEstado()} estado-${data.id}">${super.getDescEstado()}</td>
-            <td class="text-center">${super.getFirma().myFlag(data.fmask, data.info)}</td>
+            <td class="${self.getStyleByEstado()} estado-${data.id}">${self.getDescEstado()}</td>
+            <td class="text-center">${self.getFirma().myFlag(data.fmask, data.info)}</td>
             <td class="hide-sm">${data.sig || ""}</td>
             <td class="text-right">${i18n.isoFloat(data.imp)} €</td>
             <td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
@@ -138,21 +139,22 @@ class Factura extends Solicitud {
 	tfoot(resume) { return `<tr><td colspan="99">Solicitudes: ${resume.size}</td></tr>`; }
 
 	validate(data) {
+        const self = Factura.self();
         const valid = i18n.getValidators();
         valid.isKey("acTercero", data.idTercero, "Debe seleccionar un tercero válido"); // autocomplete required key
         valid.isKey("acOrganica", data.idOrganica, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
-		if (this.isRecibo()) //subtipo = ttpp o extension
+		if (self.isRecibo()) //subtipo = ttpp o extension
             valid.size("acRecibo", data.acRecibo, "Debe indicar un número de recibo válido");
-		/*if (this.isDeportes()) {
+		/*if (self.isDeportes()) {
             valid.size("extra", data.extra, "errRequired", "Debe indicar un número de recibo válido"); // Required string
             valid.leToday("fMax", data.fMax, "Debe indicar la fecha del recibo asociado"); // Required date
         }*/
         valid.size("memo", data.memo, "Debe indicar las observaciones asociadas a la solicitud."); // Required string
-        if (this.isFace())
+        if (self.isFace())
             valid.size("og", data.og) && valid.size("oc", data.oc) && valid.size("ut", data.ut);
-        if (this.isPlataforma())
+        if (self.isPlataforma())
             valid.size("og", data.og);
-        return this.#lineas.validate();
+        return self.#lineas.validate();
     }
 }
 

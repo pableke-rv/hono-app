@@ -43,8 +43,8 @@ export default (model, formModel) => {
     const formFilter = new Form("#xeco-filter");
     const solicitudes = formFilter.setTable("#solicitudes", {
         msgEmptyTable: "No se han encontrado solicitudes para a la búsqueda seleccionada",
-        onRender: data => model.row(data),
-        onFooter: data => model.tfoot(data)
+        onRender: model.row,
+        onFooter: model.tfoot
     });
 
     const fnSend = (action, data) => pf.sendId(action, data.id);
@@ -84,9 +84,7 @@ export default (model, formModel) => {
 
     window.onList = () => formFilter.setData({ fMiFirma: "5" }).loading();
     window.fnFirmar = () => i18n.confirm("msgFirmar") && window.loading();
-    window.fnRechazar = () => {
-        return formReject.validate(model, "validateReject") && i18n.confirm("msgRechazar") && window.loading();
-    }
+    window.fnRechazar = () => formReject.validate(model.validateReject) && i18n.confirm("msgRechazar") && window.loading();
 
     window.loadFiltro = (xhr, status, args) => {
         window.showTab(xhr, status, args, 2) && solicitudes.render(JSON.read(args.data));
