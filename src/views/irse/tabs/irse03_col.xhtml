@@ -13,7 +13,7 @@
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['lbl.justifi']}" escape="false" />:</div>
 			<div class="ui-block-main">
-				<h:inputTextarea id="justifi" value="#{gasto.justifi}" styleClass="ui-input ui-ta rows-2 #{irse.cssDisabled}" tabindex="55"/>
+				<h:inputTextarea id="justifi" value="#{iris.gastos.justifi}" styleClass="ui-input ui-ta rows-2 #{iris.form.cssDisabled}" tabindex="55"/>
 				<div class="ui-errtip"></div>
 			</div>
 		</label>
@@ -21,7 +21,7 @@
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['lbl.vinc']}" escape="false" />:</div>
 			<div class="ui-block-main">
-				<h:selectOneMenu id="vinc" value="#{gasto.vinc}" styleClass="ui-input ui-select #{irse.cssDisabled}" tabindex="56">
+				<h:selectOneMenu id="vinc" value="#{iris.gastos.vinc}" styleClass="ui-input ui-select #{iris.form.cssDisabled}" tabindex="56">
 					<f:selectItem itemValue="1" itemLabel="#{msg['lbl.vinc.1']}" itemEscaped="false" />
 					<f:selectItem itemValue="2" itemLabel="#{msg['lbl.vinc.2']}" itemEscaped="false" />
 					<f:selectItem itemValue="3" itemLabel="#{msg['lbl.vinc.3']}" itemEscaped="false" />

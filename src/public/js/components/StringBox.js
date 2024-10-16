@@ -87,6 +87,7 @@ function StringBox() {
     this.getYear = str => (str || sysdate).substring(0, 4); //yyyy string format
     this.getHours = str => +(str || sysdate).substring(11, 13); //hh int format
     this.getMonth = str => +(str || sysdate).substring(5, 7); //mm int format
+    this.getMinutes = str => +(str || sysdate).substring(14, 16); //min int format
 
     // Chunk string in multiple parts
 	this.test = (str, re) => re.test(str) ? str : null;

@@ -148,18 +148,18 @@
 					<div class="ui-errtip"></div>
 				</label>
 				<label class="ui-block">
-					<div class="label">#{inicio.getMsg('lblUrg')}:</div>
+					<div class="label">#{uae.getMsg('lblUrg')}:</div>
 					<h:selectOneMenu id="urgente" value="#{presto.urgente}" styleClass="ui-input ui-select" tabindex="15">
-						<f:selectItem itemValue="1" itemLabel="#{inicio.getMsg('lblNormal')}" />
-						<f:selectItem itemValue="2" itemLabel="#{inicio.getMsg('lblUrgente')}" />
+						<f:selectItem itemValue="1" itemLabel="#{uae.getMsg('lblNormal')}" />
+						<f:selectItem itemValue="2" itemLabel="#{uae.getMsg('lblUrgente')}" />
 					</h:selectOneMenu>
 				</label>
 				<label class="ui-block grp-urgente">
-					<div class="label required">#{inicio.getMsg('lblFechaUrg')}:</div>
+					<div class="label required">#{uae.getMsg('lblFechaUrg')}:</div>
 					<h:inputText id="fMax" value="#{presto.solicitud.isoDateMax}" size="10" maxlength="10" tabindex="16" styleClass="ui-input ui-date"/>
 				</label>
 				<label class="ui-block-row grp-urgente">
-					<div class="label required">#{inicio.getMsg('lblMotivoUrg')}:</div>
+					<div class="label required">#{uae.getMsg('lblMotivoUrg')}:</div>
 					<h:inputTextarea id="extra" value="#{presto.solicitud.extraView}" styleClass="ui-input ui-ta" tabindex="17"/>
 					<div class="ui-errtip"></div>
 				</label>

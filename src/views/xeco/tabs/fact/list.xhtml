@@ -103,7 +103,7 @@
 		<p:remoteCommand name="rcFirmas" action="#{fact.firmas()}" update="@(.update-fact)" oncomplete="showTab(xhr, status, args, 11)" />
 		<p:remoteCommand name="rcReport" action="#{fact.report()}" oncomplete="handleReport(xhr, status, args)" />
 		<p:remoteCommand name="rcIntegrar" action="#{fact.ws()}" oncomplete="showAlerts(xhr, status, args)" />
-		<p:remoteCommand name="rcUxxiec" action="#{fact.uxxi()}" oncomplete="loadUxxiec(xhr, status, args)" />
+		<p:remoteCommand name="rcUxxiec" action="#{fact.uxxi()}" update="@(.update-fact)" oncomplete="loadUxxiec(xhr, status, args)" />
 		<p:remoteCommand name="rcEmails" action="#{fact.emails()}" oncomplete="showAlerts(xhr, status, args)" />
 		<p:remoteCommand name="rcRemove" action="#{fact.remove()}" oncomplete="showAlerts(xhr, status, args)" />
 	</h:form>

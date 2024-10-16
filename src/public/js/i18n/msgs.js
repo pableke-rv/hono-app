@@ -10,11 +10,14 @@ export default class Msgs {
         this.#lang = lang;
     }
 
-    getLang() { return this.#lang; }
-    getMsgs() { return this.#MSGS; }
+    get lang() { return this.#lang; }
+    getLang() { return this.lang; }
+
+    get msgs() { return this.#MSGS; }
+    getMsgs() { return this.msgs; }
     getMsg(name) { return this.#MSGS[name]; }
     setMsg(name, msg) {
-        this.#MSGS[name] = this.#lang[msg] || msg;
+        this.#MSGS[name] = this.lang[msg] || msg;
         return this;
     }
     reset() {

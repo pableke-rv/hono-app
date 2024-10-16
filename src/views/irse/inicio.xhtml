@@ -10,8 +10,8 @@
 
 	<ui:define name="metadata">
 		<f:metadata>
-            <f:viewParam name="lang" value="#{inicio.lang}" />
-            <f:viewAction action="#{inicio.initLang()}" />
+            <f:viewParam name="lang" value="#{iris.lang}" />
+            <f:viewAction action="#{iris.initLang()}" />
         </f:metadata>
 	</ui:define>
 
@@ -44,74 +44,73 @@
 		<!-- Form IRSE -->
 		<h:form id="xeco-irse" prependId="false" method="post" styleClass="update-irse" enctype="multipart/form-data" onsubmit="loading();">
 		<div id="tab-0" class="tab-content">
-			<p:remoteCommand name="rcFindInteresado" action="#{perfil.findUsuarios()}" oncomplete="loadItems(xhr, status, args)" />
-			<p:remoteCommand name="rcFindOrg" action="#{perfil.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
+			<p:remoteCommand name="rcFindInteresado" action="#{iris.perfil.findUsuarios()}" oncomplete="loadItems(xhr, status, args)" />
+			<p:remoteCommand name="rcFindOrg" action="#{iris.perfil.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
 
-			<h2>#{irse.nombre} <i>#{irse.codigo}</i><hr class="underline"/></h2>
+			<h2>#{iris.perfil.nombre} <i>#{iris.form.codigo}</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse00.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 
 		<!-- Itinerarios rutas de tab1 y tab2 -->
-		<p:remoteCommand name="rcFindPersonal" action="#{irse.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
-		<h:inputHidden id="etapas" value="#{ruta.etapas}" />
-		<div id="rutas-data" class="hide">#{ruta.rutasJson}</div>
+		<p:remoteCommand name="rcFindPersonal" action="#{iris.form.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
+		<h:inputHidden id="etapas" value="#{iris.input.rutas}" />
+		<div id="rutas-data" class="hide">#{iris.rutas.rutasJson}</div>
 
 		<div id="tab-1" class="tab-content">
-			<h2>#{irse.nombre} <i>#{irse.codigo}</i><hr class="underline"/></h2>
+			<h2>#{iris.perfil.nombre} <i>#{iris.form.codigo}</i><hr class="underline"/></h2>
 			<c:choose>
-				<c:when test="#{irse.mun}"><ui:include src="tabs/irse01_mun.xhtml"></ui:include></c:when>
-				<c:when test="#{irse.colExt}"><ui:include src="tabs/irse01_col.xhtml"></ui:include></c:when>
-				<c:when test="#{irse.actividad1Dia}"><ui:include src="tabs/irse01_dia.xhtml"></ui:include></c:when>
+				<c:when test="#{iris.form.mun}"><ui:include src="tabs/irse01_mun.xhtml"></ui:include></c:when>
+				<c:when test="#{iris.form.colExt}"><ui:include src="tabs/irse01_col.xhtml"></ui:include></c:when>
+				<c:when test="#{iris.form.actividad1Dia}"><ui:include src="tabs/irse01_dia.xhtml"></ui:include></c:when>
 				<c:otherwise><ui:include src="tabs/irse01_com.xhtml"></ui:include></c:otherwise>
 			</c:choose>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 
-		<c:if test="#{irse.tab2}">
+		<c:if test="#{iris.perfil.tab2}">
 		<div id="tab-2" class="tab-content">
-			<h2>#{irse.nombre} <i>#{irse.codigo}</i><hr class="underline"/></h2>
+			<h2>#{iris.perfil.nombre} <i>#{iris.form.codigo}</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse02_maps.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 		</c:if>
 
-		<c:if test="#{irse.tab3}">
+		<c:if test="#{iris.perfil.tab3}">
 		<div id="tab-3" class="tab-content">
-			<h2>#{irse.nombre} <i>#{irse.codigo}</i><hr class="underline"/></h2>
+			<h2>#{iris.perfil.nombre} <i>#{iris.form.codigo}</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse03.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 		</c:if>
 
-		<c:if test="#{irse.tab5}">
+		<c:if test="#{iris.perfil.tab5}">
 		<div id="tab-5" class="tab-content">
-			<h2>#{irse.nombre} <i>#{irse.codigo}</i><hr class="underline"/></h2>
+			<h2>#{iris.perfil.nombre} <i>#{iris.form.codigo}</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse05.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 		</c:if>
 
 		<div id="tab-6" class="tab-content">
-			<h2>#{irse.nombre} <i>#{irse.codigo}</i><hr class="underline"/></h2>
+			<h2>#{iris.perfil.nombre} <i>#{iris.form.codigo}</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse06.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 
 		<div id="tab-9" class="tab-content">
-			<h2>#{irse.nombre} <i>#{irse.codigo}</i><hr class="underline"/></h2>
+			<h2>#{iris.perfil.nombre} <i>#{iris.form.codigo}</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse09.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 
-		<c:if test="#{irse.editable}">
+		<c:if test="#{iris.form.editable}">
 		<div id="tab-12" class="tab-content">
-			<h2>#{irse.nombre} <i>#{irse.codigo}</i><hr class="underline"/></h2>
+			<h2>#{iris.perfil.nombre} <i>#{iris.form.codigo}</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse12.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 		</c:if>
-		</h:form>
 
 		<!-- vinculación con uxxiec -->
 		<div id="tab-uxxiec" class="tab-content">
@@ -121,10 +120,12 @@
 		<!-- formulario de rechazo/cancelacion -->
 		<div id="tab-reject" class="tab-content">
 			<ui:include src="tabs/reject.xhtml"></ui:include>
+			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
+		</h:form>
 
 		<!-- listado ISU para la OTRI -->
-		<c:if test="#{inicio.tester}">
+		<c:if test="#{iris.uae or iris.otri}">
 			<div id="tab-16" class="tab-content">
 				<ui:include src="tabs/list_isu.xhtml"></ui:include>
 			</div>
@@ -135,9 +136,9 @@
 
 		<script>
 			IRSE = {};
-			IRSE.lang = "#{inicio.lang}" || "es";
-			IRSE.grupo = "#{inicio.idGrupo}" || "0";
-			IRSE.uxxiec = ("true" == "#{inicio.uxxiec}");
+			IRSE.lang = "#{iris.lang}" || "es";
+			IRSE.grupo = "#{iris.idGrupo}" || "0";
+			IRSE.uxxiec = ("true" == "#{iris.uxxiec}");
 		</script>
 	</ui:define>
 </ui:composition>

@@ -168,7 +168,7 @@ pf.ready(() => {
         const data = JSON.read(args.presto);
         presto.setData(data); // Load data-model before view
         ecoInc.reset(); // cargo las econonomicas a incrementar
-        formPresto.setData(data).readonly(presto.isDisabled()).readonly(!presto.isEditableUae(), ".editable-uae")
+        formPresto.closeAlerts().setData(data).readonly(presto.isDisabled()).readonly(!presto.isEditableUae(), ".editable-uae")
                     .setVisible(".insert-only", presto.isEditable()).setVisible(".update-only", presto.isDisabled())
                     .setVisible(".firmable-only", presto.isFirmable()).setVisible(".rechazable-only", presto.isRechazable())
                     .setVisible(".show-partida-dec", presto.isPartidaDec()).setVisible(".show-partida-inc", presto.showPartidasInc())

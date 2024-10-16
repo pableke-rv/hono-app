@@ -80,9 +80,6 @@
 					<li><a href="/uae/modules/xeco/buzon.xhtml"><i class="far fa-tablet-alt"></i> Tablero Económico</a></li>
 				</c:if>
 				<li><a href="/uae/modules/xeco/factura.xhtml"><i class="fas fa-file-invoice"></i> Solicitud de Facturas y Cartas de Pago</a></li>
-				<c:if test="#{uae.usuarios}">
-					<li><p:commandLink action="#{uaeUsuarios.list()}" ajax="false"><i class="fas fa-users"></i> Gestión de usuarios</p:commandLink></li>
-				</c:if>
 			</ul>
 			</div>
 

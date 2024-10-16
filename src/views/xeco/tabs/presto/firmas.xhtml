@@ -10,20 +10,20 @@
 <p:outputPanel styleClass="update-presto #{presto.cssFirmas}">
 	<hr/><h3><h:outputText value="#{msg['lbl.firmantes']}" escape="false" />:</h3>
 	<div class="ui-blocks">
-	<c:forEach items="#{presto.principales}" var="f">
+	<c:forEach items="#{presto.principales}" var="firma">
 		<div class="ui-block-box">
-			<p>#{f.cargo}</p>
-			<p>#{f.fullName}</p>
+			<p>#{firma.cargo}</p>
+			<p>#{firma.fullName}</p>
 			<p>
 			<c:choose>
-				<c:when test="#{f.aceptada}">
-					<i class="fas fa-flag-alt icon icon-green" title="Firma aceptada"></i>#{inicio.getMsg('lblAceptada')} #{firma.getFechaFirma(f)}
+				<c:when test="#{firma.aceptada}">
+					<i class="fas fa-flag-alt icon icon-green" title="Firma aceptada"></i>#{uae.getMsg('lblAceptada')} #{uae.format(firma.getFecha())}
 				</c:when>
-				<c:when test="#{f.rechazada}">
-					<i class="fas fa-flag-alt icon icon-red" title="#{f.info}"></i>#{inicio.getMsg('lblRechazada')} #{firma.getFechaFirma(f)}
+				<c:when test="#{firma.rechazada}">
+					<i class="fas fa-flag-alt icon icon-red" title="#{firma.info}"></i>#{uae.getMsg('lblRechazada')} #{uae.format(firma.getFecha())}
 				</c:when>
 				<c:otherwise>
-					<i class="fas fa-flag-alt icon icon-warn" title="Pendiente de firma"></i>#{inicio.getMsg('lblPendiente')}
+					<i class="fas fa-flag-alt icon icon-warn" title="Pendiente de firma"></i>#{uae.getMsg('lblPendiente')}
 				</c:otherwise>
 			</c:choose>
 			</p>

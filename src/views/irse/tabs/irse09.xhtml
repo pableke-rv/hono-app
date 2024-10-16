@@ -14,8 +14,8 @@
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab9.lbl.cuenta']}" escape="false" />:</div>
 			<div class="ui-block-xl">
-			<h:selectOneMenu id="cuentas" value="#{irse.cuenta}" styleClass="ui-input ui-select #{irse.cssDisabled}" tabindex="150">
-				<f:selectItems value="#{irse.cuentas}" />
+			<h:selectOneMenu id="cuentas" value="#{iris.form.cuenta}" styleClass="ui-input ui-select #{iris.form.cssDisabled}" tabindex="150">
+				<f:selectItems value="#{iris.form.cuentas}" />
 				<f:selectItem itemValue="" itemLabel="#{msg['lbl.alta.cuenta']}" itemEscaped="false"/>
 			</h:selectOneMenu>
 		</div>
@@ -26,27 +26,29 @@
 			<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.pais']}" escape="false" />:</div>
-				<h:selectOneMenu id="paises" value="#{gasto.paisEntidad}" class="ui-input ui-select #{irse.cssDisabled}" tabindex="151">
-					<f:selectItems value="#{ruta.isoPaises}"/>
+				<h:selectOneMenu id="paises" value="#{iris.gastos.paisEntidad}" class="ui-input ui-select #{iris.form.cssDisabled}" tabindex="151">
+					<c:forEach items="#{iris.rutas.idPaises}" var="pais" varStatus="loop">
+						<f:selectItem itemValue="#{pais}" itemLabel="#{iris.rutas.getPais(loop.index)}"/>
+					</c:forEach>
 				</h:selectOneMenu>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.entidad']}" escape="false" />:</div>
-				<h:inputText id="banco" value="#{gasto.nombreEntidad}" maxlength="50" tabindex="152" class="ui-input ui-text #{irse.cssDisabled} hide" />
-				<h:selectOneMenu id="entidades" value="#{gasto.codigoEntidad}" class="ui-input ui-select #{irse.cssDisabled}" tabindex="152">
+				<h:inputText id="banco" value="#{iris.gastos.nombreEntidad}" maxlength="50" tabindex="152" class="ui-input ui-text #{iris.form.cssDisabled} hide" />
+				<h:selectOneMenu id="entidades" value="#{iris.gastos.codigoEntidad}" class="ui-input ui-select #{iris.form.cssDisabled}" tabindex="152">
 					<f:selectItem itemValue="" itemLabel=""/>
-					<f:selectItems value="#{gasto.entidades}" var="banco" itemValue="#{banco.value}" itemLabel="#{banco.label}"/>
+					<f:selectItems value="#{iris.gastos.entidades}" var="banco" itemValue="#{banco.value}" itemLabel="#{banco.label}"/>
 				</h:selectOneMenu>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-lg">
 				<div class="label required"><h:outputText value="#{msg['lbl.num.cuenta']}" escape="false" />:</div>
-				<h:inputText id="iban" value="#{gasto.iban}" maxlength="50" tabindex="160" class="ui-input ui-text #{irse.cssDisabled}" />
+				<h:inputText id="iban" value="#{iris.gastos.iban}" maxlength="50" tabindex="160" class="ui-input ui-text #{iris.form.cssDisabled}" />
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block swift-block hide">
 				<div class="label">Swift:</div>
-				<h:inputText id="swift" value="#{gasto.swift}" maxlength="30" tabindex="161" class="ui-input ui-code #{irse.cssDisabled}" />
+				<h:inputText id="swift" value="#{iris.gastos.swift}" maxlength="30" tabindex="161" class="ui-input ui-code #{iris.form.cssDisabled}" />
 				<div class="ui-errtip"></div>
 			</label>
 			</div>
@@ -57,25 +59,25 @@
 		<div class="ui-blocks">
 			<label class="ui-block-row">
 				<div class="label inline">#{msg['lbl.observaciones']}:</div>
-				<h:inputTextarea id="observaciones" value="#{gasto.observaciones}" styleClass="ui-input ui-ta rows-2 #{irse.cssDisabled}" tabindex="180" />
+				<h:inputTextarea id="observaciones" value="#{iris.gastos.observaciones}" styleClass="ui-input ui-ta rows-2 #{iris.form.cssDisabled}" tabindex="180" />
 			</label>
 
 			<label class="ui-block">
-				<div class="label">#{inicio.getMsg('lblUrg')}:</div>
-				<h:selectOneMenu id="urgente" value="#{irse.urgente}" class="ui-input ui-select #{irse.cssDisabled}" tabindex="181">
-					<f:selectItem itemValue="1" itemLabel="#{inicio.getMsg('lblNormal')}" />
-					<f:selectItem itemValue="2" itemLabel="#{inicio.getMsg('lblUrgente')}" />
+				<div class="label">#{iris.getMsg('lblUrg')}:</div>
+				<h:selectOneMenu id="urgente" value="#{iris.form.urgente}" class="ui-input ui-select #{iris.form.cssDisabled}" tabindex="181">
+					<f:selectItem itemValue="1" itemLabel="#{iris.getMsg('lblNormal')}" />
+					<f:selectItem itemValue="2" itemLabel="#{iris.getMsg('lblUrgente')}" />
 				</h:selectOneMenu>
 			</label>
 
-			<label class="ui-block grp-urgente #{irse.cssUrgente}">
-				<div class="label required">#{inicio.getMsg('lblFechaUrg')}:</div>
-				<h:inputText id="fMax" value="#{irse.FMaxIsoDate}" tabindex="183" styleClass="ui-input ui-date #{irse.cssDisabled}"/>
+			<label class="ui-block grp-urgente #{iris.form.cssUrgente}">
+				<div class="label required">#{iris.getMsg('lblFechaUrg')}:</div>
+				<h:inputText id="fMax" value="#{iris.form.FMaxIsoDate}" tabindex="183" styleClass="ui-input ui-date #{iris.form.cssDisabled}"/>
 			</label>
-			<label class="ui-block-row grp-urgente #{irse.cssUrgente}">
-				<div class="label required">#{inicio.getMsg('lblMotivoUrg')}:</div>
+			<label class="ui-block-row grp-urgente #{iris.form.cssUrgente}">
+				<div class="label required">#{iris.getMsg('lblMotivoUrg')}:</div>
 				<div class="ui-block-main">
-					<h:inputTextarea id="extra" value="#{irse.extra}" styleClass="ui-input ui-ta rows-2 #{irse.cssDisabled}" tabindex="184"/>
+					<h:inputTextarea id="extra" value="#{iris.form.extra}" styleClass="ui-input ui-ta rows-2 #{iris.form.cssDisabled}" tabindex="184"/>
 					<div class="hide ui-errtip"></div>
 				</div>
 			</label>
@@ -86,17 +88,17 @@
 	<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.paso.0']}" tabindex="190"><i class="fas fa-arrow-to-left"></i></a>
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="191">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-	<c:if test="#{irse.editable}">
-		<p:commandButton action="#{irse.save9()}" onclick="if (!fnPaso9()) return false;" oncomplete="saveTab();" icon="far fa-save" 
+	<c:if test="#{iris.form.editable}">
+		<p:commandButton action="#{iris.form.save9()}" onclick="if (!fnPaso9()) return false;" oncomplete="showAlerts(xhr, status, args);" icon="far fa-save" 
 			styleClass="btn btn warn warning-btn" value="#{msg['lbl.btn.no.enviar']}" tabindex="192" title="#{msg['lbl.btn.no.enviar']}" />
-		<p:commandButton action="#{list.send()}" onclick="if (!fnPaso9() || !fnSend()) return false;" oncomplete="showNextTab(xhr, status, args, 13);" icon="far fa-file-signature" 
+		<p:commandButton action="#{iris.list.send()}" onclick="if (!fnPaso9() || !fnSend()) return false;" oncomplete="showNextTab(xhr, status, args, 13);" icon="far fa-file-signature" 
 			styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.enviar']}" tabindex="193" title="#{msg['tit.btn.firmar.enviar']}" />
 	</c:if>
 	<c:choose>
-		<c:when test="#{irse.firmable}">
+		<c:when test="#{iris.form.firmable}">
 			<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 		</c:when>
-		<c:when test="#{irse.cancelable}">
+		<c:when test="#{iris.form.cancelable}">
 			<a href="#tab-reject" class="btn btn-warn warning-btn" tabindex="194" title="#{msg['tit.btn.cancelar']}">
 				<i class="fas fa-times btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.cancelar']}" escape="false" /></a>
 		</c:when>

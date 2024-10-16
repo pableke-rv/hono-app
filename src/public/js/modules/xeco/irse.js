@@ -15,10 +15,7 @@ import organicas from "./irse/organicas.js";
 import otri from "./irse/otri.js";
 
 var formIrse;
-pf.ready(() => {
-	list.init();
-	uxxiec.init();
-});
+pf.ready(list.init);
 
 /*********** subvención, congreso, asistencias/colaboraciones ***********/
 tabs.setShowEvent(3, tab3 => {
@@ -106,7 +103,7 @@ tabs.setViewEvent(5, tab5 => {
 			if (!formIrse.valueOf("#fAloMin") || !formIrse.valueOf("#fAloMax"))
 				return !dom.addError("fAloMin", "errFechasAloja");
 		}
-		return loading();
+		return dom.loading();
 	}
 });
 
@@ -190,6 +187,7 @@ window.viewIrse = (xhr, status, args, tab) => {
 	perfil.init(formIrse);
 	rutas.init(formIrse);
 	organicas.init(formIrse);
+	uxxiec.init(formIrse);
 
 	dom.tr(".i18n-tr-h1"); //local traductor
 	tab = tab ?? IRSE.tab; //Tab ID to show

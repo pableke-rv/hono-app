@@ -29,6 +29,9 @@ function Collection() {
 	this.shuffle = arr => arr.sort(() => (0.5 - Math.random()));
 	this.indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;
 
+    this.distinct = function(arr, field) {
+        arr.filter((obj, index, self) => (self.findIndex(o => (o[field] === obj[field])) === index));
+    }
     this.multisort = function(arr, fnSorts, dirs) {
 		dirs = dirs || []; // directions
 		arr.sort((a, b) => {
@@ -89,6 +92,9 @@ function Collection() {
 globalThis.void = fnVoid;
 globalThis.isset = isset;
 globalThis.none = () => "";
+globalThis.catchError = promise => {
+    return promise.then(data => [undefined, data]).catch(err => [err]);
+}
 
 // Mute JSON
 JSON.size = sb.size;

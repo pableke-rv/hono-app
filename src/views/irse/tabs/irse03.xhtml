@@ -8,19 +8,19 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<c:choose>
-		<c:when test="#{irse.col}"><ui:include src="./irse03_col.xhtml"></ui:include></c:when>
+		<c:when test="#{iris.form.col}"><ui:include src="./irse03_col.xhtml"></ui:include></c:when>
 		<c:otherwise><ui:include src="./irse03_sub.xhtml"></ui:include></c:otherwise>
 	</c:choose>
 
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="70">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
-		<c:when test="#{irse.editable}">
-			<p:commandLink action="#{irse.paso3()}" onclick="if (!fnPaso3()) return false;" oncomplete="showNextTab(xhr, status, args);"
+		<c:when test="#{iris.form.editable}">
+			<p:commandLink action="#{iris.form.paso3()}" onclick="if (!fnPaso3()) return false;" oncomplete="showNextTab(xhr, status, args);"
 					styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="71">
 				<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i>
 			</p:commandLink>
-			<p:commandButton action="#{irse.save3()}" onclick="if (!fnPaso3()) return false;" oncomplete="saveTab();" icon="far fa-save" 
+			<p:commandButton action="#{iris.form.save3()}" onclick="if (!fnPaso3()) return false;" oncomplete="saveTab();" icon="far fa-save" 
 				styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="72" />
 		</c:when>
 		<c:otherwise>
@@ -29,7 +29,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<c:if test="#{irse.firmable}">
+	<c:if test="#{iris.form.firmable}">
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</c:if>
 </html>

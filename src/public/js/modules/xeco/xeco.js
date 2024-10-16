@@ -53,20 +53,18 @@ export default (model, formModel) => {
             tabs.showTab(1);
         else
             fnSend("rcView", data);
-        formReject.setCache(data.id);
+        formModel.setCache(data.id);
     });
     solicitudes.set("#rcFirmar", data => fnSend("rcFirmar", data));
     solicitudes.set("#tab-11", data => {
-        if (formReject.isCached(data.id))
+        if (formModel.isCached(data.id))
             return tabs.showTab(11);
-        formReject.restart("#rechazo").setCache(data.id);
+        formReject.restart("#rechazo");
         tabs.render(".load-data", data);
         fnSend("rcFirmas", data);
     });
     solicitudes.set("#rcReport", data => fnSend("rcReport", data));
     solicitudes.set("#rcUxxiec", data => {
-        if (formUxxi.isCached(data.id))
-            return tabs.showTab(15);
         formUxxi.restart("#uxxi").setCache(data.id)
                 .setVisible(".show-ejecutable", model.setData(data).isEjecutable()); // Update view
         tabs.render(".load-data", data);

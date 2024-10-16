@@ -47,6 +47,7 @@ export default class Solicitud {
     static get instance() { return Solicitud.#instance; } // property access
     static self() { return Solicitud.#instance; } // function getter access
 
+    get data() { return this.#data; }
     getData() { return this.#data; }
     get(name) { return this.#data[name]; }
     setData(data) { this.#data = data; return this; }
@@ -61,25 +62,26 @@ export default class Solicitud {
     isUsuEc() { return !!this.#grupo; }
     isUxxiec = this.isUsuEc;
 
-    getFirmas() { return this.#firmas; }
-    getFirma = this.#firmas.getFirma;
+    get firmas() { return this.#firmas; }
+    getFirmas() { return this.firmas; }
+    getFirma = this.firmas.getFirma;
 
-    getTipo() { return this.#data.tipo; }
-    get tipo() { return this.#data.tipo; }
-    getSubtipo() { return this.#data.subtipo; }
-    setSubtipo(value) { this.#data.subtipo = value; return this; }
-    getEstado() { return this.#data.estado; }
-    getMask() { return this.#data.mask; }
-    get mask() { return this.#data.mask; }
+    get tipo() { return this.data.tipo; }
+    getTipo() { return this.data.tipo; }
+    getSubtipo() { return this.data.subtipo; }
+    setSubtipo(value) { this.data.subtipo = value; return this; }
+    getEstado() { return this.data.estado; }
+    get mask() { return this.data.mask; }
+    getMask() { return this.data.mask; }
 
-    isPendiente() { return (this.#data.estado == 5); }
-    isAceptada() { return (this.#data.estado == 1); } // Aceptada por todos los firmantes
-    isRechazada() { return (this.#data.estado == 2); } // Rechazada no llega a estado finalizada
-    isIntegrada() { return (this.#data.estado == 4); } // Solicitud integrada en uxxiec
-    isCancelada() { return (this.#data.estado == 7); } // Solicitud cancelada por la UAE
-    isCaducada() { return (this.#data.estado == 8); } // Solicitud caducada por expiración
-    isErronea() { return ((this.#data.estado == 9) || (this.#data.estado == 10)); } // estado de error
-    isFinalizada() { return [1, 3, 4, 9, 10].includes(this.#data.estado); } // Aceptada, Ejecutada, Notificada ó Erronea
+    isPendiente() { return (this.data.estado == 5); }
+    isAceptada() { return (this.data.estado == 1); } // Aceptada por todos los firmantes
+    isRechazada() { return (this.data.estado == 2); } // Rechazada no llega a estado finalizada
+    isIntegrada() { return (this.data.estado == 4); } // Solicitud integrada en uxxiec
+    isCancelada() { return (this.data.estado == 7); } // Solicitud cancelada por la UAE
+    isCaducada() { return (this.data.estado == 8); } // Solicitud caducada por expiración
+    isErronea() { return ((this.data.estado == 9) || (this.data.estado == 10)); } // estado de error
+    isFinalizada() { return [1, 3, 4, 9, 10].includes(this.data.estado); } // Aceptada, Ejecutada, Notificada ó Erronea
     isAnulada() { return (this.isRechazada() || this.isCancelada() || this.isCaducada()); }
     isReadOnly() { return (this.isAnulada() || this.isIntegrada()); }
 
@@ -91,17 +93,17 @@ export default class Solicitud {
     //isEstudiantes() { return (this.#grupo == "9"); }
     //isContratacion() { return (this.#grupo == "68"); }
 
-    isDisabled() { return this.#data.id; }
-    isEditable() { return !this.#data.id; }
-    isFirmable() { return (this.isPendiente() && this.getFirma().isFirmable(this.#data.fmask)); }
-    isRechazable() { return (this.#data.id && (this.isUae() || this.isFirmable())); }
+    isDisabled() { return this.data.id; }
+    isEditable() { return !this.data.id; }
+    isFirmable() { return (this.isPendiente() && this.getFirma().isFirmable(this.data.fmask)); }
+    isRechazable() { return (this.data.id && (this.isUae() || this.isFirmable())); }
 	isEditableUae() { return (this.isEditable() || (this.isUae() && this.isFirmable())); }
     isEjecutable() { return (this.isUae() && this.isFinalizada()); } // Requiere uae + estado finalizada (mejora grupo == -1)
     isIntegrable() { return (this.isUae() && this.isFinalizada()); } // Requiere uae + estado finalizada (mejora grupo == -1)
-	isUrgente() { return (this.#data.fMax && this.#data.extra); } //solicitud urgente?
+	isUrgente() { return (this.data.fMax && this.data.extra); } //solicitud urgente?
 
-    getDescEstado() { return i18n.getItem("descEstados", this.#data.estado); }
-    getStyleByEstado() { return CSS_ESTADOS[this.#data.estado] || "text-warn"; }
+    getDescEstado() { return i18n.getItem("descEstados", this.data.estado); }
+    getStyleByEstado() { return CSS_ESTADOS[this.data.estado] || "text-warn"; }
 
     // Language validators pre-initialized in CollectionHTML
     validate() { return i18n.getValidators(); }

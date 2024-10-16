@@ -146,8 +146,9 @@ class Presto extends Solicitud {
         return this;
     }
 
-    getPartidas() { return this.#partidas; }
-    getPartida = this.#partidas.getPartida;
+    get partidas() { return this.#partidas; }
+    getPartidas() { return this.partidas; }
+    getPartida = this.partidas.getPartida;
 
 	isTcr() { return (super.tipo == 1); }
 	isFce() { return (super.tipo == 6); }
@@ -164,7 +165,7 @@ class Presto extends Solicitud {
 
     isPartidaDec() { return (this.isTcr() || this.isL83() || this.isAnt() || this.isAfc()); }
 	isMultipartida() { return (this.isTcr() || this.isFce() || this.isGcr()); }
-	showPartidasInc() { return (this.isMultipartida() && this.isEditable() && (this.#partidas.size() < 20)); }
+	showPartidasInc() { return (this.isMultipartida() && this.isEditable() && (this.partidas.size() < 20)); }
 	isPartidaExt() { return (this.isGcr() || this.isAnt()); }
 	isDisableEjInc() { return (this.isDisabled() || this.isTcr() || this.isFce()); }
 	isAutoLoadImp() { return (this.isL83() || this.isAnt() || this.isAfc()); }
@@ -227,14 +228,14 @@ class Presto extends Solicitud {
         const cd = self.isAnt() ? imp : (data.cd ?? 0); // los anticipos no validan el CD
         if (imp > cd)
             valid.addError("impDec", "errExceeded", "El importe de la partida que disminuye supera el crédito disponible");
-        if (self.isPartidaDec() && (self.#partidas.getImporte() != imp)) // Valido los importes a decrementar e incrementar
+        if (self.isPartidaDec() && (self.partidas.getImporte() != imp)) // Valido los importes a decrementar e incrementar
             valid.addError("impDec", "notValid", "¡Los importes a decrementar e incrementar no coinciden!");
         valid.size("memo", data.memo, "Debe asociar una memoria justificativa a la solicitud."); // Required string
         if (data.urgente == "2") { // Solicitud urgente
             valid.size("extra", data.extra, "Debe indicar un motivo para la urgencia de esta solicitud."); // Required string
             valid.geToday("fMax", data.fMax, "Debe indicar una fecha maxima de resolución para esta solicitud."); // Required date
         }
-        return self.#partidas.validate();
+        return self.partidas.validate();
     }
 }
 

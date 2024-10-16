@@ -18,20 +18,20 @@
 			</tr>
 		</thead>
 		<tbody>
-		<c:if test="#{empty gasto.paso5}">
+		<c:if test="#{iris.gastos.numPaso5 le 0}">
 			<tr><td class="no-data" colspan="99"><h:outputText value="#{msg['msg.no.docs']}" escape="false" /></td></tr>
 		</c:if>
-		<c:forEach items="#{gasto.paso5}" var="g" varStatus="loop">
+		<c:forEach items="#{iris.gastos.paso5}" var="g" varStatus="loop">
 			<tr class="tb-data tb-data-tc">
 				<td>#{loop.count}</td>
-				<td>#{gasto.getSubtipoDesc(g)}</td>
-				<td>#{gasto.getDescGasto(g)}</td>
+				<td>#{iris.gastos.getSubtipoDesc(g)}</td>
+				<td>#{iris.gastos.getDescGasto(g)}</td>
 				<td>#{g.nombre}</td>
-				<td>#{gasto.getGastoImporte(g)} €</td>
+				<td>#{iris.gastos.getGastoImporte(g)} €</td>
 				<td>
 					<a href="#{g.fref}" target="_blank" class="far fa-paperclip action resize" title="Ver adjunto"></a>
-					<c:if test="#{irse.editable}">
-						<p:commandLink action="#{irse.unloadGasto(g)}" 
+					<c:if test="#{iris.form.editable}">
+						<p:commandLink action="#{iris.form.unloadGasto(g)}" 
 								onclick="if (!fnUnlink()) return false;" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 5);"
 								title="Desasociar ticket de la solicitud">
 							<i class="fas fa-times action text-red resize"></i>
@@ -42,7 +42,7 @@
 		</c:forEach>
 		</tbody>
 		<tfoot>
-			<tr><td colspan="99"><h:outputText value="#{msg['lbl.docs']}" escape="false" />: #{gasto.numPaso5}</td></tr>
+			<tr><td colspan="99"><h:outputText value="#{msg['lbl.docs']}" escape="false" />: #{iris.gastos.numPaso5}</td></tr>
 		</tfoot>
 	</table>
 </html>

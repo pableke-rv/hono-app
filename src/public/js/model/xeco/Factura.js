@@ -82,9 +82,10 @@ class Factura extends Solicitud {
         return this.setIva(data.iva);
     }
 
-	getLineas() { return this.#lineas; }
-	setLineas(table) { this.#lineas.setData(table.getData()); return this; }
-	getLinea() { return this.#lineas.getLinea(); }
+	get lineas() { return this.#lineas; }
+	getLineas() { return this.lineas; }
+	setLineas(table) { this.lineas.setData(table.getData()); return this; }
+	getLinea = this.lineas.getLinea;
 
 	isFactura() { return (super.tipo == 1); }
     //isAbono() { return (super.tipo == 2); }
@@ -154,7 +155,7 @@ class Factura extends Solicitud {
             valid.size("og", data.og) && valid.size("oc", data.oc) && valid.size("ut", data.ut);
         if (self.isPlataforma())
             valid.size("og", data.og);
-        return self.#lineas.validate();
+        return self.lineas.validate();
     }
 }
 
