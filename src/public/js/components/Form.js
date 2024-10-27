@@ -251,8 +251,8 @@ export default function(form, opts) {
 						.catch(info => { self.setErrors(info); throw info; });
 	}
 
-    if (form) { // Form initialization
-		form.elements.forEach(el => {
+	this.update = () => { // Form initialization
+		form.elements.forEach(el => { // update inputs
 			if (fnContains(el, opts.floatFormatClass)) {
 				el.addEventListener("change", ev => fnNumber(el, i18n.fmtFloat(el.value)));
 				return fnNumber(el, el.value && i18n.isoFloat(+el.value)); // iso format float
@@ -271,7 +271,11 @@ export default function(form, opts) {
 					form.elements.forEach(input => { if (fnCheck(input)) input.checked = el.checked; });
 				});
 		});
+		return self.autofocus();
+	}
+
+	if (form) { // Form initialization
 		form.setAttribute("novalidate", "1");
-		self.autofocus().beforeReset(ev => self.closeAlerts().autofocus());
+		self.update().beforeReset(ev => self.closeAlerts().autofocus());
 	}
 }

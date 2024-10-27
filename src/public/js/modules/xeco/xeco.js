@@ -55,10 +55,13 @@ export default (model, formModel) => {
             fnSend("rcView", data);
         formModel.setCache(data.id);
     });
-    solicitudes.set("#rcFirmar", data => fnSend("rcFirmar", data));
+    solicitudes.set("#rcFirmar", data => {
+        fnSend("rcFirmar", data)
+    });
     solicitudes.set("#tab-11", data => {
         if (formModel.isCached(data.id))
             return tabs.showTab(11);
+        formModel.resetCache(); // force reload view
         formReject.restart("#rechazo");
         tabs.render(".load-data", data);
         fnSend("rcFirmas", data);
@@ -91,6 +94,7 @@ export default (model, formModel) => {
         if (window.showTab(xhr, status, args, 2)) {
             solicitudes.querySelectorAll(".firma-" + args.id).hide();
             solicitudes.querySelectorAll(".estado-" + args.id).text("Procesando...");
+            formModel.resetCache(); // force reload view
         }
     }
     /*** FORMULARIO DE RECHAZO Y FILTRO ***/

@@ -17,6 +17,7 @@ HTMLCollection.prototype.filter = Array.prototype.filter;
 HTMLCollection.prototype.forEach = Array.prototype.forEach;
 HTMLCollection.prototype.eachPrev = Array.prototype.eachPrev;
 HTMLCollection.prototype.findIndex = Array.prototype.findIndex;
+HTMLCollection.prototype.findLastIndex = Array.prototype.findLastIndex;
 HTMLCollection.prototype.findBy = function(selector) { return this.find(el => el.matches(selector)); }
 HTMLCollection.prototype.findIndexBy = function(selector) { return this.findIndex(el => el.matches(selector)); }
 HTMLCollection.prototype.query = function(selector) { return this.filter(el => el.matches(selector)); }

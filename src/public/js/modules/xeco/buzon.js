@@ -5,6 +5,7 @@ import tabs from "../../components/Tabs.js";
 import modals from "../../components/Modals.js";
 import pf from "../../components/Primefaces.js";
 import buzon from "../../model/xeco/Buzon.js";
+import i18n from "../../i18n/langs.js";
 
 function fnPaginate(recientes, size) {
 	recientes.getRows().forEach((row, i) => row.setVisible(i < size));
@@ -107,7 +108,15 @@ pf.ready(() => { // on load view
 		const fileName = formFactura.querySelector(".filename").innerHTML;
 		return fileName || !formFactura.showError("Debe seleccionar una factura.");
 	});
-	tabs.setShowEvent(4, fnValidateJustPago).setShowEvent(5, fnValidateJustPago).setShowEvent(6, fnValidateJustPago);
+	tabs.setShowEvent(4, fnValidateJustPago).setShowEvent(5, fnValidateJustPago);
+	tabs.setShowEvent(6, tab => {
+		const fnValidateTab5 = data => {
+			const valid = i18n.getValidators();
+			const msgs = "Debe detallar las observaciones para el gestor.";
+			return valid.size("desc", data.desc, msgs).isOk();
+		}
+		return fnValidateJustPago() && (tabs.isExcluded(5) || formFactura.validate(fnValidateTab5));
+	});
 	tabs.setViewEvent(6, tab => {
 		const desc = formFactura.getval("#desc");
 		const names = fileNames.filter(el => el.innerHTML).map(el => el.innerHTML);

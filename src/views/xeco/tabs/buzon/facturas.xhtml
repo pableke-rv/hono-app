@@ -50,6 +50,12 @@
                 <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Adjuntar justificante de pago</a>
                 <span class="filename"></span>
             </div>
+            <label class="ui-block-xl show-cesionario">
+                <div class="label required"><h:outputText value="#{msg['uae.irse.tab9.lbl.cuenta']}" escape="false" />:</div>
+                <h:selectOneMenu id="cuentas" value="" styleClass="ui-input ui-select" tabindex="150">
+                    <f:selectItems value="#{buzon.cuentas}" />
+                </h:selectOneMenu>
+            </label>
             <div class="ui-block-row show-cesionario">
                 <input type="checkbox" checked="checked" disabled="disabled" />
                 <b class="show-isu">Declaro responsablemente que he pagado en nombre de la Universidad la factura remitida y que adjunto el justificante del pago.</b>
@@ -93,6 +99,7 @@
             <label class="ui-block-row">
                 <div class="label required">En todo caso indicar, la/s partida/s presupuestaria/s a la/s que imputar el gasto, además de otra información que consideres necesaria:</div>
                 <h:inputTextarea id="desc" value="#{buzon.desc}" styleClass="ui-input ui-ta" />
+                <div class="ui-errtip"></div>
             </label>
             <!--<div class="ui-block-row">
                 <p:fileUpload id="fileDatosExtra" value="#{buzon.datosExtra}" fileUploadListener="#{buzon.uploadDatosExtra}" mode="advanced" auto="true" styleClass="hide" />

@@ -391,6 +391,7 @@ function DomBox(opts) {
 			const elements = self.getAll("table," + INPUTS);
 			tables = self.filter("table", elements); //all html tables
 			inputs = self.filter(INPUTS, elements); //all html inputs
+			return self;
 		}
 
 		self.update(); // init.

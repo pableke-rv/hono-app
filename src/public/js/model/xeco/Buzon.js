@@ -41,7 +41,7 @@ function Buzon() {
 
     this.lastRow = () => {
         return `<tr class="tb-data">
-            <td id="otras" colspan="4"><b>Tramitación específica</b> (imputación a varias orgánicas, aportación de documentación adicional y otras circunstancias)</td>
+            <td id="otras" colspan="4"><b>Tramitación específica</b> (imputación a varias orgánicas, abonos, aportación de documentación adicional y otras circunstancias)</td>
             <td class="text-right">
                 <a href="#buzon-otros" class="action resize text-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
             </td>
@@ -51,7 +51,7 @@ function Buzon() {
         const report = self.setData(data).isMultigrupo() ? "#modal" : "#report"; // organica multigrupo / monogrupo
         const anclar = '<a href="#anclar" class="action resize text-red row-action" title="Marca la orgánica como favorita"><i class="fas fa-thumbtack action resize text-blue"></i></a>';
         const desanclar = '<a href="#desanclar" class="action resize text-red row-action" title="Marca la orgánica como normal"><i class="fas fa-thumbtack action resize text-green"></i></a>';
-        const ingresos = self.isIngresos() ? '<a href="#buzon" class="action resize text-green row-action" title="Avance de Ingresos"><i class="fas fa-info"></i></a>' : "";
+        const ingresos = self.isIngresos() ? '<a href="#buzon" class="action resize text-green row-action" title="Avance de Ingresos"><i class="fas fa-italic"></i></a>' : "";
         const gastos = self.isGastos() ? '<a href="#buzon" class="action resize text-warn row-action" title="Avance de Gastos"><i class="fab fa-google"></i></a>' : "";
         const reportProv = self.isReportProv() ? `<a href="${report}" class="action resize text-blue row-action" title="Informe al Proveedor"><i class="fal fa-file-pdf"></i></a>` : "";
         const factura = self.isFacturable() ? '<a href="#buzon" class="action resize text-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>' : "";

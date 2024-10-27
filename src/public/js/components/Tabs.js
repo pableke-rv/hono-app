@@ -27,13 +27,20 @@ function Tabs() {
         return self;
     }
     const fnSetTab = (tab, index) => { // update tabs style
+        alerts.closeAlerts(); // Close all previous messages
         tabs.forEach(tab => tab.classList.remove(ACTIVE_CLASS));
-        tab.classList.add(ACTIVE_CLASS);
-        _tabIndex = index ?? fnCurrentIndex();
+        tab.classList.add(ACTIVE_CLASS); // active current tab only
+        _tabIndex = index ?? fnCurrentIndex(); // current tab index
         /*const step = "step-" + _tabIndex; //current step
         progressbar.forEach(bar => { // progressbar is optional
             bar.children.forEach(child => child.classList.toggle(ACTIVE_CLASS, child.id <= step));
         });*/
+        if (!tab.dataset.loaded) { // event indicator
+            fnCallEvent("init", tab); // Fire once when show tab
+            tab.dataset.loaded = "1"; // avoid to fire event again
+            //delete EVENTS["init-" + tab.id]; // delete handler
+        }
+        fnCallEvent("view", tab); // Fire when show tab
         return autofocus(tab);
     }
 
@@ -64,17 +71,31 @@ function Tabs() {
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
 
+    const fnIsExcluded = tab => tab.classList.contains(TAB_NONE);
+    this.isExcluded = tab => fnIsExcluded(self.getTab(tab)); // tab id
+    this.exclude = id => {
+        if (globalThis.isset(id)) // 0 is valid
+            self.getTab(id).classList.add(TAB_NONE);
+        else
+            tabs.forEach(tab => tab.classList.remove(TAB_NONE));
+        return self;
+    }
+
     function fnShowTab(i) { //show tab by index
         i = (i < 0) ? 0 : Math.min(i, _lastTab);
-        const tab = tabs[i]; // get next tab
-        if (fnCallEvent("show", tab)) { // Validate change tab
-            if (_tabIndex < i) // calculate the source tab index
+        if (_tabIndex < i) { // go agead
+            // calculate the next tab index not excluded
+            const k = tabs.findIndex((tab, j) => ((j >= i) && !fnIsExcluded(tab)));
+            const tab = tabs[k]; // get the next not exluded tab
+            if (fnCallEvent("show", tab)) { // Validate event to change tab
                 tab.dataset.back = Math.max((_tabIndex < 0) ? (i - 1) : _tabIndex, 0);
-            alerts.closeAlerts(); // Close all previous messages
-            fnCallEvent("init", tab); // Fire once when show tab
-            delete EVENTS["init-" + tab.id]; // delete handler
-            fnCallEvent("view", tab); // Fire when show tab
-            fnSetTab(tab, i); // set current tab
+                fnSetTab(tab, k); // set current tab
+            }
+        }
+        else { // go back
+            // calculate the prev tab index not excluded
+            const k = tabs.findLastIndex((tab, j) => ((j <= i) && !fnIsExcluded(tab)));
+            fnSetTab(tabs[k], k); // set current tab
         }
         alerts.working().top(); // go up
         return self;
@@ -83,7 +104,7 @@ function Tabs() {
     this.showTab = id => fnShowTab(fnFindIndex(id)); //find by id selector
     this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +(tabs[_tabIndex].dataset.back ?? (_tabIndex - 1)));
     this.prevTab = () => self.backTab; // Synonym for back to previous tab
-    this.nextTab = () => fnShowTab(tabs.findIndex((tab, i) => ((i > _tabIndex) && !tab.classList.contains(TAB_NONE)))); // next tab by position
+    this.nextTab = () => fnShowTab(_tabIndex + 1); // next tab by position
     this.lastTab = () => fnShowTab(_lastTab);
     this.toggle = el => {
         const icon = el.querySelector(el.dataset.icon || "i"); // icon indicator
@@ -121,13 +142,6 @@ function Tabs() {
         _tabIndex = fnCurrentIndex(); // current index tab
         _lastTab = tabs.length - 1; // max tabs size
         return self.setActions(el); // update actions
-    }
-    this.exclude = id => {
-        if (globalThis.isset(id)) // 0 is valid
-            self.getTab(id).classList.add(TAB_NONE);
-        else
-            tabs.forEach(tab => tab.classList.remove(TAB_NONE));
-        return self;
     }
 
     // Init. view and PF navigation (only for CV-UAE)

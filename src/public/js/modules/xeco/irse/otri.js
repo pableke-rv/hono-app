@@ -3,16 +3,16 @@ import Form from "../../../components/Form.js";
 import tabs from "../../../components/Tabs.js";
 import pf from "../../../components/Primefaces.js";
 import excel from "../../../components/Excel.js";
-import i18n from "../../../i18n/langs.js";
 import rutas from "./rutas.js";
 
 function Otri() {
 	const self = this; //self instance
 
-    this.colaboracion = (form, tab3) => {
+    this.colaboracion = () => {
         window.fnPaso3 = () => dom.closeAlerts().required("#justifi", "errJustifiSubv", "errRequired").isOk() && dom.loading();
         return self;
     }
+
     this.congreso = (form, tab3) => {
         tab3.querySelectorAll(".rutas-vp").forEach(el => el.classList.toggle("hide", rutas.getNumRutasVp() < 1));
 
@@ -37,9 +37,9 @@ function Otri() {
             (+eCong.value > 0) ? fechasCong() : dom.hide(eJustifiCong);
         }
     
-        dom.onBlurInput(eIniCong, fechasCong)
-            .onBlurInput(eFinCong, fechasCong)
-            .onChangeInput(eCong, updateCong);
+        eIniCong.onblur = fechasCong;
+        eFinCong.onblur = fechasCong;
+        eCong.onchange = updateCong;
         updateCong();
 
         window.fnPaso3 = function() {
@@ -86,23 +86,31 @@ window.xlsx = (xhr, status, args) => {
     excel.json(data, {
         keys: [ // column order
             "ej", "cod", "jg", "fact", "nif", "ter", "impJg", "fJg", "descJg", 
-            "nifInt", "int", "vinc", "gasto", "act", "proy",
-            "dest", "pais", "itinerario", "start", "end", "loc", "vp", "km", "impKm",
-            "fCong1", "fCong2", "impLoc", "impTrans", "noches", "impNoche", "impPern", 
-            "dietas", "impDieta", "impDietas", "impTotal", "taxis", "fin"
+            "nifInt", "int", "vinc", "gasto", "proy",
+            "dest", "pais", "itinerario", "start", "end", 
+            "loc", "impLoc", "km", 
+            "vp", "impKm",
+            "impTrans", "noches", "impNoche", "impPern", 
+            "dietas", "impDieta", 
+            //"fCong1", "fCong2", 
+            "impDietas", "impTotal", "taxis"
         ],
         titles: [ // column names
             "Ej.", "ID", "Nº JG.", "Nº Factura", "NIF Tercero", "Nombre del Tercero", "Imp. Total", "F. Emisión", "Descripción", 
-            "NIF Interesado", "Nombre del Interesado", "Vinculación", "Tipo de Gasto", "Actividad", "Relación con el Proyecto",
-            "Destino Principal", "Pais", "Itinerario", "F. Inicio", "F. Fin", "Locomoción", "Vehiculo Propio", "Km.", "Imp./Km.",
-            "F. Inicio Congreso", "F. Fin Congreso", "Detalle Locomoción", "Tot. Locomoción", "Nº Noches", "Imp./Noche", "Tot. Alojamiento", 
-            "Nº Días", "Imp./Dieta", "Tot. Manutención", "Total", "Taxi", "Finalidad"
+            "Nº de factura/Nº de Justificante (1)", "¿Quién Viaja?", "Vinculación con el proyecto (2)", "Tipo de gasto (3)", "Motivo del gasto (4)",
+            "Ciudad a donde viaja", "País a donde viaja", "Itinerario", "Fecha de inicio del viaje (5)", "Fecha de fin del viaje (5)", 
+            "Medio de locomoción (6)", "Importe de Locomoción (7)", "Kilómetros recorridos en vehículo particular (en su caso) (8)", 
+            "Itinenario Kilómetros recorridos en vehículo particular (en su caso) (9)", "Importe Kilometraje (vehículo particular) (10)",
+            "TOTAL Locomoción", "Alojamiento: nº de noches", "Alojamiento: Importe por noche", "TOTAL Alojamiento", 
+            "Manutención: nº de días", "Manutención: Importe por día", 
+            //"F. Inicio Congreso", "F. Fin Congreso", 
+            "TOTAL Manutención", "TOTAL (Locomoción+Alojamiento+Manutención)", "Observaciones (11)"
         ],
         columns: {
             km: cell => { cell.z = "#,##0.00"; }, // currency format
             impKm: cell => { cell.z = "#,##0.00"; }, // currency format
-            fCong1: (cell, data) => { cell.v = i18n.isoDate(data.fCong1); }, // iso date format
-            fCong2: (cell, data) => { cell.v = i18n.isoDate(data.fCong2); }, // iso date format
+            //fCong1: (cell, data) => { cell.v = i18n.isoDate(data.fCong1); }, // iso date format
+            //fCong2: (cell, data) => { cell.v = i18n.isoDate(data.fCong2); }, // iso date format
             impTrans: cell => { cell.z = "#,##0.00"; }, // currency format
             impPern: cell => { cell.z = "#,##0.00"; }, // currency format
             impDietas: cell => { cell.z = "#,##0.00"; }, // currency format

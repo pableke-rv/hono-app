@@ -122,10 +122,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:if test="#{empty iris.input.solicitudes}">
+			<c:if test="#{empty iris.solicitudes}">
 				<tr><td class="no-data" colspan="99">No se han encontrado comunicaciones asociadas al filtro seleccionado</td></tr>
 			</c:if>
-			<c:forEach items="#{iris.input.solicitudes}" var="sol">
+			<c:forEach items="#{iris.solicitudes}" var="sol">
 			<tr id="#{sol.idIrse}" class="tb-data">
 				<td class="text-center text-red text-xl">
 					<c:if test="#{sol.urgente}">
@@ -204,7 +204,7 @@
 					</c:if>
 					<c:if test="#{sol.firmable}">
 						<p:commandLink action="#{iris.list.firmar(sol)}" onclick="if (!fnFirmar()) return false;loading();" update="xeco-list" oncomplete="handleMessages(xhr, status, args)" title="Firmar rolicitud"><i class="fas fa-check action text-green resize"></i></p:commandLink>
-						<p:commandLink action="#{iris.list.confirm(sol)}" onclick="loading();" update="@(.update-irse)" oncomplete="showNextTab(xhr, status, args, 'reject');" title="Ir al motivo de rechazo"><i class="fas fa-times action text-red resize"></i></p:commandLink>
+						<p:commandLink action="#{iris.list.confirm(sol)}" onclick="loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 'reject');" title="Ir al motivo de rechazo"><i class="fas fa-times action text-red resize"></i></p:commandLink>
 					</c:if>
 					<c:if test="#{sol.ejecutable}">
 						<p:commandLink action="#{iris.list.report(sol)}" onclick="loading();" oncomplete="handleReport(xhr, status, args)" title="#{msg['tit.btn.informe']}">
@@ -225,7 +225,7 @@
 			</c:forEach>
 		</tbody>
 		<tfoot>
-			<tr><td colspan="11"><h:outputText value="#{msg['lbl.filas']}" escape="false" />: #{iris.input.numSolicitudes}</td></tr>
+			<tr><td colspan="11"><h:outputText value="#{msg['lbl.filas']}" escape="false" />: #{iris.numSolicitudes}</td></tr>
 		</tfoot>
 	</table>
 	</h:form>

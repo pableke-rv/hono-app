@@ -129,8 +129,8 @@ class Factura extends Solicitud {
             <td class="${self.getStyleByEstado()} estado-${data.id}">${self.getDescEstado()}</td>
             <td class="text-center">${self.getFirma().myFlag(data.fmask, data.info)}</td>
             <td class="hide-sm">${data.sig || ""}</td>
-            <td class="text-right">${i18n.isoFloat(data.imp)} €</td>
             <td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
+            <td class="text-right">${i18n.isoFloat(data.imp)} €</td>
             <td>${data.nif}</td><td class="hide-xs">${data.tercero}</td>
             <td>${data.org}</td><td class="hide-sm">${data.descOrg}</td>
             <td class="hide-sm">${data.name}</td>
@@ -143,6 +143,7 @@ class Factura extends Solicitud {
         const self = Factura.self();
         const valid = i18n.getValidators();
         valid.isKey("acTercero", data.idTercero, "Debe seleccionar un tercero válido"); // autocomplete required key
+        valid.isKey("delegacion", data.idDelegacion, "Debe seleccionar una delegación del tercero"); // desplegable de las delegaciones
         valid.isKey("acOrganica", data.idOrganica, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
 		if (self.isRecibo()) //subtipo = ttpp o extension
             valid.size("acRecibo", data.acRecibo, "Debe indicar un número de recibo válido");
@@ -155,7 +156,7 @@ class Factura extends Solicitud {
             valid.size("og", data.og) && valid.size("oc", data.oc) && valid.size("ut", data.ut);
         if (self.isPlataforma())
             valid.size("og", data.og);
-        return self.lineas.validate();
+        return valid.isOk() && self.lineas.validate();
     }
 }
 

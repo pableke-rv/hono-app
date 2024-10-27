@@ -17,10 +17,10 @@
 			<p>
 			<c:choose>
 				<c:when test="#{firma.aceptada}">
-					<i class="fas fa-flag-alt icon icon-green" title="Firma aceptada"></i>#{uae.getMsg('lblAceptada')} #{uae.format(firma.getFecha())}
+					<i class="fas fa-flag-alt icon icon-green" title="Firma aceptada"></i>#{uae.getMsg('lblAceptada')} #{uae.isoDate(firma.getFecha())}
 				</c:when>
 				<c:when test="#{firma.rechazada}">
-					<i class="fas fa-flag-alt icon icon-red" title="#{firma.info}"></i>#{uae.getMsg('lblRechazada')} #{uae.format(firma.getFecha())}
+					<i class="fas fa-flag-alt icon icon-red" title="#{firma.info}"></i>#{uae.getMsg('lblRechazada')} #{uae.isoDate(firma.getFecha())}
 				</c:when>
 				<c:otherwise>
 					<i class="fas fa-flag-alt icon icon-warn" title="Pendiente de firma"></i>#{uae.getMsg('lblPendiente')}

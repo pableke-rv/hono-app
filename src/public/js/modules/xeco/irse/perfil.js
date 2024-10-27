@@ -103,7 +103,6 @@ function IrsePerfil() {
 		eFin = form.getInput("#financiacion");
 		eAct = form.getInput("#actividad");
 		eTramit = form.getInput("#tramite");
-		dom.update();
 
 		form.afterReset(() => {
 			ab.reset(organicas);

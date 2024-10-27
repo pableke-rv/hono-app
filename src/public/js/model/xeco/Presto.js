@@ -235,7 +235,7 @@ class Presto extends Solicitud {
             valid.size("extra", data.extra, "Debe indicar un motivo para la urgencia de esta solicitud."); // Required string
             valid.geToday("fMax", data.fMax, "Debe indicar una fecha maxima de resolución para esta solicitud."); // Required date
         }
-        return self.partidas.validate();
+        return valid.isOk() && self.partidas.validate();
     }
 }
 
