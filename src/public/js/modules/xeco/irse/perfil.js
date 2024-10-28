@@ -82,9 +82,9 @@ function IrsePerfil() {
 	this.empty = () => ab.empty(organicas);
 	this.getNumOrganicas = () => ab.size(organicas);
 	this.isMultiorganica = () => ab.size(organicas) > 1;
-	this.getOrganica = (id) => organicas.find(org => org.id == id); //get organica by id
-	this.isInve3005 = (org) => org && sb.starts(org.o, "3005") && ((org.mask & 64) == 64); //es de investigacion de la 3005XX
-	this.is643 = (org) => org && ((org.mask & 16) == 16); //contiene alguna aplicacion 643?
+	this.getOrganica = id => organicas.find(org => org.id == id); //get organica by id
+	this.isInve3005 = org => (org && sb.starts(org.o, "3005") && ((org.mask & 64) == 64)); //es de investigacion de la 3005XX
+	this.is643 = org => (org && ((org.mask & 16) == 16)); //contiene alguna aplicacion 643?
 	this.addOrganica = () => {
 		if (current && !organicas.find(org => org.id==current.id))
 			organicas.push(current);

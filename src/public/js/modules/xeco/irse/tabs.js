@@ -2,8 +2,9 @@
 import sb from "../../../components/StringBox.js";
 import pf from "../../../components/Primefaces.js";
 
-import dietas from "./dietas.js";
 import rutas from "./rutas.js";
+import dietas from "./dietas.js";
+import organicas from "./organicas.js";
 
 export const viewTab5 = (tab, form) => {
 	const eTipoGasto = form.getInput("#tipo-gasto"); //select tipo

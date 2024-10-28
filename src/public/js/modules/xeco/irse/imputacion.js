@@ -54,7 +54,7 @@ function IrseImputacion() {
 		if (perfil.isIsu()) //642
 			return "642." + finalidad + "." + colectivo;
 		if (perfil.isInve3005(org)) //64X
-			return (perfil.is643() ? "643." : "64X.") + SUBCONCEPTOS_CAP6[tipo] + "." + colectivo;
+			return (perfil.is643(org) ? "643." : "64X.") + SUBCONCEPTOS_CAP6[tipo] + "." + colectivo;
 		//capitulo 2
 		let cap2 = CONCEPTOS_CAP2[tipo] + ".xx."  + colectivo;
 		if (tipo == 1) // dietas

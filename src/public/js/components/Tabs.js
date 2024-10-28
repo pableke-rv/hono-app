@@ -103,7 +103,7 @@ function Tabs() {
 
     this.showTab = id => fnShowTab(fnFindIndex(id)); //find by id selector
     this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +(tabs[_tabIndex].dataset.back ?? (_tabIndex - 1)));
-    this.prevTab = () => self.backTab; // Synonym for back to previous tab
+    this.prevTab = self.backTab; // Synonym for back to previous tab
     this.nextTab = () => fnShowTab(_tabIndex + 1); // next tab by position
     this.lastTab = () => fnShowTab(_lastTab);
     this.toggle = el => {

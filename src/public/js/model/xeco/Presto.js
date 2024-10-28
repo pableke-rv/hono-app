@@ -5,7 +5,6 @@ import Solicitud from "./Solicitud.js";
 
 function Partida(presto) {
 	const self = this; //self instance
-    const ERR_ORGANICA = "No ha seleccionado correctamente la orgánica";
 
     let data; // Current presto data type
     this.getData = () => data;
@@ -71,29 +70,10 @@ function Partida(presto) {
 
     this.validate = data => {
         const valid = i18n.getValidators();
-        valid.isKey("acOrgInc", data.idOrgInc, ERR_ORGANICA); // autocomplete required key
+        valid.isKey("acOrgInc", data.idOrgInc, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
         valid.isKey("idEcoInc", data.idEcoInc, "Debe seleccionar una económica"); // select required number
         valid.gt0("impInc", data.impInc); // float number > 0
         return valid.close("No ha seleccionada correctamente la partida a incrementar.");
-    }
-    this.validate030 = data030 => {
-        const valid = i18n.getValidators();
-        if (!data) // Debo cargar previamente la partida seleccionada
-            return !valid.setError("No se ha encontrado la partida asociada al documento 080.");
-        valid.isKey("acOrg030", data030.idOrg030, ERR_ORGANICA); // autocomplete required key
-        valid.isKey("idEco030", data030.idEco030, "Debe seleccionar una económica"); // select required number
-        valid.gt0("imp030", data030.imp030); // float number > 0
-        const label = data030.acOrg030?.split(" - ");
-        if (!label) // Code separator
-            return !valid.addError("acOrg030", ERR_ORGANICA, "No ha seleccionada correctamente la aplicación para el DC 030.");
-        if (data.imp < data030.imp030)
-            return !valid.addError("imp030", "errExceeded", "El importe del documento 030 excede al del 080.");
-        // If ok => update partida a incrementar
-        data.idOrg030 = +data030.idOrg030;
-        [ data.o030, data.dOrg030 ] = label;
-        data.idEco030 = data030.idEco030;
-        data.imp030 = data030.imp030;
-        return valid.isOk();
     }
 }
 

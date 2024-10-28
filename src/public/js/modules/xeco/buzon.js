@@ -1,11 +1,11 @@
 
 import Form from "../../components/Form.js";
-import Table from "../../components/Table.js";
 import tabs from "../../components/Tabs.js";
 import modals from "../../components/Modals.js";
 import pf from "../../components/Primefaces.js";
 import buzon from "../../model/xeco/Buzon.js";
-import i18n from "../../i18n/langs.js";
+import bf from "./buzon/facturas.js";
+import usuarios from "./buzon/usuarios.js";
 
 function fnPaginate(recientes, size) {
 	recientes.getRows().forEach((row, i) => row.setVisible(i < size));
@@ -41,30 +41,6 @@ pf.ready(() => { // on load view
 		modals.close(); // always close modal
 	});
 
-	const formFactura = new Form("#xeco-factura");
-	const elTipo = formFactura.getInput("#tipo");
-	const fileNames = formFactura.querySelectorAll(".filename");
-
-	function fnFacturaOrganica(data) {
-		const isIsu = buzon.setData(data).setFacturaOtros().setTipoPago(+elTipo.value).isIsu();
-		buzon.setJustPagoRequired(buzon.isPagoCesionario() && isIsu);
-		formFactura.setVisible(".show-isu", isIsu).setVisible(".show-no-isu", !isIsu)
-					.setVisible("#file-jp", buzon.isJustPagoRequired())
-					.setVisible(".show-cesionario", buzon.isPagoCesionario())
-					.text("#type-name", formFactura.getOptionText("#tipo")).setval("#desc");
-		tabs.exclude();
-		buzon.isMonogrupo() && tabs.exclude(4);
-		tabs.exclude(5); // always hide otros
-	}
-	function fnFacturaOtros() {
-		buzon.setFacturaOtros(true).setTipoPago(+elTipo.value);
-		buzon.setJustPagoRequired(buzon.isPagoCesionario());
-		formFactura.show(".show-isu").hide(".show-no-isu")
-					.setVisible("#file-jp", buzon.isJustPagoRequired())
-					.setVisible(".show-cesionario", buzon.isPagoCesionario())
-					.text("#type-name", formFactura.getOptionText("#tipo"));
-		tabs.exclude();
-	}
 	function fnAddActions(table) {
 		table.set("#anclar", data => pf.sendId("anclar", data.org));
 		table.set("#desanclar", data => pf.sendId("desanclar", data.org));
@@ -73,63 +49,32 @@ pf.ready(() => { // on load view
 		table.set("#report", data => pf.fetch("report", { id: data.org, ut: data.ut }));
 
 		table.set("#buzon", data => {
-			fileNames.forEach(el => { el.innerHTML = ""; });
-			formFactura.setval("#buzon-cod-org", data.oCod).text("#org-desc", data.oCod + " / " + data.oDesc);
-			elTipo.onchange = () => fnFacturaOrganica(data); // update event
+			const first = tableAncladas.getItem(0) || tableRecientes.getItem(0);  // default ut
+			bf.init(data.oCod, data.oCod + " / " + data.oDesc, first.ut).setFactuaOrganica(data);
+			bf.setChangeTipo(() => bf.setFactuaOrganica(data));
 			pf.sendId("utFact", data.org);
-			fnFacturaOrganica(data);
 		});
 		table.set("#buzon-otros", () => {
-			fileNames.forEach(el => { el.innerHTML = ""; });
-			formFactura.setval("#buzon-cod-org").text("#org-desc", table.html("#otras"));
-			elTipo.onchange = fnFacturaOtros; // update event
+			const first = tableAncladas.getItem(0) || tableRecientes.getItem(0); // default ut
+			bf.init(null, table.html("#otras"), first.ut).setFactuaOtros();
+			bf.setChangeTipo(bf.setFactuaOtros);
 			window.utFact(); // id = null
-			fnFacturaOtros();
 		});
 	}
 
 	fnAddActions(tableAncladas);
 	fnAddActions(tableRecientes);
 
-	pf.uploads(formFactura.querySelectorAll(".pf-upload"));
-	formFactura.getInput("#fileFactura_input").setAttribute("accept", "application/pdf"); // PDF only
-	function fnValidateJustPago() {
-		const files = fileNames.filter(el => el.innerHTML);
-		if (buzon.isJustPagoRequired() && (files.length < 2))
-			return !formFactura.showError("Debe seleccionar Justificante de pago.");
-		if (buzon.isFacturaOtros()) {
-			const first = tableAncladas.getItem(0) || tableRecientes.getItem(0);
-			return formFactura.setval("#utFact", first.ut) // default ut
-		}
-		return true;
-	}
-
-	tabs.setShowEvent(2, tab => {
-		const fileName = formFactura.querySelector(".filename").innerHTML;
-		return fileName || !formFactura.showError("Debe seleccionar una factura.");
-	});
-	tabs.setShowEvent(4, fnValidateJustPago).setShowEvent(5, fnValidateJustPago);
-	tabs.setShowEvent(6, tab => {
-		const fnValidateTab5 = data => {
-			const valid = i18n.getValidators();
-			const msgs = "Debe detallar las observaciones para el gestor.";
-			return valid.size("desc", data.desc, msgs).isOk();
-		}
-		return fnValidateJustPago() && (tabs.isExcluded(5) || formFactura.validate(fnValidateTab5));
-	});
-	tabs.setViewEvent(6, tab => {
-		const desc = formFactura.getval("#desc");
-		const names = fileNames.filter(el => el.innerHTML).map(el => el.innerHTML);
-		formFactura.text("#ut-desc", formFactura.getOptionText("#utFact")).text("#file-name", names.join(", "))
-					.text("#desc-gestor", desc).setVisible("#msg-gestor", desc);
-	});
+	tabs.setShowEvent(2, bf.showTab2);
+	tabs.setShowEvent(4, bf.validateJustPago).setShowEvent(5, bf.validateJustPago);
+	tabs.setShowEvent(6, bf.showTab6);
+	tabs.setViewEvent(6, bf.viewTab6);
 	window.factUpload = (xhr, status, args) => {
 		if (window.showTab(xhr, status, args, 0)) { // reload all tables
 			formOrganicas.fireReset().showOk("saveOk"); // clear inputs, autofocus and message
-			fileNames.forEach(el => { el.innerHTML = ""; }); // clear file names
+			bf.init(); // clear file names
 		}
 	}
-
 	window.loadBuzon = (xhr, status, args) => {
 		if (pf.showAlerts(xhr, status, args)) { // reload all tables
 			fnLoadTables(formOrganicas, tableAncladas, tableRecientes, JSON.read(args.data));
@@ -138,49 +83,18 @@ pf.ready(() => { // on load view
 	}
 
 	/************** Gestion de Perfiles **************/
-	const tUsuarios = new Table("#usuarios", {
-		onRender: buzon.rowUsuarios,
-		onFooter: buzon.tfootUsuarios,
-		onRemove: data => !pf.fetch("rcRemoveUser", { org: data.oCod, nif: data.nif })
-	});
-	const fnToggle = data => pf.fetch("rcToggle", { id: data.org, nif: data.nif, acc: data.acc });
-	tUsuarios.set("#toggleUsers", data => { buzon.setData(data).togglePermisoUser(); fnToggle(data); });
-	tUsuarios.set("#toggleGastos", data => { buzon.setData(data).toggleGastos(); fnToggle(data); });
-	tUsuarios.set("#toggleIngresos", data => { buzon.setData(data).toggleIngresos(); fnToggle(data); });
-	tUsuarios.set("#toggleReportProv", data => { buzon.setData(data).toggleReportProv(); fnToggle(data); });
-	tUsuarios.set("#toggleFactura", data => { buzon.setData(data).toggleFactura(); fnToggle(data); });
-	tabs.setAction("save-users", () => tabs.showTab(0).showOk("saveOk"));
-
 	window.loadUsuarios = (xhr, status, args) => {
-		if (!pf.showAlerts(xhr, status, args))
-			return; // server error message
-		const data = buzon.getData();
-		const formUsers = new Form("#xeco-users");
-		formUsers.querySelector("#msg-org").render(data);
-		const acUser = formUsers.setAcItems("#ac-usuarios", term => pf.sendTerm("rcFindUsers", term)); //selector, source
-		formUsers.addClick("#add-user", ev => {
-			if (acUser.isLoaded())
-				pf.fetch("rcAddUser", { org: data.oCod, ut: data.ut, nif: acUser.getValue() });
-			acUser.reload(); // clear data and autofocus
-			ev.preventDefault();
-		});
-		tUsuarios.render(JSON.read(args.data));
-		tabs.showTab(10);
+		if (pf.showAlerts(xhr, status, args))
+			usuarios.loadUsuarios(args);
 	}
 	window.updateUsuarios = (xhr, status, args) => {
-		if (!pf.showAlerts(xhr, status, args))
-			return; // server error message
-		if (args.data)
-			tUsuarios.render(JSON.read(args.data));
-		else
-			tUsuarios.reload();
-		tabs.showOk("saveOk");
+		if (pf.showAlerts(xhr, status, args))
+			usuarios.updateUsuarios(args);
 	}
 	window.reloadAll = (xhr, status, args) => {
-		if (!pf.showAlerts(xhr, status, args))
-			return; // server error message
-		tUsuarios.reload(); // tabla de usuarios
-		args.data && fnLoadTables(formOrganicas, tableAncladas, tableRecientes, JSON.read(args.data));
-		tabs.showOk("saveOk");
+		if (pf.showAlerts(xhr, status, args)) {
+			args.data && fnLoadTables(formOrganicas, tableAncladas, tableRecientes, JSON.read(args.data));
+			usuarios.reloadAll();
+		}
 	}
 });
