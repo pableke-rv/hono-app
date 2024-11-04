@@ -98,8 +98,9 @@ export default class Solicitud {
     isFirmable() { return (this.isPendiente() && this.getFirma().isFirmable(this.data.fmask)); }
     isRechazable() { return (this.data.id && (this.isUae() || this.isFirmable())); }
 	isEditableUae() { return (this.isEditable() || (this.isUae() && this.isFirmable())); }
-    isEjecutable() { return (this.isUae() && this.isFinalizada()); } // Requiere uae + estado finalizada (mejora grupo == -1)
-    isIntegrable() { return (this.isUae() && this.isFinalizada()); } // Requiere uae + estado finalizada (mejora grupo == -1)
+    isEjecutable() { return (this.isUae() && this.isFinalizada()); } // Requiere uae + estado finalizada
+    isNotificable() { return [1, 3, 9, 10].includes(this.data.estado); } // Aceptada, Ejecutada ó Erronea
+    isIntegrable() { return (this.isUae() && this.isNotificable()); } // Requiere uae + estado notificable
 	isUrgente() { return (this.data.fMax && this.data.extra); } //solicitud urgente?
 
     getDescEstado() { return i18n.getItem("descEstados", this.data.estado); }

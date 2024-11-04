@@ -66,7 +66,7 @@
 			<p:remoteCommand name="report" action="#{buzon.report()}" oncomplete="handleReport(xhr, status, args);"/>
 
 			<!-- modals dialog -->
-			<ui:include src="tabs/buzon/modal_ut.xhtml"></ui:include>
+			<ui:include src="./buzon/modal_ut.xhtml"></ui:include>
 		</h:form>
 
 		<div class="navbar">
@@ -77,10 +77,10 @@
 
 		<!-- Subida de facturas del tab1 al tab6 -->
 		<h:form id="xeco-factura" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
-			<ui:include src="tabs/buzon/facturas.xhtml"></ui:include>
+			<ui:include src="./buzon/facturas.xhtml"></ui:include>
 		</h:form>
 
 		<!-- gastion de permisos tab10 -->
-		<ui:include src="tabs/buzon/usuarios.xhtml"></ui:include>
+		<ui:include src="./buzon/usuarios.xhtml"></ui:include>
 	</ui:define>
 </ui:composition>

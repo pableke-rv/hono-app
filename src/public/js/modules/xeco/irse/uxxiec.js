@@ -1,5 +1,4 @@
 
-import Form from "../../../components/Form.js";
 import pf from "../../../components/Primefaces.js";
 
 function Uxxiec() {

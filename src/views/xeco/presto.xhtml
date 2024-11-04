@@ -30,12 +30,12 @@
 
 		<!-- Home tab -->
 		<div id="tab-0" class="tab-content">
-			<ui:include src="tabs/presto/init.xhtml"></ui:include>
+			<ui:include src="presto/init.xhtml"></ui:include>
 		</div>
 
 		<!-- listado de solicitudes -->
 		<div id="tab-2" class="tab-content">
-			<ui:include src="tabs/presto/list.xhtml"></ui:include>
+			<ui:include src="presto/list.xhtml"></ui:include>
 			<ui:include src="parts/leyenda_firmas.xhtml"></ui:include>
 		</div>
 
@@ -199,23 +199,23 @@
 				<a href="#tab-11" class="tab-action btn btn-error rechazable-only" tabindex="23" title="#{msg['tit.btn.rechazar']}">
 					<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
 			</div>
-			<ui:include src="tabs/presto/firmas.xhtml"></ui:include>
+			<ui:include src="presto/firmas.xhtml"></ui:include>
 		</h:form>
 		</div>
 
 		<!-- form 030 -->
 		<div id="tab-3" class="tab-content">
-			<ui:include src="tabs/presto/doc030.xhtml"></ui:include>
+			<ui:include src="presto/doc030.xhtml"></ui:include>
 		</div>
 
 		<!-- vinculación con uxxiec -->
 		<div id="tab-15" class="tab-content" data-nif="#{uae.nif}" data-grupo="#{uae.idGrupo}">
-			<ui:include src="tabs/presto/uxxiec.xhtml"></ui:include>
+			<ui:include src="presto/uxxiec.xhtml"></ui:include>
 		</div>
 
 		<!-- formulario de rechazo/cancelacion -->
 		<div id="tab-11" class="tab-content">
-			<ui:include src="tabs/presto/reject.xhtml"></ui:include>
+			<ui:include src="presto/reject.xhtml"></ui:include>
 		</div>
 	</ui:define>
 </ui:composition>

@@ -146,28 +146,28 @@
 				<td>
 					<c:choose>
 						<c:when test="#{sol.editable}">
-							<span class="text-warn"><h:outputText value="#{msg['uae.irse.list.estado.6']}" escape="false" /></span>
+							<span class="estado text-warn"><h:outputText value="#{msg['uae.irse.list.estado.6']}" escape="false" /></span>
 						</c:when>
 						<c:when test="#{sol.aceptada}">
-							<span class="text-green"><h:outputText value="#{msg['uae.irse.list.estado.1']}" escape="false" /></span>
+							<span class="estado text-green"><h:outputText value="#{msg['uae.irse.list.estado.1']}" escape="false" /></span>
 						</c:when>
 						<c:when test="#{sol.rechazada}">
-							<span class="text-error"><h:outputText value="#{msg['uae.irse.list.estado.2']}" escape="false" /></span>
+							<span class="estado text-error"><h:outputText value="#{msg['uae.irse.list.estado.2']}" escape="false" /></span>
 						</c:when>
 						<c:when test="#{sol.ejecutada}">
-							<span class="text-green"><h:outputText value="#{msg['uae.irse.list.estado.3']}" escape="false" /></span>
+							<span class="estado text-green"><h:outputText value="#{msg['uae.irse.list.estado.3']}" escape="false" /></span>
 						</c:when>
 						<c:when test="#{sol.notificada}">
-							<span class="text-green"><h:outputText value="#{msg['uae.irse.list.estado.4']}" escape="false" /></span>
+							<span class="estado text-green"><h:outputText value="#{msg['uae.irse.list.estado.4']}" escape="false" /></span>
 						</c:when>
 						<c:when test="#{sol.cancelada}">
-							<span class="text-error"><h:outputText value="#{msg['uae.irse.list.estado.7']}" escape="false" /></span>
+							<span class="estado text-error"><h:outputText value="#{msg['uae.irse.list.estado.7']}" escape="false" /></span>
 						</c:when>
 						<c:when test="#{sol.caducada}">
-							<span class="text-error"><h:outputText value="#{msg['uae.irse.list.estado.8']}" escape="false" /></span>
+							<span class="estado text-error"><h:outputText value="#{msg['uae.irse.list.estado.8']}" escape="false" /></span>
 						</c:when>
 						<c:otherwise>
-							<span class="text-warn"><h:outputText value="#{msg['uae.irse.list.estado.5']}" escape="false" /></span>
+							<span class="estado text-warn"><h:outputText value="#{msg['uae.irse.list.estado.5']}" escape="false" /></span>
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -210,7 +210,11 @@
 						<p:commandLink action="#{iris.list.report(sol)}" onclick="loading();" oncomplete="handleReport(xhr, status, args)" title="#{msg['tit.btn.informe']}">
 							<i class="fal fa-file-pdf action text-red resize"></i></p:commandLink>
 					</c:if>
-					<c:if test="#{sol.isEjecutable() and (iris.isUae() or sol.isFirmaGestor())}">
+					<c:if test="#{iris.admin and iris.isIntegrable(sol)}">
+						<p:commandLink action="#{iris.list.rptFinalizar(sol)}" onclick="loading();" oncomplete="openHtml(xhr, status, args, 'Informe IRIS')" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></p:commandLink>
+						<p:commandLink action="#{iris.list.integrar(sol)}" onclick="if(!fnIntegrar(this)) return false;" oncomplete="handleMessages(xhr, status, args)" title="Lanza el proceso de integración con la capa SOA"><i class="far fa-save action resize text-blue"></i></p:commandLink>
+					</c:if>
+					<c:if test="#{iris.isEjecutable(sol) and (iris.isUae() or sol.isFirmaGestor())}">
 						<p:commandLink action="#{iris.list.uxxi(sol)}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 'uxxiec');" title="Expediente asociado a la solicitud"><i class="fal fa-cog action text-blue resize"></i></p:commandLink>
 					</c:if>
 					<c:if test="#{iris.admin}">

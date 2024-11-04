@@ -15,7 +15,7 @@ const dfLatin = i18n.isoDate;
 
 //gestion de informes y mensajes
 const fnFirmar = () => i18n.confirm("msgFirmar") && loading();
-const fnIntegrar = () => i18n.confirm("msgIntegrar") && loading();
+const fnIntegrar = link => i18n.confirm("msgIntegrar") && loading() && link.hide().closest("tr").querySelectorAll(".estado").text("Procesando...");
 const fnRemove = () => i18n.confirm("removeSolicitud") && loading();
 const handleMessages = (xhr, status, args) => { unloading(); dom.showAlerts(ab.parse(args.msgs)); }
 const handleReport = (xhr, status, args) => { unloading(); dom.showAlerts(ab.parse(args.msgs)).redir(args.url); }

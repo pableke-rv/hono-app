@@ -61,11 +61,12 @@ function BuzonFacturas() {
         return true;
     }
 
-    this.showTab2 = () => {
+    this.showTab2 = () => { // tab fichero factura
         const fileName = form.querySelector(".filename").innerHTML;
         return fileName || !form.showError("Debe seleccionar una factura.");
     }
 
+	// Tab resumen
 	this.showTab6 = () => {
 		const fnValidateTab5 = data => {
 			const valid = i18n.getValidators();
@@ -78,7 +79,8 @@ function BuzonFacturas() {
 		const desc = form.getval("#desc");
 		const names = fileNames.filter(el => el.innerHTML).map(el => el.innerHTML);
 		form.text("#ut-desc", form.getOptionText("#utFact")).text("#file-name", names.join(", "))
-					.text("#desc-gestor", desc).setVisible("#msg-gestor", desc);
+			.text("#iban", form.getval("#cuentas"))
+			.text("#desc-gestor", desc).setVisible("#msg-gestor", desc);
 	}
 
 	// Init. form factura

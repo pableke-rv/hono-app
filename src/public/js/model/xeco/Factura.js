@@ -1,75 +1,7 @@
 
 import i18n from "../../i18n/langs.js";
 import Solicitud from "./Solicitud.js";
-
-function Linea(factura) {
-	//const self = this; //self instance
-
-    this.row = (data, status, resume) => {
-        resume.imp += data.imp; // sum
-        const remove = factura.isEditable() ? '<a href="#remove" class="fas fa-times action resize text-red row-action" title="Desasociar partida"></a>' : "";
-        return `<tr class="tb-data">
-            <td class="text-center">${status.count}</td>
-            <td>${data.desc}</td><td class="text-right">${i18n.isoFloat(data.imp)} €</td>
-            <td class="text-center">${remove}</td>
-        </tr>`;
-    }
-    this.tfoot = resume => {
-        const iva = factura.getIva();
-        const show = factura.isFacturable() ? "" : "hide";
-        return `<tr>
-            <td colspan="2">Conceptos: ${resume.size}</td>
-            <td class="text-right">${i18n.isoFloat(resume.imp)} €</td>
-            <td></td>
-        </tr>
-        <tr class="${show}">
-            <td colspan="2">
-                <label class="ui-blocks">
-                <div class="ui-block-main text-right">IVA:</div>
-                <div class="ui-block">
-                    <select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal editable-uae" tabindex="32"></select>
-                </div>
-                </label>
-            </td>
-            <td id="imp-iva" class="text-right">${i18n.isoFloat(iva)} €</td>
-            <td></td>
-        </tr>
-        <tr class="${show}">
-            <td class="text-right" colspan="2">Importe Total:</td>
-            <td id="imp-total" class="text-right">${i18n.isoFloat(resume.imp * (iva / 100))} €</td>
-            <td></td>
-        </tr>`;
-    }
-
-    this.validate = function(data) {
-        const valid = i18n.getValidators();
-        valid.gt0("imp", data.imp); // float required
-        valid.size("desc", data.desc); // string required
-        return valid.close("El concepto indicado no es válido!"); // Main form message
-    }
-}
-
-function Lineas(factura) {
-	const self = this; //self instance
-    const linea = new Linea(factura);
-
-    let data; // Current presto data type
-    this.getData = () => data;
-    this.setData = lineas => {
-        data = lineas;
-        return self;
-    }
-
-    this.getLinea = () => linea;
-    this.size = () => JSON.size(data);
-    this.isEmpty = () => !self.size();
-
-    this.validate = () => { // Todas las solicitudes tienen partidas a incrementar
-        const valid = i18n.getValidation(); // Continue with validation without reset
-        const msg = "Debe detallar los conceptos asociados a la solicitud.";
-        return data.length ? valid : !valid.addError("desc", "errRequired", msg);
-    }
-}
+import Lineas from "./factura/Lineas.js";
 
 const titulos = [ "-", "Factura", "Abono", "Carta de Pago", "Recibo de Alumno" ];
 
@@ -151,7 +83,7 @@ class Factura extends Solicitud {
             valid.size("extra", data.extra, "errRequired", "Debe indicar un número de recibo válido"); // Required string
             valid.leToday("fMax", data.fMax, "Debe indicar la fecha del recibo asociado"); // Required date
         }*/
-        valid.size("memo", data.memo, "Debe indicar las observaciones asociadas a la solicitud."); // Required string
+        //valid.size("memo", data.memo, "Debe indicar las observaciones asociadas a la solicitud."); // Required string
         if (self.isFace())
             valid.size("og", data.og) && valid.size("oc", data.oc) && valid.size("ut", data.ut);
         if (self.isPlataforma())

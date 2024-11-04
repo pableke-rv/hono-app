@@ -30,12 +30,12 @@
 
 		<!-- Home tab -->
 		<div id="tab-0" class="tab-content active">
-			<ui:include src="tabs/fact/init.xhtml"></ui:include>
+			<ui:include src="factura/init.xhtml"></ui:include>
 		</div>
 
 		<!-- listado de solicitudes -->
 		<div id="tab-2" class="tab-content">
-			<ui:include src="tabs/fact/list.xhtml"></ui:include>
+			<ui:include src="factura/list.xhtml"></ui:include>
 			<ui:include src="parts/leyenda_firmas.xhtml"></ui:include>
 		</div>
 
@@ -251,18 +251,18 @@
 				<a href="#tab-11" class="tab-action btn btn-error rechazable-only" tabindex="23" title="#{msg['tit.btn.rechazar']}">
 					<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
 			</div>
-			<ui:include src="tabs/fact/firmas.xhtml"></ui:include>
+			<ui:include src="factura/firmas.xhtml"></ui:include>
 		</h:form>
 		</div>
 
 		<!-- vinculación con uxxiec -->
 		<div id="tab-15" class="tab-content" data-nif="#{uae.nif}" data-grupo="#{uae.idGrupo}">
-			<ui:include src="tabs/fact/uxxiec.xhtml"></ui:include>
+			<ui:include src="factura/uxxiec.xhtml"></ui:include>
 		</div>
 
 		<!-- formulario de rechazo/cancelacion -->
 		<div id="tab-11" class="tab-content">
-			<ui:include src="tabs/fact/reject.xhtml"></ui:include>
+			<ui:include src="factura/reject.xhtml"></ui:include>
 		</div>
 	</ui:define>
 </ui:composition>

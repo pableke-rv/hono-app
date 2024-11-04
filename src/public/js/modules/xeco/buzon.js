@@ -19,6 +19,7 @@ function fnLoadTables(form, ancladas, recientes, data) {
 }
 
 pf.ready(() => { // on load view
+	/************** Buzon de organicas **************/
 	const formOrganicas = new Form("#xeco-organicas");
 	const organicas = JSON.read(formOrganicas.html("#organcias-json"));
 	const tableAncladas = formOrganicas.setTable("#ancladas", {
@@ -64,11 +65,12 @@ pf.ready(() => { // on load view
 
 	fnAddActions(tableAncladas);
 	fnAddActions(tableRecientes);
+	/************** Buzon de organicas **************/
 
-	tabs.setShowEvent(2, bf.showTab2);
+	/************** Formulario de facturas **************/
+	tabs.setShowEvent(2, bf.showTab2); // tab fichero factura
 	tabs.setShowEvent(4, bf.validateJustPago).setShowEvent(5, bf.validateJustPago);
-	tabs.setShowEvent(6, bf.showTab6);
-	tabs.setViewEvent(6, bf.viewTab6);
+	tabs.setShowEvent(6, bf.showTab6).setViewEvent(6, bf.viewTab6); // tab resumen
 	window.factUpload = (xhr, status, args) => {
 		if (window.showTab(xhr, status, args, 0)) { // reload all tables
 			formOrganicas.fireReset().showOk("saveOk"); // clear inputs, autofocus and message
@@ -81,6 +83,7 @@ pf.ready(() => { // on load view
 			formOrganicas.showOk("saveOk"); // datos actualizados correctamente
 		}
 	}
+	/************** Formulario de facturas **************/
 
 	/************** Gestion de Perfiles **************/
 	window.loadUsuarios = (xhr, status, args) => {
@@ -97,4 +100,5 @@ pf.ready(() => { // on load view
 			usuarios.reloadAll();
 		}
 	}
+	/************** Gestion de Perfiles **************/
 });

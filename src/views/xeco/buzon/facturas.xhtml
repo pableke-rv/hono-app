@@ -52,7 +52,7 @@
             </div>
             <label class="ui-block-xl show-cesionario">
                 <div class="label required"><h:outputText value="#{msg['uae.irse.tab9.lbl.cuenta']}" escape="false" />:</div>
-                <h:selectOneMenu id="cuentas" value="" styleClass="ui-input ui-select" tabindex="150">
+                <h:selectOneMenu id="cuentas" value="#{buzon.iban}" styleClass="ui-input ui-select" tabindex="150">
                     <f:selectItems value="#{buzon.cuentas}" />
                 </h:selectOneMenu>
             </label>

@@ -21,15 +21,16 @@ HTMLCollection.prototype.findLastIndex = Array.prototype.findLastIndex;
 HTMLCollection.prototype.findBy = function(selector) { return this.find(el => el.matches(selector)); }
 HTMLCollection.prototype.findIndexBy = function(selector) { return this.findIndex(el => el.matches(selector)); }
 HTMLCollection.prototype.query = function(selector) { return this.filter(el => el.matches(selector)); }
-HTMLCollection.prototype.render = function(data) { this.forEach((el, i) => el.render(data, i, this.length)); }
-HTMLCollection.prototype.text = function(text) { this.forEach(el => { el.innerHTML = text; }); }
+HTMLCollection.prototype.render = function(data) { this.forEach((el, i) => el.render(data, i, this.length)); return this; }
+HTMLCollection.prototype.text = function(text) { this.forEach(el => { el.innerHTML = text; }); return this; }
 HTMLCollection.prototype.addClick = function(fn) { this.forEach(el => el.addClick(fn)); };
 HTMLCollection.prototype.setClick = function(fn) { this.forEach(el => el.setClick(fn)); };
-HTMLCollection.prototype.hide = function() { this.forEach(fnHide); }
-HTMLCollection.prototype.show = function() { this.forEach(fnShow); }
+HTMLCollection.prototype.hide = function() { this.forEach(fnHide); return this; }
+HTMLCollection.prototype.show = function() { this.forEach(fnShow); return this; }
 HTMLCollection.prototype.toggle = function(name, force) {
     name = name || HIDE_CLASS; // Toggle class name
     this.forEach(el => el.classList.toggle(name, force));
+    return this;
 }
 HTMLCollection.prototype.mask = function(flags, name) {
     if (!name) { // Toggle class name
@@ -37,6 +38,7 @@ HTMLCollection.prototype.mask = function(flags, name) {
         flags = ~flags; // Negate flags
     }
     this.forEach((el, i) => el.toggle(name, (flags >> i) & 1));
+    return this;
 }
 
 // Extends NodeList prototype

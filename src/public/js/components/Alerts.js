@@ -118,6 +118,14 @@ function Alerts() {
         self.showAlerts(msgs); // show all messages
         return !msgs?.msgError; // has error message
     }
+    window.openHtml = (xhr, status, args, title) => {
+        if (window.showAlerts(xhr, status, args)) {
+            const wnd = window.open("about:blank", "_blank");
+            wnd.document.write(args.data); // parse all html
+            wnd.document.title = title || args.title || "";
+            wnd.document.close(); // end write
+        }
+    }
     window.handleReport = (xhr, status, args) => {
         window.showAlerts(xhr, status, args) && self.redir(args?.url);
     }

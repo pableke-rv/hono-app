@@ -38,7 +38,6 @@ function Tabs() {
         if (!tab.dataset.loaded) { // event indicator
             fnCallEvent("init", tab); // Fire once when show tab
             tab.dataset.loaded = "1"; // avoid to fire event again
-            //delete EVENTS["init-" + tab.id]; // delete handler
         }
         fnCallEvent("view", tab); // Fire when show tab
         return autofocus(tab);
