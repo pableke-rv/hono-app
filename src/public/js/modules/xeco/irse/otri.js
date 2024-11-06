@@ -9,13 +9,11 @@ function Otri() {
 	const self = this; //self instance
 
     this.colaboracion = () => {
-        window.fnPaso3 = () => dom.closeAlerts().required("#justifi", "errJustifiSubv", "errRequired").isOk() && dom.loading();
+        window.fnPaso3 = () => dom.closeAlerts().required("#justifi", "errJustifiSubv", "errRequired").isOk() && loading();
         return self;
     }
 
-    this.congreso = (form, tab3) => {
-        tab3.querySelectorAll(".rutas-vp").forEach(el => el.classList.toggle("hide", rutas.getNumRutasVp() < 1));
-
+    this.congreso = form => {
         const eCong = form.getInput("#congreso"); //congreso si/no
         const eIniCong = form.getInput("#fIniCong"); //fecha inicio del congreso
         const eFinCong = form.getInput("#fFinCong"); //fecha fin del congreso
@@ -52,7 +50,7 @@ function Otri() {
                 dom.required("#justifiCong", "errCongreso", "errRequired");
             if (eCong.value == "4")
                 dom.required("#impInsc", "errNumber", "errRequired");
-            return dom.isOk() && dom.loading();
+            return dom.isOk() && loading();
         }
         return self;
     }

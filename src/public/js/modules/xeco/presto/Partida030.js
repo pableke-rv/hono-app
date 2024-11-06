@@ -5,7 +5,7 @@ import pf from "../../../components/Primefaces.js";
 import presto from "../../../model/xeco/Presto.js";
 import i18n from "../../../i18n/langs.js";
 
-export default function Partida030(formPresto) {
+export default function Partida030() {
 	const self = this; //self instance
     const partida = presto.getPartida();
     const form = new Form("#xeco-030");

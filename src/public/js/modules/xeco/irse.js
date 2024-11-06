@@ -8,16 +8,17 @@ import list from "./irse/list.js";
 import uxxiec from "./irse/uxxiec.js";
 import perfil from "./irse/perfil.js";
 import rutas from "./irse/rutas.js";
+import dietas from "./irse/dietas.js";
 import maps from "./irse/maps.js";
 import otri from "./irse/otri.js";
 import organicas from "./irse/organicas.js";
-import { viewTab5, viewTab6, initTab9 } from "./irse/tabs.js";
+import { viewTab5, initTab9 } from "./irse/tabs.js";
 
 const formIrse = new Form("#xeco-irse");
 pf.ready(list.init);
 
 /*********** subvención, congreso, asistencias/colaboraciones ***********/
-tabs.setInitEvent(3, tab3 => perfil.isColaboracion() ? otri.colaboracion() : otri.congreso(formIrse, tab3));
+tabs.setInitEvent(3, () => perfil.isColaboracion() ? otri.colaboracion() : otri.congreso(formIrse));
 
 /*********** Google Maps API ***********/
 tabs.setShowEvent(2, maps);
@@ -26,7 +27,7 @@ tabs.setShowEvent(2, maps);
 tabs.setViewEvent(5, tab5 => viewTab5(tab5, formIrse));
 
 /*********** Tablas de resumen ***********/
-tabs.setViewEvent(6, viewTab6);
+tabs.setViewEvent(6, dietas.render);
 
 /*********** Fin + IBAN ***********/
 tabs.setInitEvent(9, tab9 => initTab9(tab9, formIrse)); // init. all validations and inputs events only once
@@ -38,7 +39,7 @@ tabs.setShowEvent("uxxiec", uxxiec.load);
 //PF needs confirmation in onclick attribute
 window.fnUnlink = () => i18n.confirm("msgUnlink") && loading();
 window.fnClone = () => i18n.confirm("msgReactivar") && loading();
-window.saveTab = () => dom.showOk(i18n.get("saveOk")).working();
+window.saveTab = () => formIrse.showOk(i18n.get("saveOk")).working();
 
 // Handle errors or parse server messages
 window.showNextTab = window.showTab;

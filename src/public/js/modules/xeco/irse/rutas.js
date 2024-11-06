@@ -162,14 +162,14 @@ function IrseRutas() {
 		return self;
 	}
 
-	this.paso1 = () => dom.closeAlerts().required("#objeto", "errObjeto", "errRequired").isOk() && dom.loading();
+	this.paso1 = () => dom.closeAlerts().required("#objeto", "errObjeto", "errRequired").isOk() && loading();
 	this.paso1Col = () => self.paso1() && dom.past("#fAct", "errDateLe", "errRequired").gt0("#impAc", "errGt0", "errRequired").isOk();
-	this.paso2 = () => self.validItinerario() && ((self.size() > 1) || !dom.addError("#destino", "errMinRutas")) && dom.loading();
+	this.paso2 = () => self.validItinerario() && ((self.size() > 1) || !dom.addError("#destino", "errMinRutas")) && loading();
 	this.paso6 = function() {
 		dom.closeAlerts();
 		if (resume.justifi)
 			dom.required("#justifiKm", "errJustifiKm", "errRequired");
-		return dom.isOk() && dom.loading();
+		return dom.isOk() && loading();
 	}
 
 	function fnRecalc() {
@@ -265,6 +265,9 @@ function IrseRutas() {
 			.onChangeInput("#f1", el => dom.setValue("#f2", el.value)).setRangeDate("#f1", "#f2")
 			.onChangeInput("#desp", el => dom.toggleHide(".grupo-matricula", el.value!="1"))
 			.onChangeInput("#matricula", el => { el.value = sb.toUpperWord(el.value); });
+
+		// show / hide rutas con vehiculo propio
+		form.querySelectorAll(".rutas-vp").forEach(el => el.classList.toggle("hide", self.getNumRutasVp() < 1));
 		return self;
 	}
 }

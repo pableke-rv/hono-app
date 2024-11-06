@@ -46,7 +46,7 @@ export default {
     errDateGe: "Date must be greater or equals than current",
     errDateGt: "Date must be greater than current",
     errNumber: "Wrong number format",
-    errGt0: "Price must be great than 0.00 &euro;", 
+    errGt0: "Price must be great than 0.00 €", 
     errExceeded: "exceeded amount!", 
     errFormat: "Wrong format!",
     errReclave: "Passwords typed do not match",

@@ -68,9 +68,9 @@
 	<br class="clear"/><br/>
 	<a href="#tab-14" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-	<p:commandButton action="#{iris.firma.ejecutar()}" icon="far fa-save" styleClass="btn btn-green success-btn" value="Ejecutar" onclick="loading();" oncomplete="handleMessages(xhr, status, args)" 
+	<p:commandButton action="#{iris.firma.ejecutar()}" icon="far fa-save" styleClass="btn btn-green success-btn" value="Ejecutar" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" 
 		tabindex="14" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud" />
-	<p:commandButton action="#{iris.firma.notificar()}" icon="fal fa-paper-plane" styleClass="btn btn-green success-btn" value="Ejecutar y Notificar" onclick="loading();" oncomplete="handleMessages(xhr, status, args)" 
+	<p:commandButton action="#{iris.firma.notificar()}" icon="fal fa-paper-plane" styleClass="btn btn-green success-btn" value="Ejecutar y Notificar" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" 
 		tabindex="15" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC" />
 	<a href="#tab-reject" class="btn btn-error danger-btn" tabindex="16" title="#{msg['tit.btn.cancelar']}">
 		<i class="fas fa-times-circle btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.cancelar']}" escape="false" /></a>

@@ -46,7 +46,7 @@ export default {
     errDateGe: "La fecha debe ser mayor o igual a la actual",
     errDateGt: "La fecha debe ser mayor a la actual",
     errNumber: "Valor no numérico",
-    errGt0: "El importe debe ser mayor de 0,00 &euro;", 
+    errGt0: "El importe debe ser mayor de 0,00 €", 
     errExceeded: "Importe excedido", 
     errFormat: "¡Formato incorrecto!",
     errReclave: "Las claves introducidas no coinciden",

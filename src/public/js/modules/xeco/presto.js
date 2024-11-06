@@ -20,7 +20,7 @@ pf.ready(() => {
 	const ecoInc = pInc.getEconomica();
     const lineas = pInc.getPartidas();
 
-    const p030 = new Partida030(formPresto);
+    const p030 = new Partida030();
     const form030 = p030.getForm();
     lineas.set("#doc030", p030.load);
     form030.addClick("#save-030", ev => { // Init. save 030 event

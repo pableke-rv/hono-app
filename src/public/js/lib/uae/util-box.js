@@ -17,8 +17,8 @@ const dfLatin = i18n.isoDate;
 const fnFirmar = () => i18n.confirm("msgFirmar") && loading();
 const fnIntegrar = link => i18n.confirm("msgIntegrar") && loading() && link.hide().closest("tr").querySelectorAll(".estado").text("Procesando...");
 const fnRemove = () => i18n.confirm("removeSolicitud") && loading();
-const handleMessages = (xhr, status, args) => { unloading(); dom.showAlerts(ab.parse(args.msgs)); }
-const handleReport = (xhr, status, args) => { unloading(); dom.showAlerts(ab.parse(args.msgs)).redir(args.url); }
+//const handleMessages = (xhr, status, args) => { working(); dom.showAlerts(ab.parse(args.msgs)); }
+//const handleReport = (xhr, status, args) => { working(); dom.showAlerts(ab.parse(args.msgs)).redir(args.url); }
 const fnRechazar = () => dom.closeAlerts().required("#rechazo", "Debe indicar un motivo para el rechazo de la solicitud.").isOk() && i18n.confirm("msgRechazar");
 
 //Autocomplete helper
@@ -36,7 +36,7 @@ function fnSourceItems(req, res) {
 	loading();
 	window.handleJson = function(xhr, status, args) {
 		res(ab.parse(args?.data) || []);
-		unloading();
+		working();
 	}
 	fnAcRender(this.element, item => item.label);
 	this.element.siblings("[id^='find-']").click(); //ajax call
@@ -47,7 +47,7 @@ function fnAutocomplete(el, columns, fnResponse, fnRender) {
 		let data = ab.parse(args?.data) || []; // JSON returned by server
 		ab.multisort(data, sb.multicmp(columns)); // order by column name
 		fnResponse(fnAcFilter(data, columns, el.val()));
-		unloading();
+		working();
 	}
 	fnAcRender(el, fnRender);
 	el.siblings("[id^='find-']").click(); //ajax call

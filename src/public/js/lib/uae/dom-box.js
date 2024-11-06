@@ -432,11 +432,6 @@ function DomBox(opts) {
 		setTimeout(() => self.each(texts, el => { el.firstChild && showAlert(el); }), 1);
 		self.click(self.getAll("." + CONFIG.classAlertClose, alerts), closeAlert); // close click event
 
-		// Loading
-		const _loading = alerts.nextElementSibling; // loading animation = none
-		self.loading = window.loading = window.MostrarProgreso = () => { _loading.classList.remove("hide", "fadeOut"); return self.closeAlerts(); }
-		self.working = self.unloading = window.unloading = () => { _loading.classList.remove("hide", "fadeIn"); _loading.classList.add("fadeOut"); return self; }
-
 		// Tables, Forms and Inputs helpers
 		self.getTable = elem =>  sb.isstr(elem) ? self.find(elem, tables) : elem;
 		self.getTables = elem => elem ? self.filter(elem, tables) : tables;

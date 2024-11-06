@@ -1,7 +1,6 @@
 
 import api from "./Api.js";
 import alerts from "./Alerts.js";
-//import coll from "./CollectionHTML.js";
 import dom from "./DomBox.js";
 import Table from "./Table.js";
 import Datalist from "./Datalist.js";
@@ -49,6 +48,7 @@ export default function(form, opts) {
 
 	// Alerts helpers
 	this.loading = () => { alerts.loading(); return self; } // Encapsule loading frame
+	this.working = () => { alerts.working(); return self; } // Encapsule working frame
 	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message
 	this.showInfo = msg => { alerts.showInfo(msg); return self; } // Encapsule showInfo message
 	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message

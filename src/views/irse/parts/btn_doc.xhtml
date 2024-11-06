@@ -13,13 +13,13 @@
 			<i class="fal fa-file-pdf btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.informe']}" escape="false" /></p:commandLink>
 		<c:if test="#{not empty iris.gastos.gastosComisionado}">
 			<p:commandButton value="#{msg['lbl.btn.zip1']}" ajax="false" icon="far fa-file-archive" styleClass="btn btn-warn warning-btn" 
-					onclick="setTimeout(unloading,400)" title="#{msg['tit.btn.zip1']}" tabindex="196" escape="false">
+					onclick="setTimeout(working,400)" title="#{msg['tit.btn.zip1']}" tabindex="196" escape="false">
 				<p:fileDownload value="#{iris.gastos.zipCom()}"/>
 			</p:commandButton>
 		</c:if>
 		<c:if test="#{not empty iris.gastos.gastosDocumentacion}">
 			<p:commandButton value="#{msg['lbl.btn.zip2']}" ajax="false" icon="far fa-file-check" styleClass="btn btn-warn warning-btn" 
-					onclick="setTimeout(unloading,400)" title="#{msg['lbl.btn.zip2']}" tabindex="197" escape="false">
+					onclick="setTimeout(working,400)" title="#{msg['lbl.btn.zip2']}" tabindex="197" escape="false">
 				<p:fileDownload value="#{iris.gastos.zipDoc()}"/>
 			</p:commandButton>
 		</c:if>

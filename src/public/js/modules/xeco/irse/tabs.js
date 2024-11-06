@@ -3,7 +3,6 @@ import sb from "../../../components/StringBox.js";
 import pf from "../../../components/Primefaces.js";
 
 import rutas from "./rutas.js";
-import dietas from "./dietas.js";
 import organicas from "./organicas.js";
 
 export const viewTab5 = (tab, form) => {
@@ -78,14 +77,8 @@ export const viewTab5 = (tab, form) => {
 			if (!form.valueOf("#fAloMin") || !form.valueOf("#fAloMax"))
 				return !dom.addError("fAloMin", "errFechasAloja");
 		}
-		return dom.loading();
+		return loading();
 	}
-}
-
-export const viewTab6 = tab => {
-	dietas.render(tab); // Init. table dietas
-	tab.querySelectorAll(".rutas-vp")
-        .forEach(el => el.classList.toggle("hide", rutas.getNumRutasVp() < 1));
 }
 
 export const initTab9 = (tab, form) => {
