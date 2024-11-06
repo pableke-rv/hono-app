@@ -19,7 +19,7 @@ export default function Partidas(presto) {
     }
 
     this.size = () => coll.size(data);
-    this.getImporte = () => resume.imp;
+    this.getImporte = () => resume.imp.round(2);
     this.getPartida = () => partida;
 
     this.setPrincipal = () => {

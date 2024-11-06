@@ -1,7 +1,8 @@
 
 import api from "./Api.js";
 import alerts from "./Alerts.js";
-import coll from "./CollectionHTML.js";
+//import coll from "./CollectionHTML.js";
+import dom from "./DomBox.js";
 import Table from "./Table.js";
 import Datalist from "./Datalist.js";
 import Autocomplete from "./Autocomplete.js";
@@ -23,7 +24,7 @@ export default function(form, opts) {
 	opts.numberFormatClass = opts.numberFormatClass || "ui-number"; // Number type
 	opts.inputErrorClass = opts.inputErrorClass || "ui-error"; // Input error styles
 	opts.tipErrorClass = opts.tipErrorClass || "ui-errtip"; // Tip error style
-	opts.groupSelector = opts.groupSelector || "label"; // Parent container (ej: .ui-group)
+	//opts.groupSelector = opts.groupSelector || "label"; // Parent container (ej: .ui-group)
 	opts.negativeNumClass = opts.negativeNumClass || "text-red"; // Negative numbers styles
 
 	const self = this; //self instance
@@ -34,7 +35,7 @@ export default function(form, opts) {
 	this.isset = () => form;
 	this.getForm = () => form;
 	this.getId = () => form.id.value;
-	this.focus = el => { el && el.focus(); return self; }
+	this.focus = el => { dom.focus(el); return self; }
 	this.setFocus = selector => self.focus(self.getInput(selector));
 	this.autofocus = () => self.focus(form.elements.find(el => el.isVisible(FOCUSABLED)));
 	this.getInput = selector => form.elements.findBy(selector); // find an element
@@ -80,10 +81,7 @@ export default function(form, opts) {
 		el.classList.toggle(opts.negativeNumClass, el.value.startsWith("-"));
 	}
 	function fnValue(el, value) {
-		if ((el.tagName == "SELECT") && !value)
-			el.selectedIndex = 0;
-		else
-			el.value = value || EMPTY; // String
+		dom.setval(el, value);
 		return self;
 	}
 	function fnSetValue(el, value) {
@@ -108,7 +106,7 @@ export default function(form, opts) {
 	this.values = (selector, value) => fnUpdate(selector, el => fnSetValue(el, value));
 	this.setData = (data, selector) => fnUpdate(selector, el => fnSetValue(el, data[el.name]));
 
-	this.setAttribute = (el, name, value) => { el && el.setAttribute(name, value); return self;}
+	this.setAttribute = (el, name, value) => { dom.setAttr(el, name, value); return self;}
 	this.setAttr = (selector, name, value) => self.setAttribute(self.getInput(selector), name, value);
 
 	function fnParseValue(el) {
@@ -146,6 +144,7 @@ export default function(form, opts) {
 	this.setTable = (selector, opts) => new Table(form.querySelector(selector), opts); // table
 	this.stringify = (selector, data) => self.setval(selector, JSON.stringify(data));
 	this.saveTable = (selector, table) => self.stringify(selector, table.getData());
+	this.getOptionText = selector => dom.getOptionText(self.getInput(selector));
 	this.setDatalist = (selector, opts) => new Datalist(form.querySelector(selector), opts); // select / optgroup
 	this.setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox(form.querySelector(selector), opts); // multi select checkbox
 	this.setAutocomplete = (selector, opts) => new Autocomplete(self.getInput(selector), opts); // Input type text / search
@@ -160,25 +159,18 @@ export default function(form, opts) {
 		});
 	}
 
+	// Events handlers
+	const fnEvent = (el, name, fn) => { el.addEventListener(name, fn); return self; }
+	const fnChange = (el, fn) => fnEvent(el, "change", fn);
+
 	this.setDateRange = (f1, f2) => {
-		f1 = isstr(f1) ? self.getInput(f1) : f1;
-		f2 = isstr(f2) ? self.getInput(f2) : f2;
-		f1.addEventListener("blur", ev => f2.setAttribute("min", f1.value));
+		f1 = globalThis.isstr(f1) ? self.getInput(f1) : f1;
+		f2 = globalThis.isstr(f2) ? self.getInput(f2) : f2;
+		fnEvent(f1, "blur", ev => f2.setAttribute("min", f1.value));
 		return fnEvent(f2, "blur", ev => f1.setAttribute("max", f2.value));
 	}
 
-	this.getOptionText = function(selector) {
-		const select = self.getInput(selector); // Get select element
-		const option = select.options[select.selectedIndex]; //get current option
-		return option?.innerHTML; //get current option text
-	}
-
-	// Events handlers
-	const fnEvent = (el, name, fn) => {
-		el.addEventListener(name, fn);
-		return self;
-	}
-	this.change = fn => fnEvent(form, "change", fn);
+	this.change = fn => fnChange(form, fn);
 	this.submit = fn => fnEvent(form, "submit", fn);
 	this.fireReset = () => { form.reset(); return self; }
 	this.beforeReset = fn => fnEvent(form, "reset", fn);
@@ -186,38 +178,26 @@ export default function(form, opts) {
 	this.addClick = (selector, fn) => fnEach(selector, el => el.addClick(fn));
 	this.click = selector => { form.querySelector(selector).click(); return self; } // Fire event only for PF
 
-	this.onChange = (el, fn) => el ? fnEvent(el, "change", fn) : self;
+	this.onChange = (el, fn) => { dom.onChange(el, fn); return self; }
 	this.onChangeInput = (selector, fn) => self.onChange(self.getInput(selector), fn);
-	this.onChangeFile = (selector, fn) => {
-		let file, index = 0; // file, position;
-		const reader = new FileReader();
-		const el = self.getInput(selector);
-		const fnLoad = i => {
-			file = el.files[i]; // multifile
-			file && reader.readAsArrayBuffer(file); //reader.readAsText(file, "UTF-8");
-		}
-		reader.onload = ev => { // event on load file
-			fn(el, file, reader.result, index);
-			fnLoad(++index);
-		}
-		return fnEvent(el, "change", () => fnLoad(index));
-	}
-	this.setField = (selector, value, fnChange) => {
+	this.onChangeFile = (selector, fn) => { dom.onChangeFile(self.getInput(selector),fn); return self; }
+	this.setField = (selector, value, fn) => {
 		const el = self.getInput(selector);
 		if (el) { // Exists element?
-			fnEvent(el, "change", fnChange);
-			return fnSetValue(el, value);
+			fnChange(el, fn);
+			fnSetValue(el, value);
 		}
 		return self;
 	}
 
 	// Form Validator
-	const fnSetInputError = (el, tip) => {
+	const fnSetError = (el, tip) => {
 		if (!tip) return; // no message
 		el.focus(); // set focus on error
 		el.classList.add(opts.inputErrorClass);
-		const block = el.closest(opts.groupSelector) || coll.getDivNull(); // label tag container
-		block.getElementsByClassName(opts.tipErrorClass).text(i18n.get(tip)); // field message
+		//const block = el.closest(opts.groupSelector) || coll.getDivNull(); // label tag container
+		//block.getElementsByClassName(opts.tipErrorClass).text(i18n.get(tip)); // field message
+		dom.text(el.next("." + opts.tipErrorClass), i18n.get(tip));
 	}
 	this.closeAlerts = () => {
 		alerts.closeAlerts(); // globbal message
@@ -227,7 +207,7 @@ export default function(form, opts) {
 	}
 	/*this.setError = (el, msg, tip) => {
 		el = isstr(el) ? self.getInput(el) : el;
-		fnSetInputError(el, tip); // Set input error
+		fnSetError(el, tip); // Set input error
 		return self.showError(msg); // Show error message
 	}*/
 	this.setErrors = messages => {
@@ -235,7 +215,7 @@ export default function(form, opts) {
 			return self.showError(messages);
 		// Style error inputs and set focus on first error
 		messages = messages || i18n.getValidation().getMsgs(); // default messages
-		form.elements.eachPrev(el => fnSetInputError(el, messages[el.name]));
+		form.elements.eachPrev(el => fnSetError(el, messages[el.name]));
 		return self.showError(messages.msgError || opts.defaultMsgError);
 	}
 	this.validate = fnValidator => {
@@ -254,11 +234,11 @@ export default function(form, opts) {
 	this.update = () => { // Form initialization
 		form.elements.forEach(el => { // update inputs
 			if (fnContains(el, opts.floatFormatClass)) {
-				el.addEventListener("change", ev => fnNumber(el, i18n.fmtFloat(el.value)));
+				fnChange(el, ev => fnNumber(el, i18n.fmtFloat(el.value)));
 				return fnNumber(el, el.value && i18n.isoFloat(+el.value)); // iso format float
 			}
 			if (fnContains(el, opts.integerFormatClass)) {
-				el.addEventListener("change", ev => fnNumber(el, i18n.fmtInt(el.value)));
+				fnChange(el, ev => fnNumber(el, i18n.fmtInt(el.value)));
 				return fnNumber(el, el.value && i18n.isoInt(+el.value)); // iso format integer
 			}
 			if (fnContains(el, opts.boolClass))
