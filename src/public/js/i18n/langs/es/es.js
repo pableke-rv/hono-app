@@ -118,6 +118,7 @@ export default {
 
     msgSend: "¿Confirma que desea firmar y enviar esta solicitud?",
     msgFirmar: "¿Confirma que desea firmar esta solicitud?",
+    msgFirmarEnviar: "¿Confirma que desea firmar y enviar esta comunicación?",
     msgRechazar: "¿Confirma que desea rechazar esta solicitud?",
     msgIntegrar: "¿Confirma que desea integrar esta solicitud en UXXI-EC?",
     msgRemove: "¿Confirma que desea eliminar esta solicitud?",
