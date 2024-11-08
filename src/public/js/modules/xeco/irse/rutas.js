@@ -31,7 +31,7 @@ function IrseRutas() {
 
 	const resume = { sizeOut: 0, sizeVp: 0 };
 	const STYLES = {
-		remove: "msgDelRuta",
+		remove: "removeRuta",
 		f1: (val, ruta) => i18n.isoDate(ruta.dt1), h1: (val, ruta) => sb.minTime(ruta.dt1), 
 		f2: (val, ruta) => i18n.isoDate(ruta.dt2), h2: (val, ruta) => sb.minTime(ruta.dt2),
 		principal: (val, ruta) => (ruta.mask & 1) ? '<span class="text-warn icon"> <i class="fal fa-flag-checkered"></i></span>' : "",

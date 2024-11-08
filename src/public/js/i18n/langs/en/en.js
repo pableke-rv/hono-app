@@ -118,6 +118,9 @@ export default {
     msgRechazar: "¿Confirma que desea rechazar esta solicitud?",
     msgIntegrar: "¿Confirma que desea integrar esta solicitud en UXXI-EC?",
     msgRemove: "¿Confirma que desea eliminar esta solicitud?",
+    removeCom: "¿Confirma que desea eliminar esta comunicación?",
+    removeOrg: "¿Confirma que desea eliminar esta orgánica de la comunicación?",
+    removeRuta: "¿Confirma que desea eliminar esta etapa de la comunicación?",
 
     //Collections
     msgBool: ["No", "Yes"],

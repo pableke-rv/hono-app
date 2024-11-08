@@ -604,7 +604,7 @@ function DomBox(opts) {
 		}*/
 		function fnRemoveRow(table, data, resume, styles) {
 			// Confirm, close prev. alerts and trigger remove event
-			let ok = table && data && i18n.confirm(styles?.remove || "remove");
+			let ok = table && data && self.confirm(styles?.remove || "remove");
 			if (ok && self.closeAlerts().trigger(table, "remove", resume.data).isOk()) {
 				data.splice(resume.index, 1); // Remove data row
 				resume.start = (resume.size > 1) ? resume.start : 0; // If empty Page => Go first page

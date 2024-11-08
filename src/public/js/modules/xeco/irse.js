@@ -41,7 +41,7 @@ tabs.setShowEvent("uxxiec", uxxiec.load);
 window.fnFirmar = () => i18n.confirm("msgFirmar") && loading();
 window.fnRechazar = () => formIrse.closeAlerts().required("#rechazo", "Debe indicar un motivo para el rechazo de la solicitud.").isOk() && i18n.confirm("msgRechazar");
 window.fnIntegrar = link => i18n.confirm("msgIntegrar") && loading() && link.hide().closest("tr").querySelectorAll(".estado").text("Procesando...");
-window.fnRemove = () => i18n.confirm("msgRemove") && loading();
+window.fnRemove = () => i18n.confirm("removeCom") && loading();
 window.fnUnlink = () => i18n.confirm("unlink") && loading();
 window.fnClone = () => i18n.confirm("reactivar") && loading();
 window.saveTab = () => formIrse.showOk(i18n.get("saveOk")).working();
@@ -78,8 +78,8 @@ window.ir = rutas;
 window.io = organicas;
 
 // Hack old DomBox Module
-window.i18n = i18n; // global messages
-dom.getData = selector => formIrse.getData(selector);
+dom.confirm = i18n.confirm; // for remove action
+dom.getData = selector => formIrse.getData(selector); // parse form data
 dom.isOk = () => (i18n.getValidation().isOk() || !formIrse.setErrors()); // update fields
 dom.isError = () => (i18n.getValidation().isError() && formIrse.setErrors()); // update fields
 dom.closeAlerts = () => { i18n.getValidators(); formIrse.closeAlerts(); return dom; } // reset msgs and alerts

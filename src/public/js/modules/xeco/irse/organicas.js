@@ -14,7 +14,7 @@ function IrseOrganicas() {
 		totTransporte: 0, totAc: 0
 	};
 	const STYLES = {
-		remove: "msgDelOrg",
+		remove: "removeOrg",
 		imp1: i18n.isoFloat,
 		subtipo: val => i18n.getItem("tiposMultiorganica", val)
 	};

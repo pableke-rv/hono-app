@@ -11,7 +11,7 @@ function IrsePerfil() {
 
 	const resume = {};
 	//const STYLES_CD = { imp: i18n.isoFloat, fCache: i18n.isoDate, onFinish: (matches, output) => ((matches == 3) ? output : "") };
-	const STYLES = { remove: "msgDelOrg", imp: i18n.isoFloat, resp: sb.lopd, fCache: i18n.isoDate };
+	const STYLES = { remove: "removeOrg", imp: i18n.isoFloat, resp: sb.lopd, fCache: i18n.isoDate };
 
 	let eRol, eCol, eFin, eAct, eTramit;
 	let organicas, current;
