@@ -16,12 +16,9 @@
 		</f:metadata>
 	</ui:define>
 	<ui:define name="header">
-		<link rel="stylesheet" type="text/css" href="/uae/resources/css/jquery-ui.min.css" />
-		<link rel="stylesheet" type="text/css" href="/uae/resources/css/uae.css" />
+		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
 	</ui:define>
 	<ui:define name="outputScript">
-		<script type="text/javascript" src="/uae/resources/js/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="/uae/resources/js/lib/uae-min.js"></script>
 		<script type="module" src="/uae/resources/js/modules/xeco/inicio.js"></script>
 	</ui:define>
 
@@ -32,35 +29,8 @@
 	</ui:define>
 
 	<ui:define name="body">
-		<div class="alerts">
-			<div class="hide alert alert-success">
-				<div class="alert-icon"><i class="fas fa-check-circle fa-2x"></i></div>
-				<div class="alert-text">#{uae.msgOk}</div>
-				<div class="alert-close"><i class="fas fa-times"></i></div>
-			</div>
-			<div class="hide alert alert-info">
-				<div class="alert-icon"><i class="fas fa-info fa-3x"></i></div>
-				<div class="alert-text">#{uae.msgInfo}</div>
-				<div class="alert-close"><i class="fas fa-times"></i></div>
-			</div>
-			<div class="hide alert alert-warn">
-				<div class="alert-icon"><i class="fas fa-exclamation-triangle fa-2x"></i></div>
-				<div class="alert-text">#{uae.msgWarn}</div>
-				<div class="alert-close"><i class="fas fa-times"></i></div>
-			</div>
-			<div class="hide alert alert-error alert-danger">
-				<div class="alert-icon"><i class="fas fa-exclamation fa-3x"></i></div>
-				<div class="alert-text"><h:outputText value="#{uae.msgErr}" escape="false" /></div>
-				<div class="alert-close"><i class="fas fa-times"></i></div>
-			</div>
-		</div>
-		<div class="loading hide">
-			<b class="far fa-circle-notch fa-3x fa-spin loading-content"></b>
-		</div>
-		<a id="back-to-top" href="#top" class="hide back-to-top">
-			<i class="fas fa-arrow-alt-up"></i>
-		</a>
-	
+		<ui:include src="parts/msgs.xhtml"></ui:include>
+
 		<h:form id="xeco" prependId="false" class="cards" onsubmit="loading();">
 			<div class="card-xeco">
 			<h2>Aplicaciones Económicas</h2>
@@ -88,43 +58,41 @@
 			<ul>
 				<li>
 					<a id="cargo-interno" href="#tab-toggle"><i class="fas fa-file-plus"></i> Certificado de cargo interno</a>
-					<div class="hide info-cargo-interno">
-					<div class="input-group input-group-block">
-						<label for="ej-pago">Ejercicios:</label>
-						<h:selectOneMenu id="ej-pago" value="#{uae.ejercicio}" styleClass="input-item input-control ui-select" tabindex="1">
+					<div class="ui-blocks hide info-cargo-interno">
+					<label class="ui-block">
+						<div class="label required">Ejercicios:</div>
+						<h:selectOneMenu id="ej-pago" value="#{uae.ejercicio}" styleClass="ui-input ui-select" tabindex="1">
 							<f:selectItems value="#{uae.ejercicios}" />
 						</h:selectOneMenu>
+					</label>
+					<label class="ui-block-xl autocomplete">
+						<div class="label required">Nº de JG / Descripción:</div>
+						<p:remoteCommand name="rcFindJg" action="#{uae.findCargoInterno()}" oncomplete="loadItems(xhr, status, args)" />
+						<h:inputText id="jg" value="#{uae.acJg}" styleClass="ui-input ui-autocomplete" tabindex="2" />
+						<h:inputHidden id="id-jg" value="#{uae.jg}" />
+						<ul role="list" class="results"></ul>
+					</label>
+					<div class="ui-block-btn">
+						<p:commandButton action="#{uae.cargoInterno()}" icon="far fa-share" oncomplete="showAlerts(xhr, status, args)"
+							styleClass="success-btn" style="min-height: 40px;" value="Solicitar" tabindex="3" />
 					</div>
-					<div class="input-group input-group-block">
-						<label for="jg">Nº de JG / Descripción:</label>
-						<div>
-							<h:inputText id="jg" value="#{uae.acJg}" tabindex="2" styleClass="input-item input-control input-control-text ac-xeco-item" />
-							<p:commandButton id="find-jg" action="#{uae.findCargoInterno()}" oncomplete="handleJson(xhr, status, args)" styleClass="hide" />
-							<h:inputHidden id="id-jg" value="#{uae.jg}" />
-						</div>
-					</div>
-					<div class="grupo pt10">
-						<p:commandButton action="#{uae.cargoInterno()}" ajax="false" icon="far fa-share" styleClass="success-btn" value="Solicitar" tabindex="3" />
-					</div>
-					<hr/>
 					</div>
 				</li>
 
 				<li>
 					<a id="incompatibilidad" href="#tab-toggle"><i class="fas fa-file-times"></i> Certificado de incompatibilidad</a>
-					<div class="navbar hide info-incompatibilidad">
-					<div class="input-group input-group-block">
-						<label for="tercero">Tercero (CIF / NIF / Nombre):</label>
-						<div>
-							<h:inputText id="tercero" value="#{uae.acTercero}" tabindex="4" styleClass="input-item input-control input-control-text ac-xeco-item" />
-							<p:commandButton id="find-tercero" action="#{uae.findTercero()}" oncomplete="handleJson(xhr, status, args)" styleClass="hide" />
-							<h:inputHidden id="nif-tercero" value="#{uae.tercero}" />
-						</div>
+					<div class="ui-blocks hide info-incompatibilidad">
+					<label class="ui-block-xl autocomplete">
+						<div class="label required">Tercero (CIF / NIF / Nombre):</div>
+						<p:remoteCommand name="rcFindTercero" action="#{uae.findTercero()}" oncomplete="loadItems(xhr, status, args)" />
+						<h:inputText id="tercero" value="#{uae.acTercero}" styleClass="ui-input ui-autocomplete" tabindex="4" />
+						<h:inputHidden id="nif-tercero" value="#{uae.tercero}" />
+						<ul role="list" class="results"></ul>
+					</label>
+					<div class="ui-block-btn">
+						<p:commandButton action="#{uae.incompatibilidad()}" icon="far fa-share" oncomplete="showAlerts(xhr, status, args)"
+							styleClass="success-btn" style="min-height: 40px;" value="Solicitar" tabindex="5" />
 					</div>
-					<div class="grupo pt10">
-						<p:commandButton action="#{uae.incompatibilidad()}" ajax="false" icon="far fa-share" styleClass="success-btn" value="Solicitar" tabindex="5" />
-					</div>
-					<hr/>
 					</div>
 				</li>
 

@@ -82,6 +82,7 @@ window.xlsx = (xhr, status, args) => {
         return false; // Server error
     const data = JSON.parse(args.data);
     excel.json(data, {
+        file: "informe ISU.xlsx",
         keys: [ // column order
             "ej", "cod", "jg", "fact", "nif", "ter", "impJg", "fJg", "descJg", 
             "nifInt", "int", "vinc", "gasto", "proy",

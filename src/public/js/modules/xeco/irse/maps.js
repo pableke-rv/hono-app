@@ -1,4 +1,5 @@
 
+import sb from "../../../components/StringBox.js";
 import rutas from "./rutas.js";
 
 const CT = rutas.getCT(); // CT location
@@ -75,7 +76,7 @@ window.initMap = () => {
 			return false;
 
 		//new place data and read location from loc1 and loc2
-		const ruta = i18n.toData();
+		const ruta = dom.getData();
 		ruta.dt1 = sb.toIsoDate(ruta.f1, ruta.h1);
 		ruta.dt2 = sb.toIsoDate(ruta.f2, ruta.h2);
 		ruta.lat1 = loc1.lat();

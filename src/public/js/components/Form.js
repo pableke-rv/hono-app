@@ -33,6 +33,7 @@ export default function(form, opts) {
 
 	this.isset = () => form;
 	this.getForm = () => form;
+	this.getElements = () => form.elements;
 	this.getId = () => form.id.value;
 	this.focus = el => { dom.focus(el); return self; }
 	this.setFocus = selector => self.focus(self.getInput(selector));
@@ -65,6 +66,8 @@ export default function(form, opts) {
 	}
 
 	this.html = selector => form.querySelector(selector).innerHTML;
+    this.getText = selector => dom.getText(form.querySelector(selector));
+    this.setText = (el, text) => { dom.text(el, text); return self; }
 	this.text = (selector, text) => { form.querySelectorAll(selector).text(text); return self; } // Update all texts info in form
 	this.render = (selector, data) => { form.querySelectorAll(selector).render(data); return self; } // HTMLElement.prototype.render
 
@@ -106,8 +109,10 @@ export default function(form, opts) {
 	this.values = (selector, value) => fnUpdate(selector, el => fnSetValue(el, value));
 	this.setData = (data, selector) => fnUpdate(selector, el => fnSetValue(el, data[el.name]));
 
+	this.getAttr = (selector, name) => dom.getAttr(self.getInput(selector), name);
 	this.setAttribute = (el, name, value) => { dom.setAttr(el, name, value); return self;}
 	this.setAttr = (selector, name, value) => self.setAttribute(self.getInput(selector), name, value);
+	this.delAttr = (selector, name) => { dom.delAttr(self.getInput(selector), name); return self; }
 
 	function fnParseValue(el) {
 		if (fnContains(el, opts.floatFormatClass))
@@ -119,7 +124,7 @@ export default function(form, opts) {
 		return el.value && el.value.trim(); // String trimed by default
 	}
 	this.getValue = el => el && fnParseValue(el);
-	this.getval = selector => self.getInput(selector).value;
+	this.getval = selector => dom.getValue(self.getInput(selector));
 	this.valueOf = selector => self.getValue(self.getInput(selector));
 	this.getData = selector => { // View to JSON
 		const data = {}; // Results container
@@ -136,9 +141,9 @@ export default function(form, opts) {
 		return data;
 	}
 
-	this.copy = (el1, el2) => fnValue(self.getInput(el1), self.getval(el2));
 	this.reset = selector => fnUpdate(selector, el => fnValue(el)); // reset inputs value (hidden to)
 	this.restart = selector => { const el = self.getInput(selector); el.focus(); return fnValue(el); } // remove value + focus
+	this.copy = (el1, el2) => { dom.setValue(self.getInput(el1), self.getval(el2)); return self; }
 
 	// Inputs helpers
 	this.setTable = (selector, opts) => new Table(form.querySelector(selector), opts); // table
@@ -166,8 +171,11 @@ export default function(form, opts) {
 	this.setDateRange = (f1, f2) => {
 		f1 = globalThis.isstr(f1) ? self.getInput(f1) : f1;
 		f2 = globalThis.isstr(f2) ? self.getInput(f2) : f2;
-		fnEvent(f1, "blur", ev => f2.setAttribute("min", f1.value));
-		return fnEvent(f2, "blur", ev => f1.setAttribute("max", f2.value));
+		if (f1 && f2) { // check if fields exist
+			fnEvent(f1, "blur", ev => f2.setAttribute("min", f1.value));
+			fnEvent(f2, "blur", ev => f1.setAttribute("max", f2.value));
+		}
+		return self;
 	}
 
 	this.change = fn => fnChange(form, fn);

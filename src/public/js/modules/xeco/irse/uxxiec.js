@@ -1,10 +1,11 @@
 
 import pf from "../../../components/Primefaces.js";
+import i18n from "../../../i18n/langs.js";
 
 function Uxxiec() {
 	const self = this; //self instance
     const RESUME = {}; // Resume table container
-    const STYLES = { imp: i18n.isoFloat, fUxxi: i18n.fmtDate };
+    const STYLES = { imp: i18n.isoFloat, fUxxi: i18n.isoDate };
     var op, operaciones; // vinc. container
 
     this.init = form => {

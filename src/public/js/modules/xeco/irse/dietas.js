@@ -1,12 +1,13 @@
 
 import coll from "../../../components/CollectionHTML.js";
+import i18n from "../../../i18n/langs.js";
 import organicas from "./organicas.js";
 
 function IrseDietas() {
 	const self = this; //self instance
 	const resume = { dias: 0, impMax: 0, reducido: 0, percibir: 0 };
 	const STYLES = {
-		f1: i18n.fmtDate, f2: i18n.fmtDate,
+		f1: i18n.isoDate, f2: i18n.isoDate,
 		imp1: i18n.isoFloat1, imp2: i18n.isoFloat, impMax: i18n.isoFloat, maxDietas: i18n.isoFloat1, reducido: i18n.isoFloat, percibir: i18n.isoFloat,
 		dietas: (val, dieta, j) => { //calculado
 			let output = "";

@@ -31,9 +31,18 @@ export default class Validators extends Msgs {
 	const RE_DINER_CLUB = /^(?:3(?:0[0-5]|[68][0-9])[0-9]{11})$/;
 	const RE_JCB = /^(?:(?:2131|1800|35\d{3})\d{11})$/;*/
 
-	gt0(name, value, msg) { return ((value && (value > 0))) ? this : this.addError(name, "errGt0", msg); } // required gt0
-	ge0(name, value, msg) { return (!value || (value > 0)) ? this : this.addError(name, "errGt0", msg); } // optional or gt0
+	gt(name, value, min, msgtip, msg) { return (value && (value > min)) ? this : this.addError(name, msgtip, msg); } // required gt min
+	gt1(name, value, msgtip, msg) { return this.gt(name, value, 1, msgtip, msg); } // required gt1
+	gt0(name, value, msg) { return this.gt(name, value, 0, "errGt0", msg); } // required gt0
+	ge(name, value, min, msgtip, msg) { return (!value || (value >= min)) ? this : this.addError(name, msgtip, msg); } // optional or ge min
+	ge1(name, value, msgtip, msg) { return this.ge(name, value, 1, msgtip, msg); } // optional or ge1
+	ge0(name, value, msg) { return this.ge(name, value, 0, "errGt0", msg); } // optional or ge0
 	max(name, value, max, msg) { return (!value || (value.length <= max)) ? this : this.addError(name, "errMaxlength", msg); } // optional or length <= max
+	le(name, value, max, msgtip, msg) { return (value && (value > 0) && (value <= max)) ? this : this.addError(name, msgtip, msg); } // required gt0 and le max
+	le10(name, value, msgtip, msg) { return this.le(name, value, 10, msgtip, msg); } // required gt0 and le 10
+	le20(name, value, msgtip, msg) { return this.le(name, value, 20, msgtip, msg); } // required gt0 and le 20
+	le25(name, value, msgtip, msg) { return this.le(name, value, 25, msgtip, msg); } // required gt0 and le 25
+	le50(name, value, msgtip, msg) { return this.le(name, value, 50, msgtip, msg); } // required gt0 and le 50
 	isKey(name, value, msg) { // Required DB-key
 		if (!value)
 			return this.addRequired(name, msg);
@@ -105,6 +114,13 @@ export default class Validators extends Msgs {
 			return this.addRequired(name, msg); // required
 		const ok = /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d{1,3}Z$/.test(value); // RE_DATE_TIME format
 		return ok ? this : this.addDateError(name, msg);
+	}
+	past(name, value, msg) {
+		if (!fnDate(this, name, value, msg))
+			return this; // format message error
+		if (value.substring(0, 19) > Validators.#sysdate.substring(0, 19)) //yyyy-mm-ddThh:MM:ss
+			return this.addError(name, "errDateLt", msg); // not in time
+		return this;
 	}
 	leToday(name, value, msg) {
 		if (!fnDate(this, name, value, msg))

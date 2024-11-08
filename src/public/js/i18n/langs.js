@@ -60,7 +60,7 @@ function Langs() {
     this.strval = (data, name) => data[name + "_" + _lang.lang] || data[name];
 
     // Float formats
-    const options = { minimumFractionDigits: 2 };
+    const options = { minimumFractionDigits: 1 };
     function toFloat(str, d) { //String to Float
         if (!str)
             return null; // nada que parsear
@@ -72,7 +72,9 @@ function Langs() {
         return isNaN(num) ? null : num;
     }
     function isoFloat(num, n) { // Float to String formated
-        return isnum(num) ? round(num, n ?? 2).toLocaleString(_lang.lang, options) : null;
+        n = n ?? 2; // 2 decimals by default
+        options.minimumFractionDigits = n;
+        return isnum(num) ? round(num, n).toLocaleString(_lang.lang, options) : null;
     }
     function fmtFloat(str, dIn, n) { // String to String formated
         return isoFloat(toFloat(str, dIn), n);
@@ -88,9 +90,11 @@ function Langs() {
 
     this.toFloat = str => _lang.toFloat(str);
     this.isoFloat = num => _lang.isoFloat(num);
+    this.isoFloat1 = num => _lang.isoFloat(num, 1);
     this.isoFloat2 = num => _lang.isoFloat(num);
     this.isoFloat3 = num => _lang.isoFloat(num, 3);
     this.fmtFloat = str => _lang.fmtFloat(str);
+    this.fmtFloat1 = str => _lang.fmtFloat(str, 1);
     this.fmtFloat2 = str => _lang.fmtFloat(str);
     this.fmtFloat3 = str => _lang.fmtFloat(str, 3);
 

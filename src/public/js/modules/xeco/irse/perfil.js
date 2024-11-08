@@ -1,5 +1,7 @@
 
 import pf from "../../../components/Primefaces.js";
+import i18n from "../../../i18n/langs.js";
+
 import actividades from "../../../data/irse/actividades.js"
 import tribunales from "../../../data/irse/tribunales.js"
 
@@ -121,7 +123,7 @@ function IrsePerfil() {
 			select: item => {
 				const email = item.email;
 				const mailto = eCol.nextElementSibling;
-				dom.toggleHide(mailto, !email).attr(mailto, "href", "mailto:" + email);
+				form.setVisible(mailto, email).setAttribute(mailto, "href", "mailto:" + email);
 				self.setColectivo(item.ci).update(); //actualizo colectivo + tramite
 				eCol.parentNode.show(); //muestro el colectivo
 				return item.nif;
@@ -155,7 +157,7 @@ function IrsePerfil() {
 			onReset: () => { i18n.set("imp", null); form.hide(".msg-cd"); }
 		});
 	
-		organicas = ab.parse(dom.getText("#org-data")) || [];
+		organicas = ab.parse(form.getText("#org-data")) || [];
 		const impCd = organicas[0]?.imp;
 		i18n.set("imp", impCd); //importe precargado
 
@@ -163,8 +165,7 @@ function IrsePerfil() {
 		dom.table("#organicas", organicas, resume, STYLES);
 		dom.onRenderTable("#organicas", table => {
 			fnSave(); //set new perfil
-			dom.toggleHide("#add-org", organicas.length);
-			form.closeAlerts().setval("#organica");
+			form.setVisible("#add-org", !organicas.length).closeAlerts().setval("#organica");
 		});
 
 		fnUpdatePerfil(); // show first perfil for update

@@ -124,13 +124,13 @@ function StringBox() {
 	this.isoEnDateTime = str => str && (fnEnDate(str) + " " + fnIsoTime(str)); //yyyy-mm-dd hh:MM:ss
 	this.isoEsDateTime = str => str && (fnEsDate(str) + " " + fnIsoTime(str)); //dd/mm/yyyy hh:MM:ss
 	this.diffDate = (str1, str2) => (Date.parse(str1) - Date.parse(str2));
-	this.toIsoDate = (date, time) => (date + "T" + self.toIsoTime(time) + ".0");
+	/*this.toIsoDate = (date, time) => (date + "T" + self.toIsoTime(time) + ".0");
 	this.toIsoTime = str => {
 		const size = fnSize(str);
 		if (size == 0) // no time
 			return "00:00:00"; //hh:MM:ss
 		return (size < 6) ? (str + ":00") : str;
-	}
+	}*/
 
 	this.inYear = (str1, str2) => self.substring(str1, 0, 4) == self.substring(str2, 0, 4);
 	this.inMonth = (str1, str2) => self.substring(str1, 0, 7) == self.substring(str2, 0, 7);
@@ -175,7 +175,7 @@ function StringBox() {
 	this.enVal = (obj, name) => obj[name + "_en"] || obj[name]; // EN access prop
 	this.format = (data, tpl, opts) => tpl.render(data, opts);
 	this.render = (data, tpl, opts) => tpl.render(data, opts);
-	this.entries = function(data, tpl, opts) {
+	/*this.entries = function(data, tpl, opts) {
 		opts = opts || {}; //default settings
 		const fnVal = opts.getValue || self.val;
 
@@ -186,5 +186,5 @@ function StringBox() {
 			output += tpl.replace("@key;", k).replace("@value;", value);
 		}
 		return output;
-	}
+	}*/
 }

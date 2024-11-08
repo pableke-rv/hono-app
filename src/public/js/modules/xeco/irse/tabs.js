@@ -1,6 +1,7 @@
 
 import sb from "../../../components/StringBox.js";
 import pf from "../../../components/Primefaces.js";
+import i18n from "../../../i18n/langs.js";
 
 import rutas from "./rutas.js";
 import organicas from "./organicas.js";
@@ -35,7 +36,7 @@ export const viewTab5 = (tab, form) => {
 	}
 
 	// trayectos de ida y vuelta => al menos 2
-	tab.querySelectorAll(".rutas-gt-1").forEach(el => el.classList.toggle("hide", rutas.size() < 2));
+	tab.querySelectorAll(".rutas-gt-1").toggle("hide", rutas.size() < 2);
 	dom.table("#rutas-read", rutas.getAll(), rutas.getResume(), rutas.getStyles());
 
 	const start = sb.isoDate(rutas.first().dt1);
@@ -63,10 +64,8 @@ export const viewTab5 = (tab, form) => {
 		dom.closeAlerts();
 		if (isDoc())
 			return dom.required("#txtGasto", "errDoc").isOk();
-		dom.gt0("#impGasto", "errGt0", "errRequired")
-			.required(eTipoGasto, "errTipoGasto", "errRequired")
-		if (dom.isError())
-			return false;
+		if (dom.gt0("#impGasto", "errGt0").required("#tipo-gasto", "errTipoGasto").isError())
+			return false; // required inputs error
 		if (isTaxi()) //ISU y taxi
 			return dom.required("#txtGasto", "errRequired").isOk();
 		if (isExtra())
@@ -75,7 +74,7 @@ export const viewTab5 = (tab, form) => {
 			return !tabs.showTab(12);
 		if (isPernocta()) {
 			if (!form.valueOf("#fAloMin") || !form.valueOf("#fAloMax"))
-				return !dom.addError("fAloMin", "errFechasAloja");
+				return dom.addError("fAloMin", "errFechasAloja").isOk();
 		}
 		return loading();
 	}
@@ -99,6 +98,8 @@ export const initTab9 = (tab, form) => {
 	dom.onChangeInput("#paises", el => { fnPais(el.value); form.setval("#banco"); })
 		.onChangeInput("#iban", el => { el.value = sb.toWord(el.value); })
 		.onChangeInput("#swift", el => { el.value = sb.toWord(el.value); });
+
+	const valid = i18n.getValidation();
 	cuentas.options.forEach(opt => {
 		let entidad = valid.getEntidad(opt.innerText);
 		if (entidad)
@@ -110,7 +111,7 @@ export const initTab9 = (tab, form) => {
 		tab.querySelector("#grupo-iban").show();
 	}
 
-	window.fnPaso9 = function() {
+	function isValidPaso9() {
 		dom.closeAlerts().required("#iban", "errIban", "errRequired");
 		if (!cuentas.value) {
 			if (form.valueOf("#paises") != "ES")
@@ -120,7 +121,8 @@ export const initTab9 = (tab, form) => {
 		}
 		if (form.valueOf("#urgente") == "2")
 			dom.required("#extra", "errExtra", "errRequired").geToday("#fMax", "errFechaMax", "errRequired");
-		return dom.isOk() && organicas.build() && loading();
+		return dom.isOk() && organicas.build();
 	}
-	window.fnSend = () => i18n.confirm("msgFirmarEnviar");
+	window.fnPaso9 = () => isValidPaso9() && loading();
+	window.fnSend = () => isValidPaso9() && i18n.confirm("msgFirmarEnviar") && loading();
 }

@@ -84,6 +84,8 @@ function StringBox() {
     this.isoDate = str => str && str.substring(0, 10); //yyyy-mm-dd
     this.isoTime = str => str && str.substring(11, 19); //hh:MM:ss
     this.isoTimeShort = str => str && str.substring(11, 16); //hh:MM
+	this.toIsoTime = str => str ? (str + ":00") : "00:00:00"; //hh:MM:ss
+	this.toIsoDate = (date, time) => (date + "T" + self.toIsoTime(time) + ".0Z"); //yyyy-mm-ddThh:MM:ss
     this.getYear = str => (str || sysdate).substring(0, 4); //yyyy string format
     this.getHours = str => +(str || sysdate).substring(11, 13); //hh int format
     this.getMonth = str => +(str || sysdate).substring(5, 7); //mm int format

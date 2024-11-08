@@ -7,7 +7,7 @@
  */
 function I18nBox() {
 	const self = this; //self instance
-	const DATA = new Map(); // Data container
+	//const DATA = new Map(); // Data container
 	const MSGS = new Map(); // Messages container
 	const KEY_ERROR = "msgError"; // Error name message
 
@@ -232,16 +232,16 @@ function I18nBox() {
 	this.setError = (msg, name, msgtip) => self.setMsg(KEY_ERROR, self.tr(msg)).setMsg(name, self.tr(msgtip));
 	this.getNumMsgs = () => MSGS.size;
 
-	this.getData = name => name ? DATA.get(name) : DATA;
-	this.toData = () => Object.fromEntries(DATA); // Build plain object
-	this.toMsgs = () => Object.fromEntries(MSGS); // Build plain object
+	//this.getData = name => name ? DATA.get(name) : DATA;
+	//this.toData = () => Object.fromEntries(DATA); // Build plain object
+	//this.toMsgs = () => Object.fromEntries(MSGS); // Build plain object
 
 	// Save value if it is defined else error
-	this.reset = () => { DATA.clear(); MSGS.clear(); return self; }
+	this.reset = () => { /*DATA.clear();*/ MSGS.clear(); return self; }
 	this.start = (lang, mod) => self.reset().setI18n(lang, mod);
 	this.valid = function(name, value, msg, msgtip) {
 		if (sb.isset(value)) {
-			DATA.set(name, value);
+			//DATA.set(name, value);
 			return true;
 		}
 		self.setError(msg, name, msgtip);

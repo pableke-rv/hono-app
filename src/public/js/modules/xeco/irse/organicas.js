@@ -1,4 +1,5 @@
 
+import i18n from "../../../i18n/langs.js";
 import perfil from "./perfil.js";
 import rutas from "./rutas.js";
 import dietas from "./dietas.js";
@@ -15,7 +16,7 @@ function IrseOrganicas() {
 	const STYLES = {
 		remove: "msgDelOrg",
 		imp1: i18n.isoFloat,
-		subtipo: val => i18n.arrval("tiposMultiorganica", val)
+		subtipo: val => i18n.getItem("tiposMultiorganica", val)
 	};
 	let organicas;
 
@@ -33,15 +34,15 @@ function IrseOrganicas() {
 
 	this.validAll = function() {
 		if (!nb.eq01(resume.totManutenciones, self.getTotDietas()))
-			return !dom.addError("#imp1-org", "errMaxDietas");
+			return dom.addError("#imp1-org", "errMaxDietas").isOk();
 		if (!nb.eq01(resume.totPernoctas, self.getTotPernoctas()))
-			return !dom.addError("#imp1-org", "errMaxAloja");
+			return dom.addError("#imp1-org", "errMaxAloja").isOk();
 		if (!nb.eq01(resume.totTransporte, self.getTotTransporte()))
-			return !dom.addError("#imp1-org", "errMaxTrans");
+			return dom.addError("#imp1-org", "errMaxTrans").isOk();
 		if (!nb.eq01(resume.totAc, IRSE.totAc))
-			return !dom.addError("#imp1-org", "errMaxAsist");
+			return dom.addError("#imp1-org", "errMaxAsist").isOk();
 		if (!nb.eq01(resume.imp1, self.getImpBruto()))
-			return !dom.addError("#imp1-org", "errImpBruto");
+			return dom.addError("#imp1-org", "errImpBruto").isOk();
 		return true;
 	}
 	this.add = function() {
@@ -50,18 +51,18 @@ function IrseOrganicas() {
 			.fk("#organicas", "errOrganicas", "errRequired")
 			.gt0("#imp1-org", "errGt0", "errRequired");
 		if (dom.isOk()) {
-			const gasto = i18n.toData();
+			const gasto = dom.getData();
 			//validacion de importes
 			if ((gasto.subtipo == "1") && ((gasto.imp1 + resume.totManutenciones) > self.getTotDietas()))
-				return !dom.addError("#imp1-org", "errMaxDietas");
+				return dom.addError("#imp1-org", "errMaxDietas").isOk();
 			if ((gasto.subtipo == "2") && ((gasto.imp1 + resume.totPernoctas) > self.getTotPernoctas()))
-				return !dom.addError("#imp1-org", "errMaxAloja");
+				return dom.addError("#imp1-org", "errMaxAloja").isOk();
 			if ((gasto.subtipo == "3") && ((gasto.imp1 + resume.totTransporte) > self.getTotTransporte()))
-				return !dom.addError("#imp1-org", "errMaxTrans");
+				return dom.addError("#imp1-org", "errMaxTrans").isOk();
 			if ((gasto.subtipo == "4") && ((gasto.imp1 + resume.totAc) > IRSE.totAc))
-				return !dom.addError("#imp1-org", "errMaxAsist");
+				return dom.addError("#imp1-org", "errMaxAsist").isOk();
 			if ((gasto.imp1 + resume.imp1) > IRSE.bruto)
-				return !dom.addError("#imp1-org", "errImpBruto");
+				return dom.addError("#imp1-org", "errImpBruto").isOk();
 
 			//completo los datos e inserto el gasto
 			gasto.cod = dom.getOptText("#organicas");
@@ -75,7 +76,7 @@ function IrseOrganicas() {
 	}
 	this.build = function() {
 		if (perfil.empty())
-			return !dom.addError("#imp1-org", "errImputacion");
+			return dom.addError("#imp1-org", "errImputacion").isOk();
 		if (perfil.isMultiorganica())
 			return self.validAll();
 

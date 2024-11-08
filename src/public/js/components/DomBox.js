@@ -5,7 +5,9 @@ function DomBox() {
 	this.focus = el => { el && el.focus(); return self; }
 	this.getAttr = (el, name) => el && el.getAttribute(name);
 	this.setAttr = (el, name, value) => { el && el.setAttribute(name, value); return self; }
+	this.delAttr = (el, name) => { el && el.removeAttribute(name); return self; }
     this.render = (el, data, i, size) => { el && el.render(data, i, size); return self; }
+	this.empty = el => !el || !el.innerHTML || (el.innerHTML.trim() === "");
 
 	this.setval = (el, value) => { // el must exists
 		if ((el.tagName == "SELECT") && !value)
@@ -15,16 +17,16 @@ function DomBox() {
 		return self;
 	}
     this.setValue = (el, value) => el ? self.setval(el, value) : self;
-    this.getValue = el => el && el.value;
+    this.getValue = el => el?.value;
 
-    this.getText = el => el && el.innerText;
+    this.getText = el => el?.innerText;
     this.text = (el, text) => {
         if (el)
             el.innerText = text;
         return self;
     }
 
-    this.getHtml = el => el && el.innerHTML;
+    this.getHtml = el => el?.innerHTML;
     this.html = (el, html) => {
         if (el)
             el.innerHTML = html;

@@ -28,14 +28,14 @@ function DomBox(opts) {
 
 	// Update congig
 	Object.assign(CONFIG, opts);
-	const TIP_ERR_SELECTOR = "." + CONFIG.classTipError;
-	const CHEK_LIST_SELECTOR = "." + CONFIG.classCheckList;
-	const CHEK_GROUP_SELECTOR = "." + CONFIG.classCheckGroup;
+	//const TIP_ERR_SELECTOR = "." + CONFIG.classTipError;
+	//const CHEK_LIST_SELECTOR = "." + CONFIG.classCheckList;
+	//const CHEK_GROUP_SELECTOR = "." + CONFIG.classCheckGroup;
 
 	const fnSelf = () => self;
-	const fnParam = value => value; // return param value
+	//const fnParam = value => value; // return param value
 	//const fnValue = (obj, name) => obj[name]; // get prop.
-	const fnLog = data => console.log("Log:", data); // Show log
+	//const fnLog = data => console.log("Log:", data); // Show log
 	const fnSplit = str => str ? str.split(/\s+/) : []; // class separator
 	const fnQuery = (elem, parent) => sb.isstr(elem) ? self.get(elem, parent) : elem;
 	const fnQueryAll = list => sb.isstr(list) ? document.querySelectorAll(list) : list;
@@ -49,7 +49,7 @@ function DomBox(opts) {
 	this.redir = (url, target) => { url && window.open(url, target || "_blank"); return self; };
 	this.unescape = html => { TEXT.innerHTML = html; return TEXT.value; }
 	this.escape = text => { DIV.innerHTML = text; return DIV.innerHTML; }
-	this.scroll = function(el, win) {
+	/*this.scroll = function(el, win) {
 		win = win || window; //window to apply scroll
 		el = el || win.document.body; //destination elem
 		el.scrollIntoView({ behavior: "smooth" }); //Scroll to destination with a slow effect
@@ -67,7 +67,7 @@ function DomBox(opts) {
 			let promise = (contentType.indexOf("application/json") > -1) ? res.json() : res.text(); //response
 			return promise.then(res.ok ? opts.resolve : opts.reject); //ok = 200
 		});
-	}
+	}*/
 	this.copyToClipboard = function(str) {
 		TEXT.value = str;
 		TEXT.select(); //select text
@@ -93,7 +93,7 @@ function DomBox(opts) {
 	this.map = (list, cb)  => self.toArray(list).map(cb);
 	this.values = list => self.map(list, el => el.value);
 
-	this.prev = (el, selector) => {
+	/*this.prev = (el, selector) => {
 		el = el.previousElementSibling;
 		while (selector && el) {
 			if (el.matches(selector))
@@ -118,7 +118,7 @@ function DomBox(opts) {
 		while (el.firstChild)
 			el.removeChild(el.firstChild);
 		return self;
-	}
+	}*/
 
 	// Inputs and focusables selectors
 	const INPUTS = "input,textarea,select";
@@ -128,12 +128,12 @@ function DomBox(opts) {
 
 	this.inputs = el => self.getAll(INPUTS, el);
 	this.focus = el => { el && el.focus(); return self; }
-	this.checked = el => self.getAll("input:checked", el);
-	this.checks = el => self.getAll("input[type=checkbox]", el);
-	this.check = (list, value) => self.each(list, el => { el.checked = value; });
-	this.getFormInputs = form => self.filter(INPUTS, self.getForm(form).elements);
-	this.binary = (list, mask) => self.each(list, (el, i) => { el.checked = nb.mask(mask, i); });
-	this.integer = list => {
+	//this.checked = el => self.getAll("input:checked", el);
+	//this.checks = el => self.getAll("input[type=checkbox]", el);
+	//this.check = (list, value) => self.each(list, el => { el.checked = value; });
+	//this.getFormInputs = form => self.filter(INPUTS, self.getForm(form).elements);
+	//this.binary = (list, mask) => self.each(list, (el, i) => { el.checked = nb.mask(mask, i); });
+	/*this.integer = list => {
 		let aux = ""; // Binary string, for example: "01001011"
 		self.reverse(list, el => { aux += el.checked ? "1" : "0"; });
 		return parseInt(aux, 2); // Bin2Int
@@ -143,23 +143,20 @@ function DomBox(opts) {
 		self.binary(group, el.value); // check/uncheck subgroup
 		el.checked = (group.length == self.filter(":checked", group).length);
 		return self;
-	}
+	}*/
 
 	// Inputs values
 	function fnSetVal(el, value) {
-		value = value ?? EMPTY; // define value as string
-		if (el.tagName === "SELECT") // select option
-			el.selectedIndex = Math.max(self.findIndex("[value='" + value + "']", el.options), 0);
-		else if ((el.type === "checkbox") || (el.type === "radio"))
-			el.checked = (el.value == value);
+		if ((el.tagName == "SELECT") && !value)
+			el.selectedIndex = 0;
 		else
-			el.value = value;
+			el.value = value || ""; // String
 		return self;
 	}
-	this.val = (list, value) => self.each(list, el => fnSetVal(el, value));
+	//this.val = (list, value) => self.each(list, el => fnSetVal(el, value));
 
 	// Elements attributes
-	this.attr = (list, name, value) => self.each(list, el => el.setAttribute(name, value));
+	/*this.attr = (list, name, value) => self.each(list, el => el.setAttribute(name, value));
 	this.removeAttr = (list, name) => self.each(list, el => el.removeAttribute(name));
 	this.getAttr = function(el, name, parent) {
 		el = fnQuery(el, parent); //find element
@@ -201,23 +198,23 @@ function DomBox(opts) {
 		});
 	}
 	this.load = (form, data, parsers) => self.loadInputs(self.getFormInputs(form), data, parsers);
-	this.display = (form, data, styles) => self.displayInputs(self.getFormInputs(form), data, styles);
+	this.display = (form, data, styles) => self.displayInputs(self.getFormInputs(form), data, styles);*/
 
-	function fnSetError(el) {
-		const partner = self.sibling(el, INPUTS); // Partner element
-		const tip = self.sibling(el, TIP_ERR_SELECTOR); // Show tip error
+	/*function fnSetError(el) {
+		const partner = el.sibling(INPUTS); // Partner element (sibling build in alert component)
+		const tip = el.sibling(TIP_ERR_SELECTOR); // Show tip error (sibling build in alert component)
 		return self.showError(i18n.getError()).setHtml(tip, i18n.getMsg(el.name)).show(tip)
 					.addClass(el, CONFIG.classInputError).addClass(partner, CONFIG.classInputError)
 					.focus(fnVisible(el) ? el : partner);
-	}
-	function fnValidate(inputs, validators, messages) {
+	}*/
+	/*function fnValidate(inputs, validators, messages) {
 		return self.closeAlerts().reverse(inputs, el => { // Reverse iterator
 			const fn = validators[el.name] || fnSelf; // Validator function
 			const msgtip = messages[el.name] || validators[el.name + "Error"];
 			fn(el.name, el.value, messages.msgError, msgtip) || fnSetError(el);
 		}).isOk();
-	}
-	this.setInputError = (el, msg, msgtip, fn) => {
+	}*/
+	/*this.setInputError = (el, msg, msgtip, fn) => {
 		el = self.getInput(el); // Get input
 		if (!el) // If no input => ok
 			return self;
@@ -226,8 +223,8 @@ function DomBox(opts) {
 			return fnSetError(el); // Restyle element
 		}
 		return fn(el.name, el.value, msg, msgtip) ? self : fnSetError(el);
-	}
-	this.validateInputs = (inputs, validators, messages) => {
+	}*/
+	/*this.validateInputs = (inputs, validators, messages) => {
 		validators = validators || {}; // Default container
 		messages = messages || {}; // View messages
 
@@ -242,34 +239,30 @@ function DomBox(opts) {
 		const key = form.getAttribute("id") + "FormError"; // Specific key error message
 		messages.msgError = messages[key] || validators[key] || messages.msgError || validators.msgError;
 		return fnValidate(self.filter(INPUTS, form.elements), validators, messages);
-	}
+	}*/
 
 	function fnSetText(el, value) {
 		el.classList.toggle(CONFIG.classHide, !value);
 		el.innerText = value;
 		return self;
 	}
-	this.getText = function(el, parent) {
+	/*this.getText = function(el, parent) {
 		el = fnQuery(el, parent); //find element
 		return el && el.innerText; //text
-	}
+	}*/
 	this.setText = function(el, value, parent) {
 		el = fnQuery(el, parent); //find element
 		return el ? fnSetText(el, value ?? EMPTY) : self;
 	}
-	this.text = function(list, value) {
+	/*this.text = function(list, value) {
 		value = value ?? EMPTY; // define value as string
 		return self.each(list, el => fnSetText(el, value));
-	}
+	}*/
 
 	function fnSetHtml(el, value) {
 		el.classList.toggle(CONFIG.classHide, !value);
 		el.innerHTML = value;
 		return self;
-	}
-	this.getHtml = function(el, parent) {
-		el = fnQuery(el, parent); //find element
-		return el && el.innerHTML; //html
 	}
 	this.setHtml = function(el, value, parent) {
 		el = fnQuery(el, parent); //find element
@@ -291,27 +284,27 @@ function DomBox(opts) {
 	}
 
 	this.empty = el => !el || !el.innerHTML || (el.innerHTML.trim() === EMPTY);
-	this.add = (node, list) => self.each(list, el => node.appendChild(el));
+	/*this.add = (node, list) => self.each(list, el => node.appendChild(el));
 	this.append = function(text, list) {
 		list = list || document.body;
 		return self.each(list, el => {
 			DIV.innerHTML = text; // As clone
 			self.add(el, DIV.childNodes);
 		});
-	}
+	}*/
 
 	// Format and parse contents
 	const TEMPLATES = {}; //container
-	this.getTpl = name => TEMPLATES[name];
-	this.setTpl = (name, tpl) => { TEMPLATES[name] = tpl; return self; }
-	this.loadTemplates = () => self.each("template[id]", tpl => self.setTpl(tpl.id, tpl.innerHTML));
+	//this.getTpl = name => TEMPLATES[name];
+	//this.setTpl = (name, tpl) => { TEMPLATES[name] = tpl; return self; }
+	//this.loadTemplates = () => self.each("template[id]", tpl => self.setTpl(tpl.id, tpl.innerHTML));
 	this.render = function(el, formatter) {
 		el.id = el.id || ("_" + sb.rand()); // force unique id for element
 		let key = el.dataset.tpl || el.id; // tpl asociated
 		TEMPLATES[key] = TEMPLATES[key] || el.innerHTML;
 		return fnSetHtml(el, formatter(TEMPLATES[key]));
 	}
-	this.format = (selector, data, opts) => {
+	/*this.format = (selector, data, opts) => {
 		const elements = fnQueryAll(selector);
 		data.size = elements.length; //reuse object
 		ab.each(elements, (el, i) => {
@@ -323,7 +316,7 @@ function DomBox(opts) {
 	}
 	this.tr = (selector, opts) => self.format(selector, i18n.getLang(), opts); // Extends internacionalization
 	this.replace = (selector, value) => self.each(selector, el => { el.outerHTML = value; });
-	this.parse = (selector, formatter)  => self.each(selector, el => { el.outerHTML = formatter(el.outerHTML); });
+	this.parse = (selector, formatter)  => self.each(selector, el => { el.outerHTML = formatter(el.outerHTML); });*/
 
 	// Styles
 	//const isHide = el => el.classList.contains(CONFIG.classHide);
@@ -350,10 +343,10 @@ function DomBox(opts) {
 	this.toggleHide = (list, force) => self.toggle(list, CONFIG.classHide, force);
 	this.toggleLink = (el, force) => self.toggleHide(".info-" + el.id, force).setFocus(el.parentNode);
 
-	this.css = function(list, prop, value) {
+	/*this.css = function(list, prop, value) {
 		const camelProp = prop.replace(/(-[a-z])/, g => g.replace("-", EMPTY).toUpperCase());
 		return self.each(list, el => { el.style[camelProp] = value; });
-	}
+	}*/
 
 	// Events
 	const ON_CHANGE = "change";
@@ -376,26 +369,28 @@ function DomBox(opts) {
 	this.change = (list, fn) => self.each(list, (el, i) => fnEvent(el, ON_CHANGE, i, fn));
 	this.onchange = this.onChange = self.change;
 
-	this.keyup = (list, fn) => self.each(list, (el, i) => fnEvent(el, "keyup", i, fn));
+	/*this.keyup = (list, fn) => self.each(list, (el, i) => fnEvent(el, "keyup", i, fn));
 	this.onkeyup = this.onKeyup = self.keyup;
 
 	this.keydown = (list, fn) => self.each(list, (el, i) => fnEvent(el, "keydown", i, fn));
 	this.onkeydown = this.onKeydown = self.keydown;
 
 	this.submit = (list, fn) => self.each(list, (el, i) => fnEvent(el, "submit", i, fn));
-	this.onsubmit = this.onSubmit = self.submit;
+	this.onsubmit = this.onSubmit = self.submit;*/
 
 	this.ready(function() {
 		var tables, inputs;
-		self.update = () => {
+
+		self.setTables = node => { tables = node.querySelectorAll("table"); return self; }
+		self.setInputs = fields => { inputs = fields; return self; }
+		/*self.update = () => {
 			const elements = self.getAll("table," + INPUTS);
 			tables = self.filter("table", elements); //all html tables
-			inputs = self.filter(INPUTS, elements); //all html inputs
-			return self;
-		}
+			return self.setInputs(self.filter(INPUTS, elements)); //all html inputs
+		}*/
 
-		self.update(); // init.
-		self.isOk = i18n.isOk;
+		//self.update(); // init.
+		/*self.isOk = i18n.isOk;
 		self.isError = i18n.isError;
 
 		// Alerts handlers
@@ -403,7 +398,7 @@ function DomBox(opts) {
 		const texts = self.getAll("." + CONFIG.classAlertText, alerts);
 		const showAlert = el => { el.parentNode.classList.add("active"); return self; }
 		const closeAlert = el => { el.parentNode.classList.remove("active"); return self; }
-		const setAlert = (el, txt) => txt ? showAlert(el).setHtml(el, txt).scroll() : self;
+		const setAlert = (el, txt) => txt ? showAlert(el).setHtml(el, txt) : self;
 
 		self.showOk = msg => setAlert(texts[0], msg); //green
 		self.showInfo = msg => setAlert(texts[1], msg); //blue
@@ -418,7 +413,7 @@ function DomBox(opts) {
 			return self.each(texts, closeAlert).removeClass(inputs, CONFIG.classInputError).html(tips, "").hide(tips);
 		}
 
-		self.setOk = (form, msg) => self.showOk(msg).clearForm(form);
+		//self.setOk = (form, msg) => self.showOk(msg).clearForm(form);
 		self.setErrors = function(data) {
 			self.closeAlerts(); //close prev errros
 			if (sb.isstr(data)) //Is string
@@ -431,37 +426,36 @@ function DomBox(opts) {
 		// Show posible server messages after DOMContentLoaded event
 		setTimeout(() => self.each(texts, el => { el.firstChild && showAlert(el); }), 1);
 		self.click(self.getAll("." + CONFIG.classAlertClose, alerts), closeAlert); // close click event
+		*/
 
 		// Tables, Forms and Inputs helpers
 		self.getTable = elem =>  sb.isstr(elem) ? self.find(elem, tables) : elem;
-		self.getTables = elem => elem ? self.filter(elem, tables) : tables;
 		self.getInput = elem => sb.isstr(elem) ? self.find(elem, inputs) : elem;
-		self.getInputs = elem => elem ? self.filter(elem, inputs) : inputs;
 
-		self.eachInput = (selector, fn) => self.apply(selector, inputs, fn);
+		//self.eachInput = (selector, fn) => self.apply(selector, inputs, fn);
 		self.getValue = el => { el = self.getInput(el); return el && el.value; }
 		self.setValue = (el, value) => { el = self.getInput(el); return el ? fnSetVal(el, value) : self; }
-		self.values = (selector, value) => self.apply(selector, inputs, input => fnSetVal(input, value));
-		self.copyVal = (i1, i2) => self.setValue(i1, self.getValue(i2));
-		self.setAttrInput = (selector, name, value) => self.setAttr(self.getInput(selector), name, value);
-		self.setAttrInputs = (selector, name, value) => self.apply(selector, inputs, input => input.setAttribute(name, value));
-		self.setReadonly = (selector, value) => self.apply(selector, inputs, input => { input.readOnly = value; });
-		self.setDisabled = (selector, value) => self.apply(selector, inputs, input => { input.disabled = value; });
-		self.delAttrInput = (selector, name) => self.delAttr(self.getInput(selector), name);
-		self.delAttrInputs = (selector, name) => self.apply(selector, inputs, input => input.removeAttribute(name));
-		self.getOptText = select => { select = self.getInput(select); return select && self.getText(select.options[select.selectedIndex]); }
-		self.swapAttr = (selector, a1, a2) => self.apply(selector, inputs, input => { input.setAttribute(a2, input.getAttribute(a1)); input.removeAttribute(a1); });
-		self.setInput = (selector, value, fnChange) => {
+		//self.values = (selector, value) => self.apply(selector, inputs, input => fnSetVal(input, value));
+		//self.copyVal = (i1, i2) => self.setValue(i1, self.getValue(i2));
+		//self.setAttrInput = (selector, name, value) => self.setAttr(self.getInput(selector), name, value);
+		//self.setAttrInputs = (selector, name, value) => self.apply(selector, inputs, input => input.setAttribute(name, value));
+		//self.setReadonly = (selector, value) => self.apply(selector, inputs, input => { input.readOnly = value; });
+		//self.setDisabled = (selector, value) => self.apply(selector, inputs, input => { input.disabled = value; });
+		//self.delAttrInput = (selector, name) => self.delAttr(self.getInput(selector), name);
+		//self.delAttrInputs = (selector, name) => self.apply(selector, inputs, input => input.removeAttribute(name));
+		//self.getOptText = select => { select = self.getInput(select); return select && self.getText(select.options[select.selectedIndex]); }
+		//self.swapAttr = (selector, a1, a2) => self.apply(selector, inputs, input => { input.setAttribute(a2, input.getAttribute(a1)); input.removeAttribute(a1); });
+		/*self.setInput = (selector, value, fnChange) => {
 			const el = self.getInput(selector);
 			if (el) {
 				fnEvent(el, ON_CHANGE, 0, fnChange);
 				fnSetVal(el, value);
 			}
 			return self;
-		}
+		}*/
 
 		self.setFocus = el => self.focus(sb.isstr(el) ? self.find(el, inputs) : ab.find(self.inputs(el), fnFocus));
-		self.autofocus = elements => self.focus(ab.find(elements || inputs, fnFocus)); // Set focus on first visible input
+		/*self.autofocus = elements => self.focus(ab.find(elements || inputs, fnFocus)); // Set focus on first visible input
 		self.autofocus().reverse(inputs, el => { // Initial focus or reallocate in first error
 			const tip = self.get(TIP_ERR_SELECTOR, el.parentNode); // Has error tip
 			self.empty(tip) || self.show(tip).addClass(el, CONFIG.classInputError).focus(el);
@@ -470,39 +464,18 @@ function DomBox(opts) {
 		self.onChangeForm = (selector, fn) => fnAddEvent(self.getForm(selector), ON_CHANGE, fn);
 		self.onSubmitForm = (selector, fn) => fnAddEvent(self.getForm(selector), "submit", fn);
 		self.beforeResetForm = (selector, fn) => fnAddEvent(self.getForm(selector), "reset", fn);
-		self.afterResetForm = (selector, fn) => fnAddEvent(self.getForm(selector), "reset", (form, ev) => setTimeout(() => fn(form, ev), 1));
+		self.afterResetForm = (selector, fn) => fnAddEvent(self.getForm(selector), "reset", (form, ev) => setTimeout(() => fn(form, ev), 1));*/
 		//self.onChangeForms = (selector, fn) => fnAddEvents(selector, forms, ON_CHANGE, fn);
 		//self.onSubmitForms = (selector, fn) => fnAddEvents(selector, forms, "submit", fn);
 
-		self.onBlurInput = (selector, fn) => fnAddEvent(self.getInput(selector), "blur", fn);
+		//self.onBlurInput = (selector, fn) => fnAddEvent(self.getInput(selector), "blur", fn);
 		self.onChangeInput = (selector, fn) => fnAddEvent(self.getInput(selector), ON_CHANGE, fn);
 		self.onChangeInputs = (selector, fn) => fnAddEvents(selector, inputs, ON_CHANGE, fn);
 		self.onChangeSelect = (selector, fn) => self.apply(selector, inputs, (el, i) => { fn(el); fnEvent(el, ON_CHANGE, i, fn); });
-		self.onChangeFile = (selector, fn) => {
-			const reader = new FileReader();
-			const el = self.getInput(selector);
-
-			return fnAddEvent(el, ON_CHANGE, ev => {
-				let index = 0; // position
-				let file = el.files[index];
-				const fnRead = () => reader.readAsBinaryString(file); //reader.readAsText(file, "UTF-8");
-				reader.onload = ev => { // event on load file
-					fn(el, file, ev.target.result, index);
-					file = el.files[++index];
-					file && fnRead();
-				}
-				file ? fnRead() : fn(el);
-			});
-		}
-	
-		self.setRangeDate = (f1, f2) => {
-			return self.onBlurInput(f1, el => self.setAttrInput(f2, "min", el.value))
-						.onBlurInput(f2, el => self.setAttrInput(f1, "max", el.value));
-		}
 
 		/**************** Tables/rows helper ****************/
-		self.getCheckRows = selector => self.checks(self.getTable(selector));
-		self.getCheckedRows = selector => self.checked(self.getTable(selector));
+		//self.getCheckRows = selector => self.checks(self.getTable(selector));
+		//self.getCheckedRows = selector => self.checked(self.getTable(selector));
 		self.onTable = (selector, name, fn) => fnAddEvent(self.getTable(selector), name, fn);
 		self.onFindRow = (selector, fn) => self.onTable(selector, "find", fn);
 		self.onRemoveRow = (selector, fn) => self.onTable(selector, "remove", fn);
@@ -511,7 +484,7 @@ function DomBox(opts) {
 		self.onRenderTable = (selector, fn) => self.onTable(selector, "render", fn);
 		self.afterRenderTable = (selector, fn) => self.onTable(selector, "rendered", fn);
 		self.onRenderTables = (selector, fn) => fnAddEvents(selector, tables, "render", fn);
-		self.onPaginationTable = (selector, fn) => self.onTable(selector, "pagination", fn);
+		//self.onPaginationTable = (selector, fn) => self.onTable(selector, "pagination", fn);
 
 		function fnToggleTbody(table) {
 			const list = table.tBodies; // Bodies list
@@ -552,13 +525,13 @@ function DomBox(opts) {
 			resume.size = aux.length; // Num page rows
 
 			styles = styles || {}; // Default styles
-			styles.getValue = styles.getValue || i18n.val;
+			//styles.getValue = styles.getValue || i18n.val;
 
 			const tbody = table.tBodies[0]; // Data rows
 			fnRendetTfoot(table, resume, styles); // First render footer
 			self.render(tbody, tpl => ab.format(aux, tpl, styles)).trigger(table, "rendered"); // Render rows
 			fnToggleTbody(table); // Toggle body if no data
-			fnPagination(table, data, resume, styles); // Render asociated pages
+			//fnPagination(table, data, resume, styles); // Render asociated pages
 
 			// Listeners for change, find and remove events
 			return self.change(tbody.children, (row, ev, i) => {
@@ -585,7 +558,7 @@ function DomBox(opts) {
 					self.trigger(table, name.substring(1), resume);
 			});
 		}
-		function fnPagination(table, data, resume, styles) {
+		/*function fnPagination(table, data, resume, styles) {
 			const pagination = self.next(table, ".pagination"); // Pag section
 			const pages = Math.ceil(resume.total / resume.pageSize); // Num pages
 			if ((resume.pageSize < 1) || !pagination)
@@ -628,7 +601,7 @@ function DomBox(opts) {
 			}
 			else
 				pagination.innerHTML = output;
-		}
+		}*/
 		function fnRemoveRow(table, data, resume, styles) {
 			// Confirm, close prev. alerts and trigger remove event
 			let ok = table && data && i18n.confirm(styles?.remove || "remove");
@@ -657,32 +630,13 @@ function DomBox(opts) {
 		self.createRow = (form, resume, styles, row) => fnDisplayRow(form, resume, styles, row, -1);
 		self.removeRow = (table, data, resume, styles) => fnRemoveRow(self.getTable(table), data, resume, styles);
 
-		self.repaginate = function(table, data, resume, styles) {
-			resume.start = 0; // Go first page
-			return self.table(table, data, resume, styles);
-		}
-		self.updateTable = function(table, data, resume, styles) {
-			table = self.getTable(table); // Search table
-			if (table) {
-				delete table.dataset.sortBy; // Update state list
-				fnRenderRows(table, data, resume, styles);
-			}
-			return self;
-		}
-		self.clearTable = function(table, data, resume, styles) {
-			data.splice(0); // Clear array data
-			resume.index = resume.start = 0; // Update index
-			return self.updateTable(table, data, resume, styles);
-		}
-
 		// Table acctions synonyms
-		self.renderTables = self.tables = self.list;
+		//self.renderTables = self.tables = self.list;
 		self.renderRows = self.renderTable = self.table;
 		self.renderTfoot = self.tFoot = self.tfoot;
-		self.startPagination = self.repaginate;
 
 		// Initialize all tables
-		ab.each(tables, table => {
+		/*ab.each(tables, table => {
 			const links = self.getAll(".sort", table.tHead); // All orderable columns
 			function fnToggleOrder(link) { // Update all sort icons
 				self.removeClass(links, "sort-asc sort-desc") // Remove prev order
@@ -707,7 +661,7 @@ function DomBox(opts) {
 		/**************** Tables/rows helper ****************/
 
 		// Auto check inputs groups
-		self.eachInput(CHEK_GROUP_SELECTOR, el => {
+		/*self.eachInput(CHEK_GROUP_SELECTOR, el => {
 			const group = self.getInputs(CHEK_GROUP_SELECTOR + "-" + el.id);
 			self.checkval(el, group, +el.value)
 				.click(el, aux => { el.value = self.check(group, el.checked).integer(group); return true; })
@@ -716,7 +670,7 @@ function DomBox(opts) {
 			const group = self.getInputs(CHEK_LIST_SELECTOR + "-" + el.id);
 			self.click(el, aux => self.check(group, el.checked))
 				.click(group, aux => { el.checked = ab.every(group, el => el.checked); return true; });
-		});
+		});*/
 
 		// Clipboard function
 		TEXT.style.position = "absolute";
