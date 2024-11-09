@@ -25,6 +25,8 @@ function Collection() {
     this.parse = fnParse;
 	this.split = sb.split;
     this.eachPrev = fnEachPrev;
+	this.get = (arr, i) => arr ? arr[i] : null;
+	this.last = arr => arr ? arr.last() : null;
     this.reset = arr => arr ? fnReset(arr) : [];
 	this.shuffle = arr => arr.sort(() => (0.5 - Math.random()));
 	this.indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;

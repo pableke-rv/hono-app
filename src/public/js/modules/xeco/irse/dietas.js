@@ -31,7 +31,7 @@ function IrseDietas() {
 		const gasolina = tab6.querySelector("#imp-gasolina-km") || coll.getDivNull();
 		gasolina.innerHTML = i18n.isoFloat(IRSE.gasolina);
 
-		const manutenciones = ab.parse(divData.innerText) || [];
+		const manutenciones = coll.parse(divData.innerText) || [];
 		dom.onChangeTable("#manutenciones", table => {
 			const tr = resume.row;
 			const dieta = resume.data;
@@ -45,7 +45,7 @@ function IrseDietas() {
 				.setValue("#gastos-dietas", divData.innerText);
 			bruto.innerHTML = organicas.getTotalFmt();
 		}).onRenderTable("#manutenciones", table => {
-			let size = ab.size(manutenciones);
+			let size = coll.size(manutenciones);
 			if (size == 0) //hay dietas?
 				return; // tabla vacia
 
@@ -82,7 +82,7 @@ function IrseDietas() {
 			}
 
 			if (size > 0) {
-				let last = ab.last(manutenciones); //extract last dieta
+				let last = manutenciones.last(); //extract last dieta
 				last.maxDietas = last.estado / 2;
 				last.impMax = last.imp2 * last.maxDietas;
 				last.reducido = last.imp1 ? 0 : last.impMax;

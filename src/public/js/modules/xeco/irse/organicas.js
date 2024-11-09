@@ -1,5 +1,7 @@
 
+import coll from "../../../components/CollectionHTML.js";
 import i18n from "../../../i18n/langs.js";
+
 import perfil from "./perfil.js";
 import rutas from "./rutas.js";
 import dietas from "./dietas.js";
@@ -118,7 +120,7 @@ function IrseOrganicas() {
 	this.init = form => {
 		dietas.init(); // init dietas
 		const divGastos = form.querySelector("#gastos-org");
-		organicas = ab.parse(divGastos.innerText) || [];
+		organicas = coll.parse(divGastos.innerText) || [];
 		dom.onRenderTable("#multiorganicas", table => {
 			resume.imp1 = 0;
 			resume.totManutenciones = resume.totPernoctas = 0;

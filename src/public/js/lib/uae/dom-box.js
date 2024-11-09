@@ -1,10 +1,6 @@
 
-/**
- * Vanilla JS DOM-Box module, require:
- * ArrayBox (ab), NumberBox (nb), StringBox (sb) and i18nBox (i18n)
- * 
- * @module DomBox
- */
+import ab from "./array-box.js";
+
 function DomBox(opts) {
 	const self = this; //self instance
 	const EMPTY = ""; //empty string
@@ -678,3 +674,5 @@ function DomBox(opts) {
 		document.body.prepend(TEXT);
 	});
 }
+
+export default new DomBox();

@@ -174,3 +174,5 @@ function ArrayBox() {
 		return self;
 	}
 }
+
+export default new ArrayBox();

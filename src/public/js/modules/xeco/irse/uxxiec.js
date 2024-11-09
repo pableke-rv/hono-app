@@ -1,4 +1,5 @@
 
+import coll from "../../../components/CollectionHTML.js";
 import pf from "../../../components/Primefaces.js";
 import i18n from "../../../i18n/langs.js";
 
@@ -31,7 +32,7 @@ function Uxxiec() {
     }
 
     this.load = tabUxxiec => {
-        operaciones = ab.parse(tabUxxiec.querySelector("#op-json").innerHTML) || []; // preload docs
+        operaciones = coll.parse(tabUxxiec.querySelector("#op-json").innerHTML) || []; // preload docs
         dom.setValue("#operaciones").table("#op-table", operaciones, RESUME, STYLES);
         return self;
     }

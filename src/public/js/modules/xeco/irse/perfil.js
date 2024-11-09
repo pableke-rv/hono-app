@@ -1,4 +1,5 @@
 
+import coll from "../../../components/CollectionHTML.js";
 import pf from "../../../components/Primefaces.js";
 import i18n from "../../../i18n/langs.js";
 
@@ -81,9 +82,9 @@ function IrsePerfil() {
 	this.setColectivo = val => { eCol.innerText = val; return self; }
 
 	this.getOrganicas = () => organicas;
-	this.empty = () => ab.empty(organicas);
-	this.getNumOrganicas = () => ab.size(organicas);
-	this.isMultiorganica = () => ab.size(organicas) > 1;
+	this.empty = () => coll.empty(organicas);
+	this.getNumOrganicas = () => coll.size(organicas);
+	this.isMultiorganica = () => coll.size(organicas) > 1;
 	this.getOrganica = id => organicas.find(org => org.id == id); //get organica by id
 	this.isInve3005 = org => (org && sb.starts(org.o, "3005") && ((org.mask & 64) == 64)); //es de investigacion de la 3005XX
 	this.is643 = org => (org && ((org.mask & 16) == 16)); //contiene alguna aplicacion 643?
@@ -157,7 +158,7 @@ function IrsePerfil() {
 			onReset: () => { i18n.set("imp", null); form.hide(".msg-cd"); }
 		});
 	
-		organicas = ab.parse(form.getText("#org-data")) || [];
+		organicas = coll.parse(form.getText("#org-data")) || [];
 		const impCd = organicas[0]?.imp;
 		i18n.set("imp", impCd); //importe precargado
 

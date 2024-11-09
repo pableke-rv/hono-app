@@ -67,10 +67,10 @@ function IrseRutas() {
 	this.getAll = () => rutas;
 	this.getResume = () => resume;
 	this.getStyles = () => STYLES;
-	this.size = () => ab.size(rutas);
-	this.empty = () => ab.empty(rutas);
+	this.size = () => coll.size(rutas);
+	this.empty = () => coll.empty(rutas);
 	this.first = () => rutas[0];
-	this.last = () => ab.last(rutas);
+	this.last = () => coll.last(rutas);
 	this.start = () => (self.size() && sb.toDate(self.first().dt1));
 	this.end = () => (self.size() && sb.toDate(self.last().dt2));
 	//this.inRange = fecha => (self.size() && (sb.enDate(self.first().dt1) <= fecha) && (fecha <= sb.enDate(self.last().dt2)));
@@ -207,7 +207,7 @@ function IrseRutas() {
 		divData = form.querySelector("#rutas-data");
 		elImpKm = form.querySelector("#imp-km") || coll.getDivNull();
 		justifiKm = form.querySelector(".justifi-km") || coll.getDivNull();
-		rutas = ab.parse(divData.innerText) || []; // container
+		rutas = coll.parse(divData.innerText) || []; // container
 
 		function fnSave() {
 			divData.innerText = JSON.stringify(rutas);
