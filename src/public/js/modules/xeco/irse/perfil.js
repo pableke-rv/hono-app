@@ -1,8 +1,10 @@
 
 import coll from "../../../components/CollectionHTML.js";
+import dt from "../../../components/DateBox.js";
 import sb from "../../../components/StringBox.js";
 import pf from "../../../components/Primefaces.js";
 import i18n from "../../../i18n/langs.js";
+import dom from "../../../lib/uae/dom-box.js";
 
 import actividades from "../../../data/irse/actividades.js"
 import tribunales from "../../../data/irse/tribunales.js"
@@ -19,7 +21,7 @@ function IrsePerfil() {
 	let organicas, current;
 
 	const fCache = new Date();
-	dt.addDate(fCache, -1); //fecha de ayer
+	dt.addDays(fCache, -1); //fecha de ayer
 	i18n.set("fCache", fCache.toISOString());
 
 	this.getRol = () => eRol.value;
@@ -47,7 +49,7 @@ function IrsePerfil() {
 
 	function fnCalcFinanciacion() {
 		let result = "OTR"; //default fin.
-		if (ab.size(organicas) > 0) {
+		if (coll.size(organicas) > 0) {
 			const ORG_300518 = "300518";
 			organicas.forEach(org => {
 				result = (sb.starts(org.o, ORG_300518) && ((org.mask & 8) == 8)) ? "ISU" : result; //apli=642
@@ -109,7 +111,7 @@ function IrsePerfil() {
 		eTramit = form.getInput("#tramite");
 
 		form.afterReset(() => {
-			ab.reset(organicas);
+			coll.reset(organicas);
 			i18n.set("imp", "");
 			eCol.parentNode.hide();
 			dom.table("#organicas", organicas, resume, STYLES);
@@ -150,7 +152,7 @@ function IrsePerfil() {
 				current = item;
 				i18n.set("imp", current.imp); //credito disponible
 				if (!IRSE.uxxiec) {
-					ab.reset(organicas).push(organicas, current);
+					coll.reset(organicas).push(organicas, current);
 					fnSave();
 				}
 				form.querySelector(".msg-cd").render(i18n.getCurrent()).show();

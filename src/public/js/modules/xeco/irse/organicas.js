@@ -2,6 +2,9 @@
 import coll from "../../../components/CollectionHTML.js";
 import i18n from "../../../i18n/langs.js";
 
+import nb from "../../../lib/uae/number-box.js";
+import dom from "../../../lib/uae/dom-box.js";
+
 import perfil from "./perfil.js";
 import rutas from "./rutas.js";
 import dietas from "./dietas.js";
@@ -83,7 +86,7 @@ function IrseOrganicas() {
 			return self.validAll();
 
 		//auto-build monoorganica
-		ab.reset(organicas);
+		coll.reset(organicas);
 		const org = perfil.getOrganicas()[0];
 		const DATA = { num: org.id, cod: org.o, desc: org.dOrg };
 		let aux = self.getTotDietas();

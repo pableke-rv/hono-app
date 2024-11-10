@@ -5,7 +5,7 @@ const round = (num, scale) => +(Math.round(num + "e+" + scale)  + "e-" + scale);
 function NumberBox() {
 	const self = this; //self instance
 
-    this.round = (num, scale) => num ?? round(num, scale);
+    this.round = (num, scale) => num ?? round(num, scale ?? 2);
 	this.rand = (min, max) => Math.random() * ((max || 1e9) - min) + min;
 	this.randInt = (min, max) => Math.floor(self.rand(min || 0, max));
 
@@ -17,11 +17,11 @@ function NumberBox() {
         const num = parseInt(sign + str.replace(/\D+/g, "")); // Integer number
         return isNaN(num) ? null : num;
     }
-    this.isoInt = num => { // Int to String formated
-        return isnum(num) ? num.toLocaleString(_lang.lang) : null;
+    this.isoInt = (num, lang) => { // Int to String formated
+        return isnum(num) ? num.toLocaleString(lang) : null;
     }
-    this.fmtInt = str => { // String to String formated
-        return self.isoInt(self.toInt(str));
+    this.fmtInt = (str, lang) => { // String to String formated
+        return self.isoInt(self.toInt(str), lang);
     }
 
     // Float formats
@@ -36,13 +36,13 @@ function NumberBox() {
         const num = parseFloat(sign + whole.replace(/\D+/g, "") + decimal); //float value
         return isNaN(num) ? null : num;
     }
-    this.isoFloat = (num, n) => { // Float to String formated
+    this.isoFloat = (num, n, lang) => { // Float to String formated
         n = n ?? 2; // 2 decimals by default
         options.minimumFractionDigits = n;
-        return isnum(num) ? round(num, n).toLocaleString(_lang.lang, options) : null;
+        return isnum(num) ? round(num, n).toLocaleString(lang, options) : null;
     }
-    this.fmtFloat = (str, dIn, n) => { // String to String formated
-        return self.isoFloat(self.toFloat(str, dIn), n);
+    this.fmtFloat = (str, dIn, n, lang) => { // String to String formated
+        return self.isoFloat(self.toFloat(str, dIn), n, lang);
     }
 }
 

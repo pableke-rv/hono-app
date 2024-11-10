@@ -1,5 +1,6 @@
 
 import sb from "../../../components/StringBox.js";
+import dom from "../../../lib/uae/dom-box.js";
 import rutas from "./rutas.js";
 
 const CT = rutas.getCT(); // CT location

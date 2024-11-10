@@ -1,5 +1,7 @@
 
 import ab from "./array-box.js";
+import nb from "./number-box.js";
+import sb from "./string-box.js";
 
 function DomBox(opts) {
 	const self = this; //self instance

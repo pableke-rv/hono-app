@@ -2,6 +2,7 @@
 import coll from "../../../components/CollectionHTML.js";
 import pf from "../../../components/Primefaces.js";
 import i18n from "../../../i18n/langs.js";
+import dom from "../../../lib/uae/dom-box.js";
 
 function Uxxiec() {
 	const self = this; //self instance

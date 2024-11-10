@@ -117,3 +117,5 @@ function NumberBox() {
 	this.enBool = val => self.boolval(val) ? "Yes" : "No";
 	this.esBool = val => self.boolval(val) ? "Sí" : "No";
 }
+
+export default new NumberBox();

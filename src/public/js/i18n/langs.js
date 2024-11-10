@@ -58,13 +58,13 @@ function Langs() {
     this.strval = (data, name) => data[name + "_" + _lang.lang] || data[name];
 
     // Float formats
-    _langs.en.isoFloat = nb.isoFloat; // Float to String formated
     _langs.en.toFloat = str => nb.toFloat(str, ".");  // String to Float
-    _langs.en.fmtFloat = (str, n) => nb.fmtFloat(str, ".", n); // String to EN String formated
+    _langs.en.isoFloat = (num, n) => nb.isoFloat(num, n, _lang.lang); // Float to String formated
+    _langs.en.fmtFloat = (str, n) => nb.fmtFloat(str, ".", n, _lang.lang); // String to EN String formated
 
-    _langs.es.isoFloat = nb.isoFloat; // Float to String formated
     _langs.es.toFloat = str => nb.toFloat(str, ",");  // String to Float
-    _langs.es.fmtFloat = (str, n) => nb.fmtFloat(str, ",", n); // String to ES String formated
+    _langs.es.isoFloat = (num, n) => nb.isoFloat(num, n, _lang.lang); // Float to String formated
+    _langs.es.fmtFloat = (str, n) => nb.fmtFloat(str, ",", n, _lang.lang); // String to ES String formated
 
     this.toFloat = str => _lang.toFloat(str);
     this.isoFloat = num => _lang.isoFloat(num);
@@ -78,8 +78,8 @@ function Langs() {
 
     // Int formats
     this.toInt = nb.toInt; // String to Int
-    this.isoInt = nb.isoInt; // Int to String formated
-    this.fmtInt = nb.fmtInt; // String to EN String formated
+    this.isoInt = num => nb.isoInt(num, _lang.lang); // Int to String formated
+    this.fmtInt = str => nb.fmtInt(str, _lang.lang); // String to EN String formated
 
     // Render styled string
     const STATUS = {};

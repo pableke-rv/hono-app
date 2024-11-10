@@ -1,4 +1,5 @@
 
+import dom from "../../../lib/uae/dom-box.js";
 import perfil from "./perfil.js";
 
 function IrseImputacion() {

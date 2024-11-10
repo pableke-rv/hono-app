@@ -188,3 +188,5 @@ function StringBox() {
 		return output;
 	}*/
 }
+
+export default new StringBox();

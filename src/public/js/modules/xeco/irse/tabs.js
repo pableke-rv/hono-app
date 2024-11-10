@@ -2,6 +2,7 @@
 import sb from "../../../components/StringBox.js";
 import pf from "../../../components/Primefaces.js";
 import i18n from "../../../i18n/langs.js";
+import dom from "../../../lib/uae/dom-box.js";
 
 import rutas from "./rutas.js";
 import organicas from "./organicas.js";
