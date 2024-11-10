@@ -1,6 +1,8 @@
 
 import coll from "../../../components/CollectionHTML.js";
 import dt from "../../../components/DateBox.js";
+import nb from "../../../components/NumberBox.js";
+import sb from "../../../components/StringBox.js";
 import i18n from "../../../i18n/langs.js";
 
 import perfil from "./perfil.js";
@@ -32,8 +34,8 @@ function IrseRutas() {
 	const resume = { sizeOut: 0, sizeVp: 0 };
 	const STYLES = {
 		remove: "removeRuta",
-		f1: (val, ruta) => i18n.isoDate(ruta.dt1), h1: (val, ruta) => sb.minTime(ruta.dt1), 
-		f2: (val, ruta) => i18n.isoDate(ruta.dt2), h2: (val, ruta) => sb.minTime(ruta.dt2),
+		f1: (val, ruta) => i18n.isoDate(ruta.dt1), h1: (val, ruta) => sb.isoTimeShort(ruta.dt1), 
+		f2: (val, ruta) => i18n.isoDate(ruta.dt2), h2: (val, ruta) => sb.isoTimeShort(ruta.dt2),
 		principal: (val, ruta) => (ruta.mask & 1) ? '<span class="text-warn icon"> <i class="fal fa-flag-checkered"></i></span>' : "",
 		km1: i18n.isoFloat, km2: i18n.isoFloat, totKm: i18n.isoFloat,
 		impKm: (val, ruta) => fmtImpKm(ruta),
@@ -73,7 +75,7 @@ function IrseRutas() {
 	this.last = () => coll.last(rutas);
 	this.start = () => (self.size() && sb.toDate(self.first().dt1));
 	this.end = () => (self.size() && sb.toDate(self.last().dt2));
-	//this.inRange = fecha => (self.size() && (sb.enDate(self.first().dt1) <= fecha) && (fecha <= sb.enDate(self.last().dt2)));
+	//this.inRange = fecha => (self.size() && (sb.isoDate(self.first().dt1) <= fecha) && (fecha <= sb.isoDate(self.last().dt2)));
 	this.isSalidaTemprana = () => (self.size() && (sb.getHours(rutas[0].dt1) < 14));
 	this.isSalidaTardia = () => (self.size() && (sb.getHours(rutas[0].dt1) > 21));
 	this.isLlegadaTemprana = () => (self.size() && (sb.getHours(self.last().dt2) < 14));
@@ -238,7 +240,7 @@ function IrseRutas() {
 				dom.table("#rutas", rutas, resume, STYLES);
 			}).onRenderTable("#rutas", table => {
 				let last = fnResume().last(rutas) || CT;
-				form.setval("#origen", last.destino).setval("#f1", sb.enDate(last.dt2)).setval("#h1", sb.minTime(last.dt2))
+				form.setval("#origen", last.destino).setval("#f1", sb.isoDate(last.dt2)).setval("#h1", sb.isoTimeShort(last.dt2))
 					.setval("#destino").copy("#f2", "#f1").setval("#h2").setval("#principal", "0").setval("#desp")
 					.delAttr("#f1", "max").delAttr("#f2", "min").hide(".grupo-matricula");
 				if (!last.dt1)

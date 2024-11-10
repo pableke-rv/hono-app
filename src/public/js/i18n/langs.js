@@ -1,10 +1,8 @@
 
 import en from "./langs/en/lang.js";
 import es from "./langs/es/lang.js";
+import nb from "../components/NumberBox.js";
 import sb from "../components/StringBox.js";
-
-const isnum = val => ((typeof(val) === "number") || (val instanceof Number));
-const round = (num, scale) => +(Math.round(num + "e+" + scale)  + "e-" + scale);
 
 function Langs() {
 	const self = this; //self instance
@@ -60,33 +58,13 @@ function Langs() {
     this.strval = (data, name) => data[name + "_" + _lang.lang] || data[name];
 
     // Float formats
-    const options = { minimumFractionDigits: 1 };
-    function toFloat(str, d) { //String to Float
-        if (!str)
-            return null; // nada que parsear
-        const separator = str.lastIndexOf(d);
-        const sign = ((str.charAt(0) == "-") ? "-" : ""); // Get sign number + or -
-        const whole = (separator < 0) ? str : str.substr(0, separator); //extract whole part
-        const decimal = (separator < 0) ? "" : ("." + str.substr(separator + 1)); //decimal part
-        const num = parseFloat(sign + whole.replace(/\D+/g, "") + decimal); //float value
-        return isNaN(num) ? null : num;
-    }
-    function isoFloat(num, n) { // Float to String formated
-        n = n ?? 2; // 2 decimals by default
-        options.minimumFractionDigits = n;
-        return isnum(num) ? round(num, n).toLocaleString(_lang.lang, options) : null;
-    }
-    function fmtFloat(str, dIn, n) { // String to String formated
-        return isoFloat(toFloat(str, dIn), n);
-    }
+    _langs.en.isoFloat = nb.isoFloat; // Float to String formated
+    _langs.en.toFloat = str => nb.toFloat(str, ".");  // String to Float
+    _langs.en.fmtFloat = (str, n) => nb.fmtFloat(str, ".", n); // String to EN String formated
 
-    _langs.en.isoFloat = isoFloat; // Float to String formated
-    _langs.en.toFloat = str => toFloat(str, ".");  // String to Float
-    _langs.en.fmtFloat = (str, n) => fmtFloat(str, ".", n); // String to EN String formated
-
-    _langs.es.isoFloat = isoFloat; // Float to String formated
-    _langs.es.toFloat = str => toFloat(str, ",");  // String to Float
-    _langs.es.fmtFloat = (str, n) => fmtFloat(str, ",", n); // String to ES String formated
+    _langs.es.isoFloat = nb.isoFloat; // Float to String formated
+    _langs.es.toFloat = str => nb.toFloat(str, ",");  // String to Float
+    _langs.es.fmtFloat = (str, n) => nb.fmtFloat(str, ",", n); // String to ES String formated
 
     this.toFloat = str => _lang.toFloat(str);
     this.isoFloat = num => _lang.isoFloat(num);
@@ -99,34 +77,9 @@ function Langs() {
     this.fmtFloat3 = str => _lang.fmtFloat(str, 3);
 
     // Int formats
-    function toInt(str) { //String to Int
-        if (!str)
-            return null; // nada que parsear
-        const sign = ((str.charAt(0) == "-") ? "-" : ""); // Get sign number + or -
-        const num = parseInt(sign + str.replace(/\D+/g, "")); // Integer number
-        return isNaN(num) ? null : num;
-    }
-    function isoInt(num) { // Int to String formated
-        return isnum(num) ? num.toLocaleString(_lang.lang) : null;
-    }
-    function fmtInt(str) { // String to String formated
-        return isoInt(toInt(str));
-    }
-
-    this.toInt = toInt; // String to Int
-    this.isoInt = isoInt; // Int to String formated
-    this.fmtInt = fmtInt; // String to EN String formated
-
-    // Extends Number prototype
-    Number.isNumber = isnum;
-    Number.prototype.mask = function(i) { return ((this >> i) & 1); } // check bit at i position
-    Number.prototype.bitor = function(flags) { return ((this & flags) > 0); } // some flags up?
-    Number.prototype.bitand = function(flags) { return ((this & flags) == flags); } // all flags up?
-    Number.prototype.round = function(digits) { return round(this, digits ?? 2); } // default round 2 decimals
-
-    globalThis.isnum = isnum; // Check if Number type
-    globalThis.dec = (num, min) => ((num > (min ?? 0)) ? num-- : num); // Decrement number until min
-    globalThis.inc = (num, max) => ((num < max) ? num++ : num); // Increment number until max
+    this.toInt = nb.toInt; // String to Int
+    this.isoInt = nb.isoInt; // Int to String formated
+    this.fmtInt = nb.fmtInt; // String to EN String formated
 
     // Render styled string
     const STATUS = {};

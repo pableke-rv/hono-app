@@ -1,6 +1,7 @@
 
 import Form from "../../../components/Form.js";
 import tabs from "../../../components/Tabs.js";
+import dt from "../../../components/DateBox.js";
 import pf from "../../../components/Primefaces.js";
 import excel from "../../../components/Excel.js";
 import rutas from "./rutas.js";
@@ -22,7 +23,7 @@ function Otri() {
         function validCong() {
             let fIniCong = dt.toDate(eIniCong.value);
             let fFinCong = dt.toDate(eFinCong.value);
-            dt.addDate(fIniCong, -1).trunc(fIniCong).addDate(fFinCong, 2).trunc(fFinCong);
+            dt.addDays(fIniCong, -1).trunc(fIniCong).addDays(fFinCong, 2).trunc(fFinCong);
             return ((fIniCong && dt.lt(rutas.start(), fIniCong)) || (fFinCong && dt.lt(fFinCong, rutas.end())));
         }
         function fechasCong() {

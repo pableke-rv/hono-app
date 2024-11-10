@@ -90,6 +90,12 @@ function StringBox() {
     this.getHours = str => +(str || sysdate).substring(11, 13); //hh int format
     this.getMonth = str => +(str || sysdate).substring(5, 7); //mm int format
     this.getMinutes = str => +(str || sysdate).substring(14, 16); //min int format
+	this.endDay = str => str ? (str.substring(0, 10) + "T23:59:59.999Z") : str;
+	this.cmp = function(a, b) {
+		if (globalThis.isset(a) && globalThis.isset(b))
+			return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+		return globalThis.isset(a) ? -1 : 1; //nulls last
+	}
 
     // Chunk string in multiple parts
 	this.test = (str, re) => re.test(str) ? str : null;
@@ -100,9 +106,11 @@ function StringBox() {
 	this.lpad = (str, size, pad) => str ? str.padStart(size, pad) : null;
 
     // Modificators
+	this.lopd = str => str && ("***" + str.substr(3, 4) + "**"); //hide protect chars
     this.getCode = (str, sep) => str && str.substring(0, str.indexOf(sep || " "));
 	this.toCode = str => str ? fnWord(str).toUpperCase() : str;
 	this.toWord = str => str ? fnWord(str) : str;
+	this.toUpperWord = str => str ? fnWord(str).toUpperCase() : str;
 	this.lines = str => self.split(str, /[\n\r]+/);
 	this.words = str => self.split(str, /\s+/);
 }

@@ -4,6 +4,7 @@ import Form from "../../components/Form.js";
 import tabs from "../../components/Tabs.js";
 import pf from "../../components/Primefaces.js";
 import i18n from "../../i18n/langs.js";
+import dom from "../../lib/uae/dom-box.js";
 
 import list from "./irse/list.js";
 import uxxiec from "./irse/uxxiec.js";
