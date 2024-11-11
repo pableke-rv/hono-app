@@ -1,5 +1,5 @@
 
-import Validators from "../../validators.js";
+import Msgs from "../msgs.js";
 
 function fnLetraDni(value) { // private function
 	const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
@@ -7,7 +7,7 @@ function fnLetraDni(value) { // private function
 	return (letra == value.charAt(8));
 }
 
-export default class EnglishValidators extends Validators {
+export default class PersonId extends Msgs {
 	// Person ID's
 	isDni(name, value) {
 		if (!value)

@@ -102,7 +102,7 @@ export const initTab9 = (tab, form) => {
 
 	const valid = i18n.getValidation();
 	cuentas.options.forEach(opt => {
-		let entidad = valid.getEntidad(opt.innerText);
+		let entidad = valid.banks.getEntidad(opt.innerText);
 		if (entidad)
 			opt.innerText += " - " + entidad;
 	});

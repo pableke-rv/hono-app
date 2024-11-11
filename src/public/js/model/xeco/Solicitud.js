@@ -50,6 +50,7 @@ export default class Solicitud {
     get data() { return this.#data; }
     getData() { return this.#data; }
     get(name) { return this.#data[name]; }
+    //set data(value) { this.#data = value; } // set the property value
     setData(data) { this.#data = data; return this; }
     set(name, value) { this.#data[name] = value; return this; }
 

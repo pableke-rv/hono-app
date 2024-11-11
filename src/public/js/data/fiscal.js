@@ -36,9 +36,8 @@ const C2ZZT23 = { economica: ECO_133001, sujeto: 2, exento: 0, m349: 0, iban: 10
 const C1T6    = { economica: "154000",   sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
 const C2T2    = { economica: "155100",   sujeto: 0, exento: 0, m349: 0, iban:  4, iva: 21 };
 const C2UET2  = { economica: "155100",   sujeto: 2, exento: 0, m349: 6, iban:  4, iva:  0 };
-const DEFAULT = { economica: "",         sujeto: 0, exento: 0, m349: 0, iban:  0, iva:  0 };  // Default values
 
-const FISCALIDAD = {
+export default {
     c1epes4: NP_010, c1noes4: NP_010, c1noue4: NP_010, c1nozz4: NP_010,
     c2epes4: NP_010, c2noes4: NP_010, c2noue4: NP_206, c2nozz4: NP_010, 
     c3epes4: NP_010, c3noes4: NP_010, c3noue4: NP_206, c3nozz4: NP_010,
@@ -99,27 +98,6 @@ const FISCALIDAD = {
     c2epes2: C2T2, c2noes2: C2T2, c2noue2: C2UET2, c2nozz2: C2T2, 
     c3epes2: C2T2, c3noes2: C2T2, c3noue2: C2UET2, c3nozz2: C2T2,
 
-    cp13:    { economica: "", sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 0 } // Cartas de pago
-};
-
-function Fiscal() {
-	const self = this; //self instance
-
-    this.getKeyFactura = (tercero, subtipo) => {
-        let key = "c" + tercero.imp; //caracter => persona fisica=1, persona juridica=2, est. publico=3
-        key += (tercero.int & 256) ? "ep" : "no"; // Establecimiento permanente
-        const ep_es = (tercero.int & 128) || (tercero.int & 256); //Establecimiento permanente o Residente
-        // Residente en la peninsula=es, ceuta-melillacanarias=np, comunitario=ue, resto del mundo=zz
-        key += ep_es ? ((tercero.int & 2048) ? "es" : "np") : ((tercero.int & 2) ? "ue" : "zz");
-        return key + subtipo; // complete key
-    }
-
-    this.getKeyCp = subtipo => ("cp" + subtipo);
-    this.getFiscalidad = (tercero, factura) => {
-        const subtipo = factura.getSubtipo(); // subtipo = tipo de ingreso de la factura
-		const key = factura.isFacturable() ? self.getKeyFactura(tercero, subtipo) : self.getKeyCp(subtipo);
-		return FISCALIDAD[key] || DEFAULT;
-    }
+    cp13:    { economica: "", sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 0 }, // Cartas de pago
+    default: { economica: "",  sujeto: 0, exento: 0, m349: 0, iban:  0, iva:  0 } // Default values
 }
-
-export default new Fiscal();

@@ -5,8 +5,8 @@ import pf from "../../components/Primefaces.js";
 import i18n from "../../i18n/langs.js";
 
 import factura from "../../model/xeco/Factura.js";
+import fiscal from "../../model/xeco/factura/Fiscal.js";
 import solicitudes from "./xeco.js";
-import fiscal from "../../data/fiscal.js";
 
 pf.ready(() => {
 	const linea = factura.getLinea();
